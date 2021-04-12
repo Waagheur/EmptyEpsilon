@@ -43,8 +43,9 @@ jobs:
           cmake ../EmptyEpsilon -G Ninja -DCMAKE_MAKE_PROGRAM=ninja -DCMAKE_TOOLCHAIN_FILE=../EmptyEpsilon/cmake/mingw_ubuntu.toolchain -DSERIOUS_PROTON_DIR=../SeriousProton
           ninja package
           cd .. 
-    debug-rel:
+  debug-rel:
     name: dbg cmd
+    needs: [build-linux, build-windows]
     runs-on: ubuntu-latest
     steps:
       - name: dbg ls
@@ -53,7 +54,7 @@ jobs:
           ls -al
           sudo apt install tree
           tree
-    tagged-release-update:
+  tagged-release-update:
     name: "Tagged Release"
     runs-on: ubuntu-latest
     needs: [build-linux, build-windows]
