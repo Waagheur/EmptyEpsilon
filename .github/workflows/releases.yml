@@ -11,20 +11,31 @@ jobs:
     name: Linux Tagged Release Build
     runs-on: ubuntu-latest
     steps:
-      - name: Update apt index
-        run: sudo apt-get update -qq
-      - name: Instal SFML
-        run: sudo apt-get install libsfml-dev
-      - name: Checkout EmptyEpsilon
+      - name: Dependencies
+        run: |
+          sudo apt update -qq
+          sudo apt install build-essential cmake ninja-build zip unzip libsfml-dev
+      - name: SeriousProton Checkout
         uses: actions/checkout@v2
-      - name: Build and test
-        run: docker/build.sh
+        with:
+          repository: tsht/SeriousProton
+          path: SeriousProton  
+      - name: EmptyEpsilon Checkout
+        uses: actions/checkout@v2
+        with:
+          path: EmptyEpsilon
+      - name: Build
+        run: |
+          mkdir -p _build_linux
+          cd _build_linux
+          cmake ../EmptyEpsilon -G Ninja -DSERIOUS_PROTON_DIR=../SeriousProton
+          ninja package
+          cd .. 
       - name: Upload Linux build
         uses: actions/upload-artifact@v2
         with:
           name: linux-build
-          path: build/*.deb
-        
+          path: _build_linux/*.deb
   build-windows:
     name: Windows (Cross-Compile) Tagged Release Build
     runs-on: ubuntu-latest
