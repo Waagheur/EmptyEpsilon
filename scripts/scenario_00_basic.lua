@@ -425,15 +425,15 @@ function update(delta)
         end
     end
 	
-	for pidx=1,12 do
-	p = getPlayerShip(pidx)
-        if p ~= nil and p:isValid() then
-            print(string.format("%i", tonumber(p:getInfosValue(12))))
-			if p:getInfosValue(1) ~= list_info_value[pidx] then
-				popWarpJammerButton = "popWarpjammerButton"
-				p:addCustomButton("Relay",popWarpJammerButton,string.format("Deployer antiwarp (%i)", tonumber(p:getInfosValue(1))),p.popWarpJammer)
-				list_info_value[pidx] = p:getInfosValue(1)
-			end
-		end
-	end
+	--for pidx=1,12 do
+	--p = getPlayerShip(pidx)
+    --    if p ~= nil and p:isValid() then
+    --        print(string.format("%i", tonumber(p:getInfosValue(12))))
+	--		if p:getInfosValue(1) ~= list_info_value[pidx] then
+	--			popWarpJammerButton = "popWarpjammerButton"
+	--			p:addCustomButton("Relay",popWarpJammerButton,string.format("Deployer antiwarp (%i)", tonumber(p:getInfosValue(1))),p.popWarpJammer)
+	--			list_info_value[pidx] = p:getInfosValue(1)
+	--		end
+	--	end
+	--end
 end
