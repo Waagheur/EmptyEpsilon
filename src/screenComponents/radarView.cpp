@@ -15,11 +15,12 @@
 GuiRadarView::GuiRadarView(GuiContainer* owner, string id, TargetsContainer* targets, P<PlayerSpaceship> targetSpaceship)
 : SectorsView(owner, id, 5000.0f, targets), 
     next_ghost_dot_update(0.0), 
+    //targets(targets) //only for merge
     missile_tube_controls(nullptr), 
     auto_center_on_my_ship(true),
     auto_rotate_on_my_ship(false),
     auto_distance(true),
-    target_spaceship(targetSpaceship), 
+    //distance(5000.0f) //only for merge
     long_range(false), 
     show_ghost_dots(false),
     show_waypoints(false), 
@@ -29,21 +30,24 @@ GuiRadarView::GuiRadarView(GuiContainer* owner, string id, TargetsContainer* tar
     show_heading_indicators(false), 
     show_game_master_data(false), 
     range_indicator_step_size(0.0f), 
+    background_alpha(255),
     style(Circular), 
     fog_style(NoFogOfWar), 
     mouse_down_func(nullptr), 
     mouse_drag_func(nullptr), 
-    mouse_up_func(nullptr)
+    mouse_up_func(nullptr),
+    target_spaceship(targetSpaceship)
 {
 }
 
 GuiRadarView::GuiRadarView(GuiContainer* owner, string id, float distance, TargetsContainer* targets, P<PlayerSpaceship> targetSpaceship)
 : SectorsView(owner, id, distance, targets), 
     next_ghost_dot_update(0.0), 
+    //targets(targets), //only for merge
     missile_tube_controls(nullptr), 
     auto_center_on_my_ship(true),
     auto_rotate_on_my_ship(false),
-    target_spaceship(targetSpaceship), 
+    //distance(distance), //only for merge
     long_range(false), 
     show_ghost_dots(false),
     show_waypoints(false), 
@@ -52,11 +56,14 @@ GuiRadarView::GuiRadarView(GuiContainer* owner, string id, float distance, Targe
     show_callsigns(false), 
     show_heading_indicators(false), 
     show_game_master_data(false), 
-    range_indicator_step_size(0.0f), style(Circular), 
+    range_indicator_step_size(0.0f), 
+    background_alpha(255),
+    style(Circular), 
     fog_style(NoFogOfWar), 
     mouse_down_func(nullptr), 
     mouse_drag_func(nullptr), 
-    mouse_up_func(nullptr)
+    mouse_up_func(nullptr),
+    target_spaceship(targetSpaceship)
 {
 }
 
@@ -223,7 +230,7 @@ void GuiRadarView::updateGhostDots()
 
 void GuiRadarView::drawBackground(sf::RenderTarget& window)
 {
-    window.clear(sf::Color(20, 20, 20, 255));
+    window.clear(sf::Color(20, 20, 20, background_alpha));
 }
 
 void GuiRadarView::drawNoneFriendlyBlockedAreas(sf::RenderTarget& window)
@@ -249,19 +256,23 @@ void GuiRadarView::drawNoneFriendlyBlockedAreas(sf::RenderTarget& window)
         {
             if(obj->id_galaxy != my_spaceship->id_galaxy)
                 continue;
-            P<PlayerSpaceship> player = obj;
-            if (obj == my_spaceship || (player && (obj->faction_id == my_spaceship->faction_id || obj->personality_id == 1)))
+            
+            P<ShipTemplateBasedObject> stb_obj = obj;
+            
+            if (obj == my_spaceship || (stb_obj && (obj->faction_id == my_spaceship->faction_id || obj->personality_id == 1)))
             {
-                float r_player_ship = gameGlobalInfo->use_long_range_for_relay ? player->getLongRangeRadarRange() : player->getShortRangeRadarRange();
-                r_player_ship *= getScale();
-                drawCircle(obj, r_player_ship);
+                float r_stb = gameGlobalInfo->use_long_range_for_relay ? stb_obj->getLongRangeRadarRange() : stb_obj->getShortRangeRadarRange();
+                r_stb *= getScale();
+                drawCircle(obj, r_stb);
             }
-            else if ((P<SpaceShip>(obj) || P<SpaceStation>(obj) || P<Planet>(obj)) 
+            else if (P<Planet>(obj)
                  && (obj->faction_id == my_spaceship->faction_id || obj->personality_id == 1))
             {
                 drawCircle(obj, r_default);
             }
+
             P<ScanProbe> sp = obj;
+
             if (sp && sp->owner_id == my_spaceship->getMultiplayerId())
             {
                 drawCircle(obj, r_probe);
@@ -544,32 +555,48 @@ void GuiRadarView::drawObjects(sf::RenderTarget& window_normal, sf::RenderTarget
         }
         break;
     case FriendlysShortRangeFogOfWar:
-        if (!my_spaceship)
-            return;
+        // Reveal objects if they are within short-range radar range (or 5U) of
+        // a friendly ship, station, or scan probe.
 
+        // Continue only if the player's ship exists.
+        if (!my_spaceship)
+        {
+            return;
+        }
+
+        // For each SpaceObject on the map...
         foreach(SpaceObject, obj, space_object_list)
         {
+            // If the object can't hide in a nebula, it's considered visible.
             if (!obj->canHideInNebula())
+            {
                 visible_objects.insert(*obj);
-//            if ((!P<SpaceShip>(obj) && !P<SpaceStation>(obj) && !P<WormHole>(obj)) || !obj->isFriendly(my_spaceship))
-//            {
-//                P<ScanProbe> sp = obj;
-//                if (!sp || sp->owner_id != my_spaceship->getMultiplayerId())
-//                {
-//                    continue;
-//                }
-//            }
+            }
+            // IN DAID VERSION
+            // Consider the object only if it is:
+            // - Any ShipTemplateBasedObject (ship or station)
+            // - A SpaceObject belonging to a friendly faction
+            // - The player's ship
+            // - A scan probe owned by the player's ship
+            // This check is duplicated in RelayScreen::onDraw.
+            // Here this is other thing :
+
             if (target_spaceship && (obj->faction_id != target_spaceship->faction_id) && (obj->personality_id != 1))
                 continue;
 
-            if (!P<PlayerSpaceship>(obj) && !P<SpaceShip>(obj) && !P<SpaceStation>(obj) && !P<ScanProbe>(obj) && !P<WormHole>(obj) && !P<Planet>(obj))
+            // Get the radar range, either ship template based, probe or ourself
+            P<ShipTemplateBasedObject> stb_obj = obj;
+            
+            if (!stb_obj && !P<ScanProbe>(obj) && !P<WormHole>(obj) && !P<Planet>(obj))
                 continue;
 
             if (target_spaceship && (obj->id_galaxy != target_spaceship->id_galaxy))
                 continue;
 
-            sf::Vector2f position = obj->getPosition();
-            float radar_range = 5000.0f; //default value, we can do better someday
+            // Set the radius to reveal as getShortRangeRadarRange() if the
+            // object's a ShipTemplateBasedObject. Otherwise, default to 5U.
+            float radar_range = stb_obj ? stb_obj->getShortRangeRadarRange() : 5000.0f;
+
             P<ScanProbe> sp = obj;
             if (sp && sp->owner_id == my_spaceship->getMultiplayerId())
             {
@@ -577,8 +604,12 @@ void GuiRadarView::drawObjects(sf::RenderTarget& window_normal, sf::RenderTarget
             } 
             else if(target_spaceship == obj) //we already checked we shared same faction
             {
+                //TODO FIXME verifier pourquoi c'est que moi et pas les autres de ma faction
                 radar_range = gameGlobalInfo->use_long_range_for_relay ? target_spaceship->getLongRangeRadarRange() : target_spaceship->getShortRangeRadarRange();
             }     
+
+            // Query for objects within short-range radar/5U of this object.
+            sf::Vector2f position = obj->getPosition();
             PVector<Collisionable> obj_list = CollisionManager::queryArea(position - sf::Vector2f(radar_range, radar_range), position + sf::Vector2f(radar_range, radar_range));
             foreach(Collisionable, c_obj, obj_list)
             {
@@ -591,6 +622,7 @@ void GuiRadarView::drawObjects(sf::RenderTarget& window_normal, sf::RenderTarget
                 }
             }
         }
+
         break;
     case NebulaFogOfWar:
         if (!target_spaceship)
@@ -664,23 +696,48 @@ void GuiRadarView::drawObjectsGM(sf::RenderTarget& window)
 
 void GuiRadarView::drawHeadingIndicators(sf::RenderTarget& window)
 {
-    sf::Vector2f radar_screen_center(rect.left + rect.width / 2.0f, rect.top + rect.height / 2.0f);
     float boundingRadius = std::min(rect.width, rect.height) / 2.0f; //NOT divided by distance here, attention. Do not use getScale() !
-    sf::VertexArray tigs(sf::Lines, 360/20*2);
-    for(unsigned int n=0; n<360; n+=20)
+
+    sf::Vector2f radar_screen_center(rect.left + rect.width / 2.0f, rect.top + rect.height / 2.0f);
+    // If radar is 600-800px then tigs run every 20 degrees, small tigs every 5.
+    // So if radar is 400-600x then the tigs should run every 45 degrees and smalls every 5.
+    // If radar is <400px, tigs every 90, smalls every 10.
+    unsigned int tig_interval = 20;
+    unsigned int small_tig_interval = 5;
+
+    if (boundingRadius >= 300.0f)
     {
-        tigs[n/20*2].position = radar_screen_center + sf::vector2FromAngle(float(n) - 90 - getViewRotation()) * (boundingRadius - 20);
-        tigs[n/20*2+1].position = radar_screen_center + sf::vector2FromAngle(float(n) - 90 - getViewRotation()) * (boundingRadius - 40);
+        tig_interval = 20;
+        small_tig_interval = 5;
+    }
+    else if (boundingRadius > 200.0f && boundingRadius <= 300.0f)
+    {
+        tig_interval = 45;
+        small_tig_interval = 5;
+    }
+    else if (boundingRadius <= 200.0f)
+    {
+        tig_interval = 90;
+        small_tig_interval = 10;
+    }
+
+    sf::VertexArray tigs(sf::Lines, 360 / tig_interval * 2);
+    for(unsigned int n = 0; n < 360; n += tig_interval)
+    {
+        tigs[n / tig_interval * 2].position = radar_screen_center + sf::vector2FromAngle(float(n) - 90 - getViewRotation()) * (boundingRadius - 20);
+        tigs[n / tig_interval * 2 + 1].position = radar_screen_center + sf::vector2FromAngle(float(n) - 90 - getViewRotation()) * (boundingRadius - 40);
     }
     window.draw(tigs);
-    sf::VertexArray small_tigs(sf::Lines, 360/5*2);
-    for(unsigned int n=0; n<360; n+=5)
+
+    sf::VertexArray small_tigs(sf::Lines, 360 / small_tig_interval * 2);
+    for(unsigned int n = 0; n < 360; n += small_tig_interval)
     {
-        small_tigs[n/5*2].position = radar_screen_center + sf::vector2FromAngle(float(n) - 90 - getViewRotation()) * (boundingRadius - 20);
-        small_tigs[n/5*2+1].position = radar_screen_center + sf::vector2FromAngle(float(n) - 90 - getViewRotation()) * (boundingRadius - 30);
+        small_tigs[n / small_tig_interval * 2].position = radar_screen_center + sf::vector2FromAngle(float(n) - 90 - getViewRotation()) * (boundingRadius - 20);
+        small_tigs[n / small_tig_interval * 2 + 1].position = radar_screen_center + sf::vector2FromAngle(float(n) - 90 - getViewRotation()) * (boundingRadius - 30);
     }
     window.draw(small_tigs);
-    for(unsigned int n=0; n<360; n+=20)
+
+    for(unsigned int n = 0; n < 360; n += tig_interval)
     {
         sf::Text text(string(n), *main_font, 15);
         text.setPosition(radar_screen_center + sf::vector2FromAngle(float(n) - 90 - getViewRotation()) * (boundingRadius - 45));

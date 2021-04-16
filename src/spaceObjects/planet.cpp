@@ -1,9 +1,23 @@
+#include <GL/glew.h>
 #include "planet.h"
 #include <SFML/OpenGL.hpp>
 #include "main.h"
 #include "pathPlanner.h"
 
 #include "scriptInterface.h"
+#include "glObjects.h"
+
+#if FEATURE_3D_RENDERING
+sf::Shader* Planet::billboardShader = nullptr;
+uint32_t Planet::billboardShaderPositionAttribute = 0;
+uint32_t Planet::billboardShaderTexCoordsAttribute = 0;
+
+struct VertexAndTexCoords
+{
+    sf::Vector3f vertex;
+    sf::Vector2f texcoords;
+};
+#endif
 
 static Mesh* planet_mesh[16];
 
@@ -138,22 +152,30 @@ Planet::Planet()
     setRadarSignatureInfo(0.5, 0, 0.3);
 
     addInfos(0,"Rotation",string(irandom(5,45))+ " H.LO");
-	addInfos(1,"Revolution",string(irandom(50,5000))+ " J.LO");
-	addInfos(2,"Axe de rotation",string(irandom(1,360))+"deg" + string(irandom(1,60))+"'" + string(irandom(1,60))+"''");
-	addInfos(3,"Taille",string(irandom(50,500) * 100) + " km");
-	if (random(0.0,1.0) < 0.1)
+    addInfos(1,"Revolution",string(irandom(50,5000))+ " J.LO");
+    addInfos(2,"Axe de rotation",string(irandom(1,360))+"deg" + string(irandom(1,60))+"'" + string(irandom(1,60))+"''");
+    addInfos(3,"Taille",string(irandom(50,500) * 100) + " km");
+    if (random(0.0,1.0) < 0.1)
+    {
         addInfos(4,"Type","Gazeuse");
+    }
     else
+    {
         addInfos(4,"Type","Tellurique");
-	addInfos(5,"Age",string(irandom(5,100)*100)+ " M3 A.LO");
+    }
+    addInfos(5,"Age",string(irandom(5,100)*100)+ " M3 A.LO");
 
-	if (infos_value[4] == "Tellurique" && random(0.0,1.0) < 0.3)
+    if (infos_value[4] == "Tellurique" && random(0.0,1.0) < 0.3)
+    { 
         addInfos(6,"Atmosphere","oui");
+    }
     else
+    {
         addInfos(6,"Atmosphere","non");
-	addInfos(7,"Pression",string(random(0.1,4),1)+" Pa");
-	addInfos(8,"Gravite",string(random(2.0,20.0),3)+" m/s2");
-	addInfos(9,"ressource principale","");
+    }
+    addInfos(7,"Pression",string(random(0.1,4),1)+" Pa");
+    addInfos(8,"Gravite",string(random(2.0,20.0),3)+" m/s2");
+    addInfos(9,"ressource principale","");
 
     registerMemberReplication(&planet_size);
     registerMemberReplication(&cloud_size);
@@ -170,6 +192,15 @@ Planet::Planet()
     registerMemberReplication(&orbit_target_id);
     registerMemberReplication(&orbit_time);
     registerMemberReplication(&orbit_distance);
+
+#if FEATURE_3D_RENDERING
+    if (!billboardShader && gl::isAvailable())
+    {
+        billboardShader = ShaderManager::getShader("shaders/billboard");
+        billboardShaderPositionAttribute = glGetAttribLocation(billboardShader->getNativeHandle(), "position");
+        billboardShaderTexCoordsAttribute = glGetAttribLocation(billboardShader->getNativeHandle(), "texcoords");
+    }
+#endif
 }
 
 void Planet::setPlanetAtmosphereColor(float r, float g, float b)
@@ -313,7 +344,7 @@ void Planet::draw3D()
             PlanetMeshGenerator planet_mesh_generator(level_of_detail);
             planet_mesh[level_of_detail] = new Mesh(planet_mesh_generator.vertices);
         }
-        sf::Shader* shader = ShaderManager::getShader("planetShader");
+        sf::Shader* shader = ShaderManager::getShader("shaders/planetShader");
         shader->setUniform("baseMap", *textureManager.getTexture(planet_texture));
         shader->setUniform("atmosphereColor", (sf::Glsl::Vec4)atmosphere_color);
         sf::Shader::bind(shader);
@@ -348,7 +379,7 @@ void Planet::draw3DTransparent()
             PlanetMeshGenerator planet_mesh_generator(level_of_detail);
             planet_mesh[level_of_detail] = new Mesh(planet_mesh_generator.vertices);
         }
-        sf::Shader* shader = ShaderManager::getShader("planetShader");
+        sf::Shader* shader = ShaderManager::getShader("shaders/planetShader");
         shader->setUniform("baseMap", *textureManager.getTexture(cloud_texture));
         shader->setUniform("atmosphereColor", (sf::Glsl::Vec4)sf::Color(0,0,0));
         sf::Shader::bind(shader);
@@ -357,19 +388,25 @@ void Planet::draw3DTransparent()
     }
     if (atmosphere_texture != "" && atmosphere_size > 0)
     {
-        ShaderManager::getShader("billboardShader")->setUniform("textureMap", *textureManager.getTexture(atmosphere_texture));
-        sf::Shader::bind(ShaderManager::getShader("billboardShader"));
-        glColor4f(atmosphere_color.r / 255.0f, atmosphere_color.g / 255.0f, atmosphere_color.b / 255.0f, atmosphere_size * 2.0f);
-        glBegin(GL_QUADS);
-        glTexCoord2f(0, 0);
-        glVertex3f(0, 0, 0);
-        glTexCoord2f(1, 0);
-        glVertex3f(0, 0, 0);
-        glTexCoord2f(1, 1);
-        glVertex3f(0, 0, 0);
-        glTexCoord2f(0, 1);
-        glVertex3f(0, 0, 0);
-        glEnd();
+        static std::array<VertexAndTexCoords, 4> quad{
+        sf::Vector3f(), {0.f, 0.f},
+        sf::Vector3f(), {1.f, 0.f},
+        sf::Vector3f(), {1.f, 1.f},
+        sf::Vector3f(), {0.f, 1.f}
+        };
+
+        gl::ScopedVertexAttribArray positions(billboardShaderPositionAttribute);
+        gl::ScopedVertexAttribArray texcoords(billboardShaderTexCoordsAttribute);
+
+        billboardShader->setUniform("textureMap", *textureManager.getTexture(atmosphere_texture));
+        billboardShader->setUniform("color", sf::Glsl::Vec4(atmosphere_color.r / 255.0f, atmosphere_color.g / 255.0f, atmosphere_color.b / 255.0f, atmosphere_size * 2.0f));
+        sf::Shader::bind(billboardShader);
+        
+        glVertexAttribPointer(positions.get(), 3, GL_FLOAT, GL_FALSE, sizeof(VertexAndTexCoords), (GLvoid*)quad.data());
+        glVertexAttribPointer(texcoords.get(), 2, GL_FLOAT, GL_FALSE, sizeof(VertexAndTexCoords), (GLvoid*)((char*)quad.data() + sizeof(sf::Vector3f)));
+
+        std::initializer_list<uint8_t> indices = { 0, 1, 2, 2, 3, 0 };
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_BYTE, std::begin(indices));
     }
 }
 #endif

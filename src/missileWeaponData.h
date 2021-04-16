@@ -57,6 +57,10 @@ public:
 
     static const MissileWeaponData& getDataFor(const EMissileWeapons& type);
     static const MissileWeaponData& getDataFor(const string& type);
+
+    static const float convertSizeToCategoryModifier(EMissileSizes size);
+    static const EMissileSizes convertCategoryModifierToSize(float size);
+
 };
 
 class CustomMissileWeaponRegistry
@@ -83,11 +87,10 @@ public:
     static auto getMissileWeaponType (const std::string &iName) -> uint32_t& ;
     static void createMissileWeapon(const EMissileWeapons &iBaseType, const std::string &iNewName, const float &iDamageMultiplier, const float &iSpeed, const EDamageType &iDT, const float &iLifeTime);
 
+    string fire_sound;
+
+    static const MissileWeaponData& getDataFor(EMissileWeapons type);
+
+    
 };
-
-#ifdef _MSC_VER
-// MFC: GCC does proper external template instantiation, VC++ doesn't.
-#include "missileWeaponData.hpp"
-#endif
-
 #endif//MISSILE_WEAPON_DATA_H

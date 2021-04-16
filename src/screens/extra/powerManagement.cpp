@@ -1,4 +1,5 @@
 #include "powerManagement.h"
+#include "missileWeaponData.h"
 
 #include "playerInfo.h"
 #include "spaceObjects/playerSpaceship.h"
@@ -37,11 +38,10 @@ PowerManagementScreen::PowerManagementScreen(GuiContainer* owner)
         systems[n].box = box;
         box->setSize(290, 400);
 
-//        (new GuiLabel(box, "", getSystemName(ESystem(n)), 30))->addBackground()->setAlignment(ACenter)->setPosition(0, 0, ATopLeft)->setSize(290, 50);
-        (new GuiLabel(box, "", getLocaleSystemName(ESystem(n)), 30))->addBackground()->setAlignment(ACenter)->setPosition(0, 0, ATopLeft)->setSize(GuiElement::GuiSizeMax, 50);
-        (new GuiLabel(box, "", "Puissance", 30))->setVertical()->setAlignment(ACenterLeft)->setPosition(20, 50, ATopLeft)->setSize(30, 340);
-        (new GuiLabel(box, "", "Refroidissement", 30))->setVertical()->setAlignment(ACenterLeft)->setPosition(100, 50, ATopLeft)->setSize(30, 340);
-        (new GuiLabel(box, "", "Chaleur", 30))->setVertical()->setAlignment(ACenterLeft)->setPosition(180, 50, ATopLeft)->setSize(30, 340);
+        (new GuiLabel(box, "", getLocaleSystemName(ESystem(n)), 30))->addBackground()->setAlignment(ACenter)->setPosition(0, 0, ATopLeft)->setSize(290, 50);
+        (new GuiLabel(box, "", tr("button", "Power"), 30))->setVertical()->setAlignment(ACenterLeft)->setPosition(20, 50, ATopLeft)->setSize(30, 340);
+        (new GuiLabel(box, "", tr("button", "Coolant"), 30))->setVertical()->setAlignment(ACenterLeft)->setPosition(100, 50, ATopLeft)->setSize(30, 340);
+        (new GuiLabel(box, "", tr("button", "Heat"), 30))->setVertical()->setAlignment(ACenterLeft)->setPosition(180, 50, ATopLeft)->setSize(30, 340);
 
         systems[n].power_bar = new GuiProgressbar(box, "", 0.0, 3.0, 1.0);
         systems[n].power_bar->setDrawBackground(false)->setPosition(52.5, 60, ATopLeft)->setSize(50, 320);
@@ -118,7 +118,6 @@ void PowerManagementScreen::onDraw(sf::RenderTarget& window)
 
 void PowerManagementScreen::onHotkey(const HotkeyResult& key)
 {
-	
     if (key.category == "ENGINEERING" && my_spaceship)
     {
         if (key.hotkey == "SELECT_REACTOR") selected_system = SYS_Reactor;

@@ -1,3 +1,5 @@
+#include "gameMasterScreen.h"
+#include "shipTemplate.h"
 #include "main.h"
 #include "gameGlobalInfo.h"
 #include "GMActions.h"
@@ -193,6 +195,10 @@ GameMasterScreen::GameMasterScreen()
             {
                 jammer_tweak_dialog->open(obj);
             }
+            else if (P<Asteroid>(obj))
+            {
+                asteroid_tweak_dialog->open(obj);
+            }
             else
             {
                 object_tweak_dialog->open(obj);
@@ -275,6 +281,8 @@ GameMasterScreen::GameMasterScreen()
     station_tweak_dialog->hide();
     jammer_tweak_dialog = new GuiObjectTweak(this, TW_Jammer);
     jammer_tweak_dialog->hide();
+    asteroid_tweak_dialog = new GuiObjectTweak(this, TW_Asteroid);
+    asteroid_tweak_dialog->hide();
 
     global_message_entry = new GuiGlobalMessageEntryView(this);
     global_message_entry->hide();
@@ -329,7 +337,11 @@ void GameMasterScreen::update(float delta)
         if (ship)
         {
             if (player_ship_selector->indexByValue(string(n)) == -1)
+            {
                 player_ship_selector->addEntry(ship->getTypeName() + " " + ship->getCallSign(), string(n));
+            } else {
+                player_ship_selector->setEntryName(player_ship_selector->indexByValue(string(n)),ship->getCallSign());
+            }
 
             if (ship->isCommsBeingHailedByGM() || ship->isCommsChatOpenToGM())
             {

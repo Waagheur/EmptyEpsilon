@@ -1,5 +1,10 @@
 #include <i18n.h>
 #include "spaceship.h"
+
+#include <array>
+
+#include <i18n.h>
+
 #include "mesh.h"
 #include "shipTemplate.h"
 #include "playerInfo.h"
@@ -61,6 +66,8 @@ REGISTER_SCRIPT_SUBCLASS_NO_CREATE(SpaceShip, ShipTemplateBasedObject)
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, setSystemHeat);
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, getSystemPower);
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, setSystemPower);
+    REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, getSystemPowerFactor);
+    REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, setSystemPowerFactor);
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, getSystemCoolant);
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, setSystemCoolant);
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, getSystemEffectiveness);
@@ -161,6 +168,18 @@ REGISTER_SCRIPT_SUBCLASS_NO_CREATE(SpaceShip, ShipTemplateBasedObject)
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, setScanStateByFaction);
 }
 
+std::array<float, SYS_COUNT> SpaceShip::default_system_power_factors{
+    /*SYS_Reactor*/     -25.0,
+    /*SYS_BeamWeapons*/   3.0,
+    /*SYS_MissileSystem*/ 1.0,
+    /*SYS_Maneuver*/      2.0,
+    /*SYS_Impulse*/       4.0,
+    /*SYS_Warp*/          5.0,
+    /*SYS_JumpDrive*/     5.0,
+    /*SYS_FrontShield*/   5.0,
+    /*SYS_RearShield*/    5.0,
+};
+
 SpaceShip::SpaceShip(string multiplayerClassName, float multiplayer_significant_range)
 : ShipTemplateBasedObject(50, multiplayerClassName, multiplayer_significant_range)
 {
@@ -259,6 +278,7 @@ SpaceShip::SpaceShip(string multiplayerClassName, float multiplayer_significant_
     // Initialize each subsystem to be powered with no coolant or heat.
     for(int n=0; n<SYS_COUNT; n++)
     {
+        assert(n < default_system_power_factors.size());
         systems[n].health = 1.0;
         systems[n].health_max = 1.0;
         systems[n].power_level = 1.0;
@@ -269,6 +289,7 @@ SpaceShip::SpaceShip(string multiplayerClassName, float multiplayer_significant_
         systems[n].repair_request = 0.0;
         systems[n].heat_level = 0.0;
         systems[n].hacked_level = 0.0;
+        systems[n].power_factor = default_system_power_factors[n];
 
         if (n == SYS_Cloaking)
         {
@@ -286,6 +307,7 @@ SpaceShip::SpaceShip(string multiplayerClassName, float multiplayer_significant_
         registerMemberReplication(&systems[n].repair_request, 0.1);
         registerMemberReplication(&systems[n].heat_level, 0.1);
         registerMemberReplication(&systems[n].hacked_level, 0.1);
+        registerMemberReplication(&systems[n].power_factor);
     }
 
     for(int n = 0; n < max_beam_weapons; n++)
@@ -1140,7 +1162,7 @@ bool SpaceShip::canBeDockedBy(P<SpaceObject> obj)
         return false;
     //return (ship_template->can_be_docked_by_class.count(ship->ship_template->getClass()) +
 	//   ship_template->can_be_docked_by_class.count(ship->ship_template->getSubClass())) > 0;
-    return true;
+    return true; //FIXME en parler avec Akim
 }
 
 void SpaceShip::collide(Collisionable* other, float force)
@@ -1384,14 +1406,14 @@ bool SpaceShip::canBeHackedBy(P<SpaceObject> other)
     return (!(this->isFriendly(other)) && this->isFriendOrFoeIdentifiedBy(other)) ;
 }
 
-std::vector<std::pair<string, float>> SpaceShip::getHackingTargets()
+std::vector<std::pair<ESystem, float>> SpaceShip::getHackingTargets()
 {
-    std::vector<std::pair<string, float>> results;
+    std::vector<std::pair<ESystem, float>> results;
     for(unsigned int n=0; n<SYS_COUNT; n++)
     {
         if (n != SYS_Reactor && hasSystem(ESystem(n)))
         {
-            results.emplace_back(getSystemName(ESystem(n)), systems[n].hacked_level);
+            results.emplace_back(ESystem(n), systems[n].hacked_level);
         }
     }
     return results;
@@ -2020,6 +2042,4 @@ string frequencyToString(int frequency)
     return string(frequencyToDisplayNumber(frequency)) + "THz";
 }
 
-#ifndef _MSC_VER
 #include "spaceship.hpp"
-#endif

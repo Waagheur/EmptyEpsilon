@@ -81,6 +81,13 @@ CrewStationScreen::CrewStationScreen()
     impulse_sound = std::unique_ptr<ImpulseSound>( new ImpulseSound(PreferencesManager::get("impulse_sound_enabled", "2") == "1") );
 }
 
+void CrewStationScreen::destroy()
+{
+    if (threat_estimate)
+        threat_estimate->destroy();
+    PObject::destroy();
+}
+
 GuiContainer* CrewStationScreen::getTabContainer()
 {
     return main_panel;
@@ -113,7 +120,7 @@ void CrewStationScreen::addStationTab(GuiElement* element, ECrewPosition positio
 
         for (std::pair<string, string> shortcut : listControlsByCategory(info.button->getText()))
             keyboard_category += shortcut.second + ":\t" + shortcut.first + "\n";
-        if (keyboard_category == "")	// special hotkey combination for crew1 and crew4 screens
+        if (keyboard_category == "")   // special hotkey combination for crew1 and crew4 screens
             keyboard_category = listHotkeysLimited(info.button->getText());
 
         keyboard_help->setText(keyboard_general + keyboard_category);
@@ -275,11 +282,11 @@ void CrewStationScreen::showTab(GuiElement* element)
 
             for (std::pair<string, string> shortcut : listControlsByCategory(info.button->getText()))
                 keyboard_category += shortcut.second + ":\t" + shortcut.first + "\n";
-			if (keyboard_category == "")	// special hotkey combination for crew1 and crew4 screens
-				keyboard_category = listHotkeysLimited(info.button->getText());
+            if (keyboard_category == "")	// special hotkey combination for crew1 and crew4 screens
+                keyboard_category = listHotkeysLimited(info.button->getText());
 
             keyboard_help->setText(keyboard_general + keyboard_category);
-        }else{
+        } else {
             info.element->hide();
             info.button->setValue(false);
         }

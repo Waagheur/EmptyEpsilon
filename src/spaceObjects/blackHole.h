@@ -6,7 +6,14 @@
 class BlackHole : public SpaceObject, public Updatable
 {
     float update_delta;
-	float size;
+    float size;
+
+#if FEATURE_3D_RENDERING
+    static sf::Shader* shader;
+    static uint32_t shaderPositionAttribute;
+    static uint32_t shaderTexCoordsAttribute;
+#endif
+
 public:
     BlackHole();
 

@@ -72,6 +72,8 @@ private:
 
     void addSystemEffect(string key, string value, sf::Color color = sf::Color::White);
     void selectSystem(ESystem system);
+
+    string toNearbyIntString(float value);
 public:
     EngineeringScreen(GuiContainer* owner, ECrewPosition crew_position=engineering);
 
