@@ -2,10 +2,13 @@
 #define PLAYER_SPACESHIP_H
 
 #include "spaceship.h"
+#include "scanProbe.h"
 #include "commsScriptInterface.h"
 #include "playerInfo.h"
 #include "spaceshipParts/dock.h"
 #include <iostream>
+
+class ScanProbe;
 
 enum ECommsState
 {
@@ -64,12 +67,11 @@ public:
     // Maximum number of self-destruction confirmation codes
     constexpr static int max_self_destruct_codes = 3;
     // Subsystem effectiveness base rates
-    static float system_power_user_factor[];
     constexpr static int max_engineer_presets_number = 9;
     
     bool has_gravity_sensor;
-	bool has_electrical_sensor;
-	bool has_biological_sensor;
+    bool has_electrical_sensor;
+    bool has_biological_sensor;
 
     constexpr static int16_t CMD_PLAY_CLIENT_SOUND = 0x0001;
 
@@ -198,6 +200,8 @@ public:
     std::vector<ShipLogEntry> ships_log;
 
     float hack_time;
+    ScriptSimpleCallback on_probe_link;
+    ScriptSimpleCallback on_probe_unlink;
 
     // Main screen content
     EMainScreenSetting main_screen_setting;
@@ -296,6 +300,8 @@ public:
     void setElectricalSensor(bool has_electrical) { has_electrical_sensor = has_electrical; }
     void setBiologicalSensor(bool has_biological) { has_biological_sensor = has_biological; }
     void onProbeLaunch(ScriptSimpleCallback callback);
+    void onProbeLink(ScriptSimpleCallback callback);
+    void onProbeUnlink(ScriptSimpleCallback callback);
 
     void addCustomButton(ECrewPosition position, string name, string caption, ScriptSimpleCallback callback);
     void addCustomInfo(ECrewPosition position, string name, string caption);
@@ -315,10 +321,11 @@ public:
     void commandSetTarget(P<SpaceObject> target);
     void commandSetDockTarget(P<SpaceObject> target);
     void commandSetLandingTarget(P<SpaceObject> target);
-    void commandSetScienceLink(int32_t id);
     void commandSetAnalysisLink(int32_t id);
     void commandSetProbe3DLink(int32_t id);
     void commandLoadTube(int8_t tubeNumber, string missileType);
+    void commandSetScienceLink(P<ScanProbe> probe);
+    void commandClearScienceLink();
     void commandUnloadTube(int8_t tubeNumber);
     void commandFireTube(int8_t tubeNumber, float missile_target_angle);
     void commandFireTubeAtTarget(int8_t tubeNumber, P<SpaceObject> target);
@@ -471,9 +478,4 @@ static inline sf::Packet& operator >> (sf::Packet& packet, PlayerSpaceship::Cust
 
 string alertLevelToString(EAlertLevel level);
 string alertLevelToLocaleString(EAlertLevel level);
-
-#ifdef _MSC_VER
-#include "playerSpaceship.hpp"
-#endif /* _MSC_VER */
-
 #endif//PLAYER_SPACESHIP_H

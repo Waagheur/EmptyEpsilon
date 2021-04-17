@@ -39,7 +39,7 @@ void GameMasterChatDialog::onDraw(sf::RenderTarget& window)
 
     if (!player)
     {
-        disableComms("Cible - Detruite");
+        disableComms(tr("chatGM", "Target - Destroyed"));
         return;
     }
 
@@ -52,25 +52,25 @@ void GameMasterChatDialog::onDraw(sf::RenderTarget& window)
     case CS_ChannelFailed:
     case CS_ChannelBroken:
     case CS_ChannelClosed:
-        chat_text->setText("Canal ferme, entrez ID pour contacter sous cet ID.");
-        disableComms(player->getCallSign() + " - Inactif");
+        chat_text->setText(tr("chatGM", "Channel not open, enter name to hail as to hail target."));
+        disableComms(tr("chatGM", "{callsign} - Inactive").format({{"callsign", player->getCallSign()}}));
         break;
     case CS_OpeningChannel:
     case CS_BeingHailed:
-        disableComms(player->getCallSign() + " - Ouvrir communication avec " + player->getCommsTargetName());
+        disableComms(tr("chatGM", "{callsign} - Opening communications with {target}").format({{"callsign", player->getCallSign()}, {"target", player->getCommsTargetName()}}));
         break;
     case CS_BeingHailedByGM:
-        disableComms(player->getCallSign() + " - Contacter comme " + player->getCommsTargetName());
+        disableComms(tr("chatGM", "{callsign} - Hailing as {target}").format({{"callsign", player->getCallSign()}, {"target", player->getCommsTargetName()}}));
         break;
     case CS_ChannelOpen:
     case CS_ChannelOpenPlayer:
-        disableComms(player->getCallSign() + " - Communication avec " + player->getCommsTargetName());
+        disableComms(tr("chatGM", "{callsign} - Communicating with {target}").format({{"callsign", player->getCallSign()}, {"target", player->getCommsTargetName()}}));
         break;
     case CS_ChannelOpenGM:
         if (notification)
-            setTitle("**" + player->getCallSign() + " - Contacter comme " + player->getCommsTargetName() + "**");
+            setTitle(tr("chatGM", "**{callsign} - Communicating as {target}**").format({{"callsign", player->getCallSign()}, {"target", player->getCommsTargetName()}}));
         else
-            setTitle(player->getCallSign() + " - Communication avec " + player->getCommsTargetName());
+            setTitle(tr("chatGM", "{callsign} - Communicating as {target}").format({{"callsign", player->getCallSign()}, {"target", player->getCommsTargetName()}}));
         chat_text->enable();
         text_entry->enable();
         if (chat_text->getText() != player->getCommsIncommingMessage())

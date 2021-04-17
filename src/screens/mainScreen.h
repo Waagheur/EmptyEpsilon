@@ -10,12 +10,13 @@
 class GuiViewportMainScreen;
 class GuiRadarView;
 class GuiCommsOverlay;
+class GuiHelpOverlay;
+class ImpulseSound;
+//tdelc
 class GuiPanel;
 class GuiLabel;
 class DamageControlScreen;
 class RelayScreen;
-class GuiHelpOverlay;
-class ImpulseSound;
 class TargetAnalysisScreen;
 
 class ScreenMainScreen : public GuiCanvas, public Updatable
@@ -36,6 +37,8 @@ private:
     std::unique_ptr<ImpulseSound> impulse_sound;
 public:
     ScreenMainScreen();
+
+    virtual void destroy() override;
 
     virtual void update(float delta) override;
 

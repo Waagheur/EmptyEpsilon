@@ -228,9 +228,13 @@ RelayScreen::RelayScreen(GuiContainer* owner, bool allow_comms)
     // Link probe to science button.
     link_to_science_button = new GuiToggleButton(option_buttons, "LINK_TO_SCIENCE", tr("Link to Science"), [this](bool value){
         if (value)
-            my_spaceship->commandSetScienceLink(targets.get()->getMultiplayerId());
+        {
+            my_spaceship->commandSetScienceLink(targets.get());
+        }
         else
-            my_spaceship->commandSetScienceLink(-1);
+        {
+            my_spaceship->commandClearScienceLink();
+        }
     });
     link_to_science_button->setSize(GuiElement::GuiSizeMax, 50)->setVisible(my_spaceship && my_spaceship->getCanLaunchProbe());
     link_to_science_button->setIcon("gui/icons/station-science");
@@ -299,6 +303,7 @@ void RelayScreen::onDraw(sf::RenderTarget& window)
 
     GuiOverlay::onDraw(window);
 
+    // TODO revoir ce que c'est que tous ces trucs avant targets.get
     // Info range radar
     float radar_range = 5000.0;
     if (my_spaceship)
@@ -336,26 +341,52 @@ void RelayScreen::onDraw(sf::RenderTarget& window)
     info_faction->setValue("-");
     if (targets.get() && my_spaceship)
     {
+        // Check each object to determine whether the target is still within
+        // shared radar range of a friendly object.
         P<SpaceObject> target = targets.get();
         bool near_friendly = false;
+
+        // For each SpaceObject on the map...
         foreach(SpaceObject, obj, space_object_list)
         {
-            if ((!P<SpaceShip>(obj) && !P<SpaceStation>(obj) && !P<WormHole>(obj) && !P<Planet>(obj)) || !obj->isFriendly(my_spaceship))
+            // POUR DAID VERSION
+            // Consider the object only if it is:
+            // - Any ShipTemplateBasedObject (ship or station)
+            // - A SpaceObject belonging to a friendly faction
+            // - The player's ship
+            // - A scan probe owned by the player's ship
+            // This check is duplicated from GuiRadarView::drawObjects.
+
+            // C'est different ici 
+
+            P<ShipTemplateBasedObject> stb_obj = obj;
+
+            if ((!stb_obj && !P<WormHole>(obj) && !P<Planet>(obj)) 
+                || (!obj->isFriendly(my_spaceship) && obj != my_spaceship))
             {
                 P<ScanProbe> sp = obj;
+
                 if (!sp || sp->owner_id != my_spaceship->getMultiplayerId())
                 {
                     continue;
                 }
             }
+
+            radar_range = stb_obj ? stb_obj->getShortRangeRadarRange() : 5000.0f;
             if (obj->getPosition() - target->getPosition() < radar_range)
             {
                 near_friendly = true;
                 break;
             }
         }
+
         if (!near_friendly)
+        {
+            // If the target is no longer near a friendly object, unset it as
+            // the target, and close any open hacking dialogs.
             targets.clear();
+            hacking_dialog->hide();
+        }
     }
 
     if (targets.get() && my_spaceship)
@@ -388,7 +419,7 @@ void RelayScreen::onDraw(sf::RenderTarget& window)
             info_probe->show();
             float distance = sf::length(probe->getPosition() - probe->getTarget());
             if (distance > 1000.0)
-                info_probe->setValue(string(int(ceilf(distance / probe->getProbeSpeed()))) + " S");
+                info_probe->setValue(string(int(ceilf(distance / probe->getSpeed()))) + " S");
             else
                 info_probe->hide();
 //            link_to_3D_port_button->setValue(my_spaceship->linked_probe_3D_id == probe->getMultiplayerId());
@@ -561,9 +592,9 @@ void RelayScreen::onHotkey(const HotkeyResult& key)
             if (obj && obj->isFriendly(my_spaceship))
             {
                 if (!link_to_science_button->getValue())
-                    my_spaceship->commandSetScienceLink(targets.get()->getMultiplayerId());
+                    my_spaceship->commandSetScienceLink(targets.get());
                 else
-                    my_spaceship->commandSetScienceLink(-1);
+                    my_spaceship->commandClearScienceLink();
             }
         }
         if (key.hotkey == "BEGIN_HACK")

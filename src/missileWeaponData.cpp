@@ -14,8 +14,8 @@ namespace {
 }
 
 MissileWeaponData::MissileWeaponData(float speed, float turnrate, float lifetime, sf::Color color, float homing_range, string fire_sound, EMissileWeapons base_type, EDamageType dt)
-: speed(speed), turnrate(turnrate), lifetime(lifetime), color(color), homing_range(homing_range),
-fire_sound(fire_sound), damage_multiplier(1), basetype(base_type), fire_count(1) , line_count(1),damage_type(dt)
+: basetype(base_type), speed(speed), turnrate(turnrate), lifetime(lifetime), color(color), homing_range(homing_range),
+fire_sound(fire_sound), damage_multiplier(1), fire_count(1) , line_count(1),damage_type(dt)
 {
 }
 
@@ -99,7 +99,30 @@ string getMissileSizeString(EMissileSizes size)
     }
 }
 
-#ifndef _MSC_VER
-// MFC: GCC does proper external template instantiation, VC++ doesn't.
+const float MissileWeaponData::convertSizeToCategoryModifier(EMissileSizes size)
+{
+    switch(size)
+    {
+        case MS_Small:
+            return 0.5;
+        case MS_Medium:
+            return 1.0;
+        case MS_Large:
+            return 2.0;
+        default:
+            return 1.0;
+    }
+}
+
+const EMissileSizes MissileWeaponData::convertCategoryModifierToSize(float size)
+{
+    if (std::abs(size - 0.5) < 0.1)
+        return MS_Small;
+    if (std::abs(size - 1.0) < 0.1)
+        return MS_Medium;
+    if (std::abs(size - 2.0) < 0.1)
+        return MS_Large;
+    return MS_Medium;
+}
+
 #include "missileWeaponData.hpp"
-#endif

@@ -8,6 +8,7 @@
 #include "spaceObjects/planet.h"
 #include "spaceObjects/playerSpaceship.h"
 #include "spaceObjects/warpJammer.h"
+#include "spaceObjects/asteroid.h"
 
 class SpaceShip;
 class GuiKeyValueDisplay;
@@ -27,6 +28,7 @@ enum ETweakType
     TW_Template,// Template : Ships & station
     TW_Station, // TODO: Space stations
     TW_Player,   // Player ships
+    TW_Asteroid,// Asteroid
     TW_Planet   // Planet
 };
 
@@ -90,6 +92,9 @@ private:
     GuiSlider* system_damage_hull_threshold_slider;
     GuiToggleButton* can_be_destroyed_toggle;
     GuiSlider* transparency_slider;
+    GuiSlider* short_range_radar_slider;
+    GuiSlider* long_range_radar_slider;
+
 public:
     GuiTemplateTweak(GuiContainer* owner);
     virtual void onDraw(sf::RenderTarget& window) override;
@@ -134,8 +139,6 @@ private:
     GuiSlider* jump_drive_energy_slider;
     GuiSlider* jump_delay_slider;
     GuiSlider* warp_speed_slider;
-    GuiSlider* short_range_radar_slider;
-    GuiSlider* long_range_radar_slider;
     GuiSlider* engineering_presets_slider;
 
 public:
@@ -244,6 +247,21 @@ public:
     virtual void onDraw(sf::RenderTarget& window) override;
 };
 
+class GuiShipTweakSystemPowerFactors : public GuiTweakPage
+{
+private:
+    P<SpaceShip> target;
+    GuiLabel* system_current_power_factor[SYS_COUNT];
+    GuiTextEntry* system_power_factor[SYS_COUNT];
+
+    static string powerFactorToText(float);
+public:
+    explicit GuiShipTweakSystemPowerFactors(GuiContainer* owner);
+
+    void open(P<SpaceObject> target) override;
+    void onDraw(sf::RenderTarget& window) override;
+};
+
 class GuiShipTweakPlayer : public GuiTweakPage
 {
 private:
@@ -325,7 +343,7 @@ private:
 public:
     GuiShipTweakOxygen(GuiContainer* owner);
 
-    virtual void open(P<SpaceObject> target);
+    virtual void open(P<SpaceObject> target) override;
 
     virtual void onDraw(sf::RenderTarget& window) override;
 };
@@ -382,5 +400,20 @@ public:
 
     virtual void onDraw(sf::RenderTarget& window) override;
 };
+
+class GuiAsteroidTweak : public GuiTweakPage
+{
+private:
+    P<Asteroid> target;
+
+    GuiSlider* asteroid_size_slider;
+public:
+    GuiAsteroidTweak(GuiContainer* owner);
+
+    virtual void onDraw(sf::RenderTarget& window) override;
+
+    virtual void open(P<SpaceObject> target) override;
+};
+
 
 #endif//TWEAK_H

@@ -9,10 +9,15 @@
 /// An asteroid in space. Which you can fly into and hit. Will do damage.
 REGISTER_SCRIPT_SUBCLASS(Asteroid, SpaceObject)
 {
-    /// Set the size of this asteroid, per default asteroids have a size of 120
+    /// Set the radius of this asteroid
+    /// The default radius for an asteroid is between 110 and 130
+    /// Example: Asteroid():setSize(50)
     REGISTER_SCRIPT_CLASS_FUNCTION(Asteroid, setSize);
-    REGISTER_SCRIPT_CLASS_FUNCTION(Collisionable, setVelocity);
+    REGISTER_SCRIPT_CLASS_FUNCTION(Collisionable, setVelocity); //FIXME mettre ça dans collisionable si besoin
     REGISTER_SCRIPT_CLASS_FUNCTION(Collisionable, setAngularVelocity);
+    /// Gets the current radius of this asteroid
+    /// Example: local size=Asteroid():getSize()
+    REGISTER_SCRIPT_CLASS_FUNCTION(Asteroid, getSize);
 }
 
 REGISTER_MULTIPLAYER_CLASS(Asteroid, "Asteroid");
@@ -43,7 +48,7 @@ void Asteroid::draw3D()
     glRotatef(engine->getElapsedTime() * rotation_speed, 0, 0, 1);
 //    glScalef(getRadius(), getRadius(), getRadius());
     glScalef(size, size, size);
-    sf::Shader* shader = ShaderManager::getShader("objectShaderBS");
+    sf::Shader* shader = ShaderManager::getShader("shaders/objectShaderBS");
     shader->setUniform("baseMap", *textureManager.getTexture("Astroid_" + string(model_number) + "_d.png"));
     shader->setUniform("specularMap", *textureManager.getTexture("Astroid_" + string(model_number) + "_s.png"));
     sf::Shader::bind(shader);
@@ -93,19 +98,29 @@ void Asteroid::setModel(int model_number)
     model_number = model_number;
 }
 
-void Asteroid::setSize(float new_size)
+void Asteroid::setSize(float size)
 {
-    size = new_size;
-    setRadius(new_size);
+    this->size = size;
+    setRadius(size);
+}
+
+float Asteroid::getSize()
+{
+    return size;
 }
 
 /// An asteroid in space. Outside of hit range, just for visuals.
 REGISTER_SCRIPT_SUBCLASS(VisualAsteroid, SpaceObject)
 {
-    /// Set the size of this asteroid, per default asteroids have a size of 120
+    /// Set the radius of this asteroid
+    /// The default radius for an VisualAsteroid is between 110 and 130
+    /// Example: VisualAsteroid():setSize(50)
     REGISTER_SCRIPT_CLASS_FUNCTION(VisualAsteroid, setSize);
     REGISTER_SCRIPT_CLASS_FUNCTION(Collisionable, setVelocity);
     REGISTER_SCRIPT_CLASS_FUNCTION(Collisionable, setAngularVelocity);
+    /// Gets the current radius of this asteroid
+    /// Example: local size=VisualAsteroid():getSize()
+    REGISTER_SCRIPT_CLASS_FUNCTION(VisualAsteroid, getSize);
 }
 
 REGISTER_MULTIPLAYER_CLASS(VisualAsteroid, "VisualAsteroid");
@@ -134,8 +149,9 @@ void VisualAsteroid::draw3D()
 
     glTranslatef(0, 0, z);
     glRotatef(engine->getElapsedTime() * rotation_speed, 0, 0, 1);
+    //glScalef(getRadius(), getRadius(), getRadius());
     glScalef(size, size, size);
-    sf::Shader* shader = ShaderManager::getShader("objectShaderBS");
+    sf::Shader* shader = ShaderManager::getShader("shaders/objectShaderBS");
     shader->setUniform("baseMap", *textureManager.getTexture("Astroid_" + string(model_number) + "_d.png"));
     shader->setUniform("specularMap", *textureManager.getTexture("Astroid_" + string(model_number) + "_s.png"));
     sf::Shader::bind(shader);
@@ -155,5 +171,10 @@ void VisualAsteroid::setSize(float size)
 
 void VisualAsteroid::setModel(int model_number)
 {
-    model_number = model_number;
+    this->model_number = model_number;
+}
+
+float VisualAsteroid::getSize()
+{
+    return size;
 }

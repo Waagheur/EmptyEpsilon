@@ -12,20 +12,18 @@ class GuiRotationDial;
 class PlayerSpaceship;
 class AimLockButton : public GuiToggleButton
 {
-private:
-    P<PlayerSpaceship> target_spaceship;
-    GuiMissileTubeControls* tube_controls;
-    GuiRotationDial* missile_aim;
-
 public:
     AimLockButton(GuiContainer* owner, string id, GuiMissileTubeControls* tube_controls, GuiRotationDial* missile_aim, P<PlayerSpaceship> targetSpaceship);
 
     virtual void onHotkey(const HotkeyResult& key) override;
     void setTargetSpaceship(P<PlayerSpaceship> targetSpaceship){target_spaceship = targetSpaceship;}
 private:
+    P<PlayerSpaceship> target_spaceship;
+    GuiMissileTubeControls* tube_controls;
+    GuiRotationDial* missile_aim;
+
     void setAimLock(bool value);
 };
-
 
 class AimLock : public GuiRotationDial {
 public:

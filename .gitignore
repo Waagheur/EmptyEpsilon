@@ -43,4 +43,4 @@ EmptyEpsilon.cscope_file_list
 #build directories and temp directories
 _*
 *.orig
-logs/*.txt
+logs

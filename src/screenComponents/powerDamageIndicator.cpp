@@ -30,31 +30,31 @@ void GuiPowerDamageIndicator::onDraw(sf::RenderTarget& window)
     if (health <= 0.0)
     {
         color = colorConfig.overlay_damaged;
-        //display_text = "ENDOMMAGE";
-    }else if ((system == SYS_Warp || system == SYS_JumpDrive) && WarpJammer::isWarpJammed(target_spaceship->getPosition()))
+        display_text = tr("systems", "DAMAGED"); //TODO verifier pourquoi tdelc avait commente les display_text, peut etre pb overlay sur les chasseurs ?
+    }else if ((system == SYS_Warp || system == SYS_JumpDrive) && WarpJammer::isWarpJammed(my_spaceship->getPosition()))
     {
         color = colorConfig.overlay_jammed;
-        //display_text = "BLOQUE";
+        display_text = tr("systems", "JAMMED");
     }else if (power == 0.0)
     {
         color = colorConfig.overlay_no_power;
-        //display_text = "AUCUNE PUISSANCE";
-    }else if (target_spaceship->energy_level < 10)
+        display_text = tr("systems", "NO POWER");
+    }else if (my_spaceship->energy_level < 10)
     {
         color = colorConfig.overlay_low_energy;
-        //display_text = "ENERGIE FAIBLE";
+        display_text = tr("systems", "LOW ENERGY");
     }else if (power < 0.3)
     {
         color = colorConfig.overlay_low_power;
-        //display_text = "FAIBLE PUISSANCE";
+        display_text = tr("systems", "LOW POWER");
     }else if (heat > 0.90)
     {
         color = colorConfig.overlay_overheating;
-        //display_text = "SURCHAUFFE";
+        display_text = tr("systems", "OVERHEATING");
     }else if (hacked_level > 0.1)
     {
         color = colorConfig.overlay_hacked;
-        //display_text = "HACKED";
+        display_text = tr("systems", "HACKED");
     }else{
         return;
     }

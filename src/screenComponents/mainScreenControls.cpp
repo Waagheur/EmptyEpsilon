@@ -11,7 +11,7 @@ GuiMainScreenControls::GuiMainScreenControls(GuiContainer* owner)
     setPosition(-20, 70, ATopRight);
 
     // Set which buttons appear when opening the main screen controls.
-    open_button = new GuiToggleButton(this, "MAIN_SCREEN_CONTROLS_SHOW", "Ecran principal", [this](bool value)
+    open_button = new GuiToggleButton(this, "MAIN_SCREEN_CONTROLS_SHOW", tr("controlbutton", "Main screen"), [this](bool value)
     {
         for(GuiButton* button : buttons)
             button->setVisible(value);
@@ -32,7 +32,7 @@ GuiMainScreenControls::GuiMainScreenControls(GuiContainer* owner)
     open_button->setSize(GuiElement::GuiSizeMax, 50);
 
     // Front, back, left, and right view buttons.
-    buttons.push_back(new GuiButton(this, "MAIN_SCREEN_FRONT_BUTTON", "Fenetre", [this]()
+    buttons.push_back(new GuiButton(this, "MAIN_SCREEN_FRONT_BUTTON", tr("mainscreen", "Front"), [this]()
     {
         if (my_spaceship)
         {
@@ -81,7 +81,7 @@ GuiMainScreenControls::GuiMainScreenControls(GuiContainer* owner)
 //    }
 
     // Tactical radar button.
-    buttons.push_back(new GuiButton(this, "MAIN_SCREEN_TACTICAL_BUTTON", "Tactique", [this]()
+    buttons.push_back(new GuiButton(this, "MAIN_SCREEN_BACK_BUTTON", tr("mainscreen", "Back"), [this]()
     {
         if (my_spaceship)
         {
@@ -92,7 +92,7 @@ GuiMainScreenControls::GuiMainScreenControls(GuiContainer* owner)
     tactical_button = buttons.back();
 
     // Long-range radar button.
-    buttons.push_back(new GuiButton(this, "MAIN_SCREEN_LONG_RANGE_BUTTON", "Auspex CP", [this]()
+    buttons.push_back(new GuiButton(this, "MAIN_SCREEN_LONG_RANGE_BUTTON", tr("station", "Science"), [this]()
     {
         if (my_spaceship)
         {
@@ -103,7 +103,7 @@ GuiMainScreenControls::GuiMainScreenControls(GuiContainer* owner)
     long_range_button = buttons.back();
 
     // Global-range radar button.
-    buttons.push_back(new GuiButton(this, "MAIN_SCREEN_GLOBAL_RANGE_BUTTON", "Auspex LP", [this]()
+    buttons.push_back(new GuiButton(this, "MAIN_SCREEN_GLOBAL_RANGE_BUTTON", tr("station", "Relay"), [this]()
     {
         if (my_spaceship)
         {
@@ -116,7 +116,7 @@ GuiMainScreenControls::GuiMainScreenControls(GuiContainer* owner)
     global_range_button = buttons.back();
 
      // Ship State button.
-    buttons.push_back(new GuiButton(this, "MAIN_SCREEN_SHIP_STATE_BUTTON", "Ingenieur", [this]()
+    buttons.push_back(new GuiButton(this, "MAIN_SCREEN_SHIP_STATE_BUTTON", tr("station", "Engineering"), [this]()
     {
         if (my_spaceship)
         {
@@ -142,7 +142,7 @@ GuiMainScreenControls::GuiMainScreenControls(GuiContainer* owner)
 //    ship_state_button = buttons.back();
 
     // Far-range radar button.
-    buttons.push_back(new GuiButton(this, "MAIN_SCREEN_TARGET_ANALYSIS_BUTTON", "Target analysis", [this]()
+    buttons.push_back(new GuiButton(this, "MAIN_SCREEN_TARGET_ANALYSIS_BUTTON", "Target analysis", [this]() //TODO TRAD
     {
         if (my_spaceship)
         {
@@ -156,7 +156,7 @@ GuiMainScreenControls::GuiMainScreenControls(GuiContainer* owner)
     // on the main screen.
 //    if (my_player_info->crew_position[relayOfficer] || my_player_info->crew_position[operationsOfficer] || my_player_info->crew_position[singlePilot])
 //    {
-        buttons.push_back(new GuiButton(this, "MAIN_SCREEN_SHOW_COMMS_BUTTON", "Afficher Comms", [this]()
+        buttons.push_back(new GuiButton(this, "MAIN_SCREEN_SHOW_COMMS_BUTTON", tr("mainscreen", "Show comms"), [this]()
         {
             if (my_spaceship)
             {
@@ -167,7 +167,7 @@ GuiMainScreenControls::GuiMainScreenControls(GuiContainer* owner)
         }));
         show_comms_button = buttons.back();
 
-        buttons.push_back(new GuiButton(this, "MAIN_SCREEN_HIDE_COMMS_BUTTON", "Cacher comms", [this]()
+        buttons.push_back(new GuiButton(this, "MAIN_SCREEN_HIDE_COMMS_BUTTON", tr("mainscreen", "Hide comms"), [this]()
         {
             if (my_spaceship)
             {

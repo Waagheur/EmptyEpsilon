@@ -42,5 +42,3 @@ cd build
 cmake .. -DSERIOUS_PROTON_DIR=$PROJECT_DIR/SeriousProton/
 make
 
-echo "Built in dir `pwd`"
-

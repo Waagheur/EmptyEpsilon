@@ -38,7 +38,7 @@ GuiCombatManeuver::GuiCombatManeuver(GuiContainer* owner, string id, P<PlayerSpa
 
 void GuiCombatManeuver::onUpdate()
 {
-    setVisible(my_spaceship && my_spaceship->getCanCombatManeuver());
+    setVisible(my_spaceship && my_spaceship->getCanCombatManeuver()); //FIXME c'est pas target spaceship ?
 }
 
 void GuiCombatManeuver::onDraw(sf::RenderTarget& window)

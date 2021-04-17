@@ -11,6 +11,8 @@
 /// A mine object. Simple, effective, deadly.
 REGISTER_SCRIPT_SUBCLASS(Mine, SpaceObject)
 {
+  // Get the mine's owner's object.
+  REGISTER_SCRIPT_CLASS_FUNCTION(Mine, getOwner);
   // Set a function that will be called if the mine explodes.
   // First argument is the mine, second argument is the mine's owner/instigator (or nil).
   REGISTER_SCRIPT_CLASS_FUNCTION(Mine, onDestruction);
@@ -31,6 +33,10 @@ Mine::Mine()
     damage_multiplier = 1;
 
     PathPlannerManager::getInstance()->addAvoidObject(this, blastRange * 1.2f);
+}
+
+Mine::~Mine()
+{
 }
 
 void Mine::draw3D()
@@ -139,4 +145,29 @@ void Mine::explode()
 void Mine::onDestruction(ScriptSimpleCallback callback)
 {
     this->on_destruction = callback;
+}
+
+P<SpaceObject> Mine::getOwner()
+{
+    if (game_server)
+    {
+        return owner;
+    }
+
+    LOG(ERROR) << "Mine::getOwner(): owner not replicated to clients.";
+    return nullptr;
+}
+
+std::unordered_map<string, string> Mine::getGMInfo()
+{
+    std::unordered_map<string, string> ret;
+
+    if (owner)
+    {
+        ret["Owner"] = owner->getCallSign();
+    }
+
+    ret["Faction"] = getLocaleFaction();
+
+    return ret;
 }
