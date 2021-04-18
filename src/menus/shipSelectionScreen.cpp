@@ -47,7 +47,7 @@ ShipSelectionScreen::ShipSelectionScreen()
     crew_type_selector = new GuiSelector(stations_layout, "CREW_TYPE_SELECTION", [this](int index, string value) {
         updateCrewTypeOptions();
     });
-    crew_type_selector->setOptions({tr("6/5 player crew"), tr("4/3 player crew"), tr("1 player crew/extras"), tr("Alternative options")})->setSize(GuiElement::GuiSizeMax, 50);
+    crew_type_selector->setOptions({tr("6/5 player crew"), tr("4/3 player crew"), tr("1 player crew/extras"), "Fenetres extra", tr("Alternative options")})->setSize(GuiElement::GuiSizeMax, 50);
 
     // Main screen button
     main_screen_button = new GuiToggleButton(stations_layout, "MAIN_SCREEN_BUTTON", tr("Main screen"), [this](bool value) {
