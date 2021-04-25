@@ -1,8 +1,7 @@
---- Utils.
---
--- Bunch of useful utility functions that can be used in any scenario script.
---
--- These functions should be as generic as possible, so they are highly usable.
+-- Name: utils
+-- Description: Bunch of useful utility functions that can be used in any scenario script.
+
+--[[ These functions should be as generic as possible, so they are highly usable. --]]
 
 -- Given enough information, find the distance between two positions.
 -- This function can be called four ways:
@@ -51,7 +50,7 @@ function distance(a, b, c, d)
         x2, y2 = b, c
     elseif type(a) == "number" and type(b) == "number" and type(c) == "table" then
         -- Assume distance(x, y, obj)
-        x1, y1 = a, b
+        x1, y1 = a, b:getPosition()
         x2, y2 = c:getPosition()
     elseif type(a) == "number" and type(b) == "number" and type(c) == "number" and type(d) == "number" then
         -- a and b are both tables.
@@ -95,7 +94,7 @@ end
 -- at a heading of 45 degrees, run
 --   setCirclePos(SpaceStation():setTemplate("Small Station"):setFaction("Independent"), 100, -100, 45, 10000)
 function setCirclePos(obj, x, y, angle, distance)
-    local dx, dy = vectorFromAngle(angle, distance)
+    dx, dy = vectorFromAngle(angle, distance)
     return obj:setPosition(x + dx, y + dy)
 end
 
@@ -122,20 +121,14 @@ end
 --   asteroid fields:
 --     createObjectsOnLine(0, 0, 10000, 0, 300, Asteroid, 4, 100, 800)
 function createObjectsOnLine(x1, y1, x2, y2, spacing, object_type, rows, chance, randomize)
-    if rows == nil then
-        rows = 1
-    end
-    if chance == nil then
-        chance = 100
-    end
-    if randomize == nil then
-        randomize = 0
-    end
+    if rows == nil then rows = 1 end
+    if chance == nil then chance = 100 end
+    if randomize == nil then randomize = 0 end
     local d = distance(x1, y1, x2, y2)
     local xd = (x2 - x1) / d
     local yd = (y2 - y1) / d
-    for cnt_x = 0, d, spacing do
-        for cnt_y = 0, (rows - 1) * spacing, spacing do
+    for cnt_x=0,d,spacing do
+        for cnt_y=0,(rows-1)*spacing,spacing do
             local px = x1 + xd * cnt_x + yd * (cnt_y - (rows - 1) * spacing * 0.5) + random(-randomize, randomize)
             local py = y1 + yd * cnt_x - xd * (cnt_y - (rows - 1) * spacing * 0.5) + random(-randomize, randomize)
             if random(0, 100) < chance then
@@ -160,22 +153,24 @@ function mergeTables(table_a, table_b)
     end
 end
 
+
 -- create amount of object_type, at a distance between dist_min and dist_max around the point (x0, y0)
 function placeRandomAroundPoint(object_type, amount, dist_min, dist_max, x0, y0)
-    for n = 1, amount do
+    for n=1,amount do
         local r = random(0, 360)
         local distance = random(dist_min, dist_max)
-        local x = x0 + math.cos(r / 180 * math.pi) * distance
-        local y = y0 + math.sin(r / 180 * math.pi) * distance
+        x = x0 + math.cos(r / 180 * math.pi) * distance
+        y = y0 + math.sin(r / 180 * math.pi) * distance
         object_type():setPosition(x, y)
     end
 end
+
 
 -- Place semi-random object_types around point (x,y) in a (x_grids by y_grids) area
 -- Perlin Noise is used to create a sort of natural look to the created objects.
 -- Use the perlin_z-parameter together with density to control amound of placed objects
 -- Sensible values for perlin_z are in a range of {0.1 .. 0.5}
---
+-- 
 -- Example:
 --
 --   -- Creates a 10x10 grid space filled with some asteroids and nebulas
@@ -187,21 +182,23 @@ function placeRandomObjects(object_type, density, perlin_z, x, y, x_grids, y_gri
     require("perlin_noise.lua")
     perlin:load()
 
+
     -- Size of EE grid
     local grid_size = 20000
 
-    -- Z-axis of Perlin distribution.
+    -- Z-axis of Perlin distribution. 
     local perlin_magic_z = perlin_z
 
     -- Perlin noise is not random, so we'll pick a random spot in its distribution
-    local perlin_section_i = random(0, 1000)
-    local perlin_section_j = random(0, 1000)
+    perlin_section_i = random(0, 1000)
+    perlin_section_j = random(0, 1000)
 
     -- Create a XY intensity map
-    for i = 1, x_grids do
-        for j = 1, y_grids do
+    for i=1,x_grids do
+        for j=1,y_grids do
+
             -- Get intensity from perlin distribution, and do a very rough normalization to {0 .. 0.6}
-            local intensity = (perlin:noise(i + perlin_section_i, j + perlin_section_j, perlin_magic_z) + perlin_magic_z)
+            local intensity = (perlin:noise(i+perlin_section_i, j+perlin_section_j, perlin_magic_z) + perlin_magic_z)
 
             -- Cube it to get blobs of objects
             intensity = intensity * intensity * intensity
@@ -209,10 +206,10 @@ function placeRandomObjects(object_type, density, perlin_z, x, y, x_grids, y_gri
             -- Use it to fill patches of space with randomly placed objects
             if (intensity > 0) then
                 local nr_of_objects = intensity * density
-                local x_start = ((i - x_grids / 2) * grid_size) + x
-                local y_start = ((j - x_grids / 2) * grid_size) + y
+                local x_start = ((i-x_grids/2) * grid_size) + x
+                local y_start = ((j-x_grids/2) * grid_size ) + y
 
-                placeRandomAroundPoint(object_type, nr_of_objects, 0, grid_size / 1.5, x_start, y_start)
+                placeRandomAroundPoint(object_type, nr_of_objects, 0, grid_size/1.5, x_start, y_start)
             end
         end
     end

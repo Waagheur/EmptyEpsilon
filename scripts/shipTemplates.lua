@@ -7,18 +7,28 @@ These are:
 * Drones: Smallest ships in the game. docked inside other ships.
 * Starfighters: Small ships. fast and simple.
 * Frigates: Medium sized ships. Operate on a small crew.
-* Corvette: Large, slower, less maneuverable ships.
+* Covette: Large, slower, less maneuverable ships.
 * Dreadnaught: Huge things. Everything in here is really really big, and generally really really deadly.
 
 Player ships are in general large frigates to small corvette class
 --]]
-require("shipTemplates_Stations.lua")
+require("shipTemplates40k_Stations.lua")
+---[[Ajouts 40k
+require("shipTemplates40k_VaisseauxLegers.lua")
+require("shipTemplates40k_Fregates.lua")
+require("shipTemplates40k_Escorteurs.lua")
+require("shipTemplates40k_CroiseursLegers.lua")
+require("shipTemplates40k_Croiseurs.lua")
+require("shipTemplates40k_Cuirasses.lua")
+require("shipTemplates40k_Capitaux.lua")
+require("shipTemplates40k_Autres.lua")
+require("shipTemplates40k_Jouables.lua")
 ---[[Until these are ready, they are disabled
-require("shipTemplates_Drones.lua")
-require("shipTemplates_StarFighters.lua")
-require("shipTemplates_Frigates.lua")
-require("shipTemplates_Corvette.lua")
-require("shipTemplates_Dreadnaught.lua")
+---require("shipTemplates_Drones.lua")
+---require("shipTemplates_StarFighters.lua")
+--require("shipTemplates_Frigates.lua")
+--require("shipTemplates_Corvettes.lua")
+--require("shipTemplates_Dreadnaught.lua")
 --]]
 --For now, we add our old ship templates as well. These should be removed at some point.
-require("shipTemplates_OLD.lua")
+--require("shipTemplates_OLD.lua")

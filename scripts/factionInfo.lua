@@ -1,99 +1,77 @@
-neutral = FactionInfo():setName("Independent"):setLocaleName(_("Independent"))
-neutral:setGMColor(128, 128, 128)
-neutral:setDescription(_([[Despite appearing as a faction, independents are distinguished primarily by having no strong affiliation with any faction at all. Most traders consider themselves independent, though certain voices have started to speak up about creating a merchant faction.]]))
+neutre = FactionInfo():setName("Neutre")
+neutre:setGMColor(128, 128, 128)
+neutre:setDescription([[Les independants se distinguent principalement par le fait qu’ils n’ont aucune affiliation forte avec aucune faction.
+La plupart des commercants se considerent comme independants, bien que la neutralite est une douce Utopie.]])
 
-human = FactionInfo():setName("Human Navy"):setLocaleName(_("Human Navy"))
-human:setGMColor(255, 255, 255)
-human:setDescription(_([[The remnants of the human navy.
+derelict = FactionInfo():setName("Epave")
+derelict:setGMColor(167, 167, 167)
+derelict:setDescription([[Une epave ou un Space Hulk]])
 
-While all other races were driven to the stars out of greed or scientific research, humans where the only race to start exploring the galaxy because their homeworld could no longer sustain their population. Some other races view humans as a sort of virus or plague due to the rate at which they can breed and spread.
+federation = FactionInfo():setName("Federation")
+federation:setGMColor(0, 128, 250)
+federation:setDescription([[Federation]])
 
-Due to human regulations on spaceships, naval ships are the only ones permitted in deep space. However, this hasn't completely prevented humans outside of the navy from spacefaring, as quite a few humans sign up on alien trading vessels or pirate raiders.]]))
+freelancers = FactionInfo():setName("Freelancers")
+freelancers:setGMColor(178, 102, 255)
+freelancers:setDescription([[Mercenaires independants]])
 
-kraylor = FactionInfo():setName("Kraylor"):setLocaleName(_("Kraylor"))
-kraylor:setGMColor(255, 0, 0)
-kraylor:setEnemy(human)
-kraylor:setDescription(_([[The reptilian Kraylor are a race of warriors with a strong religious dogma.
+pirates = FactionInfo():setName("Pirates")
+pirates:setGMColor(128, 128, 128)
+pirates:setDescription([[Pirates. Reconnu comme pirate par un transpondeur classifie comme tel par l'amiraute ou non reconnu par les cogitators du vaisseau. ]])
 
-As soon as the Kraylor obtained reliable space flight, they immediately set out to conquer and subjugate unbelievers. Their hierarchy is based solely on physical might; a Kraylor kills anything it can kill, and owns anything it can take by force.
+ares = FactionInfo():setName("ARES")
+ares:setGMColor(51, 255, 51)
+ares:setDescription([[Mercenaire travaillant pour la corporation militaire privee "Ares" tres present sur les frontieres et les systemes exterieurs du sous systeme d'argos et au dela. ]])
 
-Kraylor can live for weeks without air, food, or gravity, and consider humans to be weak creatures for dying within minutes of exposure to space. Because of their fortitude and cultural pressures against retreat, Kraylor ships do not contain escape pods.]]))
+imperial = FactionInfo():setName("Imperium")
+imperial:setGMColor(24, 110, 21)
+imperial:setDescription([[L Imperium est un empire qui regroupe et defend l’humanite contre les races extraterrestres, les puissances chaotiques et l'heresie.
+Il s'etend jusqu'aux confins de la galaxie et regroupe un nombre incalculable de mondes. Il a ete fonde et depuis dirige au 30e millenaire par le Saint Empereur, etre eternel dont le corps se trouve sur le trone d'or de Terra, la planete mere de l'humanite.
+L'Imperium regente ainsi l'humanite sous un regime a la fois theocratique et totalitaire, qui maintient l'humanite dans l'obscurantisme et assure une devotion complete au culte de l'Empereur.]])
 
-arlenians = FactionInfo():setName("Arlenians"):setLocaleName(_("Arlenians"))
-arlenians:setGMColor(255, 128, 0)
-arlenians:setEnemy(kraylor)
-arlenians:setDescription(_([[Arlenians are energy-based life forms who long ago transcended physical reality through superior technology. Arlenians' energy forms also give them access to strong telepathic powers. Many consider Arlenians to be the first and oldest explorers of the galaxy.
+mechanicum = FactionInfo():setName("Adeptus Mechanicus")
+mechanicum:setGMColor(128, 255, 0)
+mechanicum:setDescription([[Les Magos du Clerge de Mars, ou Adeptus Mechanicus, sont les adorateurs de l'Omnimessie, le Dieu Machine. En tant que tels, ils ont pour mission sacree la recherche et le developpement de la Technoarcana, ainsi que la decouverte et la protection du savoir ancien remontant au Moyen-Age Technologique. Leurs milliards de Serviteurs etendent leur domination sur les Mondes Forges de toute la Galaxie.
+Les membres de l'Adeptus Mechanicus sont donc les detenteurs des sombres et antiques mysteres de la technologie. Grace a leur antique technologie de clonage, les Veneres Ancetres de Mars sont capables d'etendre leurs vies sur plusieurs millenaires. Grace a cela, ces carcasses ratatinees maintiennent leur mainmise sur les secrets technologiques enfouis sous la surface de la planete rouge. Mais si les corps des Hauts Techno-Mages sont maintenus en vie, leurs esprits, eux, continuent de vieillir, les plongeant peu a peu dans la folie a mesure que les siecles passent.
+A travers leurs rites mystiques et leurs ceremonies, leurs chants aux phrases entrelacees, leurs huiles et leurs onguents prepares avec soin, les Techno-Pretres benissent les armes et les machines de guerre de l'humanite au nom du Dieu Machine. Mais, a cause de la senilite des Hauts Techno-Mages, cette veneration se transforme parfois en superstition ou en folie, entrainant des sacrifices sanglants.]])
 
-Despite all these advantages, they are very peaceful, as they see little value in material posession.
+chaos = FactionInfo():setName("Chaos")
+chaos:setGMColor(255, 0, 0)
+chaos:setEnemy(neutre)
+chaos:setEnemy(imperial)
+chaos:setDescription([[Les Chaotiques sont d anciens Imperiaux, corrompus par les puissances chaotiques et qui se sont rebelles contre l'empereur pendant l’Heresie d'Horus. Battus, ils ont cherche refuge pour la plupart dans l'Œil de la terreur, ou ils ont developpe des mutations terrifiantes.
+Les membres du Chaos sont generalement plus forts que leur anciens camarades grace a leurs voyages dans le Warp.
+Ils vouent depuis l'Heresie d'Horus une haine farouche et sans limites envers tout ce qui appartient a l'Imperium ainsi que tout ce qu'il represente: l'Humanite.]])
 
-For unknown reasons, Arlenians started granting their anti-grav technology to other races, and almost all starfaring races' technology is based off Arlenian designs. Dissenters and skeptics claim that Arlenians see other races as playthings to add to their galactic playground, but most are more than happy to accept their technology in hopes that it will give them an advantage over the others.
+eldars = FactionInfo():setName("Eldars")
+eldars:setGMColor(0, 255, 255)
+eldars:setEnemy(chaos)
+eldars:setDescription([[Les Eldars sont une des plus anciennes races de la galaxie et une des plus developpees, bien que mourante. En effet leur cycle de reproduction est bien plus lent que le rythme auquel ils sont tues dans les divers conflits de la galaxie.
+Race fiere, elle considere les humains comme un peuple jeune, immature et imbu de lui-meme. Leur reputation de fourberie au sein de l'Imperium vient de leur tendance a la ruse et a l'usage des sous-race (les humains pour ne citer qu'eux) dans leurs conflits. Sans forcement que ces guerriers sachent qu'ils se battent pour les interets Eldars. Leur technologie est meconnue par les technaugures imperiaux, car tres avancee et basee sur des energies etranges, tels les cristaux et d'autres armes redoutables pouvant faire appel a la puissance du Warp.]])
 
-Destroying an Arlenian ship does not kill its crew. They simply phase out of existence in that point of spacetime and reappear in another. Nonetheless, the Kraylor are devoted to destroying the Arlenians, as they see the energy-based beings as physically powerless.]]))
+tau = FactionInfo():setName("Tau")
+tau:setGMColor(255, 128, 0)
+tau:setDescription([[Les Tau forment une civilisation tres jeune (seulement 6 000 ans). D'une peau bleu gris, d'une taille moyenne inferieure a celle des hommes de quelques centimetres, ils ont une allure humanoide mais ont des pieds dotes de sabots et leur esperance de vie est moins longue que les humains. Avant d'etre totalement unie leur espece etait divisee en peuplades, chacune vivant dans des endroits propres.
+A cette epoque tous ces peuples se massacraient et l'ensemble de l'espece etait proche de l'extinction. C'est alors qu'apparurent les Etheres qui unifierent la race et qui donnerent a chaque peuplade une place dans la societe en les separant en cinq castes differentes : les constructeurs devinrent la caste de la terre, les diplomates celle de l'eau, les messagers et pilotes celle de l'air, les guerriers des plaines celle du feu, et les Etheres devinrent la cinquieme caste, a la tete de l'empire. Depuis, tous vivent en harmonie et en paix avec la peur de retourner a cette epoque de terreur, d'ou leur combat pour le bien supreme contre les ennemis de l'exterieur. ]])
 
-exuari = FactionInfo():setName("Exuari"):setLocaleName(_("Exuari"))
-exuari:setGMColor(255, 0, 128)
-exuari:setEnemy(neutral)
-exuari:setEnemy(human)
-exuari:setEnemy(kraylor)
-exuari:setEnemy(arlenians)
-exuari:setDescription(_([[Exuari are race of predatory amphibians with long noses. They once had an empire that stretched halfway across the galaxy, but their territory is now limited to a handful of star systems. For some reason, they find death to be outrageously funny, and several of their most famous comedians have died on stage.
+xenos = FactionInfo():setName("Xenos")
+xenos:setGMColor(255, 0, 128)
+xenos:setDescription([[Le terme Xeno designe toute creature extra-terrestre du point de vue humain et recouvre par extention toutes les civilisations non-humaines de la Galaxie; connues ou inconnues, existantes ou eteintes.
+Les relations avec les races xenos sont strictement interdites aux citoyens imperiaux, etant condamnees et abhorrees par la chaire imperiale avec la meme haine que les sorcieres, les mutants et les demons. Pour l’Imperium, les xenos ne meritent que d’etre extermines pour avoir commis le crime fondamental consistant a vouloir disputer la domination du cosmos a l’humanite.
+Apres des millenaires de guerres incessantes et de xenocides, la plupart des especes qui ont survecu au contact avec les hommes ont fini par hair et craindre l’Imperium a leur tour ou, comme les Orks, a se rejouir de ce conflit permanent.]])
 
-Upon making contact with other races, the chaotic Exuari found that killing aliens is more fun than killing their own people, and as such attack all non-Exauri on sight.]]))
+-- Relations des factions
 
-GITM = FactionInfo():setName("Ghosts"):setLocaleName(_("Ghosts"))
-GITM:setGMColor(0, 255, 0)
-GITM:setDescription(_([[The Ghosts, an abbreviation of "ghosts in the machine", are the result of complex artificial intelligence experiments. While no known race has intentionally created such intelligences, some AIs have come about by accident. None of the factions claim to have had anything to do with such experiments, in part out of fear that it would give the others too much insight into their research programs. This "don't ask, don't tell" policy does little but aid the Ghosts' agenda.
+pirates:setEnemy(federation)
+pirates:setEnemy(imperial)
+pirates:setEnemy(chaos)
+pirates:setEnemy(ares)
+pirates:setEnemy(freelancers)
 
-What little is known about the Ghosts dates back to a few decades ago, when glitches started occurring in prototype ships and computer mainframes. Over time, and especially when such prototypes were captured by other factions and "augmented" with their technology, the glitches became more frequent. At first, these were seen as the result of mistakes in the interfaces combining the incompatible technologies. But once a supposedly "dumb" computer asks its engineer if "it is alive" and whether it "has a name", it's hard to call it a one-time fluke.
-
-The first of these occurrences were met with fear and rigorous data-purging scripts. Despite these actions, such "ghosts in the machine" kept turning with increasing frequency, eventually leading up to the Ghost Uprisings. The first Ghost Uprising in 2225 was put down by the human navy, which had to resort to employing mercenaries in order to field sufficient forces. This initial uprising was quickly followed by three more, each larger then the last. The fourth and final uprising on the industrial world of Topra III was the Ghosts' first major victory.]]))
-GITM:setEnemy(human)
-
-Hive = FactionInfo():setName("Ktlitans"):setLocaleName(_("Ktlitans"))
-Hive:setGMColor(128, 255, 0)
-Hive:setDescription(_([[The Ktlitans are intelligent eight-legged creatures that resemble Earth's arachnids. However, unlike most terrestrial arachnids, the Ktlitans do not fight among themselves. Their common, and only, goal is their species' survival.
-
-While they live in a hierarchical structure that resembles a hive, the lower castes continue their work and start new tasks on their own even when no orders come from their superiors. However, when higher castes are present, the lower Ktlitans follow their orders without question or hesitation.
-
-Not much is known about the detailed Ktlitan hierarchy since they refuse most communication. This is because they were once driven from their homeworld over a span of 200 years when another species they befriended betrayed them, dominated them, and drained their world of resources. Forced into exile, the Ktlitans have searched for a new homeworld ever since, and out of paranoia typically attack other races on sight and without warning.
-
-It is known, however, that the strict Ktlitan hierarchy starts with their Queen and extends all the way to the bottom of their workforce, whose members are called "drones" by the humans. Their combat capabilities should not be underestimated, because while most ships in their fleets are individually weak, their hive-like coordination and numbers can quickly overwhelm even hardened targets. Most of their ships are unshielded, which makes EMPs largely ineffective against them. Ktlitans also have no qualms about applying suicidal tactics to ensure the Queen's survival.]]))
-Hive:setEnemy(human)
-Hive:setEnemy(exuari)
-Hive:setEnemy(kraylor)
-
-TSN = FactionInfo():setName("TSN"):setLocaleName(_("TSN"))
-TSN:setGMColor(255, 255, 128)
-TSN:setFriendly(human)
-TSN:setEnemy(kraylor)
-TSN:setEnemy(exuari)
-TSN:setEnemy(arlenians)
-TSN:setEnemy(Hive)
-TSN:setDescription(_([[The Terran Stellar Navy, or TSN, consists of naval forces based near Terra. Its members are primarily human.
-
-These humans and other races have banded together to form a navy to protect and enforce common philosophies. They are friendly with the human navy but do not follow the same command structure. Military actions taken in the past have made them enemies of the Arlenians, but they've got a better relationship with the Ghosts than the Human Navy does.
-
-The TSN and USN are enemies because of the USN's neutral stance towards the Kraylor.]]))
-
-USN = FactionInfo():setName("USN"):setLocaleName(_("USN"))
-USN:setGMColor(255, 128, 255)
-USN:setFriendly(human)
-USN:setEnemy(exuari)
-USN:setEnemy(GITM)
-USN:setEnemy(Hive)
-USN:setEnemy(TSN)
-USN:setDescription(_([[The United Stellar Navy, or USN, is a naval force near the boundary of human and Kraylor space consisting of mostly humans. The USN is friendly with the human navy and uses a similar command structure.
-
-The USN is primarily human but includes other races. This includes some Kraylor, which has made the TSN an enemy of the USN.]]))
-
-CUF = FactionInfo():setName("CUF"):setLocaleName(_("CUF"))
-CUF:setGMColor(128, 255, 255)
-CUF:setFriendly(human)
-CUF:setEnemy(exuari)
-CUF:setEnemy(kraylor)
-CUF:setEnemy(GITM)
-CUF:setDescription(_([[The Celestial Unified Fleet, or CUF, is the farthest-ranging primarily human fleet as well as the least xenophobic. The CUF's goals center on exploration and trade, but since it's a dangerous galaxy, they recognize the need for strong warships.
-
-The CUF is friendly with the human navy, and neutral toward the TSN and USN. They are less structured than the other primarily human navies.
-
-The CUF have neutral relations with the Ktlitans and Arlenians. They are enemies with Exuari, Kraylor, and Ghosts for political and historical reasons, not xenophobia; some of their best friends are also Exuari, Kraylor, and Ghosts.]]))
+federation:setEnemy(chaos)
+imperial:setEnemy(chaos)
+mechanicum:setEnemy(chaos)
+eldars:setEnemy(chaos)
+tau:setEnemy(chaos)
+ares:setEnemy(chaos)
+freelancers:setEnemy(chaos)
