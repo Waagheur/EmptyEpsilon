@@ -9,7 +9,7 @@ on:
 jobs:
   build-linux:
     name: Linux Tagged Release Build
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
     steps:
       - name: Dependencies
         run: |
@@ -38,7 +38,7 @@ jobs:
           path: _build_linux/*.deb
   build-windows:
     name: Windows (Cross-Compile) Tagged Release Build
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
     steps:
       - name: Dependencies
         run: |
@@ -68,7 +68,7 @@ jobs:
 
   tagged-release-update:
     name: "Tagged Release"
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
     needs: [build-linux, build-windows]
     steps:
       - uses: actions/download-artifact@v2
