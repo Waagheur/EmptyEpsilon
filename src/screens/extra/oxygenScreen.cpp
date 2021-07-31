@@ -15,7 +15,7 @@ OxygenScreen::OxygenScreen(GuiContainer *owner)
     : GuiOverlay(owner, "OXYGEN_SCREEN", colorConfig.background)
 {
     GuiOverlay *background_crosses = new GuiOverlay(this, "BACKGROUND_CROSSES", sf::Color::White);
-    background_crosses->setTextureTiled("gui/BackgroundCrosses");
+    background_crosses->setTextureTiled("gui/background/crosses.png");
 
     oxygen_view = new GuiAutoLayout(this, "OXYGEN_LAYOUT", GuiAutoLayout::LayoutHorizontalRows);
     oxygen_view->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax)->setPosition(0, 0, ACenter);

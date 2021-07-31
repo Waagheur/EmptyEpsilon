@@ -10,7 +10,7 @@ GuiBasicSlider::GuiBasicSlider(GuiContainer* owner, string id, float min_value, 
 
 void GuiBasicSlider::onDraw(sf::RenderTarget& window)
 {
-    drawStretched(window, rect, "gui/SliderBackground", selectColor(colorConfig.slider.background));
+    drawStretched(window, rect, "gui/widget/SliderBackground.png", selectColor(colorConfig.slider.background));
 
     sf::Color color = selectColor(colorConfig.slider.forground);
 
@@ -20,7 +20,7 @@ void GuiBasicSlider::onDraw(sf::RenderTarget& window)
         x = rect.left + (rect.width - rect.height) * (value - min_value) / (max_value - min_value);
 
         sf::Sprite sprite;
-        textureManager.setTexture(sprite, "gui/SliderKnob");
+        textureManager.setTexture(sprite, "gui/widget/SliderKnob.png");
         sprite.setOrigin(0, 0);
         sprite.setPosition(x, rect.top);
         sprite.setScale(rect.height / sprite.getTextureRect().width, rect.height / sprite.getTextureRect().width);
@@ -31,7 +31,7 @@ void GuiBasicSlider::onDraw(sf::RenderTarget& window)
         y = rect.top + (rect.height - rect.width) * (value - min_value) / (max_value - min_value);
 
         sf::Sprite sprite;
-        textureManager.setTexture(sprite, "gui/SliderKnob");
+        textureManager.setTexture(sprite, "gui/widget/SliderKnob.png");
         sprite.setOrigin(0, 0);
         sprite.setPosition(rect.left, y);
         sprite.setScale(rect.width / sprite.getTextureRect().width, rect.width / sprite.getTextureRect().width);
@@ -127,7 +127,7 @@ GuiSlider::GuiSlider(GuiContainer* owner, string id, float min_value, float max_
 
 void GuiSlider::onDraw(sf::RenderTarget& window)
 {
-    drawStretched(window, rect, "gui/SliderBackground", selectColor(colorConfig.slider.background));
+    drawStretched(window, rect, "gui/widget/SliderBackground.png", selectColor(colorConfig.slider.background));
 
     sf::Color color = selectColor(colorConfig.slider.forground);
 
@@ -141,7 +141,7 @@ void GuiSlider::onDraw(sf::RenderTarget& window)
 
             if (x >= rect.left && x <= rect.left + rect.width ){
                 sf::Sprite snap_sprite;
-                textureManager.setTexture(snap_sprite, "gui/SliderTick");
+                textureManager.setTexture(snap_sprite, "gui/widget/SliderTick.png");
                 snap_sprite.setRotation(90);
                 snap_sprite.setPosition(x + rect.height / 2, rect.top + rect.height / 2);
                 snap_sprite.setScale(rect.height / snap_sprite.getTextureRect().width, rect.height / snap_sprite.getTextureRect().width);
@@ -152,7 +152,7 @@ void GuiSlider::onDraw(sf::RenderTarget& window)
         x = rect.left + (rect.width - rect.height) * (value - min_value) / (max_value - min_value);
 
         sf::Sprite sprite;
-        textureManager.setTexture(sprite, "gui/SliderKnob");
+        textureManager.setTexture(sprite, "gui/widget/SliderKnob.png");
         sprite.setOrigin(0, 0);
         sprite.setPosition(x, rect.top);
         sprite.setScale(rect.height / sprite.getTextureRect().width, rect.height / sprite.getTextureRect().width);
@@ -166,7 +166,7 @@ void GuiSlider::onDraw(sf::RenderTarget& window)
 
             if (y >= rect.top && y <= rect.top + rect.height ){
                 sf::Sprite snap_sprite;
-                textureManager.setTexture(snap_sprite, "gui/SliderTick");
+                textureManager.setTexture(snap_sprite, "gui/widget/SliderTick.png");
                 snap_sprite.setOrigin(0, 0);
                 snap_sprite.setPosition(rect.left, y);
                 snap_sprite.setScale(rect.width / snap_sprite.getTextureRect().width, rect.width / snap_sprite.getTextureRect().width);
@@ -177,7 +177,7 @@ void GuiSlider::onDraw(sf::RenderTarget& window)
         y = rect.top + (rect.height - rect.width) * (value - min_value) / (max_value - min_value);
 
         sf::Sprite sprite;
-        textureManager.setTexture(sprite, "gui/SliderKnob");
+        textureManager.setTexture(sprite, "gui/widget/SliderKnob.png");
         sprite.setOrigin(0, 0);
         sprite.setPosition(rect.left, y);
         sprite.setScale(rect.width / sprite.getTextureRect().width, rect.width / sprite.getTextureRect().width);
@@ -276,7 +276,7 @@ GuiSlider2D::GuiSlider2D(GuiContainer* owner, string id, sf::Vector2f min_value,
 
 void GuiSlider2D::onDraw(sf::RenderTarget& window)
 {
-    drawStretchedHV(window, rect, 25.0f, "gui/SliderBackground", selectColor(colorConfig.slider.background));
+    drawStretchedHV(window, rect, 25.0f, "gui/widget/SliderBackground.png", selectColor(colorConfig.slider.background));
 
     sf::Color color = selectColor(colorConfig.slider.forground);
 
@@ -284,7 +284,7 @@ void GuiSlider2D::onDraw(sf::RenderTarget& window)
     float y = rect.top + (rect.height - 50.0) * (value.y - min_value.y) / (max_value.y - min_value.y);
 
     sf::Sprite sprite;
-    textureManager.setTexture(sprite, "gui/SliderKnob");
+    textureManager.setTexture(sprite, "gui/widget/SliderKnob.png");
     sprite.setOrigin(0, 0);
     sprite.setPosition(x, y);
     sprite.setScale(50.0 / sprite.getTextureRect().width, 50.0 / sprite.getTextureRect().width);

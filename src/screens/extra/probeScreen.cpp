@@ -14,7 +14,7 @@ ProbeScreen::ProbeScreen()
     angle = 0.0f;
      // Render the background decorations.
     background_crosses = new GuiOverlay(this, "BACKGROUND_CROSSES", sf::Color::White);
-    background_crosses->setTextureTiled("gui/BackgroundCrosses");
+    background_crosses->setTextureTiled("gui/Background/crosses.png");
 
     viewport = new GuiViewport3D(this, "VIEWPROBE");
     viewport->showSpacedust();

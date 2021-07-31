@@ -11,9 +11,9 @@ GuiTextEntry::GuiTextEntry(GuiContainer* owner, string id, string text)
 void GuiTextEntry::onDraw(sf::RenderTarget& window)
 {
     if (focus)
-        drawStretched(window, rect, "gui/TextEntryBackground.focused", selectColor(colorConfig.text_entry.background));
+        drawStretched(window, rect, "gui/widget/TextEntryBackground.focused.png", selectColor(colorConfig.text_entry.background));
     else
-        drawStretched(window, rect, "gui/TextEntryBackground", selectColor(colorConfig.text_entry.background));
+        drawStretched(window, rect, "gui/widget/TextEntryBackground.png", selectColor(colorConfig.text_entry.background));
     sf::Color textColor = (valid || !validator_func) ? selectColor(colorConfig.text_entry.forground) : colorConfig.text_entry_invalid;
     if (blink_timer.isExpired())
         typing_indicator = !typing_indicator;

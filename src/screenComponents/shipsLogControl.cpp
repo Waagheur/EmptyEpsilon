@@ -29,7 +29,7 @@ void ShipsLog::onDraw(sf::RenderTarget& window)
     if (open)
     {
         log_text->setMargins(15, 15, 15, 0);
-        drawStretchedHV(window, sf::FloatRect(rect.left, rect.top, rect.width, rect.height + 100), 25.0f, "gui/PanelBackground");
+        drawStretchedHV(window, sf::FloatRect(rect.left, rect.top, rect.width, rect.height + 100), 25.0f, "gui/widget/PanelBackground.png");
         const std::vector<PlayerSpaceship::ShipLogEntry>& logs = my_spaceship->getShipsLog(station);
         if (log_text->getEntryCount() > 0 && logs.size() == 0)
             log_text->clearEntries();
@@ -64,14 +64,14 @@ void ShipsLog::onDraw(sf::RenderTarget& window)
     }else{
         log_text->setMargins(15, 12, 15, 0);
 
-        string background = "gui/ButtonBackground.disabled";
+        string background = "gui/widget/ButtonBackground.disabled.png";
         if (my_spaceship &&
             ((station == "intern" && my_spaceship->timer_log_intern > 0 && int(my_spaceship->timer_log_intern) % 2 == 0)
             || (station == "generic" && my_spaceship->timer_log_generic > 0 && int(my_spaceship->timer_log_generic) % 2 == 0)
             || (station == "docks" && my_spaceship->timer_log_docks > 0 && int(my_spaceship->timer_log_docks) % 2 == 0)
             || (station == "science" && my_spaceship->timer_log_science > 0 && int(my_spaceship->timer_log_science) % 2 == 0))
         )
-            background = "gui/ButtonBackground.hover";
+            background = "gui/widget/ButtonBackground.hover.png";
 
         drawStretchedHV(window, sf::FloatRect(rect.left, rect.top, rect.width, rect.height), 50.0f, background);
         const std::vector<PlayerSpaceship::ShipLogEntry>& logs = my_spaceship->getShipsLog(station);

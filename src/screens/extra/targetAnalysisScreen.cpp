@@ -43,7 +43,7 @@ TargetAnalysisScreen::TargetAnalysisScreen(GuiContainer *owner)
     selected_entry = nullptr;
 
     GuiOverlay *background_crosses = new GuiOverlay(this, "BACKGROUND_CROSSES", sf::Color::White);
-    background_crosses->setTextureTiled("gui/BackgroundCrosses");
+    background_crosses->setTextureTiled("gui/background/crosses.png");
     
     indicator_overlay = new GuiOverlay(this, "", sf::Color(0, 0, 0, 128));
     (new GuiPanel(indicator_overlay, "PAUSE_BOX"))->setPosition(0, 0, ACenter)->setSize(600, 100);
