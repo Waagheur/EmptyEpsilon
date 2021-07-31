@@ -74,7 +74,7 @@ void BlackHole::draw3DTransparent()
 void BlackHole::drawOnRadar(sf::RenderTarget& window, sf::Vector2f position, float scale, float rotation, bool long_range)
 {
     sf::Sprite object_sprite;
-    textureManager.setTexture(object_sprite, "blackHole.png");
+    textureManager.setTexture(object_sprite, "radar/blackHole.png");
     object_sprite.setRotation(getRotation());
     object_sprite.setPosition(position);
     float size_radar = size * scale / object_sprite.getTextureRect().width;
