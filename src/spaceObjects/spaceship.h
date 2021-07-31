@@ -593,7 +593,7 @@ public:
     void setTubeLoadTime(int index, float time);
     float getTubeLoadTime(int index);
 
-    void setRadarTrace(string trace) { radar_trace = trace; }
+    void setRadarTrace(string trace) { radar_trace = "radar/" + trace; }
 
     void addBroadcast(int threshold, string message);
 

@@ -132,7 +132,7 @@ public:
     void setLongRangeRadarRange(float range);
     void setShortRangeRadarRange(float range);
 
-    void setRadarTrace(string trace) { radar_trace = trace; }
+    void setRadarTrace(string trace) { radar_trace = "radar/" + trace; }
     void setImpulseSoundFile(string sound) { impulse_sound_file = sound; }
 
     bool getSharesEnergyWithDocked() { return shares_energy_with_docked; }

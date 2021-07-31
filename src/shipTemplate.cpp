@@ -229,7 +229,7 @@ ShipTemplate::ShipTemplate()
         weapon_storage[n] = 0;
     long_range_radar_range = 30000.0f;
     short_range_radar_range = 5000.0f;
-    radar_trace = "RadarArrow.png";
+    radar_trace = "radar/arrow.png";
     has_reactor = true;
     has_cloaking = false;
     launcher_dock_count = 0;
@@ -327,9 +327,9 @@ void ShipTemplate::setTubeSize(int index, EMissileSizes size)
 
 void ShipTemplate::setType(TemplateType type)
 {
-    if (radar_trace == "RadarArrow.png" && type == Station)
+    if (radar_trace == "radar/arrow.png" && type == Station)
     {
-        radar_trace = "RadarBlip.png";
+        radar_trace = "radar/blip.png";
     }
     if (type == Station)
         repair_docked = true;
@@ -664,7 +664,7 @@ void ShipTemplate::setDocks(int launchers, int energy, int weapons, int thermic,
 
 void ShipTemplate::setRadarTrace(string trace)
 {
-    radar_trace = trace;
+    radar_trace = "radar/" + trace;
 }
 
 void ShipTemplate::setLongRangeRadarRange(float range)
