@@ -206,6 +206,8 @@ ShipSelectionScreen::ShipSelectionScreen()
             {
                 P<ShipTemplate> ship_template = ShipTemplate::getTemplate(template_name);
                 //ship_template_selector->addEntry(template_name + " (" + ship_template->getClass() + ":" + ship_template->getSubClass() + ")", template_name);
+                if (!ship_template->visible)
+                    continue;
                 ship_template_selector->addEntry(ship_template->getLocaleName() + " (" + ship_template->getClass() + ":" + ship_template->getSubClass() + ")", template_name);
             }
             ship_template_selector->setSelectionIndex(0);
