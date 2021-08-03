@@ -454,10 +454,17 @@ void EngineeringScreen::onDraw(sf::RenderTarget& window)
             info.power_bar->setValue(my_spaceship->systems[n].power_level);
             info.coolant_bar->setValue(my_spaceship->systems[n].coolant_level);
             info.coolant_bar->setRange(0.0, my_spaceship->max_coolant_per_system);
-            if (gameGlobalInfo->use_nano_repair_crew and gameGlobalInfo->use_system_damage)
+            if (gameGlobalInfo->use_nano_repair_crew && gameGlobalInfo->use_system_damage)
             {
                 info.repair_bar->setRange(0.0, my_spaceship->max_repair_per_system);
-                info.repair_bar->setValue(my_spaceship->systems[n].repair_level);
+                ///info.repair_bar->setValue(my_spaceship->systems[n].repair_level);
+                info.repair_bar->setValue(std::min(my_spaceship->systems[n].repair_level, my_spaceship->max_repair_per_system));
+
+                if(my_spaceship->systems[n].repair_level > my_spaceship->max_repair_per_system)
+                        my_spaceship->commandSetSystemRepairRequest(ESystem(n), my_spaceship->max_repair_per_system);
+                else if(my_spaceship->systems[n].repair_level > my_spaceship->max_repair)
+                        my_spaceship->commandSetSystemRepairRequest(ESystem(n), my_spaceship->max_repair);
+                
             }
         }
 
@@ -476,11 +483,11 @@ void EngineeringScreen::onDraw(sf::RenderTarget& window)
                 power_label->setText("Power: " + toNearbyIntString(system.power_level * 100) + "% \t\t (Target: " + toNearbyIntString(system.power_request * 100) + "%)");
                 if (gameGlobalInfo->use_system_damage)
                 {
-                    repair_label->setText("Repair: " + string(system.repair_level, 1) + " / " + string(my_spaceship->max_repair_per_system, 1) + "\t\t (Target: " + string(system.repair_request, 1)+")");
                     repair_slider->setEnable(!my_spaceship->auto_repair_enabled);
                     repair_slider->setRange(0.0, my_spaceship->max_repair_per_system);
-                    repair_slider->setValue(std::min(system.repair_request, my_spaceship->max_repair));
+                    repair_slider->setValue(std::min(system.repair_request, my_spaceship->max_repair_per_system));
                     repair_slider->addSnapValue(my_spaceship->max_repair, 0.1);
+                    repair_label->setText("Repair: " + string(system.repair_level, 1) + " / " + string(my_spaceship->max_repair_per_system, 1) + "\t\t (Target: " + string(system.repair_request, 1)+")");
                 }
             }
 
@@ -778,7 +785,7 @@ void EngineeringScreen::selectSystem(ESystem system)
     {
         power_slider->setValue(my_spaceship->systems[system].power_request);
         coolant_slider->setValue(my_spaceship->systems[system].coolant_request);
-        if (gameGlobalInfo->use_nano_repair_crew and gameGlobalInfo->use_system_damage)
+        if (gameGlobalInfo->use_nano_repair_crew && gameGlobalInfo->use_system_damage)
             repair_slider->setValue(my_spaceship->systems[system].repair_request);
     }
 }

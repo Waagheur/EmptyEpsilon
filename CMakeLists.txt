@@ -9,8 +9,8 @@ if(${CMAKE_VERSION} VERSION_LESS 3.2)
 	endif()
 endif()
 
-option(ENABLE_CRASH_LOGGER "Enable the drmingw crash logging facilities" OFF)
-message(STATUS "ENABLE_CRASH_LOGGER is " ${ENABLE_CRASH_LOGGER})
+option(ENABLE_CRASH_LOGGER "Enable the drmingw crash logging facilities" ON)
+message(STATUS "ENABLE_CRASH_LOGGER is " ${ENABLE_CRASH_LOGGER}) 
 
 # Check if serious proton dir is set.
 if(NOT DEFINED SERIOUS_PROTON_DIR)
@@ -588,8 +588,8 @@ add_custom_target(update_locale
 	COMMAND sed -i "/^#: /d" resources/locale/en.po
 	COMMAND sed -i "/^#: /d" resources/locale/tutorial.en.po
 	COMMAND xgettext --keyword=tr:1c,2 --keyword=tr:1 --keyword=trMark:1c,2 --keyword=trMark:1 --omit-header -j -d resources/locale/en ${SOURCES}
-	COMMAND xgettext --keyword=_:1c,2 --keyword=_:1 --omit-header -j -d resources/locale/en scripts/shipTemplates_*.lua scripts/comms_ship.lua scripts/comms_station.lua scripts/comms_supply_drop.lua scripts/factionInfo.lua scripts/science_db.lua
-	COMMAND xgettext --keyword=_:1c,2 --keyword=_:1 --omit-header -j -d resources/locale/tutorial.en scripts/tutorial_*.lua
+	COMMAND xgettext --from-code utf-8 --keyword=_:1c,2 --keyword=_:1 --omit-header -j -d resources/locale/en scripts/shipTemplates_*.lua scripts/comms_ship.lua scripts/comms_station.lua scripts/comms_supply_drop.lua scripts/factionInfo.lua scripts/science_db.lua
+	#COMMAND xgettext --keyword=_:1c,2 --keyword=_:1 --omit-header -j -d resources/locale/tutorial.en scripts/tutorial_*.lua
 	WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
 
 set(CPACK_PACKAGE_EXECUTABLES ${EXECUTABLE_NAME})

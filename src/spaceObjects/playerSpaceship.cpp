@@ -149,9 +149,12 @@ REGISTER_SCRIPT_SUBCLASS(PlayerSpaceship, SpaceShip)
     /// than the number of repair crews, this function removes repair crews.
     /// If the value is greater, it adds new repair crews at random locations.
     REGISTER_SCRIPT_CLASS_FUNCTION(PlayerSpaceship, setRepairCrewCount);
-    /// Set the maximum nano repair crew available to engineering. Default is 3.
+    /// Set the maximum nano repair crew available to engineering (per system). Default is 3.
     REGISTER_SCRIPT_CLASS_FUNCTION(PlayerSpaceship, setMaxRepairPerSystem);
     REGISTER_SCRIPT_CLASS_FUNCTION(PlayerSpaceship, getMaxRepairPerSystem);
+    /// Set the maximum nano repair crew available to engineering (global). Default is 3.
+    REGISTER_SCRIPT_CLASS_FUNCTION(PlayerSpaceship, setMaxRepair);
+    REGISTER_SCRIPT_CLASS_FUNCTION(PlayerSpaceship, getMaxRepair);
     /// Set the maximum number of presets available for the engineering screen
     /// Must be between 0 and 9
     REGISTER_SCRIPT_CLASS_FUNCTION(PlayerSpaceship, setActivePresetNumber);

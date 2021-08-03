@@ -404,9 +404,9 @@ public:
     void setMaxCoolantPerSystem(float coolant){ max_coolant_per_system = coolant; }
     float getMaxCoolantPerSystem() { return max_coolant_per_system; }
     void setSystemRepairRequest(ESystem system, float request);
-    void setMaxRepair(float repair);
+    void setMaxRepair(float repair) { max_repair = repair; max_repair_per_system = std::min(max_repair_per_system, max_repair);} 
     float getMaxRepair() { return max_repair; }
-    void setMaxRepairPerSystem(int amount){ max_repair_per_system = (float) amount; }
+    void setMaxRepairPerSystem(float amount){ max_repair_per_system = amount; max_repair_per_system = std::min(max_repair_per_system, max_repair);}
     float getMaxRepairPerSystem() { return max_repair_per_system; }
     void setAutoRepair(bool active) { auto_repair_enabled = active; }
     int getRepairCrewCount();
