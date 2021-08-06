@@ -45,9 +45,9 @@ private:
 
     GuiMissileTubeControls* missile_tube_controls;
 
+    bool auto_rotate_on_my_ship;
     bool auto_distance = false;
     bool auto_center_on_my_ship;
-    bool auto_rotate_on_my_ship;
     bool long_range;
     bool show_ghost_dots;
     bool show_waypoints;

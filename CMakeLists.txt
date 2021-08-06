@@ -321,6 +321,7 @@ set(SOURCES
 	src/hardware/devices/uDMXDevice.cpp
 	src/hardware/devices/virtualOutputDevice.cpp
 	src/hardware/devices/philipsHueDevice.cpp
+	src/shaderRegistry.cpp
 )
 
 if (WITH_DISCORD)

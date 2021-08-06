@@ -473,7 +473,6 @@ public:
     void setJumpDriveChargeTime(float time) { jump_drive_charge_time = time; }
 	void setJumpDriveEnergy(float charge) { jump_drive_energy_per_km_charge = charge; }
 
-	float getJumpDelay() { return jump_delay; }
 	float getJumpDriveMaxDistance() { return jump_drive_max_distance; }
 	float getJumpDriveMinDistance() { return jump_drive_min_distance; }
 	float getJumpDriveChargeTime() { return jump_drive_charge_time; }

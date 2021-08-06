@@ -33,12 +33,12 @@ namespace
 
 GuiRadarView::GuiRadarView(GuiContainer* owner, string id, TargetsContainer* targets, P<PlayerSpaceship> targetSpaceship)
 : SectorsView(owner, id, 5000.0f, targets), 
+    auto_rotate_on_my_ship(false),
+    auto_distance(true),
     next_ghost_dot_update(0.0), 
     //targets(targets) //only for merge
     missile_tube_controls(nullptr), 
     auto_center_on_my_ship(true),
-    auto_rotate_on_my_ship(false),
-    auto_distance(true),
     //distance(5000.0f) //only for merge
     long_range(false), 
     show_ghost_dots(false),
@@ -322,7 +322,7 @@ void GuiRadarView::drawNoneFriendlyBlockedAreas(sf::RenderTarget& window)
         {
             sf::CircleShape circle(r, 50);
             circle.setOrigin(r, r);
-            circle.setFillColor(sf::Color(255, 255, 255, 255));
+            circle.setFillColor(sf::Color{ 20, 20, 20, background_alpha });
             circle.setPosition(worldToScreen(obj->getPosition()));
             window.draw(circle);
         };
@@ -702,7 +702,7 @@ void GuiRadarView::drawObjects(sf::RenderTarget& window)
                 P<SpaceObject> obj2 = c_obj;
                 if (obj2 && (obj->getPosition() - obj2->getPosition()) < radar_range + obj2->getRadius())
                 {
-                    if (obj2->canHideInNebula() && Nebula::blockedByNebula(obj2->getPosition(), obj->getPosition()))
+                    if (obj2->canHideInNebula() && Nebula::blockedByNebula(obj2->getPosition(), obj->getPosition(), my_spaceship->getShortRangeRadarRange()))
                         continue;
                     visible_objects.emplace(*obj2);
                 }
@@ -735,20 +735,17 @@ void GuiRadarView::drawObjects(sf::RenderTarget& window)
         }
         break;
     }
-
+    const float scale = getScale();
     auto draw_object = [&window, this, scale](SpaceObject* obj)
     {
         if (target_spaceship && (obj->id_galaxy != target_spaceship->id_galaxy))
-            continue;
+            return;
 
         sf::Vector2f object_position_on_screen = worldToScreen(obj->getPosition());
         float r = obj->getRadius() * getScale();
         sf::FloatRect object_rect(object_position_on_screen.x - r, object_position_on_screen.y - r, r * 2, r * 2);
         if (obj != *target_spaceship && rect.intersects(object_rect))
         {
-            sf::RenderTarget* window = &window_normal;
-            if (!obj->canHideInNebula())
-                window = &window_alpha;
             if (obj->getTransparency() < 0.5)
                 obj->drawOnRadar(window, object_position_on_screen, getScale(), getViewRotation(), long_range);
             if (show_callsigns && obj->getCallSign() != "" && obj->getTransparency() < 0.2)
@@ -765,7 +762,7 @@ void GuiRadarView::drawObjects(sf::RenderTarget& window)
     if (target_spaceship)
     {
         sf::Vector2f object_position_on_screen = worldToScreen(target_spaceship->getPosition());
-        target_spaceship->drawOnRadar(window_normal, object_position_on_screen, getScale(), getViewRotation(), long_range);
+        target_spaceship->drawOnRadar(window, object_position_on_screen, getScale(), getViewRotation(), long_range);
         if (long_range && show_callsigns && target_spaceship->getCallSign() != "")
             drawText(window, sf::FloatRect(object_position_on_screen.x, object_position_on_screen.y - 15, 0, 0), target_spaceship->getCallSign(), ACenter, 15, bold_font);
     }

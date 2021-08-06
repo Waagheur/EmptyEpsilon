@@ -76,10 +76,6 @@ REGISTER_SCRIPT_CLASS(ShipTemplate)
     /// If not explicitely set, reverse speed and reverse acceleration are set to forward speed and acceleration
     /// Compare SpaceShip:setImpulseMaxSpeed, :setRotationMaxSpeed, :setAcceleration.
     REGISTER_SCRIPT_CLASS_FUNCTION(ShipTemplate, setSpeed);
-    /// Sets the impulse maximum speed in reverse. By default, it's equal to forward speed and acceleration
-    /// If set, it's inherited on copied templates, and setSpeed won't overload anymore inherited (copied) templates reverse speed an deceleration
-    /// If not set, inherited (copied) template's reverse speed and deceleration will be the same as forward speed and acceleration
-    REGISTER_SCRIPT_CLASS_FUNCTION(ShipTemplate, setReverseSpeed);
     /// Sets the combat maneuver power of this ship.
     REGISTER_SCRIPT_CLASS_FUNCTION(ShipTemplate, setCombatManeuver);
     /// Set the warp speed for warp level 1 for this ship. Setting this will indicate that this ship has a warpdrive. (normal value is 1000)
@@ -552,12 +548,6 @@ void ShipTemplate::setSpeed(float impulse, float turn, float acceleration, std::
 
     impulse_reverse_speed = reverse_speed.value_or(impulse);
     impulse_reverse_acceleration = reverse_acceleration.value_or(acceleration);
-}
-
-void ShipTemplate::setReverseSpeed(float reverse_speed, float reverse_acceleration)
-{
-    impulse_reverse_speed = reverse_speed;
-    impulse_reverse_acceleration = reverse_acceleration;
 }
 
 void ShipTemplate::setCombatManeuver(float boost, float strafe)

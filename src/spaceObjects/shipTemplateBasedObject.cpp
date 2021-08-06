@@ -372,14 +372,14 @@ void ShipTemplateBasedObject::takeDamage(float damage_amount, DamageInfo info)
         {
             if (info.instigator)
             {
-                on_taking_damage.call(P<ShipTemplateBasedObject>(this), P<SpaceObject>(info.instigator), 
+                on_taking_damage.call<void>(P<ShipTemplateBasedObject>(this), P<SpaceObject>(info.instigator), 
                                         info.type, frequencyToDisplayNumber(info.frequency), 
                                         info.system_target, 
                                         shield_damage, 
                                         damage_amount,
                                         hit_shield_index);
             } else {
-                on_taking_damage.call(P<ShipTemplateBasedObject>(this));
+                on_taking_damage.call<void>(P<ShipTemplateBasedObject>(this));
             }
         }
     }
@@ -524,6 +524,21 @@ string ShipTemplateBasedObject::getShieldDataString()
     }
     return data;
 }
+
+void ShipTemplateBasedObject::setLongRangeRadarRange(float range)
+{
+    range = std::max(range, 100.0f);
+    long_range_radar_range = range;
+    short_range_radar_range = std::min(short_range_radar_range, range);
+}
+
+void ShipTemplateBasedObject::setShortRangeRadarRange(float range)
+{
+    range = std::max(range, 100.0f);
+    short_range_radar_range = range;
+    long_range_radar_range = std::max(long_range_radar_range, range);
+}
+
 
 int frequencyToDisplayNumber(int frequency)
 {

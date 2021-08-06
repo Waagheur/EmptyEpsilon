@@ -89,8 +89,6 @@ REGISTER_SCRIPT_SUBCLASS_NO_CREATE(SpaceShip, ShipTemplateBasedObject)
     ///If called with only one argument, sets forward and reverse speed to equal values.
     ///If called with two arguments, first one is forward speed and second one is reverse speed.
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, setImpulseMaxSpeed);
-    REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, getImpulseMaxReverseSpeed);
-    REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, setImpulseMaxReverseSpeed);
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, getRotationMaxSpeed);
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, setRotationMaxSpeed);
     ///Get multiple resulsts, first one is forward acceleration and second one is reverse acceleration.
@@ -102,8 +100,6 @@ REGISTER_SCRIPT_SUBCLASS_NO_CREATE(SpaceShip, ShipTemplateBasedObject)
     ///If called with one argument, sets forward and reverse acceleration to equal values.
     ///If called with two arguments, first one is forward acceleration and second one is reverse acceleration.
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, setAcceleration);
-    REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, getReverseAcceleration);
-    REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, setReverseAcceleration);
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, setCombatManeuver);
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, hasReactor);
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, setReactor);
@@ -306,7 +302,6 @@ SpaceShip::SpaceShip(string multiplayerClassName, float multiplayer_significant_
         systems[n].power_level = 1.0f;
         systems[n].power_rate_per_second = ShipSystem::default_power_rate_per_second;
         systems[n].power_request = 1.0f;
-        systems[n].coolant_level = 0.0f;
         systems[n].coolant_rate_per_second = ShipSystem::default_coolant_rate_per_second;
         systems[n].coolant_request = 0.0f;
         systems[n].repair_level = 0.0;
@@ -325,12 +320,15 @@ SpaceShip::SpaceShip(string multiplayerClassName, float multiplayer_significant_
         registerMemberReplication(&systems[n].health, 0.1);
         registerMemberReplication(&systems[n].health_max, 0.1);
         registerMemberReplication(&systems[n].power_level, 0.1);
+        registerMemberReplication(&systems[n].power_rate_per_second, .5f);
         registerMemberReplication(&systems[n].power_request, 0.1);
         registerMemberReplication(&systems[n].coolant_level, 0.1);
+        registerMemberReplication(&systems[n].coolant_rate_per_second, .5f);
         registerMemberReplication(&systems[n].coolant_request, 0.1);
         registerMemberReplication(&systems[n].repair_level, 0.1);
         registerMemberReplication(&systems[n].repair_request, 0.1);
         registerMemberReplication(&systems[n].heat_level, 0.1);
+        registerMemberReplication(&systems[n].heat_rate_per_second, .5f);
         registerMemberReplication(&systems[n].hacked_level, 0.1);
         registerMemberReplication(&systems[n].power_factor);
     }
@@ -500,7 +498,7 @@ void SpaceShip::applyTemplateValues()
     if (!on_new_ship_called)
     {
         on_new_ship_called=true;
-        gameGlobalInfo->on_new_ship.call(P<SpaceShip>(this));
+        gameGlobalInfo->on_new_ship.call<void>(P<SpaceShip>(this));
     }
 }
 

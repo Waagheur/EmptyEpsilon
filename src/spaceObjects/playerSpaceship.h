@@ -141,7 +141,8 @@ private:
     float energy_warp_per_second = default_energy_warp_per_second;
 public:
     ESystem auto_repairing_system;
-
+    std::vector<CustomShipFunction> custom_functions;
+    
     std::vector<sf::Vector2f> waypoints;
 
     // Presets for engeneering screen
@@ -459,8 +460,6 @@ public:
     float getLongRangeRadarRange();
     float getShortRangeRadarRange();
     float getProbeRangeRadarRange();
-    void setLongRangeRadarRange(float range);
-    void setShortRangeRadarRange(float range);
 
     //Ajout Tdelc, deplace depuis
     float getDronesControlRange();

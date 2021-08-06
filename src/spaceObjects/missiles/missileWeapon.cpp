@@ -97,7 +97,7 @@ void MissileWeapon::update(float delta)
         lifeEnded();
         if(on_detonation.isSet())
         {   
-            on_detonation.call(P<SpaceObject>(this), string("Expired"));
+            on_detonation.call<void>(P<SpaceObject>(this), string("Expired"));
         }
         destroy();
     }
@@ -129,9 +129,9 @@ void MissileWeapon::collide(Collisionable* target, float force)
     if(on_detonation.isSet())
     {   
         if(ship)
-            on_detonation.call(P<SpaceObject>(this), string("HitShip"), ship);
+            on_detonation.call<void>(P<SpaceObject>(this), string("HitShip"), ship);
         else
-            on_detonation.call(P<SpaceObject>(this), string("Hit"), object);
+            on_detonation.call<void>(P<SpaceObject>(this), string("Hit"), object);
     }
     hitObject(object);
     
@@ -153,7 +153,7 @@ void MissileWeapon::takeDamage(float damage_amount, DamageInfo info)
     {
         if(on_detonation.isSet())
         {
-            on_detonation.call(P<SpaceObject>(this), string("Destroyed"));
+            on_detonation.call<void>(P<SpaceObject>(this), string("Destroyed"));
         }        
         P<ExplosionEffect> e = new ExplosionEffect();
         e->setSize(getRadius());

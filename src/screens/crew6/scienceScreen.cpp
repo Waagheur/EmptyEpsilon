@@ -440,6 +440,7 @@ void ScienceScreen::onDraw(sf::RenderTarget& window)
 
         // En un coup, recuperation de toute les descriptions possibles
         string description = obj->getDescriptionFor(my_spaceship);
+        string sidebar_pager_selection = sidebar_pager->getSelectionValue();
 
         info_description->setText(description)->show();
 
