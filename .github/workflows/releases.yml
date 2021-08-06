@@ -9,7 +9,7 @@ on:
 jobs:
   build-linux:
     name: Linux Tagged Release Build
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     steps:
       - name: Dependencies
         run: |
