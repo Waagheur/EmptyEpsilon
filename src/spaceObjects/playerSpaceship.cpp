@@ -55,6 +55,12 @@ REGISTER_SCRIPT_SUBCLASS(PlayerSpaceship, SpaceShip)
     REGISTER_SCRIPT_CLASS_FUNCTION(PlayerSpaceship, getEnergyLevel);
     REGISTER_SCRIPT_CLASS_FUNCTION(PlayerSpaceship, getEnergyLevelMax);
 
+
+    REGISTER_SCRIPT_CLASS_FUNCTION(PlayerSpaceship, getEnergyShieldUsePerSecond);
+    REGISTER_SCRIPT_CLASS_FUNCTION(PlayerSpaceship, setEnergyShieldUsePerSecond);
+    REGISTER_SCRIPT_CLASS_FUNCTION(PlayerSpaceship, getEnergyWarpPerSecond);
+    REGISTER_SCRIPT_CLASS_FUNCTION(PlayerSpaceship, setEnergyWarpPerSecond);
+
     /// Set the maximum coolant available to engineering. Default is 10.
     REGISTER_SCRIPT_CLASS_FUNCTION(PlayerSpaceship, setMaxCoolant);
     REGISTER_SCRIPT_CLASS_FUNCTION(PlayerSpaceship, getMaxCoolant);
@@ -413,6 +419,8 @@ PlayerSpaceship::PlayerSpaceship()
     registerMemberReplication(&hull_damage_indicator, 0.5);
     registerMemberReplication(&jump_indicator, 0.5);
     registerMemberReplication(&energy_level, 0.1);
+    registerMemberReplication(&energy_warp_per_second, .5f);
+    registerMemberReplication(&energy_shield_use_per_second, .5f);
     registerMemberReplication(&max_energy_level);
     registerMemberReplication(&main_screen_setting);
     registerMemberReplication(&main_screen_overlay);
@@ -722,7 +730,7 @@ void PlayerSpaceship::update(float delta)
 
         // Consume power if shields are enabled.
         if (shields_active)
-            useEnergy(delta * energy_shield_use_per_second);
+            useEnergy(delta * getEnergyShieldUsePerSecond());
 
         // Consume power based on subsystem requests and state.
         {
@@ -740,26 +748,26 @@ void PlayerSpaceship::update(float delta)
 
             if (systems[n].power_request > systems[n].power_level)
             {
-                systems[n].power_level += delta * system_power_level_change_per_second;
+                systems[n].power_level += delta * systems[n].power_rate_per_second;
                 if (systems[n].power_level > systems[n].power_request)
                     systems[n].power_level = systems[n].power_request;
             }
             else if (systems[n].power_request < systems[n].power_level)
             {
-                systems[n].power_level -= delta * system_power_level_change_per_second;
+                systems[n].power_level -= delta * systems[n].power_rate_per_second;
                 if (systems[n].power_level < systems[n].power_request)
                     systems[n].power_level = systems[n].power_request;
             }
 
             if (systems[n].coolant_request > systems[n].coolant_level)
             {
-                systems[n].coolant_level += delta * system_coolant_level_change_per_second;
+                systems[n].coolant_level += delta * systems[n].coolant_rate_per_second;
                 if (systems[n].coolant_level > systems[n].coolant_request)
                     systems[n].coolant_level = systems[n].coolant_request;
             }
             else if (systems[n].coolant_request < systems[n].coolant_level)
             {
-                systems[n].coolant_level -= delta * system_coolant_level_change_per_second;
+                systems[n].coolant_level -= delta * systems[n].coolant_rate_per_second;
                 if (systems[n].coolant_level < systems[n].coolant_request)
                     systems[n].coolant_level = systems[n].coolant_request;
             }
@@ -778,7 +786,7 @@ void PlayerSpaceship::update(float delta)
             }
 
             // Add heat to overpowered subsystems
-            addHeat(ESystem(n), delta * systems[n].getHeatingDelta() * system_heatup_per_second);
+            addHeat(ESystem(n), delta * systems[n].getHeatingDelta() * systems[n].heat_rate_per_second);
             
             // Repair if nano repair crew
             if (gameGlobalInfo->use_nano_repair_crew)
@@ -844,7 +852,7 @@ void PlayerSpaceship::update(float delta)
         {
             // If warping, consume energy at a rate of 120% the warp request.
             // If shields are up, that rate is increased by an additional 50%.
-            if (!useEnergy(energy_warp_per_second * delta * getSystemEffectiveness(SYS_Warp) * powf(current_warp, 1.2f) * (shields_active ? 1.5 : 1.0)))
+            if (!useEnergy(getEnergyWarpPerSecond() * delta * getSystemEffectiveness(SYS_Warp) * powf(current_warp, 1.2f) * (shields_active ? 1.5 : 1.0)))
                 // If there's not enough energy, fall out of warp.
                 warp_request = 0;
 
@@ -976,9 +984,6 @@ void PlayerSpaceship::applyTemplateValues()
         setRepairCrewCount(ship_template->repair_crew_count);
     }
     
-    long_range_radar_range = ship_template->long_range_radar_range;
-    short_range_radar_range = ship_template->short_range_radar_range;
-    
     energy_consumption_ratio = ship_template->energy_consumption_ratio;
 
     // Set the ship's capabilities.
@@ -991,7 +996,7 @@ void PlayerSpaceship::applyTemplateValues()
     if (!on_new_player_ship_called)
     {
         on_new_player_ship_called = true;
-        gameGlobalInfo->on_new_player_ship.call(P<PlayerSpaceship>(this));
+        gameGlobalInfo->on_new_player_ship.call<void>(P<PlayerSpaceship>(this));
     }
 }
 
@@ -1170,7 +1175,7 @@ void PlayerSpaceship::addHeat(ESystem system, float amount)
             // Heat damage is specified as damage per second while overheating.
             // Calculate the amount of overheat back to a time, and use that to
             // calculate the actual damage taken.
-            systems[system].health -= overheat / system_heatup_per_second * damage_per_second_on_overheat;
+            systems[system].health -= overheat / systems[system].heat_rate_per_second * damage_per_second_on_overheat;
 
             if (systems[system].health < -1.0)
                 systems[system].health = -1.0;
@@ -2070,7 +2075,7 @@ void PlayerSpaceship::onReceiveClientCommand(int32_t client_id, sf::Packet& pack
             p->setOwner(this);
             if (on_probe_launch.isSet())
             {
-                on_probe_launch.call(P<PlayerSpaceship>(this), P<ScanProbe>(p));
+                on_probe_launch.call<void>(P<PlayerSpaceship>(this), P<ScanProbe>(p));
             }
             scan_probe_stock--;
         }
@@ -2147,12 +2152,12 @@ void PlayerSpaceship::onReceiveClientCommand(int32_t client_id, sf::Packet& pack
 
                 if (new_linked_probe)
                 {
-                    on_probe_link.call(P<PlayerSpaceship>(this), P<ScanProbe>(new_linked_probe));
+                    on_probe_link.call<void>(P<PlayerSpaceship>(this), P<ScanProbe>(new_linked_probe));
                 }
             }
             else if (linked_science_probe_id == -1 && on_probe_unlink.isSet())
             {
-                on_probe_unlink.call(P<PlayerSpaceship>(this), P<ScanProbe>(old_linked_probe));
+                on_probe_unlink.call<void>(P<PlayerSpaceship>(this), P<ScanProbe>(old_linked_probe));
             }
         }
         break;
@@ -2192,7 +2197,7 @@ void PlayerSpaceship::onReceiveClientCommand(int32_t client_id, sf::Packet& pack
                 {
                     if (csf.type == CustomShipFunction::Type::Button || csf.type == CustomShipFunction::Type::Message)
                     {
-                        csf.callback.call();
+                        csf.callback.call<void>();
                     }
                     if (csf.type == CustomShipFunction::Type::Message)
                     {
@@ -2758,21 +2763,6 @@ float PlayerSpaceship::getProbeRangeRadarRange()
     return short_range_radar_range;
 }
 
-
-void PlayerSpaceship::setLongRangeRadarRange(float range)
-{
-    range = std::max(range, 100.0f);
-    long_range_radar_range = range;
-    short_range_radar_range = std::min(short_range_radar_range, range);
-}
-
-void PlayerSpaceship::setShortRangeRadarRange(float range)
-{
-    range = std::max(range, 100.0f);
-    short_range_radar_range = range;
-    long_range_radar_range = std::max(long_range_radar_range, range);
-}
-
 string PlayerSpaceship::getExportLine()
 {
     string result = "PlayerSpaceship():setTemplate(\"" + template_name + "\"):setPosition(" + string(getPosition().x, 0) + ", " + string(getPosition().y, 0) + ")" + getScriptExportModificationsOnTemplate();
@@ -2811,7 +2801,32 @@ string PlayerSpaceship::getExportLine()
             {
                 result += ":setSystemPowerFactor(" + string(system) + ", " + string(current_factor, 1) + ")";
             }
+
+            if (std::fabs(getSystemCoolantRate(system) - ShipSystem::default_coolant_rate_per_second) > std::numeric_limits<float>::epsilon())
+            {
+                result += ":setSystemCoolantRate(" + string(system) + ", " + string(getSystemCoolantRate(system), 2) + ")";
+            }
+
+            if (std::fabs(getSystemHeatRate(system) - ShipSystem::default_heat_rate_per_second) > std::numeric_limits<float>::epsilon())
+            {
+                result += ":setSystemHeatRate(" + string(system) + ", " + string(getSystemHeatRate(system), 2) + ")";
+            }
+
+            if (std::fabs(getSystemPowerRate(system) - ShipSystem::default_power_rate_per_second) > std::numeric_limits<float>::epsilon())
+            {
+                result += ":setSystemPowerRate(" + string(system) + ", " + string(getSystemPowerRate(system), 2) + ")";
+            }
         }
+    }
+
+    if (std::fabs(getEnergyShieldUsePerSecond() - default_energy_shield_use_per_second) > std::numeric_limits<float>::epsilon())
+    {
+        result += ":setEnergyShieldUsePerSecond(" + string(getEnergyShieldUsePerSecond(), 2) + ")";
+    }
+
+    if (std::fabs(getEnergyWarpPerSecond() - default_energy_warp_per_second) > std::numeric_limits<float>::epsilon())
+    {
+        result += ":setEnergyWarpPerSecond(" + string(getEnergyWarpPerSecond(), 2) + ")";
     }
     return result;
 }

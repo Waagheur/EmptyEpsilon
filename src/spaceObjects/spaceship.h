@@ -4,6 +4,7 @@
 #include <i18n.h>
 
 #include <array>
+#include <optional>
 
 #include "shipTemplateBasedObject.h"
 #include "spaceStation.h"
@@ -47,11 +48,21 @@ enum ELandingState
     LS_Landing,
     LS_Landed
 };
+struct Speeds
+{
+    float forward;
+    float reverse;
+};
+template<> int convert<Speeds>::returnType(lua_State* L, const Speeds &speeds);
+
 
 class ShipSystem
 {
 public:
     static constexpr float power_factor_rate = 0.08f;
+    static constexpr float default_heat_rate_per_second = 0.05f;
+    static constexpr float default_power_rate_per_second = 0.3f;
+    static constexpr float default_coolant_rate_per_second = 1.2f;
     float health; //1.0-0.0, where 0.0 is fully broken.
     float health_max; //1.0-0.0, where 0.0 is fully broken.
     float power_level; //0.0-3.0, default 1.0
@@ -63,6 +74,9 @@ public:
     float repair_request;
     float hacked_level; //0.0-1.0
     float power_factor;
+    float coolant_rate_per_second{};
+    float heat_rate_per_second{};
+    float power_rate_per_second{};
 
     float getHeatingDelta() const
     {
@@ -399,6 +413,7 @@ public:
     void setCustomWeaponStorage(string weapon, int amount) { custom_weapon_storage.insert(std::map<string,int>::value_type(weapon,amount)); }
     void setCustomWeaponStorageMax(string weapon, int amount) { custom_weapon_storage_max.insert(std::map<string,int>::value_type(weapon,amount)); custom_weapon_storage[weapon] = std::min(int(custom_weapon_storage[weapon]), amount); }
 
+    EDockingState getDockingState() { return docking_state; }
     int getWeaponStorage(EMissileWeapons weapon) { if (weapon == MW_None) return 0; return weapon_storage[weapon]; }
     int getWeaponStorageMax(EMissileWeapons weapon) { if (weapon == MW_None) return 0; return weapon_storage_max[weapon]; }
     void setWeaponStorage(EMissileWeapons weapon, int amount) { if (weapon == MW_None) return; weapon_storage[weapon] = amount; }
@@ -420,8 +435,13 @@ public:
         }
     float getSystemHeat(ESystem system) { if (system >= SYS_COUNT) return 0.0; if (system <= SYS_None) return 0.0; return systems[system].heat_level; }
     void setSystemHeat(ESystem system, float heat) { if (system >= SYS_COUNT) return; if (system <= SYS_None) return; systems[system].heat_level = std::min(1.0f, std::max(0.0f, heat)); }
+    float getSystemHeatRate(ESystem system) const { if (system >= SYS_COUNT) return 0.f; if (system <= SYS_None) return 0.f; return systems[system].heat_rate_per_second; }
+    void setSystemHeatRate(ESystem system, float rate) { if (system >= SYS_COUNT) return; if (system <= SYS_None) return; systems[system].heat_rate_per_second = rate; }
+
     float getSystemPower(ESystem system) { if (system >= SYS_COUNT) return 0.0; if (system <= SYS_None) return 0.0; return systems[system].power_level; }
     void setSystemPower(ESystem system, float power) { if (system >= SYS_COUNT) return; if (system <= SYS_None) return; systems[system].power_level = std::min(3.0f, std::max(0.0f, power)); }
+    float getSystemPowerRate(ESystem system) const { if (system >= SYS_COUNT) return 0.f; if (system <= SYS_None) return 0.f; return systems[system].power_rate_per_second; }
+    void setSystemPowerRate(ESystem system, float rate) { if (system >= SYS_COUNT) return; if (system <= SYS_None) return; systems[system].power_rate_per_second = rate; }
     float getSystemPowerUserFactor(ESystem system) { if (system >= SYS_COUNT) return 0.f; if (system <= SYS_None) return 0.f; return systems[system].getPowerUserFactor(); }
     float getSystemPowerFactor(ESystem system) { if (system >= SYS_COUNT) return 0.f; if (system <= SYS_None) return 0.f; return systems[system].power_factor; }
     void setSystemPowerFactor(ESystem system, float factor) { if (system >= SYS_COUNT) return; if (system <= SYS_None) return; systems[system].power_factor = factor; }
@@ -430,18 +450,23 @@ public:
 
     float getSystemRepair(ESystem system) { if (system >= SYS_COUNT) return 0.0; if (system <= SYS_None) return 0.0; return systems[system].repair_level; }
     void setSystemRepair(ESystem system, float repair) { if (system >= SYS_COUNT) return; if (system <= SYS_None) return; systems[system].repair_level = std::min(1.0f, std::max(0.0f, repair)); }
-    float getImpulseMaxSpeed() { return impulse_max_speed; }
-    void setImpulseMaxSpeed(float speed) { impulse_max_speed = speed; }
-    float getImpulseMaxReverseSpeed() { return impulse_max_reverse_speed; }
-    void setImpulseMaxReverseSpeed(float speed) { impulse_max_reverse_speed = speed; }
+    Speeds getImpulseMaxSpeed() {return {impulse_max_speed, impulse_max_reverse_speed};}
+    void setImpulseMaxSpeed(float forward_speed, std::optional<float> reverse_speed) 
+    { 
+        impulse_max_speed = forward_speed; 
+        impulse_max_reverse_speed = reverse_speed.value_or(forward_speed);
+    }
+    float getSystemCoolantRate(ESystem system) const { if (system >= SYS_COUNT) return 0.f; if (system <= SYS_None) return 0.f; return systems[system].coolant_rate_per_second; }
+    void setSystemCoolantRate(ESystem system, float rate) { if (system >= SYS_COUNT) return; if (system <= SYS_None) return; systems[system].coolant_rate_per_second = rate; }
     float getRotationMaxSpeed() { return turn_speed; }
     void setRotationMaxSpeed(float speed) { turn_speed = speed; }
-    float getAcceleration() { return impulse_acceleration; }
-    void setAcceleration(float acceleration) { impulse_acceleration = acceleration; }
-    float getReverseAcceleration() { return impulse_reverse_acceleration; }
-    void setReverseAcceleration(float reverse_acceleration) { impulse_reverse_acceleration = reverse_acceleration; }
+    Speeds getAcceleration() { return {impulse_acceleration, impulse_reverse_acceleration};}
+    void setAcceleration(float acceleration, std::optional<float> reverse_acceleration) 
+    { 
+        impulse_acceleration = acceleration; 
+        impulse_reverse_acceleration = reverse_acceleration.value_or(acceleration);
+    }
     void setCombatManeuver(float boost, float strafe) { combat_maneuver_boost_speed = boost; combat_maneuver_strafe_speed = strafe; }
-
     bool hasJumpDrive() { return has_jump_drive; }
     void setJumpDrive(bool has_jump) { has_jump_drive = has_jump; }
     void setJumpDriveRange(float min, float max) { jump_drive_min_distance = min; jump_drive_max_distance = max; }
@@ -480,6 +505,7 @@ public:
      }
     float getJumpDriveCharge() { return jump_drive_charge; }
     void setJumpDriveCharge(float charge) { jump_drive_charge = charge; }
+    float getJumpDelay() { return jump_delay; }
 
 	void setCloaking(bool enabled) { has_cloaking = enabled; }
 	bool hasCloaking() { return has_cloaking; }

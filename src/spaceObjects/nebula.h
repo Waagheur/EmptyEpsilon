@@ -19,12 +19,6 @@ class Nebula : public SpaceObject
     int radar_visual;
     NebulaCloud clouds[cloud_count];
 
-#if FEATURE_3D_RENDERING
-    static sf::Shader* shader;
-    static uint32_t shaderPositionAttribute;
-    static uint32_t shaderTexCoordsAttribute;
-#endif
-
 public:
     Nebula();
 
@@ -36,7 +30,7 @@ public:
     virtual bool canHideInNebula() { return false; }
 
     static bool inNebula(sf::Vector2f position);
-    static bool blockedByNebula(sf::Vector2f start, sf::Vector2f end);
+    static bool blockedByNebula(sf::Vector2f start, sf::Vector2f end, float radar_short_range);
     static sf::Vector2f getFirstBlockedPosition(sf::Vector2f start, sf::Vector2f end);
     static PVector<Nebula> getNebulas();
 

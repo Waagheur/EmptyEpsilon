@@ -1,3 +1,4 @@
+#include <GL/glew.h>
 #include <SFML/OpenGL.hpp>
 #include "asteroid.h"
 #include "explosionEffect.h"
@@ -5,6 +6,8 @@
 #include "pathPlanner.h"
 
 #include "scriptInterface.h"
+#include "glObjects.h"
+#include "shaderRegistry.h"
 
 /// An asteroid in space. Which you can fly into and hit. Will do damage.
 REGISTER_SCRIPT_SUBCLASS(Asteroid, SpaceObject)
@@ -46,15 +49,26 @@ void Asteroid::draw3D()
 
     glTranslatef(0, 0, z);
     glRotatef(engine->getElapsedTime() * rotation_speed, 0, 0, 1);
-//    glScalef(getRadius(), getRadius(), getRadius());
-    glScalef(size, size, size);
-    sf::Shader* shader = ShaderManager::getShader("shaders/objectShaderBS");
-    shader->setUniform("baseMap", *textureManager.getTexture("Astroid_" + string(model_number) + "_d.png"));
-    shader->setUniform("specularMap", *textureManager.getTexture("Astroid_" + string(model_number) + "_s.png"));
-    sf::Shader::bind(shader);
+    glScalef(getRadius(), getRadius(), getRadius());
+
+    ShaderRegistry::ScopedShader shader(ShaderRegistry::Shaders::ObjectSpecular);
+
+    glBindTexture(GL_TEXTURE_2D, textureManager.getTexture("Astroid_" + string(model_number) + "_d.png")->getNativeHandle());
+
+    glActiveTexture(GL_TEXTURE0 + ShaderRegistry::textureIndex(ShaderRegistry::Textures::SpecularMap));
+    glBindTexture(GL_TEXTURE_2D, textureManager.getTexture("Astroid_" + string(model_number) + "_s.png")->getNativeHandle());
+
     Mesh* m = Mesh::getMesh("Astroid_" + string(model_number) + ".model");
+
+    gl::ScopedVertexAttribArray positions(shader.get().attribute(ShaderRegistry::Attributes::Position));
+    gl::ScopedVertexAttribArray texcoords(shader.get().attribute(ShaderRegistry::Attributes::Texcoords));
+    gl::ScopedVertexAttribArray normals(shader.get().attribute(ShaderRegistry::Attributes::Normal));
+
     if(m)
-        m->render();
+        m->render(positions.get(), texcoords.get(), normals.get());
+
+
+    glActiveTexture(GL_TEXTURE0);
 #endif//FEATURE_3D_RENDERING
 }
 
@@ -149,16 +163,26 @@ void VisualAsteroid::draw3D()
 
     glTranslatef(0, 0, z);
     glRotatef(engine->getElapsedTime() * rotation_speed, 0, 0, 1);
-    //glScalef(getRadius(), getRadius(), getRadius());
-    glScalef(size, size, size);
-    sf::Shader* shader = ShaderManager::getShader("shaders/objectShaderBS");
-    shader->setUniform("baseMap", *textureManager.getTexture("Astroid_" + string(model_number) + "_d.png"));
-    shader->setUniform("specularMap", *textureManager.getTexture("Astroid_" + string(model_number) + "_s.png"));
-    sf::Shader::bind(shader);
+    glScalef(getRadius(), getRadius(), getRadius());
+
+    ShaderRegistry::ScopedShader shader(ShaderRegistry::Shaders::ObjectSpecular);
+
+    glBindTexture(GL_TEXTURE_2D, textureManager.getTexture("Astroid_" + string(model_number) + "_d.png")->getNativeHandle());
+
+    glActiveTexture(GL_TEXTURE0 + ShaderRegistry::textureIndex(ShaderRegistry::Textures::SpecularMap));
+    glBindTexture(GL_TEXTURE_2D, textureManager.getTexture("Astroid_" + string(model_number) + "_s.png")->getNativeHandle());
+
     Mesh* m = Mesh::getMesh("Astroid_" + string(model_number) + ".model");
+
+    gl::ScopedVertexAttribArray positions(shader.get().attribute(ShaderRegistry::Attributes::Position));
+    gl::ScopedVertexAttribArray texcoords(shader.get().attribute(ShaderRegistry::Attributes::Texcoords));
+    gl::ScopedVertexAttribArray normals(shader.get().attribute(ShaderRegistry::Attributes::Normal));
     if(m)
-        m->render();
+        m->render(positions.get(), texcoords.get(), normals.get());
+
+    glActiveTexture(GL_TEXTURE0);
 #endif//FEATURE_3D_RENDERING
+
 }
 
 void VisualAsteroid::setSize(float size)

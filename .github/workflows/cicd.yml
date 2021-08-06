@@ -44,9 +44,8 @@ jobs:
   macos:
     # https://github.com/actions/virtual-environments/issues/841
     # Mac builds are flaky, disable for now.
-    if: ${{ false }}
     name: MacOS
-    runs-on: macos-11.0
+    runs-on: macos-latest
     steps:
       - name: Dependencies
         run: brew install cmake sfml ninja
@@ -63,7 +62,7 @@ jobs:
         run: |
           mkdir -p _build_macos
           cd _build_macos
-          cmake ../EmptyEpsilon -G Ninja -DSERIOUS_PROTON_DIR=../SeriousProton
+          cmake ../EmptyEpsilon -G Ninja -DSERIOUS_PROTON_DIR=../SeriousProton -DCMAKE_INSTALL_PREFIX=.
           ninja
           ninja install
   windows:
@@ -103,3 +102,15 @@ jobs:
       - name: Build
         working-directory: ${{github.workspace}}/build
         run: cmake --build . --config ${{ matrix.build_type }} --target package 
+  luatest:
+    name: LuaTest
+    runs-on: ubuntu-latest
+    steps:
+    - name: Update apt index
+      run: sudo apt-get update -qq
+    - name: Install SFML
+      run: sudo apt-get install lua5.3
+    - name: Checkout EmptyEpsilon
+      uses: actions/checkout@v2
+    - name: Test if lua scripts parse
+      run: find scripts/ -iname "*.lua" | xargs -P 4 -n 1 luac -p

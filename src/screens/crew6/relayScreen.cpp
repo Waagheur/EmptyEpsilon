@@ -240,11 +240,11 @@ RelayScreen::RelayScreen(GuiContainer* owner, bool allow_comms)
     link_to_science_button->setIcon("gui/icons/station-science");
 
     // Reputation display.
-    //info_reputation = new GuiKeyValueDisplay(option_buttons, "INFO_REPUTATION", 0.7, tr("Reputation") + ":", "");
+    //info_reputation = new GuiKeyValueDisplay(option_buttons, "INFO_REPUTATION", 0.4f, tr("Reputation") + ":", "");
     //info_reputation->setSize(GuiElement::GuiSizeMax, 40);
 
     // Scenario clock display.
-    info_clock = new GuiKeyValueDisplay(option_buttons, "INFO_CLOCK", 0.7, tr("Clock") + ":", "");
+    info_clock = new GuiKeyValueDisplay(option_buttons, "INFO_CLOCK", 0.4f, tr("Clock") + ":", "");
     info_clock->setSize(GuiElement::GuiSizeMax, 40);
 
     // Bottom layout.

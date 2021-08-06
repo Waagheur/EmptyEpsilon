@@ -21,6 +21,9 @@ public:
     float rotatetime;
     P<ScanProbe> probe;
 
+    constexpr static uint8_t flag_callsigns = 0x04;
+    constexpr static uint8_t flag_headings  = 0x02;
+    constexpr static uint8_t flag_spacedust = 0x01;
 };
 
 #endif//VIEWPORT_MAIN_SCREEN_H

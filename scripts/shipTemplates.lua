@@ -9,6 +9,7 @@ These are:
 * Frigates: Medium sized ships. Operate on a small crew.
 * Covette: Large, slower, less maneuverable ships.
 * Dreadnaught: Huge things. Everything in here is really really big, and generally really really deadly.
+* Exuari: Ships with a similar style, designed (but not limited) for the Exuari faction.
 
 Player ships are in general large frigates to small corvette class
 --]]

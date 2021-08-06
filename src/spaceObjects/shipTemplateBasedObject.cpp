@@ -3,6 +3,9 @@
 #include "gameGlobalInfo.h"
 
 #include "scriptInterface.h"
+
+#include "i18n.h"
+
 REGISTER_SCRIPT_SUBCLASS_NO_CREATE(ShipTemplateBasedObject, SpaceObject)
 {
     /// Set the template to be used for this ship or station. Templates define hull/shields/looks etc.
@@ -309,12 +312,14 @@ void ShipTemplateBasedObject::update(float delta)
 std::unordered_map<string, string> ShipTemplateBasedObject::getGMInfo()
 {
     std::unordered_map<string, string> ret;
-    ret["ID"] = callsign;
-    ret["Type"] = type_name;
-    ret["Carlingue"] = string(hull_strength) + "/" + string(hull_max);
+    ret[trMark("gm_info", "CallSign")] = callsign;
+    ret[trMark("gm_info", "Type")] = type_name;
+    ret[trMark("gm_info", "Hull")] = string(hull_strength) + "/" + string(hull_max);
     for(int n=0; n<shield_count; n++)
     {
-        ret["Bouclier " + string(n + 1)] = string(shield_level[n]) + "/" + string(shield_max[n]);
+        // Note, translators: this is a compromise.
+        // Because of the deferred translation the variable parameter can't be forwarded, so it'll always be a suffix.
+        ret[trMark("gm_info", "Shield") + string(n + 1)] = string(shield_level[n]) + "/" + string(shield_max[n]);
     }
     return ret;
 }
@@ -391,9 +396,9 @@ void ShipTemplateBasedObject::takeDamage(float damage_amount, DamageInfo info)
         {
             if (info.instigator)
             {
-                on_taking_damage.call(P<ShipTemplateBasedObject>(this), P<SpaceObject>(info.instigator));
+                on_taking_damage.call<void>(P<ShipTemplateBasedObject>(this), P<SpaceObject>(info.instigator));
             } else {
-                on_taking_damage.call(P<ShipTemplateBasedObject>(this));
+                on_taking_damage.call<void>(P<ShipTemplateBasedObject>(this));
             }
         }
     }
@@ -413,9 +418,9 @@ void ShipTemplateBasedObject::takeHullDamage(float damage_amount, DamageInfo& in
         {
             if (info.instigator)
             {
-                on_destruction.call(P<ShipTemplateBasedObject>(this), P<SpaceObject>(info.instigator));
+                on_destruction.call<void>(P<ShipTemplateBasedObject>(this), P<SpaceObject>(info.instigator));
             } else {
-                on_destruction.call(P<ShipTemplateBasedObject>(this));
+                on_destruction.call<void>(P<ShipTemplateBasedObject>(this));
             }
         }
         destroy();
