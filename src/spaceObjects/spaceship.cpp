@@ -1817,9 +1817,12 @@ string SpaceShip::getScriptExportModificationsOnTemplate()
     if (hull_strength != ship_template->hull)
         ret += ":setHull(" + string(hull_strength, 0) + ")";
     if (impulse_max_speed != ship_template->impulse_speed)
-        ret += ":setImpulseMaxSpeed(" + string(impulse_max_speed, 1) + ")";
-    if (impulse_max_reverse_speed != ship_template->impulse_reverse_speed)
-        ret += ":setImpulseMaxReverseSpeed(" + string(impulse_max_reverse_speed, 1) + ")";
+    {
+        ret += ":setImpulseMaxSpeed(" + string(impulse_max_speed, 1);
+        if (impulse_max_reverse_speed != ship_template->impulse_reverse_speed)
+            ret += "," + string(impulse_max_reverse_speed, 1);
+        ret+= ")";
+    }
     if (turn_speed != ship_template->turn_speed)
         ret += ":setRotationMaxSpeed(" + string(turn_speed, 1) + ")";
     if (has_jump_drive != ship_template->has_jump_drive)
