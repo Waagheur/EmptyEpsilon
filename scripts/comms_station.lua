@@ -3,8 +3,6 @@
 -- Station comms that allows buying ordnance, supply drop, and reinforcements.
 -- Default script for any `SpaceStation`.
 --
--- TODO `player` can be replaced by `comms_source`
---
 -- @script comms_station
 
 -- uses `mergeTables`
@@ -14,7 +12,15 @@ require("utils.lua")
 local MISSILE_TYPES = {"Homing", "Nuke", "Mine", "EMP", "HVLI"}
 
 --- Main menu of communication.
-function commsStationMainMenu()
+--
+-- - Prepares `comms_data`.
+-- - If the station is not an enemy and no enemies are nearby, the dialog is
+--   provided by `commsStationUndocked` or `commsStationDocked`.
+--   (Back buttons go to the main menu in order to check for enemies again.)
+--
+-- @tparam PlayerSpaceship comms_source
+-- @tparam SpaceStation comms_target
+function commsStationMainMenu(comms_source, comms_target)
     if comms_target.comms_data == nil then
         comms_target.comms_data = {}
     end
@@ -55,10 +61,7 @@ function commsStationMainMenu()
         }
     )
 
-    -- comms_data is used globally (could be avoided, compare comms_ship)
-    comms_data = comms_target.comms_data
-
-    if player:isEnemy(comms_target) then
+    if comms_source:isEnemy(comms_target) then
         return false
     end
 
@@ -66,10 +69,10 @@ function commsStationMainMenu()
         setCommsMessage(_("commsStation", "We are under attack! No time for chatting!"))
         return true
     end
-    if not player:isDocked(comms_target) then
-        handleUndockedState()
+    if not comms_source:isDocked(comms_target) then
+        commsStationUndocked(comms_source, comms_target)
     else
-        handleDockedState()
+        commsStationDocked(comms_source, comms_target)
     end
     return true
 end
@@ -107,8 +110,10 @@ function commsStationDocked(comms_source, comms_target)
     end
 end
 
---- handleWeaponRestock
+--- Handle weapon restock.
 --
+-- @tparam PlayerSpaceship comms_source
+-- @tparam SpaceStation comms_target
 -- @tparam string weapon the missile type
 function handleWeaponRestock(comms_source, comms_target, weapon)
     if not comms_source:isDocked(comms_target) then
@@ -116,7 +121,8 @@ function handleWeaponRestock(comms_source, comms_target, weapon)
         return
     end
 
-    if not isAllowedTo(comms_data.weapons[weapon]) then
+    if not isAllowedTo(comms_source, comms_target, comms_target.comms_data.weapons[weapon]) then
+        local message
         if weapon == "Nuke" then
             message = _("commsStation", "We do not deal in weapons of mass destruction.")
         elseif weapon == "EMP" then
@@ -124,12 +130,14 @@ function handleWeaponRestock(comms_source, comms_target, weapon)
         else
             message = _("commsStation", "We do not deal in those weapons.")
         end
+        setCommsMessage(message)
         return
     end
 
-    local points_per_item = getWeaponCost(weapon)
-    local item_amount = math.floor(player:getWeaponStorageMax(weapon) * comms_data.max_weapon_refill_amount[getFriendStatus()]) - player:getWeaponStorage(weapon)
+    local points_per_item = getWeaponCost(comms_source, comms_target, weapon)
+    local item_amount = math.floor(comms_source:getWeaponStorageMax(weapon) * comms_target.comms_data.max_weapon_refill_amount[getFriendStatus(comms_source, comms_target)]) - comms_source:getWeaponStorage(weapon)
     if item_amount <= 0 then
+        local message
         if weapon == "Nuke" then
             message = _("commsStation", "All nukes are charged and primed for destruction.")
         else
@@ -177,7 +185,7 @@ function commsStationUndocked(comms_source, comms_target)
     end
 
     -- reinforcements
-    if isAllowedTo(comms_target.comms_data.services.reinforcements) then
+    if isAllowedTo(comms_source, comms_target, comms_target.comms_data.services.reinforcements) then
         addCommsReply(
             string.format(_("commsStation", "Please send reinforcements! (%d rep)"), getServiceCost(comms_source, comms_target, "reinforcements")),
             --
@@ -245,21 +253,24 @@ function commsStationReinforcements(comms_source, comms_target)
                     setCommsMessage(message)
                     addCommsReply(_("button", "Back"), commsStationMainMenu)
                 end
-                addCommsReply("Back", commsStationMainMenu)
-            end
-        )
+            )
+        end
     end
     addCommsReply(_("button", "Back"), commsStationMainMenu)
 end
 
 --- isAllowedTo
 --
--- @treturn boolean
-function isAllowedTo(state)
-    if state == "friend" and player:isFriendly(comms_target) then
+-- @tparam PlayerSpaceship comms_source
+-- @tparam SpaceStation comms_target
+-- @tparam string state
+-- @treturn boolean true if allowed
+function isAllowedTo(comms_source, comms_target, state)
+    -- TODO reconsider the logic of these conditions
+    if state == "friend" and comms_source:isFriendly(comms_target) then
         return true
     end
-    if state == "neutral" and not player:isEnemy(comms_target) then
+    if state == "neutral" and not comms_source:isEnemy(comms_target) then
         return true
     end
     return false
@@ -268,26 +279,33 @@ end
 --- Return the number of reputation points that a specified weapon costs for the
 -- current player.
 --
+-- @tparam PlayerSpaceship comms_source
+-- @tparam SpaceStation comms_target
 -- @tparam string weapon the missile type
--- @treturn integer
-function getWeaponCost(weapon)
-    return math.ceil(comms_data.weapon_cost[weapon] * comms_data.reputation_cost_multipliers[getFriendStatus()])
+-- @treturn integer the cost
+function getWeaponCost(comms_source, comms_target, weapon)
+    local relation = getFriendStatus(comms_source, comms_target)
+    return math.ceil(comms_target.comms_data.weapon_cost[weapon] * comms_target.comms_data.reputation_cost_multipliers[relation])
 end
 
 --- Return the number of reputation points that a specified service costs for
 -- the current player.
 --
+-- @tparam PlayerSpaceship comms_source
+-- @tparam SpaceStation comms_target
 -- @tparam string service the service
--- @treturn integer
-function getServiceCost(service)
-    return math.ceil(comms_data.service_cost[service])
+-- @treturn integer the cost
+function getServiceCost(comms_source, comms_target, service)
+    return math.ceil(comms_target.comms_data.service_cost[service])
 end
 
 --- Return "friend" or "neutral".
 --
--- @treturn string
-function getFriendStatus()
-    if player:isFriendly(comms_target) then
+-- @tparam PlayerSpaceship comms_source
+-- @tparam SpaceStation comms_target
+-- @treturn string the status
+function getFriendStatus(comms_source, comms_target)
+    if comms_source:isFriendly(comms_target) then
         return "friend"
     else
         return "neutral"
