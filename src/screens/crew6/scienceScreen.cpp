@@ -6,6 +6,7 @@
 #include "spaceObjects/asteroid.h"
 #include "spaceObjects/mine.h"
 #include "preferenceManager.h"
+#include "shipTemplate.h"
 
 #include "screenComponents/radarView.h"
 #include "screenComponents/rawScannerDataRadarOverlay.h"
@@ -317,7 +318,7 @@ void ScienceScreen::onDraw(sf::RenderTarget& window)
         if (targets.get() && (probe->getPosition() - targets.get()->getPosition()) > radar_range + targets.get()->getRadius())
             targets.clear();
     }else{
-        if (targets.get() && !P<Nebula>(targets.get()) && Nebula::blockedByNebula(my_spaceship->getPosition(), targets.get()->getPosition()))
+        if (targets.get() && !P<Nebula>(targets.get()) && Nebula::blockedByNebula(my_spaceship->getPosition(), targets.get()->getPosition(), my_spaceship->getShortRangeRadarRange()))
             targets.clear();
     }
 
@@ -449,12 +450,16 @@ void ScienceScreen::onDraw(sf::RenderTarget& window)
 //        if (description.size() > 0)
 //        {
 //
-//            if (!sidebar_pager->indexByValue("Description"))
+//            if (!sidebar_pager->indexByValue("Description") < 0)
 //                sidebar_pager->addEntry("Description", "Description");
 //        }
 //        else
+//        {
 //            sidebar_pager->removeEntry(sidebar_pager->indexByValue("Description"));
-//
+//            if (sidebar_pager->getSelectionIndex() < 0)
+//              sidebar_pager->setSelectionIndex(0);
+//        }
+//        string sidebar_pager_selection = sidebar_pager->getSelectionValue();
 //        if (obj->infos_label[0] != "")
 //        {
 //            if (!sidebar_pager->indexByValue("Informations"))
@@ -792,7 +797,7 @@ void ScienceScreen::onHotkey(const HotkeyResult& key)
                 // If this object is my ship or not visible due to a Nebula,
                 // skip it.
                 if (obj == my_spaceship ||
-                    Nebula::blockedByNebula(my_spaceship->getPosition(), obj->getPosition()))
+                    Nebula::blockedByNebula(my_spaceship->getPosition(), obj->getPosition(), my_spaceship->getShortRangeRadarRange()))
                     continue;
 
                 // If this is a scannable object and the currently selected
@@ -811,7 +816,7 @@ void ScienceScreen::onHotkey(const HotkeyResult& key)
             {
                 if (obj == targets.get() ||
                     obj == my_spaceship ||
-                    Nebula::blockedByNebula(my_spaceship->getPosition(), obj->getPosition()))
+                    Nebula::blockedByNebula(my_spaceship->getPosition(), obj->getPosition(), my_spaceship->getShortRangeRadarRange()))
                     continue;
 
                 if (sf::length(obj->getPosition() - my_spaceship->getPosition()) < science_radar->getDistance() &&

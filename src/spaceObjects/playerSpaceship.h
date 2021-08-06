@@ -36,21 +36,17 @@ class PlayerSpaceship : public SpaceShip
 {
 public:
     // Power consumption and generation base rates
-    constexpr static float energy_shield_use_per_second = 1.5f;
-    constexpr static float energy_warp_per_second = 1.0f;
-    constexpr static float system_heatup_per_second = 0.05f;
-    constexpr static float system_power_level_change_per_second = 0.3;
     constexpr static float energy_transfer_per_second = 5;
     constexpr static float heat_transfer_per_second = 0.1;
     constexpr static float repair_per_second = 0.007;
     constexpr static float cargo_repair_per_second = 0.1;
 
-    // Coolant change rate
-    constexpr static float system_coolant_level_change_per_second = 1.2;
     // Repair change rate
     constexpr static float system_repair_level_change_per_second = 1.2;
     // Repair effectiveness
     constexpr static float system_repair_effect_per_second = 0.005;
+    constexpr static float default_energy_shield_use_per_second = 1.5f;
+    constexpr static float default_energy_warp_per_second = 1.0f;
     // Total coolant
     float max_coolant_per_system = 10.0f;
     float max_coolant;
@@ -141,13 +137,12 @@ private:
     std::vector<ShipLogEntry> ships_log_docks;
     std::vector<ShipLogEntry> ships_log_science;
 
-
-    float long_range_radar_range = 50000.0f;
-    float short_range_radar_range = 5000.0f;
+    float energy_shield_use_per_second = default_energy_shield_use_per_second;
+    float energy_warp_per_second = default_energy_warp_per_second;
 public:
     ESystem auto_repairing_system;
     std::vector<CustomShipFunction> custom_functions;
-
+    
     std::vector<sf::Vector2f> waypoints;
 
     // Presets for engeneering screen
@@ -404,9 +399,9 @@ public:
     void setMaxCoolantPerSystem(float coolant){ max_coolant_per_system = coolant; }
     float getMaxCoolantPerSystem() { return max_coolant_per_system; }
     void setSystemRepairRequest(ESystem system, float request);
-    void setMaxRepair(float repair);
+    void setMaxRepair(float repair) { max_repair = repair; max_repair_per_system = std::min(max_repair_per_system, max_repair);} 
     float getMaxRepair() { return max_repair; }
-    void setMaxRepairPerSystem(int amount){ max_repair_per_system = (float) amount; }
+    void setMaxRepairPerSystem(float amount){ max_repair_per_system = amount; max_repair_per_system = std::min(max_repair_per_system, max_repair);}
     float getMaxRepairPerSystem() { return max_repair_per_system; }
     void setAutoRepair(bool active) { auto_repair_enabled = active; }
     int getRepairCrewCount();
@@ -414,6 +409,11 @@ public:
     EAlertLevel getAlertLevel() { return alert_level; }
 
     void setEnergyConsumptionRatio(float ratio) { energy_consumption_ratio = ratio;}
+    // Flow rate controls.
+    float getEnergyShieldUsePerSecond() const { return energy_shield_use_per_second; }
+    void setEnergyShieldUsePerSecond(float rate) { energy_shield_use_per_second = rate; }
+    float getEnergyWarpPerSecond() const { return energy_warp_per_second; }
+    void setEnergyWarpPerSecond(float rate) { energy_warp_per_second = rate; }
 
     // Ship update functions
     virtual void update(float delta) override;
@@ -460,8 +460,6 @@ public:
     float getLongRangeRadarRange();
     float getShortRangeRadarRange();
     float getProbeRangeRadarRange();
-    void setLongRangeRadarRange(float range);
-    void setShortRangeRadarRange(float range);
 
     //Ajout Tdelc, deplace depuis
     float getDronesControlRange();

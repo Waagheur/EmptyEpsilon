@@ -7,13 +7,10 @@
 
 #include "scriptInterface.h"
 #include "glObjects.h"
+#include "shaderRegistry.h"
 
 
 #if FEATURE_3D_RENDERING
-sf::Shader* BlackHole::shader = nullptr;
-uint32_t BlackHole::shaderPositionAttribute = 0;
-uint32_t BlackHole::shaderTexCoordsAttribute = 0;
-
 struct VertexAndTexCoords
 {
     sf::Vector3f vertex;
@@ -37,17 +34,8 @@ BlackHole::BlackHole()
     update_delta = 0.0;
     PathPlannerManager::getInstance()->addAvoidObject(this, 7000);
     setRadarSignatureInfo(0.9, 0, 0);
-
     registerMemberReplication(&size);
 
-#if FEATURE_3D_RENDERING
-    if (!shader && gl::isAvailable())
-    {
-        shader = ShaderManager::getShader("shaders/billboard");
-        shaderPositionAttribute = glGetAttribLocation(shader->getNativeHandle(), "position");
-        shaderTexCoordsAttribute = glGetAttribLocation(shader->getNativeHandle(), "texcoords");
-    }
-#endif
 }
 
 void BlackHole::update(float delta)
@@ -59,24 +47,25 @@ void BlackHole::update(float delta)
 void BlackHole::draw3DTransparent()
 {
     static std::array<VertexAndTexCoords, 4> quad{
-        sf::Vector3f(), {0.f, 0.f},
-        sf::Vector3f(), {1.f, 0.f},
+        sf::Vector3f(), {0.f, 1.f},
         sf::Vector3f(), {1.f, 1.f},
-        sf::Vector3f(), {0.f, 1.f}
+        sf::Vector3f(), {1.f, 0.f},
+        sf::Vector3f(), {0.f, 0.f}
     };
 
-    gl::ScopedVertexAttribArray positions(shaderPositionAttribute);
-    gl::ScopedVertexAttribArray texcoords(shaderTexCoordsAttribute);
+    glBindTexture(GL_TEXTURE_2D, textureManager.getTexture("blackHole3d.png")->getNativeHandle());
+    ShaderRegistry::ScopedShader shader(ShaderRegistry::Shaders::Billboard);
+
+    glUniform4f(shader.get().uniform(ShaderRegistry::Uniforms::Color), 1.f, 1.f, 1.f, 5000.f);
+    gl::ScopedVertexAttribArray positions(shader.get().attribute(ShaderRegistry::Attributes::Position));
+    gl::ScopedVertexAttribArray texcoords(shader.get().attribute(ShaderRegistry::Attributes::Texcoords));
 
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    shader->setUniform("textureMap", *textureManager.getTexture("blackHole3d.png"));
-    shader->setUniform("color", sf::Glsl::Vec4(1.f, 1.f, 1.f, 5000.f));
-    sf::Shader::bind(shader);
 
     glVertexAttribPointer(positions.get(), 3, GL_FLOAT, GL_FALSE, sizeof(VertexAndTexCoords), (GLvoid*)quad.data());
     glVertexAttribPointer(texcoords.get(), 2, GL_FLOAT, GL_FALSE, sizeof(VertexAndTexCoords), (GLvoid*)((char*)quad.data() + sizeof(sf::Vector3f)));
 
-    std::initializer_list<uint8_t> indices = { 0, 1, 2, 2, 3, 0 };
+    std::initializer_list<uint8_t> indices = { 0, 2, 1, 0, 3, 2 };
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_BYTE, std::begin(indices));
     glBlendFunc(GL_ONE, GL_ONE);
 }

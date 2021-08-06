@@ -209,7 +209,7 @@ void GameGlobalInfo::startScenario(string filename)
     reset();
 
     i18n::reset();
-    i18n::load("locale/" + PreferencesManager::get("language", "en") + ".po");
+    i18n::load("locale/main." + PreferencesManager::get("language", "en") + ".po");
     i18n::load("locale/" + filename.replace(".lua", "." + PreferencesManager::get("language", "en") + ".po"));
 
     fillDefaultDatabaseData();
@@ -501,6 +501,15 @@ static int getScenarioVariation(lua_State* L)
 /// getScenarioVariation()
 /// Returns the currently used scenario variation.
 REGISTER_SCRIPT_FUNCTION(getScenarioVariation);
+
+static int getGameLanguage(lua_State* L)
+{
+    lua_pushstring(L, PreferencesManager::get("language", "en").c_str());
+    return 1;
+}
+/// getGameLanguage()
+/// Returns the language as the string set in game preferences under language key
+REGISTER_SCRIPT_FUNCTION(getGameLanguage);
 
 /** Short lived object to do a scenario change on the update loop. See "setScenario" for details */
 class ScenarioChanger : public Updatable

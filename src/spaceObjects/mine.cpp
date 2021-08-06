@@ -8,6 +8,8 @@
 #include "scriptInterface.h"
 #include "spaceObjects/spaceship.h"
 
+#include "i18n.h"
+
 /// A mine object. Simple, effective, deadly.
 REGISTER_SCRIPT_SUBCLASS(Mine, SpaceObject)
 {
@@ -134,9 +136,9 @@ void Mine::explode()
     {
         if (info.instigator)
         {
-            on_destruction.call(P<Mine>(this), P<SpaceObject>(info.instigator));
+            on_destruction.call<void>(P<Mine>(this), P<SpaceObject>(info.instigator));
         }else{
-            on_destruction.call(P<Mine>(this));
+            on_destruction.call<void>(P<Mine>(this));
         }
     }
     destroy();
@@ -164,10 +166,10 @@ std::unordered_map<string, string> Mine::getGMInfo()
 
     if (owner)
     {
-        ret["Owner"] = owner->getCallSign();
+        ret[trMark("gm_info", "Owner")] = owner->getCallSign();
     }
 
-    ret["Faction"] = getLocaleFaction();
+    ret[trMark("gm_info", "Faction")] = getLocaleFaction();
 
     return ret;
 }

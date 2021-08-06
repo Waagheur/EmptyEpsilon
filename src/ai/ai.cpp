@@ -256,7 +256,7 @@ void ShipAI::updateTarget()
     long_range = owner->getLongRangeRadarRange();
 
     // Check if we lost our target because it entered a nebula.
-    if (target && target->canHideInNebula() && Nebula::blockedByNebula(position, target->getPosition()))
+    if (target && target->canHideInNebula() && Nebula::blockedByNebula(position, target->getPosition(), owner->getShortRangeRadarRange()))
     {
         // When we're roaming, and we lost our target in a nebula, set the
         // "fly to" position to the last known position of the enemy target.
@@ -694,7 +694,7 @@ P<SpaceObject> ShipAI::findBestTarget(sf::Vector2f position, float radius)
             continue;
         if (P<Asteroid>(space_object))
             continue;
-        if (space_object->canHideInNebula() && Nebula::blockedByNebula(owner_position, space_object->getPosition()))
+        if (space_object->canHideInNebula() && Nebula::blockedByNebula(owner_position, space_object->getPosition(), owner->getShortRangeRadarRange()))
             continue;
         if (owner->id_galaxy != space_object->id_galaxy)
             continue;

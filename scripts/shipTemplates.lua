@@ -9,20 +9,21 @@ These are:
 * Frigates: Medium sized ships. Operate on a small crew.
 * Covette: Large, slower, less maneuverable ships.
 * Dreadnaught: Huge things. Everything in here is really really big, and generally really really deadly.
+* Exuari: Ships with a similar style, designed (but not limited) for the Exuari faction.
 
 Player ships are in general large frigates to small corvette class
 --]]
-require("shipTemplates40k_Stations.lua")
+require("shipTemplates_40k_Stations.lua")
 ---[[Ajouts 40k
-require("shipTemplates40k_VaisseauxLegers.lua")
-require("shipTemplates40k_Fregates.lua")
-require("shipTemplates40k_Escorteurs.lua")
-require("shipTemplates40k_CroiseursLegers.lua")
-require("shipTemplates40k_Croiseurs.lua")
-require("shipTemplates40k_Cuirasses.lua")
-require("shipTemplates40k_Capitaux.lua")
-require("shipTemplates40k_Autres.lua")
-require("shipTemplates40k_Jouables.lua")
+require("shipTemplates_40k_VaisseauxLegers.lua")
+require("shipTemplates_40k_Fregates.lua")
+require("shipTemplates_40k_Escorteurs.lua")
+require("shipTemplates_40k_CroiseursLegers.lua")
+require("shipTemplates_40k_Croiseurs.lua")
+require("shipTemplates_40k_Cuirasses.lua")
+require("shipTemplates_40k_Capitaux.lua")
+require("shipTemplates_40k_Autres.lua")
+require("shipTemplates_40k_Jouables.lua")
 ---[[Until these are ready, they are disabled
 ---require("shipTemplates_Drones.lua")
 ---require("shipTemplates_StarFighters.lua")

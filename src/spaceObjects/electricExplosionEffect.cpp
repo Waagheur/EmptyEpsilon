@@ -3,11 +3,9 @@
 #include "main.h"
 #include "electricExplosionEffect.h"
 #include "glObjects.h"
+#include "shaderRegistry.h"
 
 #if FEATURE_3D_RENDERING
-sf::Shader* ElectricExplosionEffect::particlesShader = nullptr;
-uint32_t ElectricExplosionEffect::particlesShaderPositionAttribute = 0;
-uint32_t ElectricExplosionEffect::particlesShaderTexCoordsAttribute = 0;
 gl::Buffers<2> ElectricExplosionEffect::particlesBuffers(gl::Unitialized{});
 #endif
 
@@ -35,12 +33,8 @@ ElectricExplosionEffect::ElectricExplosionEffect()
     registerMemberReplication(&size);
     registerMemberReplication(&on_radar);
 #if FEATURE_3D_RENDERING
-    if (!particlesShader && gl::isAvailable())
+    if (!particlesBuffers[0] && gl::isAvailable())
     {
-        particlesShader = ShaderManager::getShader("shaders/billboard");
-        particlesShaderPositionAttribute = glGetAttribLocation(particlesShader->getNativeHandle(), "position");
-        particlesShaderTexCoordsAttribute = glGetAttribLocation(particlesShader->getNativeHandle(), "texcoords");
-
         particlesBuffers = gl::Buffers<2>();
 
         
@@ -56,20 +50,20 @@ ElectricExplosionEffect::ElectricExplosionEffect()
         // Create initial data.
         std::array<uint8_t, 6 * max_quad_count> indices;
         std::array<sf::Vector2f, 4 * max_quad_count> texcoords;
-        for (auto i = 0; i < max_quad_count; ++i)
+        for (auto i = 0U; i < max_quad_count; ++i)
         {
             auto quad_offset = 4 * i;
-            texcoords[quad_offset + 0] = { 0.f, 0.f };
-            texcoords[quad_offset + 1] = { 1.f, 0.f };
-            texcoords[quad_offset + 2] = { 1.f, 1.f };
-            texcoords[quad_offset + 3] = { 0.f, 1.f };
+            texcoords[quad_offset + 0] = { 0.f, 1.f };
+            texcoords[quad_offset + 1] = { 1.f, 1.f };
+            texcoords[quad_offset + 2] = { 1.f, 0.f };
+            texcoords[quad_offset + 3] = { 0.f, 0.f };
 
             indices[6 * i + 0] = quad_offset + 0;
-            indices[6 * i + 1] = quad_offset + 1;
-            indices[6 * i + 2] = quad_offset + 2;
-            indices[6 * i + 3] = quad_offset + 2;
+            indices[6 * i + 1] = quad_offset + 2;
+            indices[6 * i + 2] = quad_offset + 1;
+            indices[6 * i + 3] = quad_offset + 0;
             indices[6 * i + 4] = quad_offset + 3;
-            indices[6 * i + 5] = quad_offset + 0;
+            indices[6 * i + 5] = quad_offset + 2;
         }
 
         // Update texcoords
@@ -99,18 +93,27 @@ void ElectricExplosionEffect::draw3DTransparent()
         alpha = Tween<float>::easeInQuad(f, 0.2, 1.0, 0.5f, 0.0f);
     }
 
-    glPushMatrix();
-    glScalef(scale * size, scale * size, scale * size);
-    glColor3f(alpha, alpha, alpha);
+    ShaderRegistry::ScopedShader shader(ShaderRegistry::Shaders::Basic);
 
-    ShaderManager::getShader("shaders/basicShader")->setUniform("textureMap", *textureManager.getTexture("electric_sphere_texture.png"));
-    sf::Shader::bind(ShaderManager::getShader("shaders/basicShader"));
+    glPushMatrix();
     Mesh* m = Mesh::getMesh("sphere.obj");
-    if(m)
-        m->render();
-    glScalef(0.5, 0.5, 0.5);
-    if(m)
-        m->render();
+    {
+        glUniform4f(shader.get().uniform(ShaderRegistry::Uniforms::Color), alpha, alpha, alpha, 1.f);
+        glBindTexture(GL_TEXTURE_2D, textureManager.getTexture("electric_sphere_texture.png")->getNativeHandle());
+
+        gl::ScopedVertexAttribArray positions(shader.get().attribute(ShaderRegistry::Attributes::Position));
+        gl::ScopedVertexAttribArray texcoords(shader.get().attribute(ShaderRegistry::Attributes::Texcoords));
+        gl::ScopedVertexAttribArray normals(shader.get().attribute(ShaderRegistry::Attributes::Normal));
+
+        glScalef(scale * size, scale * size, scale * size);
+        if(m)
+            m->render(positions.get(), texcoords.get(), normals.get());
+
+        glScalef(0.5f, 0.5f, 0.5f);
+        if(m)
+            m->render(positions.get(), texcoords.get(), normals.get());
+        
+    }
     glPopMatrix();
 
     scale = Tween<float>::easeInCubic(f, 0.0, 1.0, 0.3f, 3.0f);
@@ -120,14 +123,18 @@ void ElectricExplosionEffect::draw3DTransparent()
 
     std::array<sf::Vector3f, 4 * max_quad_count> vertices;
 
-    particlesShader->setUniform("textureMap", *textureManager.getTexture("particle.png"));
+    glBindTexture(GL_TEXTURE_2D, textureManager.getTexture("particle.png")->getNativeHandle());
 
-    sf::Shader::bind(particlesShader);
-    particlesShader->setUniform("color", sf::Glsl::Vec4(r, g, b, size / 32.0f));
+    shader = ShaderRegistry::ScopedShader(ShaderRegistry::Shaders::Billboard);
+
+    gl::ScopedVertexAttribArray positions(shader.get().attribute(ShaderRegistry::Attributes::Position));
+    gl::ScopedVertexAttribArray texcoords(shader.get().attribute(ShaderRegistry::Attributes::Texcoords));
+
+    glUniform4f(shader.get().uniform(ShaderRegistry::Uniforms::Color), r, g, b, size / 32.0f);
+
     gl::ScopedBufferBinding vbo(GL_ARRAY_BUFFER, particlesBuffers[0]);
     gl::ScopedBufferBinding ebo(GL_ELEMENT_ARRAY_BUFFER, particlesBuffers[1]);
-    gl::ScopedVertexAttribArray positions(particlesShaderPositionAttribute);
-    gl::ScopedVertexAttribArray texcoords(particlesShaderTexCoordsAttribute);
+    
 
     // Set up attribs
     glVertexAttribPointer(positions.get(), 3, GL_FLOAT, GL_FALSE, sizeof(sf::Vector3f), (GLvoid*)0);
@@ -140,7 +147,7 @@ void ElectricExplosionEffect::draw3DTransparent()
     {
         auto active_quads = std::min(quad_count, particleCount - n);
         // setup quads
-        for (auto p = 0; p < active_quads; ++p)
+        for (auto p = 0U; p < active_quads; ++p)
         {
             sf::Vector3f v = particleDirections[n + p] * scale * size;
             vertices[4 * p + 0] = v;

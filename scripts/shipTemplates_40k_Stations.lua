@@ -11,8 +11,8 @@ Stations;
 Les Stations apporte un soutien aux vaisseaux de combat et sert d'atelier de reparations.
 ----------------------------------------------------------]]
 
-	
-template = ShipTemplate():setName("Petite Station"):setModel("space_station_4"):setType("station"):setClass(_("Installation Fixe"), _("subclass", "Support"))
+--[[Petite Station]]
+template = ShipTemplate():setName("Petite Station"):setModel("space_station_4"):setType("station"):setClass(_("Installation Fixe"),_("subclass", "Support"))
 template:setDescription([[ Petite station spatiale, elle sert pour le ravitaillement en espace profond]])
 template:setHull(150)
 template:setShields(300)

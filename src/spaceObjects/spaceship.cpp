@@ -33,6 +33,7 @@ REGISTER_SCRIPT_SUBCLASS_NO_CREATE(SpaceShip, ShipTemplateBasedObject)
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, isDocked);
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, isDockedWith);
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, getDockedWith);
+    REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, getDockingState);
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, getTarget);
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, getDockTarget);
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, getWeaponStorage);
@@ -64,8 +65,12 @@ REGISTER_SCRIPT_SUBCLASS_NO_CREATE(SpaceShip, ShipTemplateBasedObject)
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, setSystemHealthMax);
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, getSystemHeat);
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, setSystemHeat);
+    REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, getSystemHeatRate);
+    REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, setSystemHeatRate);
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, getSystemPower);
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, setSystemPower);
+    REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, getSystemPowerRate);
+    REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, setSystemPowerRate);
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, getSystemPowerFactor);
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, setSystemPowerFactor);
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, getSystemCoolant);
@@ -73,16 +78,28 @@ REGISTER_SCRIPT_SUBCLASS_NO_CREATE(SpaceShip, ShipTemplateBasedObject)
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, getSystemEffectiveness);
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, getSystemRepair);
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, setSystemRepair);
+    REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, getSystemCoolantRate);
+    REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, setSystemCoolantRate);
+    ///Get multiple results, first one is forward speed and second one is reverse speed.
+    ///ex : forward,reverse = getImpulseMaxSpeed() (you can also use select or _ to get only reverse speed)
+    ///You can also only get forward speed, reverse speed will just be discarded : 
+    ///forward = getImpulseMaxSpeed()
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, getImpulseMaxSpeed);
+    ///Sets max speed.
+    ///If called with only one argument, sets forward and reverse speed to equal values.
+    ///If called with two arguments, first one is forward speed and second one is reverse speed.
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, setImpulseMaxSpeed);
-    REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, getImpulseMaxReverseSpeed);
-    REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, setImpulseMaxReverseSpeed);
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, getRotationMaxSpeed);
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, setRotationMaxSpeed);
+    ///Get multiple resulsts, first one is forward acceleration and second one is reverse acceleration.
+    ///ex : forward, reverse = getAcceleration (you can also use select or _ to get only reverse speed)
+    ///You can also only get forward speed, reverse speed will just be discarded : 
+    ///forward = getAcceleration()
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, getAcceleration);
+    ///Sets acceleration.
+    ///If called with one argument, sets forward and reverse acceleration to equal values.
+    ///If called with two arguments, first one is forward acceleration and second one is reverse acceleration.
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, setAcceleration);
-    REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, getReverseAcceleration);
-    REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, setReverseAcceleration);
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, setCombatManeuver);
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, hasReactor);
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, setReactor);
@@ -105,6 +122,7 @@ REGISTER_SCRIPT_SUBCLASS_NO_CREATE(SpaceShip, ShipTemplateBasedObject)
     /// returns the current amount of jump charged.
     /// Example ship:getJumpDriveCharge()
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, getJumpDriveCharge);
+    REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, getJumpDelay);
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, hasWarpDrive);
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, setWarpDrive);
     /// Set the warp speed for this ship's warp level 1.
@@ -279,16 +297,18 @@ SpaceShip::SpaceShip(string multiplayerClassName, float multiplayer_significant_
     for(int n=0; n<SYS_COUNT; n++)
     {
         assert(n < default_system_power_factors.size());
-        systems[n].health = 1.0;
-        systems[n].health_max = 1.0;
-        systems[n].power_level = 1.0;
-        systems[n].power_request = 1.0;
-        systems[n].coolant_level = 0.0;
-        systems[n].coolant_request = 0.0;
+        systems[n].health = 1.0f;
+        systems[n].health_max = 1.0f;
+        systems[n].power_level = 1.0f;
+        systems[n].power_rate_per_second = ShipSystem::default_power_rate_per_second;
+        systems[n].power_request = 1.0f;
+        systems[n].coolant_rate_per_second = ShipSystem::default_coolant_rate_per_second;
+        systems[n].coolant_request = 0.0f;
         systems[n].repair_level = 0.0;
         systems[n].repair_request = 0.0;
-        systems[n].heat_level = 0.0;
-        systems[n].hacked_level = 0.0;
+        systems[n].heat_level = 0.0f;
+        systems[n].heat_rate_per_second = ShipSystem::default_heat_rate_per_second;
+        systems[n].hacked_level = 0.0f;
         systems[n].power_factor = default_system_power_factors[n];
 
         if (n == SYS_Cloaking)
@@ -300,12 +320,15 @@ SpaceShip::SpaceShip(string multiplayerClassName, float multiplayer_significant_
         registerMemberReplication(&systems[n].health, 0.1);
         registerMemberReplication(&systems[n].health_max, 0.1);
         registerMemberReplication(&systems[n].power_level, 0.1);
+        registerMemberReplication(&systems[n].power_rate_per_second, .5f);
         registerMemberReplication(&systems[n].power_request, 0.1);
         registerMemberReplication(&systems[n].coolant_level, 0.1);
+        registerMemberReplication(&systems[n].coolant_rate_per_second, .5f);
         registerMemberReplication(&systems[n].coolant_request, 0.1);
         registerMemberReplication(&systems[n].repair_level, 0.1);
         registerMemberReplication(&systems[n].repair_request, 0.1);
         registerMemberReplication(&systems[n].heat_level, 0.1);
+        registerMemberReplication(&systems[n].heat_rate_per_second, .5f);
         registerMemberReplication(&systems[n].hacked_level, 0.1);
         registerMemberReplication(&systems[n].power_factor);
     }
@@ -385,23 +408,9 @@ void SpaceShip::applyTemplateValues()
     energy_level = max_energy_level = ship_template->energy_storage_amount;
 
     impulse_max_speed = ship_template->impulse_speed;
-    if(ship_template->impulse_reverse_speed != -1)
-    {
-        impulse_max_reverse_speed = ship_template->impulse_reverse_speed;
-    }
-    else //We did not change reverse speed value, so it's defaulted to front speed
-    {
-        impulse_max_reverse_speed = ship_template->impulse_speed;
-    }
+    impulse_max_reverse_speed = ship_template->impulse_reverse_speed;
     impulse_acceleration = ship_template->impulse_acceleration;
-    if(ship_template->impulse_reverse_acceleration != -1)
-    {
-        impulse_reverse_acceleration = ship_template->impulse_reverse_acceleration;
-    }
-    else //We did not change reverse deceleration value, so it's defaulted to front acceleration
-    {
-        impulse_reverse_acceleration = ship_template->impulse_acceleration;
-    }
+    impulse_reverse_acceleration = ship_template->impulse_reverse_acceleration;
     
     turn_speed = ship_template->turn_speed;
     combat_maneuver_boost_speed = ship_template->combat_maneuver_boost_speed;
@@ -489,7 +498,7 @@ void SpaceShip::applyTemplateValues()
     if (!on_new_ship_called)
     {
         on_new_ship_called=true;
-        gameGlobalInfo->on_new_ship.call(P<SpaceShip>(this));
+        gameGlobalInfo->on_new_ship.call<void>(P<SpaceShip>(this));
     }
 }
 

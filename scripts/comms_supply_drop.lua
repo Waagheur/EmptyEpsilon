@@ -8,15 +8,15 @@
 -- @script comms_supply_drop
 
 --- Main menu.
-function commsShipMainMenu()
-    if player:isFriendly(comms_target) then
-        setCommsMessage("Transporting goods.")
+function commsShipMainMenu(comms_source, comms_target)
+    if comms_source:isFriendly(comms_target) then
+        setCommsMessage(_("commsShip", "Transporting goods."))
         return true
     end
     if player:isEnemy(comms_target) then
         return false
     end
-    setCommsMessage("We have nothing for you.\nGood day.")
+    setCommsMessage(_("commsShip", "We have nothing for you.\nGood day."))
 end
 
 commsShipMainMenu()

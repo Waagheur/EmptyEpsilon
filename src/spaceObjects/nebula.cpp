@@ -8,12 +8,9 @@
 #include "scriptInterface.h"
 
 #include "glObjects.h"
+#include "shaderRegistry.h"
 
 #if FEATURE_3D_RENDERING
-sf::Shader* Nebula::shader = nullptr;
-uint32_t Nebula::shaderPositionAttribute = 0;
-uint32_t Nebula::shaderTexCoordsAttribute = 0;
-
 struct VertexAndTexCoords
 {
     sf::Vector3f vertex;
@@ -53,32 +50,23 @@ Nebula::Nebula()
     }
 
     nebula_list.push_back(this);
-
-#if FEATURE_3D_RENDERING
-    if (!shader && gl::isAvailable())
-    {
-        shader = ShaderManager::getShader("shaders/billboard");
-        shaderPositionAttribute = glGetAttribLocation(shader->getNativeHandle(), "position");
-        shaderTexCoordsAttribute = glGetAttribLocation(shader->getNativeHandle(), "texcoords");
-    }
-#endif
 }
 
 #if FEATURE_3D_RENDERING
 void Nebula::draw3DTransparent()
 {
-    glRotatef(getRotation(), 0, 0, -1);
+    ShaderRegistry::ScopedShader shader(ShaderRegistry::Shaders::Billboard);
     glTranslatef(-getPosition().x, -getPosition().y, 0);
 
     std::array<VertexAndTexCoords, 4> quad{
-        sf::Vector3f(), {0.f, 0.f},
-        sf::Vector3f(), {1.f, 0.f},
+        sf::Vector3f(), {0.f, 1.f},
         sf::Vector3f(), {1.f, 1.f},
-        sf::Vector3f(), {0.f, 1.f}
+        sf::Vector3f(), {1.f, 0.f},
+        sf::Vector3f(), {0.f, 0.f}
     };
 
-    gl::ScopedVertexAttribArray positions(shaderPositionAttribute);
-    gl::ScopedVertexAttribArray texcoords(shaderTexCoordsAttribute);
+    gl::ScopedVertexAttribArray positions(shader.get().attribute(ShaderRegistry::Attributes::Position));
+    gl::ScopedVertexAttribArray texcoords(shader.get().attribute(ShaderRegistry::Attributes::Texcoords));
 
     for(int n=0; n<cloud_count; n++)
     {
@@ -98,15 +86,12 @@ void Nebula::draw3DTransparent()
             point.vertex = position;
         }
 
-        
-        shader->setUniform("textureMap", *textureManager.getTexture("Nebula" + string(cloud.texture) + ".png"));
-        shader->setUniform("color", sf::Glsl::Vec4(alpha * 0.8f, alpha * 0.8f, alpha * 0.8f, size));
-
-        sf::Shader::bind(shader); // we need to rebind the shader (for the texture unit)
+        glBindTexture(GL_TEXTURE_2D, textureManager.getTexture("Nebula" + string(cloud.texture) + ".png")->getNativeHandle());
+        glUniform4f(shader.get().uniform(ShaderRegistry::Uniforms::Color), alpha * 0.8f, alpha * 0.8f, alpha * 0.8f, size);
 
         glVertexAttribPointer(positions.get(), 3, GL_FLOAT, GL_FALSE, sizeof(VertexAndTexCoords), (GLvoid*)quad.data());
         glVertexAttribPointer(texcoords.get(), 2, GL_FLOAT, GL_FALSE, sizeof(VertexAndTexCoords), (GLvoid*)((char*)quad.data() + sizeof(sf::Vector3f)));
-        std::initializer_list<uint8_t> indices = { 0, 1, 2, 2, 3, 0 };
+        std::initializer_list<uint8_t> indices = { 0, 3, 2, 0, 2, 1 };
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_BYTE, std::begin(indices));
     }
 }
@@ -145,11 +130,11 @@ bool Nebula::inNebula(sf::Vector2f position)
     return false;
 }
 
-bool Nebula::blockedByNebula(sf::Vector2f start, sf::Vector2f end)
+bool Nebula::blockedByNebula(sf::Vector2f start, sf::Vector2f end, float radar_short_range)
 {
     sf::Vector2f startEndDiff = end - start;
     float startEndLength = sf::length(startEndDiff);
-    if (startEndLength < 5000.0f)
+    if (startEndLength < radar_short_range)
         return false;
 
     foreach(Nebula, n, nebula_list)

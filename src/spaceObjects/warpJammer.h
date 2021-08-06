@@ -32,7 +32,7 @@ public:
     virtual bool canBeTargetedBy(P<SpaceObject> other)  override { return true; }
     virtual void takeDamage(float damage_amount, DamageInfo info) override;
     
-    virtual string getExportLine() override { return "WarpJammer():setFaction(\"" + getFaction() + "\"):setPosition(" + string(getPosition().x, 0) + ", " + string(getPosition().y, 0) + ")"; }
+    virtual string getExportLine() override;
 };
 
 #endif//WARP_JAMMER_H

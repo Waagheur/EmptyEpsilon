@@ -29,8 +29,6 @@ public:
     typedef std::function<void(float position)>        ffunc_t;
 private:
     sf::RenderTexture background_texture;
-    sf::RenderTexture forground_texture;
-    sf::RenderTexture mask_texture;
 
     class GhostDot
     {
@@ -47,9 +45,9 @@ private:
 
     GuiMissileTubeControls* missile_tube_controls;
 
+    bool auto_rotate_on_my_ship;
     bool auto_distance = false;
     bool auto_center_on_my_ship;
-    bool auto_rotate_on_my_ship;
     bool long_range;
     bool show_ghost_dots;
     bool show_waypoints;
@@ -117,7 +115,7 @@ private:
     void drawRangeIndicators(sf::RenderTarget& window);
     void drawTargetProjections(sf::RenderTarget& window);
     void drawMissileTubes(sf::RenderTarget& window);
-    void drawObjects(sf::RenderTarget& window_normal, sf::RenderTarget& window_alpha);
+    void drawObjects(sf::RenderTarget& window);
     void drawObjectsGM(sf::RenderTarget& window);
     void drawHeadingIndicators(sf::RenderTarget& window);
     void drawRadarCutoff(sf::RenderTarget& window);

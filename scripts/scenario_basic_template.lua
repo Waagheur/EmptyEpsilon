@@ -55,5 +55,5 @@ end
 --
 -- @tparam number delta the time delta (in seconds)
 function update(delta)
-   	doUpdateShips(delta)		
+   	doUpdateUtils(delta)
 end 

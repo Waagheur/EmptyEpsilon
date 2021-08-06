@@ -10,6 +10,9 @@
 --  to the list. Any number is valid, but only 0.99-9.0 are meaningful.
 -- @tparam number a The spawned wave's heading relative to the players' spawn point.
 -- @tparam number d The spawned wave's distance from the players' spawn point.
+
+require("emergency_jump.lua")
+
 function addWave(enemyList,type,l,e,f,a,d)
 		leader = setCirclePos(CpuShip():setTemplate(l):setFaction(f):setRotation(a + 180):orderRoaming(), 0, 0, a + random(-1, 1), d + random(-100, 100))
 		table.insert(enemyList, leader)
@@ -71,9 +74,7 @@ end
 --
 function checkAndMakeDerelict(ship, hullDamage, derelict_faction)
 	if hullDamage >= ship:getHull()  then
-		print "excess dam"
 		ship:setHull(5 + hullDamage)
-		print(string.format("%f hull apr", ship:getHull()))
 		for _, system in ipairs(SYSTEMS) do
 			ship:setSystemHealthMax(system, -0.5)
 			ship:setSystemHealth(system, -0.5)
@@ -210,6 +211,23 @@ function doOnNewPlayerShip(pc)
 	pc:setMaxScanProbeCount(16)
 	pc:setScanProbeCount(16)
 --	PC:setJumpDriveCharge(50000)
+	if pc:hasJumpDrive() then
+		pc.emergencyJump = function()
+			print(string.format("%f", pc:getSystemHealth("jumpdrive")))
+			if((pc:getSystemHealth("jumpdrive") > 0.5) and (pc:getMaxRepairPerSystem() > 0.75)) then
+				if(pc:getMaxRepair() >= 0.7) then
+					activateEmergencyJump(10, pc, pc.emergencyJump)
+				else
+					pc:addToShipLog("Pas assez de personnel de reparation pour effectuer un saut d'urgence", "red")	
+				end
+			elseif (pc:getSystemHealth("jumpdrive") <= 0.5) then
+				pc:addToShipLog("Moteur warp trop endommage pour effectuer un saut d'urgence", "red")
+			elseif (pc:getMaxRepairPerSystem() <= 0.75) then
+				pc:addToShipLog("Système de réparation trop endommagé pour effectuer un saut d'urgence", "red")
+			end
+		end
+		pc:addCustomButton("Helms","emergencyJumpButton", "Saut d'urgence", pc.emergencyJump)
+	end
 	
 		
 	--popWarpJammerButton = "popWarpjammerButton"
@@ -273,6 +291,11 @@ function doInit()
 			addFixedWave('Chasseur Corsair','Chasseur Corsair',"Eldars",randomWaveAngle(math.random(20), math.random(20)),x,y)
 		end)
 	end)
+end
+
+function doUpdateUtils(delta)
+	doUpdateShips(delta)
+	updateEmergencyJump(delta)
 end
 
 -- Attention a ne pas trop surcharger cette methode
