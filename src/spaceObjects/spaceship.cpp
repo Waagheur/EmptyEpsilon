@@ -302,6 +302,7 @@ SpaceShip::SpaceShip(string multiplayerClassName, float multiplayer_significant_
         systems[n].power_level = 1.0f;
         systems[n].power_rate_per_second = ShipSystem::default_power_rate_per_second;
         systems[n].power_request = 1.0f;
+        systems[n].coolant_level = 0.0f;
         systems[n].coolant_rate_per_second = ShipSystem::default_coolant_rate_per_second;
         systems[n].coolant_request = 0.0f;
         systems[n].repair_level = 0.0;
