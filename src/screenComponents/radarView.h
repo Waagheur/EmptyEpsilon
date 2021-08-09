@@ -69,7 +69,7 @@ public:
     GuiRadarView(GuiContainer* owner, string id, TargetsContainer* targets, P<PlayerSpaceship> targetSpaceship);
     GuiRadarView(GuiContainer* owner, string id, float distance, TargetsContainer* targets, P<PlayerSpaceship> targetSpaceship);
 
-    virtual void onDraw(sf::RenderTarget& window);
+    virtual void onDraw(sp::RenderTarget& target);
 
     virtual GuiRadarView* setDistance(float distance) { SectorsView::setDistance(distance); return this; }
     GuiRadarView* setRangeIndicatorStepSize(float step) { range_indicator_step_size = step; return this; }
@@ -101,24 +101,24 @@ public:
     virtual GuiRadarView* setCallbacks(pfunc_t mouse_down_func, pfunc_t mouse_drag_func, pfunc_t mouse_up_func) { SectorsView::setCallbacks(mouse_down_func, mouse_drag_func, mouse_up_func); return this; }
     virtual GuiRadarView* setViewPosition(glm::vec2 view_position) { SectorsView::setViewPosition(view_position); return this; }
 
-    virtual bool onMouseDown(sf::Vector2f position);
+    virtual bool onMouseDown(glm::vec2 position);
     void setTargetSpaceship(P<PlayerSpaceship> targetSpaceship){target_spaceship = targetSpaceship;}
 
 private:
     void updateGhostDots();
-    void drawBackground(sf::RenderTarget& window);
-    void drawNebulaBlockedAreas(sf::RenderTarget& window);
-    void drawNoneFriendlyBlockedAreas(sf::RenderTarget& window);
-    void drawFriendlyNotVisibleAreas(sf::RenderTarget& window);
-    void drawGhostDots(sf::RenderTarget& window);
-    void drawWaypoints(sf::RenderTarget& window);
-    void drawRangeIndicators(sf::RenderTarget& window);
-    void drawTargetProjections(sf::RenderTarget& window);
-    void drawMissileTubes(sf::RenderTarget& window);
-    void drawObjects(sf::RenderTarget& window);
-    void drawObjectsGM(sf::RenderTarget& window);
-    void drawHeadingIndicators(sf::RenderTarget& window);
-    void drawRadarCutoff(sf::RenderTarget& window);
+    void drawBackground(sp::RenderTarget& window);
+    void drawNebulaBlockedAreas(sp::RenderTarget& window);
+    void drawNoneFriendlyBlockedAreas(sp::RenderTarget& window);
+    void drawFriendlyNotVisibleAreas(sp::RenderTarget& window);
+    void drawGhostDots(sp::RenderTarget& window);
+    void drawWaypoints(sp::RenderTarget& window);
+    void drawRangeIndicators(sp::RenderTarget& window);
+    void drawTargetProjections(sp::RenderTarget& window);
+    void drawMissileTubes(sp::RenderTarget& window);
+    void drawObjects(sp::RenderTarget& window);
+    void drawObjectsGM(sp::RenderTarget& window);
+    void drawHeadingIndicators(sp::RenderTarget& window);
+    void drawRadarCutoff(sp::RenderTarget& window);
 };
 
 #endif//RADAR_VIEW_H

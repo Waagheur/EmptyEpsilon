@@ -31,7 +31,8 @@ EngineeringScreen::EngineeringScreen(GuiContainer* owner, ECrewPosition crew_pos
     (new AlertLevelOverlay(this));
 
     GuiAutoLayout* stats = new GuiAutoLayout(this, "ENGINEER_STATS", GuiAutoLayout::LayoutVerticalTopToBottom);
-    stats->setPosition(20, 100, ATopLeft)->setSize(240, 200);
+    stats->setPosition(20, 100, sp::Alignment::TopLeft)->setSize(240, 200);
+
     energy_display = new GuiKeyValueDisplay(stats, "ENERGY_DISPLAY", 0.45, tr("Energy"), "");
     energy_display->setIcon("gui/icons/energy")->setTextSize(20)->setSize(240, 40);
     hull_display = new GuiKeyValueDisplay(stats, "HULL_DISPLAY", 0.45, tr("health","Hull"), "");
@@ -50,12 +51,12 @@ EngineeringScreen::EngineeringScreen(GuiContainer* owner, ECrewPosition crew_pos
     }
     
     self_destruct_button = new GuiSelfDestructButton(this, "SELF_DESTRUCT");
-    self_destruct_button->setPosition(20, 20, ATopLeft)->setSize(240, 100)->setVisible(my_spaceship && my_spaceship->getCanSelfDestruct());
+    self_destruct_button->setPosition(20, 20, sp::Alignment::TopLeft)->setSize(240, 100)->setVisible(my_spaceship && my_spaceship->getCanSelfDestruct());
 
     GuiElement* system_config_container = new GuiElement(this, "");
-    system_config_container->setPosition(0, -50, ABottomCenter)->setSize(750 + 300, GuiElement::GuiSizeMax);
+    system_config_container->setPosition(0, -50, sp::Alignment::BottomCenter)->setSize(750 + 300, GuiElement::GuiSizeMax);
     GuiAutoLayout* system_row_layouts = new GuiAutoLayout(system_config_container, "SYSTEM_ROWS", GuiAutoLayout::LayoutVerticalBottomToTop);
-    system_row_layouts->setPosition(0, 0, ABottomLeft);
+    system_row_layouts->setPosition(0, 0, sp::Alignment::BottomLeft);
     system_row_layouts->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);
     for(int n=0; n<SYS_COUNT; n++)
     {
@@ -78,7 +79,7 @@ EngineeringScreen::EngineeringScreen(GuiContainer* owner, ECrewPosition crew_pos
         info.damage_bar = new GuiProgressbar(info.layout, id + "_DAMAGE", 0.0, 1.0, 0.0);
         info.damage_bar->setSize(150, GuiElement::GuiSizeMax);
         info.damage_icon = new GuiImage(info.damage_bar, "", "gui/icons/hull");
-        info.damage_icon->setColor(colorConfig.overlay_damaged)->setPosition(0, 0, ACenterRight)->setSize(GuiElement::GuiSizeMatchHeight, GuiElement::GuiSizeMax);
+        info.damage_icon->setColor(colorConfig.overlay_damaged)->setPosition(0, 0, sp::Alignment::CenterRight)->setSize(GuiElement::GuiSizeMatchHeight, GuiElement::GuiSizeMax);
         info.damage_label = new GuiLabel(info.damage_bar, id + "_DAMAGE_LABEL", "...", 20);
         info.damage_label->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);
         info.heat_bar = new GuiProgressbar(info.layout, id + "_HEAT", 0.0, 1.0, 0.0);
@@ -86,7 +87,7 @@ EngineeringScreen::EngineeringScreen(GuiContainer* owner, ECrewPosition crew_pos
         info.heat_arrow = new GuiArrow(info.heat_bar, id + "_HEAT_ARROW", 0);
         info.heat_arrow->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);
         info.heat_icon = new GuiImage(info.heat_bar, "", "gui/icons/status_overheat");
-        info.heat_icon->setColor(colorConfig.overlay_overheating)->setPosition(0, 0, ACenter)->setSize(GuiElement::GuiSizeMatchHeight, GuiElement::GuiSizeMax);
+        info.heat_icon->setColor(colorConfig.overlay_overheating)->setPosition(0, 0, sp::Alignment::Center)->setSize(GuiElement::GuiSizeMatchHeight, GuiElement::GuiSizeMax);
         info.heat_label = new GuiLabel(info.heat_bar, id + "_HEAT_LABEL", "...", 20);
         info.heat_label->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);
         info.power_bar = new GuiProgressSlider(info.layout, id + "_POWER", 0.0, 3.0, 0.0, [this,n](float value){
@@ -173,24 +174,24 @@ EngineeringScreen::EngineeringScreen(GuiContainer* owner, ECrewPosition crew_pos
     {
 //        system_effects_container = new GuiAutoLayout(this, "", GuiAutoLayout::LayoutVerticalTopToBottom);
         system_effects_container = new GuiAutoLayout(this, "", GuiAutoLayout::LayoutVerticalBottomToTop);
-        system_effects_container->setPosition(-20, -100, ATopRight)->setSize(270, 340);
+        system_effects_container->setPosition(-20, -100, sp::Alignment::TopRight)->setSize(270, 340);
     } else {
         system_effects_container = new GuiAutoLayout(system_config_container, "", GuiAutoLayout::LayoutVerticalBottomToTop);
-        system_effects_container->setPosition(0, -400, ABottomRight)->setSize(270, 400);
+        system_effects_container->setPosition(0, -400, sp::Alignment::BottomRight)->setSize(270, 400);
     }
     
     GuiPanel* box = new GuiPanel(system_config_container, "POWER_COOLANT_BOX");
-    box->setPosition(0, 0, ABottomRight)->setSize(270, 400);
+    box->setPosition(0, 0, sp::Alignment::BottomRight)->setSize(270, 400);
     power_label = new GuiLabel(box, "POWER_LABEL", tr("slider", "Power"), 20);
-    power_label->setVertical()->setAlignment(ACenterLeft)->setPosition(20, 20, ATopLeft)->setSize(30, 360);
+    power_label->setVertical()->setAlignment(sp::Alignment::CenterLeft)->setPosition(20, 20, sp::Alignment::TopLeft)->setSize(30, 360);
     coolant_label = new GuiLabel(box, "COOLANT_LABEL", tr("slider", "Coolant"), 20);
-    coolant_label->setVertical()->setAlignment(ACenterLeft)->setPosition(110, 20, ATopLeft)->setSize(30, 360);
+    coolant_label->setVertical()->setAlignment(sp::Alignment::CenterLeft)->setPosition(110, 20, sp::Alignment::TopLeft)->setSize(30, 360);
 
     power_slider = new GuiSlider(box, "POWER_SLIDER", 3.0, 0.0, 1.0, [this](float value) {
         if (my_spaceship && selected_system != SYS_None)
             my_spaceship->commandSetSystemPowerRequest(selected_system, value);
     });
-    power_slider->setPosition(50, 20, ATopLeft)->setSize(60, 360);
+    power_slider->setPosition(50, 20, sp::Alignment::TopLeft)->setSize(60, 360);
     for(float snap_point = 0.0; snap_point <= 3.0; snap_point += 0.5)
         power_slider->addSnapValue(snap_point, snap_point == 1.0 ? 0.1 : 0.01);
     power_slider->disable();
@@ -198,7 +199,7 @@ EngineeringScreen::EngineeringScreen(GuiContainer* owner, ECrewPosition crew_pos
         if (my_spaceship && selected_system != SYS_None)
             my_spaceship->commandSetSystemCoolantRequest(selected_system, value);
     });
-    coolant_slider->setPosition(140, 20, ATopLeft)->setSize(60, 360);
+    coolant_slider->setPosition(140, 20, sp::Alignment::TopLeft)->setSize(60, 360);
     coolant_slider->disable();
 
     if (!gameGlobalInfo->use_nano_repair_crew)
@@ -225,7 +226,7 @@ EngineeringScreen::EngineeringScreen(GuiContainer* owner, ECrewPosition crew_pos
         }
     }
 
-    (new GuiCustomShipFunctions(this, crew_position, "", my_spaceship))->setPosition(-20, 100, ATopRight)->setSize(250, GuiElement::GuiSizeMax);
+    (new GuiCustomShipFunctions(this, crew_position, "", my_spaceship))->setPosition(-20, 100, sp::Alignment::TopRight)->setSize(250, GuiElement::GuiSizeMax);
 
     new ShipsLog(this,"intern");
     // Bottom layout.
@@ -286,7 +287,7 @@ EngineeringScreen::EngineeringScreen(GuiContainer* owner, ECrewPosition crew_pos
 
     new ShipsLog(this, crew_position);
     
-    (new GuiCustomShipFunctions(this, crew_position, "", my_spaceship))->setPosition(-20, 120, ATopRight)->setSize(250, GuiElement::GuiSizeMax);
+    (new GuiCustomShipFunctions(this, crew_position, "", my_spaceship))->setPosition(-20, 120, sp::Alignment::TopRight)->setSize(250, GuiElement::GuiSizeMax);
 
     previous_energy_level = 0.0;
     average_energy_delta = 0.0;
@@ -339,7 +340,7 @@ void EngineeringScreen::updatePreset(int preset)
         PreferencesManager::save("options.ini");
 }
 
-void EngineeringScreen::onDraw(sf::RenderTarget& window)
+void EngineeringScreen::onDraw(sp::RenderTarget& renderer)
 {
     if (my_spaceship)
     {
@@ -619,7 +620,7 @@ void EngineeringScreen::onDraw(sf::RenderTarget& window)
                 system_effects[idx]->hide();
         }
     }
-    GuiOverlay::onDraw(window);
+    GuiOverlay::onDraw(renderer);
 }
 
 bool EngineeringScreen::onJoystickAxis(const AxisAction& axisAction){

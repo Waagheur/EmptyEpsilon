@@ -48,19 +48,19 @@ class DroneTemplate {
 class ShipRoomTemplate
 {
 public:
-    sf::Vector2i position;
-    sf::Vector2i size;
+    glm::ivec2 position;
+    glm::ivec2 size;
     ESystem system;
 
-    ShipRoomTemplate(sf::Vector2i position, sf::Vector2i size, ESystem system) : position(position), size(size), system(system) {}
+    ShipRoomTemplate(glm::ivec2 position, glm::ivec2 size, ESystem system) : position(position), size(size), system(system) {}
 };
 class ShipDoorTemplate
 {
 public:
-    sf::Vector2i position;
+    glm::ivec2 position;
     bool horizontal;
 
-    ShipDoorTemplate(sf::Vector2i position, bool horizontal) : position(position), horizontal(horizontal) {}
+    ShipDoorTemplate(glm::ivec2 position, bool horizontal) : position(position), horizontal(horizontal) {}
 };
 
 class SpaceObject;
@@ -236,10 +236,9 @@ public:
     void setWeaponStorage(EMissileWeapons weapon, int amount);
     void setCustomWeaponStorage(string weapon, int amount);
     void onCustomWeaponDetonation(string weapon_name, ScriptSimpleCallback callback);
-    void addRoom(sf::Vector2i position, sf::Vector2i size);
-    void addRoomSystem(sf::Vector2i position, sf::Vector2i size, ESystem system);
-    void addDoor(sf::Vector2i position, bool horizontal);
-    void addDrones(string template_name, int count);
+    void addRoom(glm::ivec2 position, glm::ivec2 size);
+    void addRoomSystem(glm::ivec2 position, glm::ivec2 size, ESystem system);
+    void addDoor(glm::ivec2 position, bool horizontal);    void addDrones(string template_name, int count);
     void setDocks(int launchers, int energy, int weapons, int thermic, int repair, int stock);
     int getDocksCount() {return launcher_dock_count + energy_dock_count + weapons_dock_count + thermic_dock_count + repair_dock_count + stock_dock_count;}
     void setRadarTrace(string trace);
@@ -252,8 +251,8 @@ public:
 
     P<ShipTemplate> copy(string new_name);
 
-    sf::Vector2i interiorSize();
-    ESystem getSystemAtRoom(sf::Vector2i position);
+    glm::ivec2 interiorSize();
+    ESystem getSystemAtRoom(glm::ivec2 position);
 
     void setCollisionData(P<SpaceObject> object);
 public:

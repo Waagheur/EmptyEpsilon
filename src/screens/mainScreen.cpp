@@ -28,31 +28,31 @@ ScreenMainScreen::ScreenMainScreen()
     new GuiOverlay(this, "", sf::Color::Black);
 
     viewport = new GuiViewportMainScreen(this, "VIEWPORT");
-    viewport->setPosition(0, 0, ATopLeft)->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);
+    viewport->setPosition(0, 0, sp::Alignment::TopLeft)->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);
 
     //TODO : voir pourquoi c'est commente
     //(new GuiRadarView(viewport, "VIEWPORT_RADAR", my_spaceship->getShortRangeRadarRange(), nullptr, my_spaceship))->setStyle(GuiRadarView::CircularMasked)->setSize(200, 200)->setPosition(-20, 20, ATopRight);
     
     tactical_radar = new GuiRadarView(this, "TACTICAL", nullptr, my_spaceship);
-    tactical_radar->setPosition(0, 0, ATopLeft)->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);
+    tactical_radar->setPosition(0, 0, sp::Alignment::TopLeft)->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);
     tactical_radar->setRangeIndicatorStepSize(1000.0f)->shortRange()->enableCallsigns()->hide();
     if (my_spaceship)
     {
         long_range_radar = new GuiRadarView(this, "TACTICAL", nullptr, my_spaceship);
-        long_range_radar->setPosition(0, 0, ATopLeft)->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);
+        long_range_radar->setPosition(0, 0, sp::Alignment::TopLeft)->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);
         long_range_radar->setRangeIndicatorStepSize(5000.0f)->longRange()->enableCallsigns()->hide();
         long_range_radar->setFogOfWarStyle(GuiRadarView::NebulaFogOfWar);
     }
     global_range_radar = new GuiRadarView(this, "GLOBAL", 50000.0f, nullptr, my_spaceship);
-    global_range_radar->setPosition(0, 0, ATopLeft)->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);
+    global_range_radar->setPosition(0, 0, sp::Alignment::TopLeft)->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);
     global_range_radar->setAutoCentering(true);
     global_range_radar->longRange()->enableWaypoints()->enableCallsigns()->setStyle(GuiRadarView::Rectangular)->setFogOfWarStyle(GuiRadarView::FriendlysShortRangeFogOfWar);
     global_range_radar->hide();
     ship_state = new DamageControlScreen(this);
-    ship_state->setPosition(0, 0, ATopLeft)->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);
+    ship_state->setPosition(0, 0, sp::Alignment::TopLeft)->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);
     ship_state->hide();
     target_analysis = new TargetAnalysisScreen(this);
-    target_analysis->setPosition(0, 0, ATopLeft)->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);
+    target_analysis->setPosition(0, 0, sp::Alignment::TopLeft)->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);
     target_analysis->hide();
     onscreen_comms = new GuiCommsOverlay(this);
     onscreen_comms->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax)->setVisible(false);
@@ -205,7 +205,7 @@ void ScreenMainScreen::update(float delta)
     }
 }
 
-void ScreenMainScreen::onClick(sf::Vector2f mouse_position)
+void ScreenMainScreen::onClick(glm::vec2 mouse_position)
 {
     if (!my_spaceship)
         return;

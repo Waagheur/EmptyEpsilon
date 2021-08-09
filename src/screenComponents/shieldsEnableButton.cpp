@@ -22,7 +22,7 @@ GuiShieldsEnableButton::GuiShieldsEnableButton(GuiContainer* owner, string id, P
     bar->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);
     (new GuiLabel(bar, id + "_CALIBRATING_LABEL", tr("shields","Calibrating"), 30))->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);
 
-    pdi = new GuiPowerDamageIndicator(this, id + "_PDI", SYS_FrontShield, ACenterLeft, target_spaceship);
+    pdi = new GuiPowerDamageIndicator(this, id + "_PDI", SYS_FrontShield, sp::Alignment::CenterLeft, target_spaceship);
     pdi->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);
 }
 
@@ -31,7 +31,7 @@ void GuiShieldsEnableButton::setTargetSpaceship(P<PlayerSpaceship> targetSpacesh
     pdi->setTargetSpaceship(target_spaceship);
 }
 
-void GuiShieldsEnableButton::onDraw(sf::RenderTarget& window)
+void GuiShieldsEnableButton::onDraw(sp::RenderTarget& target)
 {
     if (target_spaceship)
     {

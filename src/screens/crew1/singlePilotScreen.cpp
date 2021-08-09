@@ -29,7 +29,7 @@ void SinglePilotScreen::init(GuiContainer* owner, P<PlayerSpaceship> targetSpace
 
     // single pilot
     single_pilot_view = new SinglePilotView(this, targetSpaceship);
-    single_pilot_view->setPosition(0, 0, ATopLeft)->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);
+    single_pilot_view->setPosition(0, 0, sp::Alignment::TopLeft)->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);
 
     background_crosses = new GuiOverlay(this, "BACKGROUND_CROSSES", sf::Color::White);
     background_crosses->setTextureTiled("gui/background/crosses.png");
@@ -39,7 +39,7 @@ void SinglePilotScreen::init(GuiContainer* owner, P<PlayerSpaceship> targetSpace
     
 }
 
-void SinglePilotScreen::onDraw(sf::RenderTarget& window)
+void SinglePilotScreen::onDraw(sp::RenderTarget& renderer)
 {
     GuiOverlay::onDraw(window);
 }

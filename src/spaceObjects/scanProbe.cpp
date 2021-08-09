@@ -216,31 +216,20 @@ void ScanProbe::takeDamage(float damage_amount, DamageInfo info)
     destroy();
 }
 
-void ScanProbe::drawOnRadar(sf::RenderTarget& window, sf::Vector2f position, float scale, float rotation, bool long_range)
+void ScanProbe::drawOnRadar(sp::RenderTarget& renderer, glm::vec2 position, float scale, float rotation, bool long_range)
 {
     // All probes use the same green icon on radar.
-    sf::Sprite object_sprite;
-    textureManager.setTexture(object_sprite, "radar/probe.png");
-    object_sprite.setPosition(position);
-    object_sprite.setColor(sf::Color(96, 192, 128));
-    float size = 0.3;
-    object_sprite.setScale(size, size);
-    window.draw(object_sprite);
+    renderer.drawSprite("radar/probe.png", position, 10, sf::Color(96, 192, 128));
 
     if (long_range && !has_arrived)
     {
-        sf::VertexArray a(sf::Lines, 2);
-        a[0].position = position;
-        a[1].position = position + (sf::Vector2f(target_position.x, target_position.y) - 
-                        sf::Vector2f(getPosition().x, getPosition().y)) * scale;
-        a[0].color = sf::Color(255, 255, 255, 32);
-        float distance = sf::length(position - sf::Vector2f(target_position.x, target_position.y));
+        float distance = glm::length(position - glm::vec2(target_position.x, target_position.y));
         if (distance > 1000.0)
-            window.draw(a);
+            renderer.drawLine(position, position + glm::vec2(target_position.x, target_position.y) - glm::vec2(getPosition().x, getPosition().y)*scale, sf::Color(255, 255, 255, 32))
     }
 }
 
-void ScanProbe::drawOnGMRadar(sf::RenderTarget& window, sf::Vector2f position, float scale, float rotation, bool long_range)
+void ScanProbe::drawOnGMRadar(sp::RenderTarget& renderer, glm::vec2 position, float scale, float rotation, bool long_range)
 {
     SpaceObject::drawOnGMRadar(window, position, scale, rotation, long_range);
     if (long_range)
@@ -248,13 +237,7 @@ void ScanProbe::drawOnGMRadar(sf::RenderTarget& window, sf::Vector2f position, f
         P<PlayerSpaceship> player = owner;
         if(player)
         {
-            sf::CircleShape radar_radius(player->getProbeRangeRadarRange() * scale);
-            radar_radius.setOrigin(player->getProbeRangeRadarRange() * scale, player->getProbeRangeRadarRange() * scale);
-            radar_radius.setPosition(position);
-            radar_radius.setFillColor(sf::Color::Transparent);
-            radar_radius.setOutlineColor(sf::Color(255, 255, 255, 64));
-            radar_radius.setOutlineThickness(3.0);
-            window.draw(radar_radius);
+            renderer.drawCircleOutline(position, player->getProbeRangeRadarRange()*scale, 3.0, sf::Color(255, 255, 255, 64));
         }
     }
 }

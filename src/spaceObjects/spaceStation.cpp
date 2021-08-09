@@ -27,33 +27,32 @@ SpaceStation::SpaceStation()
     callsign = "DS" + string(getMultiplayerId());
 }
 
-void SpaceStation::drawOnRadar(sf::RenderTarget& window, sf::Vector2f position, float scale, float rotation, bool long_range)
+void SpaceStation::drawOnRadar(sp::RenderTarget& renderer, glm::vec2 position, float scale, float rotation, bool long_range)
 {
-    sf::Sprite objectSprite;
+    string object_sprite;
+    sf::Color color = sf::Color::White;
     // If the object is a station that hasn't been scanned, draw the default icon.
     // Otherwise, draw the station-specific icon.
 	float sprite_scale = 0.2;
 	if (my_spaceship && (getScannedStateFor(my_spaceship) == SS_NotScanned || getScannedStateFor(my_spaceship) == SS_FriendOrFoeIdentified) && getFactionId() != my_spaceship->getFactionId())
     {
-        objectSprite.setColor(sf::Color(192, 192, 192));
-        textureManager.setTexture(objectSprite, "RadarBlip.png");
+        color = sf::Color(192, 192, 192);
+        object_sprite = "radar/blip.png";
     }
     else
     {
-        objectSprite.setColor(factionInfo[getFactionId()]->gm_color);
-        textureManager.setTexture(objectSprite, radar_trace);
+        color = factionInfo[getFactionId()]->gm_color;
+        object_sprite = radar_trace;
         //sprite_scale = scale * getRadius() * 1.5 / objectSprite.getTextureRect().width;
         sprite_scale = scale * getRadius() * 2 / objectSprite.getTextureRect().width;
     }
-    objectSprite.setPosition(position);
 
     if (!long_range)
     {
         sprite_scale *= 0.7;
-        drawShieldsOnRadar(window, position, scale, rotation, sprite_scale, true);
+        drawShieldsOnRadar(renderer, position, scale, rotation, sprite_scale, true);
     }
     sprite_scale = std::max(0.15f, sprite_scale);
-    objectSprite.setScale(sprite_scale, sprite_scale);
 
     if(my_spaceship)
     {
@@ -61,20 +60,20 @@ void SpaceStation::drawOnRadar(sf::RenderTarget& window, sf::Vector2f position, 
         {
             if(isEnemy(my_spaceship))
             {
-                objectSprite.setColor(sf::Color::Red);
+                color = sf::Color::Red;
             }
             else if(isFriendly(my_spaceship))
             {
-                objectSprite.setColor(sf::Color(128,255,128));
+                color = sf::Color(128,255,128);
             }
             else
             {
-                objectSprite.setColor(sf::Color(192,192,192));
+                color = sf::Color(192,192,192);
             }
         }
     }
 
-    window.draw(objectSprite);
+     renderer.drawRotatedSprite(object_sprite, position, sprite_scale, getRotation() - rotation, color);
 }
 
 void SpaceStation::applyTemplateValues()

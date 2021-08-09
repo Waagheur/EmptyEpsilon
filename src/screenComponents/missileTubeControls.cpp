@@ -54,7 +54,7 @@ GuiMissileTubeControls::GuiMissileTubeControls(GuiContainer* owner, string id, P
         });
         row.fire_button->setSize(200, 50);
 
-        pdi = new GuiPowerDamageIndicator(row.fire_button, id + "_" + string(n) + "_PDI", SYS_MissileSystem, ACenterRight, target_spaceship);
+        pdi = new GuiPowerDamageIndicator(row.fire_button, id + "_" + string(n) + "_PDI", SYS_MissileSystem, sp::Alignment::CenterRight, target_spaceship);
         pdi->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);
 
         row.loading_bar = new GuiProgressbar(row.layout, id + "_" + string(n) + "_PROGRESS", 0, 1.0, 0);
@@ -113,7 +113,7 @@ void GuiMissileTubeControls::setTargetSpaceship(P<PlayerSpaceship> targetSpacesh
     pdi->setTargetSpaceship(target_spaceship);
 }
 
-void GuiMissileTubeControls::onDraw(sf::RenderTarget& window){
+void GuiMissileTubeControls::onDraw(sp::RenderTarget& renderer){
     if (!target_spaceship)
         return;
     for (int n = 0; n < MW_Count; n++)
@@ -136,9 +136,9 @@ void GuiMissileTubeControls::onDraw(sf::RenderTarget& window){
         WeaponTube& tube = target_spaceship->weapon_tube[n];
         rows[n].layout->show();
         if (tube.canOnlyLoad(MW_Mine))
-            rows[n].fire_button->setIcon("gui/icons/weapon-mine", ACenterLeft);
+            rows[n].fire_button->setIcon("gui/icons/weapon-mine", sp::Alignment::CenterLeft);
         else
-            rows[n].fire_button->setIcon("gui/icons/missile", ACenterLeft, target_spaceship->getRotation() + tube.getDirection() + 90);
+            rows[n].fire_button->setIcon("gui/icons/missile", sp::Alignment::CenterLeft, target_spaceship->getRotation() + tube.getDirection() + 90);
         if(tube.isEmpty())
         {
             rows[n].load_button->setEnable(tube.canLoad(load_type));
@@ -188,7 +188,7 @@ void GuiMissileTubeControls::onDraw(sf::RenderTarget& window){
     for(int n=target_spaceship->weapon_tube_count; n<max_weapon_tubes; n++)
         rows[n].layout->hide();
 
-    GuiAutoLayout::onDraw(window);
+    GuiAutoLayout::onDraw(renderer);
 }
 
 void GuiMissileTubeControls::onHotkey(const HotkeyResult& key)

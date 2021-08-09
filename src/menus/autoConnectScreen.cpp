@@ -22,7 +22,7 @@ AutoConnectScreen::AutoConnectScreen(ECrewPosition crew_position, int auto_mains
     new GuiNoiseOverlay(this);
 
     status_label = new GuiLabel(this, "STATUS", "Coupure de courant", 50);
-    status_label->setPosition(0, 300, ATopCenter)->setSize(0, 50);
+    status_label->setPosition(0, 300, sp::Alignment::TopCenter)->setSize(0, 50);
 
     string position_name = "Ecran principal";
     if (crew_position < max_crew_positions)
@@ -30,7 +30,7 @@ AutoConnectScreen::AutoConnectScreen(ECrewPosition crew_position, int auto_mains
     if (auto_mainscreen == 1)
         position_name = "Ecran principal";
 
-    (new GuiLabel(this, "POSITION", position_name, 20))->setPosition(0, 10, ATopCenter)->setSize(0, 10);
+    (new GuiLabel(this, "POSITION", position_name, 50))->setPosition(0, 400, sp::Alignment::TopCenter)->setSize(0, 30);
 
     filter_label = new GuiLabel(this, "FILTER", "", 20);
     filter_label->setPosition(0, 30, ATopCenter)->setSize(0, 10);
@@ -52,7 +52,7 @@ AutoConnectScreen::AutoConnectScreen(ECrewPosition crew_position, int auto_mains
 
     if (PreferencesManager::get("instance_name") != "")
     {
-        (new GuiLabel(this, "", PreferencesManager::get("instance_name"), 25))->setAlignment(ACenterLeft)->setPosition(20, 20, ATopLeft)->setSize(0, 18);
+        (new GuiLabel(this, "", PreferencesManager::get("instance_name"), 25))->setAlignment(sp::Alignment::CenterLeft)->setPosition(20, 20, sp::Alignment::TopLeft)->setSize(0, 18);
     }
 }
 

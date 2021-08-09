@@ -10,7 +10,7 @@ class GuiCustomShipFunctions : public GuiAutoLayout
 public:
     GuiCustomShipFunctions(GuiContainer* owner, ECrewPosition position, string id, P<PlayerSpaceship> targetSpaceship);
 
-    virtual void onDraw(sf::RenderTarget& window) override;
+    virtual void onDraw(sp::RenderTarget& target) override;
 
     bool hasEntries();
 

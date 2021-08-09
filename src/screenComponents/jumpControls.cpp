@@ -13,22 +13,22 @@ GuiJumpControls::GuiJumpControls(GuiContainer* owner, string id, P<PlayerSpacesh
 : GuiElement(owner, id), target_spaceship(targetSpaceship)
 {
     slider = new GuiSlider(this, id + "_SLIDER", 5000.0, 50000.0, 10000.0, nullptr);
-    slider->setPosition(0, -50, ABottomLeft)->setSize(50, GuiElement::GuiSizeMax);
+    slider->setPosition(0, -50, sp::Alignment::BottomLeft)->setSize(50, GuiElement::GuiSizeMax);
 
     charge_bar = new GuiProgressbar(this, id + "_CHARGE", 0.0, 50000.0, 0.0);
-    charge_bar->setPosition(0, -50, ABottomLeft)->setSize(50, GuiElement::GuiSizeMax);
+    charge_bar->setPosition(0, -50, sp::Alignment::BottomLeft)->setSize(50, GuiElement::GuiSizeMax);
     charge_bar->hide();
 
     label = new GuiKeyValueDisplay(this, id + "_LABEL", 0.5, tr("jumpcontrol", "Distance"), "10.0");
-    label->setTextSize(30)->setPosition(50, -50, ABottomLeft)->setSize(40, GuiElement::GuiSizeMax);
+    label->setTextSize(30)->setPosition(50, -50, sp::Alignment::BottomLeft)->setSize(40, GuiElement::GuiSizeMax);
 
     button = new GuiButton(this, id + "_BUTTON", tr("jumpcontrol", "Jump"), [this]() {
         target_spaceship->commandJump(slider->getValue());
     });
-    button->setPosition(0, 0, ABottomLeft)->setSize(GuiElement::GuiSizeMax, 50);
+    button->setPosition(0, 0, sp::Alignment::BottomLeft)->setSize(GuiElement::GuiSizeMax, 50);
 
-    pdi = new GuiPowerDamageIndicator(this, id + "_DPI", SYS_JumpDrive, ATopCenter, target_spaceship);
-    pdi->setPosition(0, -50, ABottomLeft)->setSize(50, GuiElement::GuiSizeMax);
+    pdi = new GuiPowerDamageIndicator(this, id + "_DPI", SYS_JumpDrive, sp::Alignment::TopCenter, target_spaceship);
+    pdi->setPosition(0, -50, sp::Alignment::BottomLeft)->setSize(50, GuiElement::GuiSizeMax);
 }
 
 void GuiJumpControls::setTargetSpaceship(P<PlayerSpaceship> targetSpaceship){
@@ -36,7 +36,7 @@ void GuiJumpControls::setTargetSpaceship(P<PlayerSpaceship> targetSpaceship){
     pdi->setTargetSpaceship(target_spaceship);
 }
 
-void GuiJumpControls::onDraw(sf::RenderTarget& window)
+void GuiJumpControls::onDraw(sp::RenderTarget& target)
 {
     if (target_spaceship)
     {

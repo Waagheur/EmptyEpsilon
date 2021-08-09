@@ -13,12 +13,12 @@ GuiImpulseControls::GuiImpulseControls(GuiContainer* owner, string id, P<PlayerS
         if (target_spaceship)
             target_spaceship->commandImpulse(value);
     });
-    slider->addSnapValue(0.0, 0.1)->setPosition(0, 0, ATopLeft)->setSize(50, GuiElement::GuiSizeMax);
+    slider->addSnapValue(0.0, 0.1)->setPosition(0, 0, sp::Alignment::TopLeft)->setSize(50, GuiElement::GuiSizeMax);
 
     label = new GuiKeyValueDisplay(this, id, 0.5, tr("slider", "Impulse"), "0%");
-    label->setTextSize(30)->setPosition(50, 0, ATopLeft)->setSize(40, GuiElement::GuiSizeMax);
+    label->setTextSize(30)->setPosition(50, 0, sp::Alignment::TopLeft)->setSize(40, GuiElement::GuiSizeMax);
 
-    pdi = new GuiPowerDamageIndicator(this, id + "_DPI", SYS_Impulse, ATopCenter, target_spaceship);
+    pdi = new GuiPowerDamageIndicator(this, id + "_DPI", SYS_Impulse, sp::Alignment::TopCenter, target_spaceship);
     pdi->setSize(50, GuiElement::GuiSizeMax);
 }
 
@@ -27,7 +27,7 @@ void GuiImpulseControls::setTargetSpaceship(P<PlayerSpaceship> targetSpaceship){
     pdi->setTargetSpaceship(target_spaceship);
 }
 
-void GuiImpulseControls::onDraw(sf::RenderTarget& window)
+void GuiImpulseControls::onDraw(sp::RenderTarget& target)
 {
     if (target_spaceship)
     {

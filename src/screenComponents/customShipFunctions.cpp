@@ -15,7 +15,7 @@ void GuiCustomShipFunctions::setTargetSpaceship(P<PlayerSpaceship> targetSpacesh
         createEntries();
 }
 
-void GuiCustomShipFunctions::onDraw(sf::RenderTarget& window)
+void GuiCustomShipFunctions::onDraw(sp::RenderTarget& window)
 {
     if (!target_spaceship)
         return;

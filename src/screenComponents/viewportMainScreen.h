@@ -11,7 +11,7 @@ public:
     GuiViewportMainScreen(GuiContainer* owner, string id);
 
     ~GuiViewportMainScreen() {}
-    virtual void onDraw(sf::RenderTarget& window) override;
+    virtual void onDraw(sp::RenderTarget& target) override;
     virtual void update(float delta);
 
     bool first_person = false;

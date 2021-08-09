@@ -19,13 +19,14 @@ class GuiSelector;
 class GuiFrequencyCurve;
 class GuiSlider;
 class GuiLabel;
+class GuiImage;
 class DatabaseViewComponent;
 class GuiCustomShipFunctions;
 
 class ScienceScreen : public GuiOverlay
 {
 public:
-    GuiOverlay* background_gradient;
+    GuiImage* background_gradient;
     GuiOverlay* background_crosses;
 
     GuiElement* radar_view;
@@ -68,7 +69,7 @@ public:
 public:
     ScienceScreen(GuiContainer* owner, ECrewPosition crew_position=scienceOfficer);
 
-    virtual void onDraw(sf::RenderTarget& window) override;
+    virtual void onDraw(sp::RenderTarget& target) override;
     virtual void onHotkey(const HotkeyResult& key) override;
 private:
     //used to judge when to update the UI label and zoom

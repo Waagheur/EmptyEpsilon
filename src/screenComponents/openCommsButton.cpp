@@ -17,7 +17,7 @@ GuiOpenCommsButton::GuiOpenCommsButton(GuiContainer* owner, string id, string na
     icon_alignment = ACenterLeft;
 }
 
-void GuiOpenCommsButton::onDraw(sf::RenderTarget& window)
+void GuiOpenCommsButton::onDraw(sp::RenderTarget& renderer)
 {
     disable();
     if (gameGlobalInfo->intercept_all_comms_to_gm == CGI_None)
@@ -43,7 +43,7 @@ void GuiOpenCommsButton::onDraw(sf::RenderTarget& window)
         }
     }
 
-    GuiButton::onDraw(window);
+    GuiButton::onDraw(renderer);
 }
 
 void GuiOpenCommsButton::onHotkey(const HotkeyResult& key)

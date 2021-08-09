@@ -29,7 +29,7 @@ void GuiViewportMainScreen::update(float delta)
 }
 
 
-void GuiViewportMainScreen::onDraw(sf::RenderTarget& window)
+void GuiViewportMainScreen::onDraw(sp::RenderTarget& renderer)
 {
     if (my_spaceship)
     {
@@ -108,5 +108,5 @@ void GuiViewportMainScreen::onDraw(sf::RenderTarget& window)
         }
 
     }
-    GuiViewport3D::onDraw(window);
+    GuiViewport3D::onDraw(renderer);
 }

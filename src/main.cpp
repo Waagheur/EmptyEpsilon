@@ -177,7 +177,6 @@ int main(int argc, char** argv)
     textureManager.setDefaultSmooth(true);
     textureManager.setDefaultRepeated(true);
     textureManager.setAutoSprite(false);
-    textureManager.getTexture("topdownCrew.png", sf::Vector2i(6, 1)); //Setup the sprite mapping.
     i18n::load("locale/main." + PreferencesManager::get("language", "wh") + ".po");
 
     if (PreferencesManager::get("httpserver").toInt() != 0)
@@ -272,6 +271,8 @@ int main(int argc, char** argv)
     P<ResourceStream> bold_font_stream = getResourceStream(PreferencesManager::get("font_bold", "gui/fonts/BebasNeue Bold.otf"));
     bold_font = new sf::Font();
     bold_font->loadFromStream(**bold_font_stream);
+
+    sp::RenderTarget::setDefaultFont(main_font);
 
     {
         P<ScriptObject> modelDataScript = new ScriptObject("model_data.lua");

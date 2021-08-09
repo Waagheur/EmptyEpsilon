@@ -22,7 +22,7 @@ GuiWarpControls::GuiWarpControls(GuiContainer* owner, string id, P<PlayerSpacesh
         // Set the slider value to the warp level.
         slider->setValue(warp_level);
     });
-    slider->setPosition(0, 0, ATopLeft)->setSize(50, GuiElement::GuiSizeMax);
+    slider->setPosition(0, 0, sp::Alignment::TopLeft)->setSize(50, GuiElement::GuiSizeMax);
 
     // Snap the slider to integers up to 4.
     slider->addSnapValue(0.0, 0.5);
@@ -39,10 +39,10 @@ GuiWarpControls::GuiWarpControls(GuiContainer* owner, string id, P<PlayerSpacesh
 
     // Label the warp slider.
     label = new GuiKeyValueDisplay(this, id + "_LABEL", 0.5, tr("slider", "Warp"), "0.0");
-    label->setTextSize(30)->setPosition(50, 0, ATopLeft)->setSize(40, GuiElement::GuiSizeMax);
+    label->setTextSize(30)->setPosition(50, 0, sp::Alignment::TopLeft)->setSize(40, GuiElement::GuiSizeMax);
 
     // Prep the alert overlay.
-    pdi = new GuiPowerDamageIndicator(this, id + "_DPI", SYS_Warp, ATopCenter, target_spaceship);
+    pdi = new GuiPowerDamageIndicator(this, id + "_DPI", SYS_Warp, sp::Alignment::TopCenter, target_spaceship);
     pdi->setSize(50, GuiElement::GuiSizeMax);
 }
 
@@ -51,7 +51,7 @@ void GuiWarpControls::setTargetSpaceship(P<PlayerSpaceship> targetSpaceship){
     pdi->setTargetSpaceship(target_spaceship);
 }
 
-void GuiWarpControls::onDraw(sf::RenderTarget& window)
+void GuiWarpControls::onDraw(sp::RenderTarget& target)
 {
     // Update the label with the current warp factor.
     if (target_spaceship)
