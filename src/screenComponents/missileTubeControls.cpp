@@ -58,7 +58,7 @@ GuiMissileTubeControls::GuiMissileTubeControls(GuiContainer* owner, string id, P
         pdi->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);
 
         row.loading_bar = new GuiProgressbar(row.layout, id + "_" + string(n) + "_PROGRESS", 0, 1.0, 0);
-        row.loading_bar->setColor(sf::Color(128, 128, 128))->setSize(200, 50);
+        row.loading_bar->setColor(glm::u8vec4(128, 128, 128, 255))->setSize(200, 50);
         row.loading_label = new GuiLabel(row.loading_bar, id + "_" + string(n) + "_PROGRESS_LABEL", "Chargement", 35);
         row.loading_label->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);
 

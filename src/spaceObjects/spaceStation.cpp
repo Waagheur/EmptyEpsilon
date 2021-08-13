@@ -30,13 +30,13 @@ SpaceStation::SpaceStation()
 void SpaceStation::drawOnRadar(sp::RenderTarget& renderer, glm::vec2 position, float scale, float rotation, bool long_range)
 {
     string object_sprite;
-    sf::Color color = sf::Color::White;
+    glm::u8vec4 color = glm::u8vec4(255,255,255,255);
     // If the object is a station that hasn't been scanned, draw the default icon.
     // Otherwise, draw the station-specific icon.
 	float sprite_scale = 0.2;
 	if (my_spaceship && (getScannedStateFor(my_spaceship) == SS_NotScanned || getScannedStateFor(my_spaceship) == SS_FriendOrFoeIdentified) && getFactionId() != my_spaceship->getFactionId())
     {
-        color = sf::Color(192, 192, 192);
+        color = glm::u8vec4(192, 192, 192, 255);
         object_sprite = "radar/blip.png";
     }
     else
@@ -60,15 +60,15 @@ void SpaceStation::drawOnRadar(sp::RenderTarget& renderer, glm::vec2 position, f
         {
             if(isEnemy(my_spaceship))
             {
-                color = sf::Color::Red;
+                color = glm::u8vec4(255,0,0,255);
             }
             else if(isFriendly(my_spaceship))
             {
-                color = sf::Color(128,255,128);
+                color = glm::u8vec4(128,255,128, 255);
             }
             else
             {
-                color = sf::Color(192,192,192);
+                color = glm::u8vec4(192,192,192, 255);
             }
         }
     }

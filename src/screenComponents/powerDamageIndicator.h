@@ -23,7 +23,7 @@ private:
     glm::vec2 icon_offset;
     float icon_size;
 
-    void drawIcon(sp::RenderTarget& window, string icon_name, sf::Color color);
+    void drawIcon(sp::RenderTarget& window, string icon_name, glm::u8vec4 color);
 
 };
 

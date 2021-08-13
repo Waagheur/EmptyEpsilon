@@ -28,7 +28,7 @@ const int COLUMN_WIDTH = 400;
 DockMasterScreen::DockMasterScreen(GuiContainer *owner)
     : GuiOverlay(owner, "DOCK_MASTER_SCREEN", colorConfig.background)
 {
-    GuiOverlay *background_crosses = new GuiOverlay(this, "BACKGROUND_CROSSES", sf::Color::White);
+    GuiOverlay *background_crosses = new GuiOverlay(this, "BACKGROUND_CROSSES", glm::u8vec4(255,255,255,255));
     background_crosses->setTextureTiled("gui/background/crosses.png");
 
     GuiAutoLayout *rootLayout = new GuiAutoLayout(this, "ROOT_LAYOUT", GuiAutoLayout::LayoutHorizontalLeftToRight);

@@ -19,7 +19,7 @@ const ECrewPosition crewPosition = ECrewPosition::singlePilot;
 DroneOperatorScreen::DroneOperatorScreen(GuiContainer *owner)
     : GuiOverlay(owner, "DRONE_PILOT_SCREEN", colorConfig.background), mode(DroneSelection)
 {
-    background_crosses = new GuiOverlay(this, "BACKGROUND_CROSSES", sf::Color::White);
+    background_crosses = new GuiOverlay(this, "BACKGROUND_CROSSES", glm::u8vec4(255,255,255,255));
     background_crosses->setTextureTiled("gui/background/crosses.png");
 
     // Render the alert level color overlay.

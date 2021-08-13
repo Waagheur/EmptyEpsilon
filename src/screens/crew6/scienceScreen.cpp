@@ -37,7 +37,7 @@ ScienceScreen::ScienceScreen(GuiContainer* owner, ECrewPosition crew_position)
     background_gradient = new GuiImage(this, "BACKGROUND_GRADIENT", "gui/background/gradientOffset.png");
     background_gradient->setPosition(glm::vec2(0, 0), sp::Alignment::Center)->setSize(1200, 900);
 
-    background_crosses = new GuiOverlay(this, "BACKGROUND_CROSSES", sf::Color::White);
+    background_crosses = new GuiOverlay(this, "BACKGROUND_CROSSES", glm::u8vec4{255,255,255,255});
     background_crosses->setTextureTiled("gui/background/crosses.png");
 
     // Render the alert level color overlay.
@@ -587,14 +587,14 @@ void ScienceScreen::onDraw(sp::RenderTarget& renderer)
                     {
                         info_system[n]->setVisible(ship->hasSystem(ESystem(n)));
                         float system_health = ship->systems[n].health;
-                        info_system[n]->setValue(string(int(system_health * 100.0f)) + "%")->setColor(sf::Color(255, 127.5 * (system_health + 1), 127.5 * (system_health + 1), 255));
+                        info_system[n]->setValue(string(int(system_health * 100.0f)) + "%")->setColor(glm::u8vec4(255, 127.5 * (system_health + 1), 127.5 * (system_health + 1), 255));
                     }
                     info_oxygen->setVisible(obj->getOxygenMax() > 0);
                     info_oxygen->setValue(string(int(100.0f * obj->getOxygenTotal())) + "%");
                     if (obj->getOxygenTotal() < 0.20)
-                        info_oxygen->setColor(sf::Color::Red);
+                        info_oxygen->setColor(glm::u8vec4(255,0,0,255));
                     else
-                        info_oxygen->setColor(sf::Color::White);
+                        info_oxygen->setColor(glm::u8vec4(255,255,255,255));
                 }
         // Tsht : copie en commentaire depuis le merge du master. A voir si on veut reutiliser le module oxygene de tdelc larp et revenir a un ecran plus proche du master
         //         else
@@ -614,7 +614,7 @@ void ScienceScreen::onDraw(sp::RenderTarget& renderer)
         //         for(int n = 0; n < SYS_COUNT; n++)
         //         {
         //             float system_health = ship->systems[n].health;
-        //             info_system[n]->setValue(string(int(system_health * 100.0f)) + "%")->setColor(sf::Color(255, 127.5 * (system_health + 1), 127.5 * (system_health + 1), 255));
+        //             info_system[n]->setValue(string(int(system_health * 100.0f)) + "%")->setColor(glm::u8vec4(255, 127.5 * (system_health + 1), 127.5 * (system_health + 1), 255));
         //         }
         //     }
         // }
@@ -727,13 +727,13 @@ void ScienceScreen::onDraw(sp::RenderTarget& renderer)
 //                for(int n = 0; n < SYS_COUNT; n++)
 //                {
 //                    float system_health = ship->systems[n].health;
-//                    info_system[n]->setValue(string(int(system_health * 100.0f)) + "%")->setColor(sf::Color(255, 127.5 * (system_health + 1), 127.5 * (system_health + 1), 255));
+//                    info_system[n]->setValue(string(int(system_health * 100.0f)) + "%")->setColor(glm::u8vec4(255, 127.5 * (system_health + 1), 127.5 * (system_health + 1), 255));
 //                }
 //                info_oxygen->setValue(string(int(100.0f * obj->getOxygenTotal())) + "%");
 //                if (obj->getOxygenTotal() < 0.20)
-//                    info_oxygen->setColor(sf::Color::Red);
+//                    info_oxygen->setColor(glm::u8vec4(255,0,0,255));
 //                else
-//                    info_oxygen->setColor(sf::Color::White);
+//                    info_oxygen->setColor(glm::u8vec4(255,255,255,255));
 //            }
 //        }
     }

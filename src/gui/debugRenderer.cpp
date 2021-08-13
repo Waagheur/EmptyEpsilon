@@ -54,10 +54,10 @@ void DebugRenderer::render(sp::RenderTarget& renderer)
             render_points[n].position.x = float(n);
             render_points[n].position.y = window.getView().getSize().y - (timing_graph_points[n].render + timing_graph_points[n].update + timing_graph_points[n].collision) * 10000;
 
-            update_points[n].color = sf::Color::Red;
-            server_update_points[n].color = sf::Color::Yellow;
-            collision_points[n].color = sf::Color::Cyan;
-            render_points[n].color = sf::Color::Green;
+            update_points[n].color = glm::u8vec4(255,0,0,255);
+            server_update_points[n].color = glm::u8vec4(255,255,0,255);
+            collision_points[n].color = glm::u8vec4(0,255,255,255);
+            render_points[n].color = glm::u8vec4(0,255,0,255);
         }
         window.draw(server_update_points);
         window.draw(update_points);
@@ -72,18 +72,18 @@ void DebugRenderer::render(sp::RenderTarget& renderer)
         sf::VertexArray fps60_line(sf::LinesStrip, 2);
         fps60_line[0].position = sf::Vector2f(0, window.getView().getSize().y - 166);
         fps60_line[1].position = sf::Vector2f(window.getView().getSize().x, window.getView().getSize().y - 166);
-        fps60_line[0].color = sf::Color(255, 255, 255, 128);
-        fps60_line[1].color = sf::Color(255, 255, 255, 128);
+        fps60_line[0].color = glm::u8vec4(255, 255, 255, 128);
+        fps60_line[1].color = glm::u8vec4(255, 255, 255, 128);
         window.draw(fps60_line);
 
         text_update.setPosition(0, window.getView().getSize().y - 18 * 4 - 170);
         text_server_update.setPosition(0, window.getView().getSize().y - 18 * 3 - 170);
         text_collision.setPosition(0, window.getView().getSize().y - 18 * 2 - 170);
         text_render.setPosition(0, window.getView().getSize().y - 18 - 170);
-        text_update.setColor(sf::Color::Red);
-        text_server_update.setColor(sf::Color::Yellow);
-        text_collision.setColor(sf::Color::Cyan);
-        text_render.setColor(sf::Color::Green);
+        text_update.setColor(glm::u8vec4(255,0,0,255));
+        text_server_update.setColor(glm::u8vec4(255,255,0,255));
+        text_collision.setColor(glm::u8vec4(0,255,255,255));
+        text_render.setColor(glm::u8vec4(0,255,0,255));
         window.draw(text_update);
         window.draw(text_server_update);
         window.draw(text_collision);

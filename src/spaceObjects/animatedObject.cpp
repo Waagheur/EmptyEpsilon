@@ -57,7 +57,7 @@ void AnimatedObject::drawOnRadar(sp::RenderTarget& renderer, sf::Vector2f positi
     if (size != getRadius())
         setRadius(size);
 
-//    object_sprite.setColor(sf::Color(255, 200, 100));
+//    object_sprite.setColor(glm::u8vec4(255, 200, 100));
     float size = getRadius() * scale / object_sprite.getTextureRect().width * 2;
     if (size < 0.2)
         size = 0.2;

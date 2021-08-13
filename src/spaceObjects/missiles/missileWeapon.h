@@ -17,7 +17,7 @@ public:
     int32_t target_id;
     float target_angle;
     float speed;
-    sf::Color color;
+    glm::u8vec4 color;
     // Damage modifier for this missile which indicates it's size. (eg; Missiles by fighters have a low modifier), missiles from
     // capital ships have a high modifier.
     float category_modifier;  

@@ -15,7 +15,7 @@
 #include "onScreenKeyboard.h"
 
 GuiHackDialog::GuiHackDialog(GuiContainer* owner, string id)
-: GuiOverlay(owner, id, sf::Color(64,0,0,64))
+: GuiOverlay(owner, id, glm::u8vec4(64,0,0,64))
 {
 
     setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);

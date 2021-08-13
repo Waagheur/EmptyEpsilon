@@ -12,7 +12,7 @@ class SectorsView : public GuiElement
         static const int grid_scale_size = 5;
 
     private:
-        sf::Color grid_colors[SectorsView::grid_scale_size];
+        glm::u8vec4 grid_colors[SectorsView::grid_scale_size];
         const float sub_sectors_count = 8;
         float distance;
         glm::vec2 view_position;

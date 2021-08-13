@@ -25,7 +25,7 @@ HelmsScreen::HelmsScreen(GuiContainer* owner)
     // Render the radar shadow and background decorations.
     (new GuiImage(this, "BACKGROUND_GRADIENT", "gui/background/gradient.png"))->setPosition(glm::vec2(0, 0), sp::Alignment::Center)->setSize(1200, 900);
     
-    background_crosses = new GuiOverlay(this, "BACKGROUND_CROSSES", sf::Color::White);
+    background_crosses = new GuiOverlay(this, "BACKGROUND_CROSSES", glm::u8vec4{255,255,255,255});
     background_crosses->setTextureTiled("gui/background/crosses.png");
 
     // Render the alert level color overlay.
@@ -94,9 +94,9 @@ void HelmsScreen::onDraw(sp::RenderTarget& renderer)
     {
         energy_display->setValue(string(int(my_spaceship->energy_level/my_spaceship->max_energy_level * 100)) + "%");
         if (my_spaceship->energy_level < 100)
-            energy_display->setColor(sf::Color::Red);
+            energy_display->setColor(glm::u8vec4(255,0,0,255));
         else
-            energy_display->setColor(sf::Color::White);
+            energy_display->setColor(glm::u8vec4(255,255,255,255));
         heading_display->setValue(string(my_spaceship->getHeading(), 1));
         float velocity = glm::length(my_spaceship->getVelocity()) / 1000 * 60;
         velocity_display->setValue(tr("{value} {unit}/min").format({{"value", string(velocity, 1)}, {"unit", DISTANCE_UNIT_1K}}));

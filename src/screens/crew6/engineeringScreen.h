@@ -70,7 +70,7 @@ private:
     float previous_energy_level;
     float average_energy_delta;
 
-    void addSystemEffect(string key, string value, sf::Color color = sf::Color::White);
+    void addSystemEffect(string key, string value, glm::u8vec4 color = glm::u8vec4(255,255,255,255));
     void selectSystem(ESystem system);
 
     string toNearbyIntString(float value);

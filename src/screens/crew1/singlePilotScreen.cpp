@@ -31,7 +31,7 @@ void SinglePilotScreen::init(GuiContainer* owner, P<PlayerSpaceship> targetSpace
     single_pilot_view = new SinglePilotView(this, targetSpaceship);
     single_pilot_view->setPosition(0, 0, sp::Alignment::TopLeft)->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);
 
-    background_crosses = new GuiOverlay(this, "BACKGROUND_CROSSES", sf::Color::White);
+    background_crosses = new GuiOverlay(this, "BACKGROUND_CROSSES", glm::u8vec4{255,255,255,255});
     background_crosses->setTextureTiled("gui/background/crosses.png");
 
     // Render the alert level color overlay.

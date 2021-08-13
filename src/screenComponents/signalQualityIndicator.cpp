@@ -58,9 +58,9 @@ void GuiSignalQualityIndicator::onDraw(sp::RenderTarget& renderer)
         }
     }
     if(show_red)
-        renderer.drawLineBlendAdd(r, sf::Color::Red);
+        renderer.drawLineBlendAdd(r, glm::u8vec4(255, 0, 0, 255));
     if(show_green)
-        renderer.drawLineBlendAdd(g, sf::Color::Green);
+        renderer.drawLineBlendAdd(g, glm::u8vec4(0, 255, 0, 255));
     if(show_blue)
-        renderer.drawLineBlendAdd(b, sf::Color::Blue);
+        renderer.drawLineBlendAdd(b, glm::u8vec4(0, 0, 255, 255));
 }

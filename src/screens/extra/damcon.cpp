@@ -51,9 +51,9 @@ void DamageControlScreen::onDraw(sp::RenderTarget &renderer)
     {
         hull_display->setValue(string(int(100 * my_spaceship->hull_strength / my_spaceship->hull_max)) + "%");
         if (my_spaceship->hull_strength < my_spaceship->hull_max / 4.0f)
-            hull_display->setColor(sf::Color::Red);
+            hull_display->setColor(glm::u8vec4(255, 0, 0, 255));
         else
-            hull_display->setColor(sf::Color::White);
+            hull_display->setColor(glm::u8vec4{255,255,255,255});
 
         std::vector<string> sysNames = {"None"};
         std::vector<string> sysValues = {SYS_None};
@@ -63,11 +63,11 @@ void DamageControlScreen::onDraw(sp::RenderTarget &renderer)
             system_health[n]->setVisible(my_spaceship->hasSystem(ESystem(n)));
             system_health[n]->setValue(string(int(my_spaceship->systems[n].health * 100)) + "%");
             if (my_spaceship->systems[n].health < 0)
-                system_health[n]->setColor(sf::Color::Red);
+                system_health[n]->setColor(glm::u8vec4(255, 0, 0, 255));
             else if (my_spaceship->systems[n].health_max < 1.0)
-                system_health[n]->setColor(sf::Color::Yellow);
+                system_health[n]->setColor(glm::u8vec4(255, 255, 0, 255));
             else
-                system_health[n]->setColor(sf::Color::White);
+                system_health[n]->setColor(glm::u8vec4{255,255,255,255});
 
             if (my_spaceship->hasSystem(ESystem(n)))
             {

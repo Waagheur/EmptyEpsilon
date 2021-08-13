@@ -36,7 +36,7 @@ template<> int convert<EMissileSizes>::returnType(lua_State* L, EMissileSizes es
 class MissileWeaponData
 {
 public:
-    MissileWeaponData(float speed, float turnrate, float lifetime, sf::Color color, float homing_range, string fire_sound, EMissileWeapons base_type, EDamageType dt);
+    MissileWeaponData(float speed, float turnrate, float lifetime, glm::u8vec4 color, float homing_range, string fire_sound, EMissileWeapons base_type, EDamageType dt);
 
     EMissileWeapons basetype; //for custom
 
@@ -44,7 +44,7 @@ public:
     float turnrate; //deg/sec
 
     float lifetime; //sec
-    sf::Color color;
+    glm::u8vec4 color;
     float homing_range;
 
     string fire_sound;

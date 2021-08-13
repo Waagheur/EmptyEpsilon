@@ -219,14 +219,14 @@ void ScanProbe::takeDamage(float damage_amount, DamageInfo info)
 void ScanProbe::drawOnRadar(sp::RenderTarget& renderer, glm::vec2 position, float scale, float rotation, bool long_range)
 {
     // All probes use the same green icon on radar.
-    renderer.drawSprite("radar/probe.png", position, 10, sf::Color(96, 192, 128));
+    renderer.drawSprite("radar/probe.png", position, 10, glm::u8vec4(96, 192, 128, 255));
 
     if (long_range && !has_arrived)
     {
         float distance = glm::length(position - glm::vec2(target_position.x, target_position.y));
         if (distance > 1000.0)
         {
-                renderer.drawLine(position, position + glm::vec2(target_position.x, target_position.y) - glm::vec2(getPosition().x, getPosition().y)*scale, sf::Color(255, 255, 255, 32));
+                renderer.drawLine(position, position + glm::vec2(target_position.x, target_position.y) - glm::vec2(getPosition().x, getPosition().y)*scale, glm::u8vec4(255, 255, 255, 32));
         }
     }
 }
@@ -239,7 +239,7 @@ void ScanProbe::drawOnGMRadar(sp::RenderTarget& renderer, glm::vec2 position, fl
         P<PlayerSpaceship> player = owner;
         if(player)
         {
-            renderer.drawCircleOutline(position, player->getProbeRangeRadarRange()*scale, 3.0, sf::Color(255, 255, 255, 64));
+            renderer.drawCircleOutline(position, player->getProbeRangeRadarRange()*scale, 3.0, glm::u8vec4(255, 255, 255, 64));
         }
     }
 }

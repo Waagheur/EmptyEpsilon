@@ -22,10 +22,10 @@ view_position(glm::vec2(0.0f,0.0f)), view_rotation(0)
         // seriously it's worse than those job interview questions
         // if you change this code even the slightest, verify that it still produces a veriaty of different colors
         sf::Uint8 colorStep = (-128 / SectorsView::grid_scale_size);
-        grid_colors[scale_magnitude] = sf::Color(65 + colorStep * scale_magnitude * 0.5, 65 + colorStep * scale_magnitude * 0.3, 129 + colorStep * scale_magnitude, 128);
+        grid_colors[scale_magnitude] = glm::u8vec4(65 + colorStep * scale_magnitude * 0.5, 65 + colorStep * scale_magnitude * 0.3, 129 + colorStep * scale_magnitude, 128);
     }
     // last color is white
-    grid_colors[SectorsView::grid_scale_size - 1] = sf::Color(255, 255, 255, 128);
+    grid_colors[SectorsView::grid_scale_size - 1] = glm::u8vec4(255, 255, 255, 128);
 }
 
 glm::vec2 SectorsView::worldToScreen(glm::vec2 world_position)
@@ -79,26 +79,26 @@ void SectorsView::drawSectorGrid(sp::RenderTarget &renderer)
             else
                 name = getSectorName(glm::vec2(sector_x * sector_size_scaled + 1, sector_y * sector_size_scaled + 1));
 
-            sf::Color color = grid_colors[std::min(calcGridScaleMagnitude(scale_magnitude, sector_x), calcGridScaleMagnitude(scale_magnitude, sector_y))];
+            glm::u8vec4 color = grid_colors[std::min(calcGridScaleMagnitude(scale_magnitude, sector_x), calcGridScaleMagnitude(scale_magnitude, sector_y))];
             auto pos = worldToScreen(glm::vec2(x+(30/scale),y+(30/scale)));
             renderer.drawText(sp::Rect(pos.x-10, pos.y-10, 20, 20), name, sp::Alignment::Center, 30, bold_font, color);
         }
     }
     for (int sector_x = sector_x_min; sector_x <= sector_x_max; sector_x++)
     {
-        sf::Color color = grid_colors[calcGridScaleMagnitude(scale_magnitude, sector_x)];
+        glm::u8vec4 color = grid_colors[calcGridScaleMagnitude(scale_magnitude, sector_x)];
         float x = sector_x * sector_size_scaled;
         renderer.drawLine(worldToScreen(glm::vec2(x, (sector_y_min-1)*sector_size_scaled)), worldToScreen(glm::vec2(x, (sector_y_max+1)*sector_size_scaled)), color);
     }
     for (int sector_y = sector_y_min; sector_y <= sector_y_max; sector_y++)
     {
         float y = sector_y * sector_size_scaled;
-        sf::Color color = grid_colors[calcGridScaleMagnitude(scale_magnitude, sector_y)];
+        glm::u8vec4 color = grid_colors[calcGridScaleMagnitude(scale_magnitude, sector_y)];
         renderer.drawLine(worldToScreen(glm::vec2((sector_x_min-1)*sector_size_scaled, y)), worldToScreen(glm::vec2((sector_x_max+1)*sector_size_scaled, y)), color);
     }
 
     /*
-    sf::Color color = sf::Color(64, 64, 128, 255);
+    glm::u8vec4 color = glm::u8vec4(64, 64, 128, 255);
     int sub_sector_x_min = floor((view_position.x - (radar_screen_center.x - rect.position.x) / scale) / sub_sector_size) + 1;
     int sub_sector_x_max = floor((view_position.x + (rect.position.x + rect.size.x - radar_screen_center.x) / scale) / sub_sector_size);
     int sub_sector_y_min = floor((view_position.y - (radar_screen_center.y - rect.position.y) / scale) / sub_sector_size) + 1;

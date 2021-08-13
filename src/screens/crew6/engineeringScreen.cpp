@@ -24,7 +24,7 @@ EngineeringScreen::EngineeringScreen(GuiContainer* owner, ECrewPosition crew_pos
 : GuiOverlay(owner, "ENGINEERING_SCREEN", colorConfig.background), selected_system(SYS_None)
 {
     // Render the background decorations.
-    background_crosses = new GuiOverlay(this, "BACKGROUND_CROSSES", sf::Color::White);
+    background_crosses = new GuiOverlay(this, "BACKGROUND_CROSSES", glm::u8vec4{255,255,255,255});
     background_crosses->setTextureTiled("gui/background/crosses.png");
 
     // Render the alert level color overlay.
@@ -94,14 +94,14 @@ EngineeringScreen::EngineeringScreen(GuiContainer* owner, ECrewPosition crew_pos
             if (my_spaceship)
                 my_spaceship->commandSetSystemPowerRequest(ESystem(n), value);
         });
-        info.power_bar->setColor(sf::Color(192, 192, 32, 128))->setSize(100, GuiElement::GuiSizeMax);
+        info.power_bar->setColor(glm::u8vec4(192, 192, 32, 128))->setSize(100, GuiElement::GuiSizeMax);
         info.power_label = new GuiLabel(info.power_bar, id + "_POWER_LABEL", "...", 20);
         info.power_label->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);
         info.coolant_bar = new GuiProgressSlider(info.layout, id + "_COOLANT", 0.0, 10.0, 0.0, [this,n](float value){
             if (my_spaceship)
                 my_spaceship->commandSetSystemCoolantRequest(ESystem(n), value);
         });
-        info.coolant_bar->setColor(sf::Color(32, 128, 128, 128))->setSize(100, GuiElement::GuiSizeMax);
+        info.coolant_bar->setColor(glm::u8vec4(32, 128, 128, 128))->setSize(100, GuiElement::GuiSizeMax);
         info.coolant_label = new GuiLabel(info.coolant_bar, id + "_COOLANT_LABEL", "...", 20);
         info.coolant_label->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);
         if (!gameGlobalInfo->use_system_damage)
@@ -123,7 +123,7 @@ EngineeringScreen::EngineeringScreen(GuiContainer* owner, ECrewPosition crew_pos
                     if (my_spaceship)
                         my_spaceship->commandSetSystemRepairRequest(ESystem(n), value);
                 });
-                info.repair_bar->setColor(sf::Color(32, 128, 32, 128))->setSize(150, GuiElement::GuiSizeMax);
+                info.repair_bar->setColor(glm::u8vec4(32, 128, 32, 128))->setSize(150, GuiElement::GuiSizeMax);
                 info.repair_label = new GuiLabel(info.repair_bar, id + "_REPAIR_LABEL", "...", 20);
                 info.repair_label->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);
             }
@@ -374,14 +374,14 @@ void EngineeringScreen::onDraw(sp::RenderTarget& renderer)
 
         energy_display->setValue(toNearbyIntString(my_spaceship->energy_level) + " (" + tr("{energy}/min").format({{"energy", toNearbyIntString(average_energy_delta * 60.0f)}}) + ")");
         if (my_spaceship->energy_level < 100)
-            energy_display->setColor(sf::Color::Red);
+            energy_display->setColor(glm::u8vec4(255, 0, 0, 255));
         else
-            energy_display->setColor(sf::Color::White);
+            energy_display->setColor(glm::u8vec4{255,255,255,255});
         hull_display->setValue(toNearbyIntString(100 * my_spaceship->hull_strength / my_spaceship->hull_max) + "%");
         if (my_spaceship->hull_strength < my_spaceship->hull_max / 4.0f)
-            hull_display->setColor(sf::Color::Red);
+            hull_display->setColor(glm::u8vec4(255, 0, 0, 255));
         else
-            hull_display->setColor(sf::Color::White);
+            hull_display->setColor(glm::u8vec4{255,255,255,255});
 
         if (my_spaceship->getShieldCount() > 0)
         {
@@ -399,9 +399,9 @@ void EngineeringScreen::onDraw(sp::RenderTarget& renderer)
             text_oxygen += toNearbyIntString(100.0f * my_spaceship->getOxygenPoints(n) / my_spaceship->getOxygenMax(n)) + "% ";
         oxygen_display->setValue(text_oxygen);
         if (my_spaceship->getOxygenTotal() < 0.20)
-            oxygen_display->setColor(sf::Color::Red);
+            oxygen_display->setColor(glm::u8vec4(255,0,0,255));
         else
-            oxygen_display->setColor(sf::Color::White);
+            oxygen_display->setColor(glm::u8vec4(255,255,255,255));
         oxygen_display->setVisible(my_spaceship->getOxygenMaxTotal() > 0);
         coolant_display->setValue(toNearbyIntString(my_spaceship->max_coolant * 10) + "%");
         if (gameGlobalInfo->use_nano_repair_crew)
@@ -418,9 +418,9 @@ void EngineeringScreen::onDraw(sp::RenderTarget& renderer)
 
             float health = my_spaceship->systems[n].health;
             if (health < 0.0)
-                info.damage_bar->setValue(-health)->setColor(sf::Color(128, 32, 32, 192));
+                info.damage_bar->setValue(-health)->setColor(glm::u8vec4(128, 32, 32, 192));
             else
-                info.damage_bar->setValue(health)->setColor(sf::Color(64, 128 * health, 64 * health, 192));
+                info.damage_bar->setValue(health)->setColor(glm::u8vec4(64, 128 * health, 64 * health, 192));
             info.damage_label->setText(toNearbyIntString(health * 100) + "%");
             info.heat_label->setText(toNearbyIntString(my_spaceship->systems[n].heat_level * 100) + "%");
             info.heat_label->setVisible(my_spaceship->systems[n].heat_level > 0.0);
@@ -439,14 +439,14 @@ void EngineeringScreen::onDraw(sp::RenderTarget& renderer)
                 info.damage_icon->hide();
 
             float heat = my_spaceship->systems[n].heat_level;
-            info.heat_bar->setValue(heat)->setColor(sf::Color(128, 32 + 96 * (1.0 - heat), 32, 192));
+            info.heat_bar->setValue(heat)->setColor(glm::u8vec4(128, 32 + 96 * (1.0 - heat), 32, 192));
             float heating_diff = my_spaceship->systems[n].getHeatingDelta();
             if (heating_diff > 0)
                 info.heat_arrow->setAngle(90);
             else
                 info.heat_arrow->setAngle(-90);
             info.heat_arrow->setVisible(heat > 0);
-            info.heat_arrow->setColor(sf::Color(255, 255, 255, std::min(255, int(255 * fabs(heating_diff)))));
+            info.heat_arrow->setColor(glm::u8vec4(255, 255, 255, std::min(255, int(255 * fabs(heating_diff)))));
             if (heat > 0.9 && fmod(engine->getElapsedTime(), 0.5) < 0.25)
                 info.heat_icon->show();
             else
@@ -497,7 +497,7 @@ void EngineeringScreen::onDraw(sp::RenderTarget& renderer)
             float health_max = my_spaceship->getSystemHealthMax(selected_system);
             if (health_max < 1.0)
             {
-                addSystemEffect("Intervention necessaire", "voir log",sf::Color::Red); //TODO TRAD
+                addSystemEffect("Intervention necessaire", "voir log",glm::u8vec4(255,0,0,255)); //TODO TRAD
                 addSystemEffect("Maximal health", toNearbyIntString(health_max * 100) + "%"); //TODO TRAD
             }
             switch(selected_system)
@@ -595,7 +595,7 @@ void EngineeringScreen::onDraw(sp::RenderTarget& renderer)
                 }
                 else
                 {
-                    addSystemEffect("Generateur de secours", " x" + string(std::sqrt(0.1f), 1) ,sf::Color::Yellow);
+                    addSystemEffect("Generateur de secours", " x" + string(std::sqrt(0.1f), 1) ,glm::u8vec4(255,255,0,255));
                     
                 }
                 
@@ -609,7 +609,7 @@ void EngineeringScreen::onDraw(sp::RenderTarget& renderer)
                 }
                 else
                 {
-                    addSystemEffect("Energie insuffisante","", sf::Color::Red);
+                    addSystemEffect("Energie insuffisante","", glm::u8vec4(255,0,0,255));
                 }
             }
                 break;
@@ -791,7 +791,7 @@ void EngineeringScreen::selectSystem(ESystem system)
     }
 }
 
-void EngineeringScreen::addSystemEffect(string key, string value, sf::Color color)
+void EngineeringScreen::addSystemEffect(string key, string value, glm::u8vec4 color)
 {
     if (system_effects_index == system_effects.size())
     {

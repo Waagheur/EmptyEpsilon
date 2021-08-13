@@ -42,15 +42,15 @@ TargetAnalysisScreen::TargetAnalysisScreen(GuiContainer *owner)
 
     selected_entry = nullptr;
 
-    GuiOverlay *background_crosses = new GuiOverlay(this, "BACKGROUND_CROSSES", sf::Color::White);
+    GuiOverlay *background_crosses = new GuiOverlay(this, "BACKGROUND_CROSSES", glm::u8vec4(255,255,255,255));
     background_crosses->setTextureTiled("gui/background/crosses.png");
     
-    indicator_overlay = new GuiOverlay(this, "", sf::Color(0, 0, 0, 128));
+    indicator_overlay = new GuiOverlay(this, "", glm::u8vec4(0, 0, 0, 128));
     (new GuiPanel(indicator_overlay, "PAUSE_BOX"))->setPosition(0, 0, sp::Alignment::Center)->setSize(600, 100);
     indicator_label = new GuiLabel(indicator_overlay, "PAUSE_LABEL", "Power cut", 70);
     indicator_label->setPosition(0, 0, sp::Alignment::Center)->setSize(500, 100);
     
-    analysis_overlay = new GuiOverlay(this, "", sf::Color(0, 0, 0, 128));
+    analysis_overlay = new GuiOverlay(this, "", glm::u8vec4(0, 0, 0, 128));
     
     model = new GuiRotatingModelView(analysis_overlay, "MODEL_VIEW", nullptr);
     model->setSize(500, 500);
@@ -320,7 +320,7 @@ void TargetAnalysisScreen::onDraw(sp::RenderTarget& renderer)
                     {
                         info_system[n]->show();
                         float system_health = ship->systems[n].health;
-                        info_system[n]->setValue(string(int(system_health * 100.0f)) + "%")->setColor(sf::Color(255, 127.5 * (system_health + 1), 127.5 * (system_health + 1), 255));
+                        info_system[n]->setValue(string(int(system_health * 100.0f)) + "%")->setColor(glm::u8vec4(255, 127.5 * (system_health + 1), 127.5 * (system_health + 1), 255));
                     }
                 }
             }

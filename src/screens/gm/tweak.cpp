@@ -1953,7 +1953,7 @@ void GuiShipTweakOxygen::open(P<SpaceObject> target)
 GuiShipTweakMessages::GuiShipTweakMessages(GuiContainer* owner)
 : GuiTweakPage(owner)
 {
-    color_message = sf::Color::White;
+    color_message = glm::u8vec4(255,255,255,255);
     type_log = "generic";
     message = "";
 
@@ -1985,23 +1985,23 @@ GuiShipTweakMessages::GuiShipTweakMessages(GuiContainer* owner)
     (new GuiLabel(left_col, "", "Couleur :", 30))->setSize(GuiElement::GuiSizeMax, 50);
     GuiSelector* color_selector = new GuiSelector(left_col, "", [this](int index, string value)
     {
-        color_message = sf::Color::White;
+        color_message = glm::u8vec4(255,255,255,255);
         if (value == "white")
-            color_message = sf::Color::White;
+            color_message = glm::u8vec4(255,255,255,255);
         if (value == "black")
-            color_message = sf::Color::Black;
+            color_message = glm::u8vec4(0,0,0,255);
         if (value == "red")
-            color_message = sf::Color::Red;
+            color_message = glm::u8vec4(255,0,0,255);
         if (value == "green")
-            color_message = sf::Color::Green;
+            color_message = glm::u8vec4(0,255,0,255);
         if (value == "blue")
-            color_message = sf::Color::Blue;
+            color_message = glm::u8vec4(0,0,255,255);
         if (value == "yellow")
-            color_message = sf::Color::Yellow;
+            color_message = glm::u8vec4(255,255,0,255);
         if (value == "magenta")
-            color_message = sf::Color::Magenta;
+            color_message = glm::u8vec4(255,0,255,255);
         if (value == "cyan")
-            color_message = sf::Color::Cyan;
+            color_message = glm::u8vec4(0,255,255,255);
     });
     color_selector->setSize(GuiElement::GuiSizeMax, 40);
     color_selector->addEntry("white", "white");

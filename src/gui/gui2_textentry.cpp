@@ -14,7 +14,7 @@ void GuiTextEntry::onDraw(sp::RenderTarget& renderer)
         renderer.drawStretched(rect, "gui/widget/TextEntryBackground.focused.png", selectColor(colorConfig.text_entry.background));
     else
         renderer.drawStretched(rect, "gui/widget/TextEntryBackground.png", selectColor(colorConfig.text_entry.background));
-    sf::Color textColor = (valid || !validator_func) ? selectColor(colorConfig.text_entry.forground) : colorConfig.text_entry_invalid;
+    glm::u8vec4 textColor = (valid || !validator_func) ? selectColor(colorConfig.text_entry.forground) : colorConfig.text_entry_invalid;
     if (blink_timer.isExpired())
         typing_indicator = !typing_indicator;
     renderer.drawText(sp::Rect(rect.position.x + 16, rect.position.y, rect.size.x, rect.size.y), text + (typing_indicator && focus ? "_" : ""), sp::Alignment::CenterLeft, text_size, main_font, textColor);

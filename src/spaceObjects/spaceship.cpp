@@ -610,11 +610,11 @@ void SpaceShip::drawOnRadar(sp::RenderTarget& renderer, glm::vec2 position, floa
 
             // Color beam arcs red.
             // TODO: Make this color configurable.
-            sf::Color color = sf::Color::Red;
+            glm::u8vec4 color = glm::u8vec4(255, 0, 0, 255);
 
             // If the beam is cooling down, flash and fade the arc color.
             if (beam_weapons[n].getCooldown() > 0)
-                color = sf::Color(255, 255 * (beam_weapons[n].getCooldown() / beam_weapons[n].getCycleTime()), 0);
+                color = glm::u8vec4(255, 255 * (beam_weapons[n].getCooldown() / beam_weapons[n].getCycleTime()), 0, 255);
 
             // Initialize variables from the beam's data.
             float beam_direction = beam_weapons[n].getDirection();
@@ -628,12 +628,12 @@ void SpaceShip::drawOnRadar(sp::RenderTarget& renderer, glm::vec2 position, floa
             // Draw the beam's left bound.
             glm::vec2 r = vec2FromAngle(getRotation()-rotation + (beam_direction + beam_arc / 2.0f));
             renderer.drawLine(beam_offset + position, beam_offset + position + r * beam_range * scale, color);
-            renderer.drawLine(beam_offset + position + r * beam_range * scale, beam_offset + position + r * beam_range * scale * 1.3f, color, sf::Color(color.r, color.g, color.b, 0));
+            renderer.drawLine(beam_offset + position + r * beam_range * scale, beam_offset + position + r * beam_range * scale * 1.3f, color, glm::u8vec4(color.r, color.g, color.b, 0));
 
             // Draw the beam's right bound.
             r = vec2FromAngle(getRotation()-rotation + (beam_direction - beam_arc / 2.0f));
             renderer.drawLine(beam_offset + position, beam_offset + position + r * beam_range * scale, color);
-            renderer.drawLine(beam_offset + position + r * beam_range * scale, beam_offset + position + r * beam_range * scale * 1.3f, color, sf::Color(color.r, color.g, color.b, 0));
+            renderer.drawLine(beam_offset + position + r * beam_range * scale, beam_offset + position + r * beam_range * scale * 1.3f, color, glm::u8vec4(color.r, color.g, color.b, 0));
 
             // Draw the beam's arc.
             int arcPoints = int(beam_arc / 10) + 1;
@@ -663,12 +663,12 @@ void SpaceShip::drawOnRadar(sp::RenderTarget& renderer, glm::vec2 position, floa
                 // Draw the turret's left bound. (We're reusing the beam's origin.)
                 r = vec2FromAngle(getRotation()-rotation + (turret_direction + turret_arc / 2.0f));
                 renderer.drawLine(beam_offset + position, beam_offset + position + r * beam_range * scale, color);
-                renderer.drawLine(beam_offset + position + r * beam_range * scale, beam_offset + position + r * beam_range * scale * 1.3f, color, sf::Color(color.r, color.g, color.b, 0));
+                renderer.drawLine(beam_offset + position + r * beam_range * scale, beam_offset + position + r * beam_range * scale * 1.3f, color, glm::u8vec4(color.r, color.g, color.b, 0));
 
                 // Draw the turret's right bound.
                 r = vec2FromAngle(getRotation()-rotation + (turret_direction - turret_arc / 2.0f));
                 renderer.drawLine(beam_offset + position, beam_offset + position + r * beam_range * scale, color);
-                renderer.drawLine(beam_offset + position + r * beam_range * scale, beam_offset + position + r * beam_range * scale * 1.3f, color, sf::Color(color.r, color.g, color.b, 0));
+                renderer.drawLine(beam_offset + position + r * beam_range * scale, beam_offset + position + r * beam_range * scale * 1.3f, color, glm::u8vec4(color.r, color.g, color.b, 0));
             }
 
             // Draw the turret's arc.
@@ -703,7 +703,7 @@ void SpaceShip::drawOnRadar(sp::RenderTarget& renderer, glm::vec2 position, floa
 
     // Set up the radar sprite for objects.
     string object_sprite = radar_trace;
-    sf::Color color = sf::Color::White;
+    glm::u8vec4 color = glm::u8vec4(255,255,255,255);
     float sprite_scale = 0.1;
     float sprite_max = 5.0;
     float sprite_min = 0.75;
@@ -713,7 +713,7 @@ void SpaceShip::drawOnRadar(sp::RenderTarget& renderer, glm::vec2 position, floa
     if (my_spaceship && (getScannedStateFor(my_spaceship) == SS_NotScanned || getScannedStateFor(my_spaceship) == SS_FriendOrFoeIdentified))
     {
         object_sprite = "radar/blip.png";
-        color = sf::Color(192, 192, 192);
+        color = glm::u8vec4(192, 192, 192, 255);
     }
     else
     {
@@ -726,7 +726,7 @@ void SpaceShip::drawOnRadar(sp::RenderTarget& renderer, glm::vec2 position, floa
 
     if(my_spaceship == this)
     {
-        color = sf::Color(192,192,255);
+        color = glm::u8vec4(192,192,255, 255);
     }
     else if(my_spaceship)
     {
@@ -734,15 +734,15 @@ void SpaceShip::drawOnRadar(sp::RenderTarget& renderer, glm::vec2 position, floa
         {
             if(isEnemy(my_spaceship))
             {
-                color = sf::Color::Red;
+                color = glm::u8vec4(255,0,0,255);
             }
             else if(isFriendly(my_spaceship))
             {
-                color = sf::Color(128,255,128);
+                color = glm::u8vec4(128,255,128,255);
             }
             else
             {
-                color = sf::Color(192,192,192);
+                color = glm::u8vec4(192,192,192,255);
             }
         }
     }
@@ -753,7 +753,7 @@ void SpaceShip::drawOnGMRadar(sp::RenderTarget& renderer, glm::vec2 position, fl
 {
     if (!long_range)
     {
-        renderer.fillRect(sp::Rect(position.x - 30, position.y - 30, 60 * hull_strength / hull_max, 5), sf::Color(128, 255, 128, 128));
+        renderer.fillRect(sp::Rect(position.x - 30, position.y - 30, 60 * hull_strength / hull_max, 5), glm::u8vec4(128, 255, 128, 128));
     }
 }
 
@@ -1747,7 +1747,7 @@ void SpaceShip::addBroadcast(int threshold, string message)
 
     message = this->getCallSign() + " : " + message; //append the callsign at the start of broadcast
 
-    sf::Color color = sf::Color(255, 204, 51); //default : yellow, should never be seen
+    glm::u8vec4 color = glm::u8vec4(255, 204, 51, 255); //default : yellow, should never be seen
 
     for(int n=0; n<GameGlobalInfo::max_player_ships; n++)
     {
@@ -1757,17 +1757,17 @@ void SpaceShip::addBroadcast(int threshold, string message)
         {
             if (this->isFriendly(ship))
             {
-                color = sf::Color(154,255,154); //ally = light green
+                color = glm::u8vec4(154, 255, 154, 255); //ally = light green
                 addtolog = 1;
             }
             else if ((factionInfo[this->getFactionId()]->states[ship->getFactionId()] == FVF_Neutral) && ((threshold >= FVF_Neutral)))
             {
-                color = sf::Color(128,128,128); //neutral = grey
+                color = glm::u8vec4(128,128,128, 255); //neutral = grey
                 addtolog = 1;
             }
             else if ((this->isEnemy(ship)) && (threshold == FVF_Enemy))
             {
-                color = sf::Color(255,102,102); //enemy = light red
+                color = glm::u8vec4(255,102,102, 255); //enemy = light red
                 addtolog = 1;
             }
 

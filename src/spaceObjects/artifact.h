@@ -19,7 +19,7 @@ private:
 
     string radar_trace_icon;
     float radar_trace_scale;
-    sf::Color radar_trace_color;
+    glm::u8vec4 radar_trace_color;
 public:
     Artifact();
     
@@ -43,7 +43,7 @@ public:
 
     void setRadarTraceIcon(string icon);
     void setRadarTraceScale(float scale);
-    void setRadarTraceColor(int r, int g, int b) { radar_trace_color = sf::Color(r, g, b); }
+    void setRadarTraceColor(int r, int g, int b) { radar_trace_color = glm::u8vec4(r, g, b, 255); }
 
     void onPickUp(ScriptSimpleCallback callback);
     // Consistent naming workaround

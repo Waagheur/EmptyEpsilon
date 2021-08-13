@@ -65,7 +65,7 @@ Artifact::Artifact()
   allow_pickup(false),
   radar_trace_icon("radar/blip.png"),
   radar_trace_scale(0),
-  radar_trace_color(sf::Color(255, 255, 255)),
+  radar_trace_color(glm::u8vec4(255, 255, 255, 255)),
   current_model_data_name("artifact" + string(irandom(1, 8)))
 {
     setRotation(random(0, 360));
@@ -178,7 +178,7 @@ void Artifact::collide(Collisionable* target, float force)
             }
 
             destroy();
-            player->addToShipLog("Objet recupere en soute",sf::Color::White);
+            player->addToShipLog("Objet recupere en soute",glm::u8vec4(255,255,255,255));
         }
         else
         {

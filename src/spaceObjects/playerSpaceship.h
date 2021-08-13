@@ -77,11 +77,11 @@ public:
     public:
         string prefix;
         string text;
-        sf::Color color;
+        glm::u8vec4 color;
         string station;
 
         ShipLogEntry() {}
-        ShipLogEntry(string prefix, string text, sf::Color color, string station)
+        ShipLogEntry(string prefix, string text, glm::u8vec4 color, string station)
         : prefix(prefix), text(text), color(color), station(station) {}
 
         bool operator!=(const ShipLogEntry& e) { return prefix != e.prefix || text != e.text || color != e.color || station != e.station; }
@@ -427,8 +427,8 @@ public:
     float getNetSystemEnergyUsage();
 
     // Ship's log functions
-    void addToSpecificShipLog(string message, sf::Color color, string station); // avec le register script, impossible d'avoir des signatures avec arguments differents
-    void addToShipLog(string message, sf::Color color) { addToSpecificShipLog(message, color, "generic"); }
+    void addToSpecificShipLog(string message, glm::u8vec4 color, string station); // avec le register script, impossible d'avoir des signatures avec arguments differents
+    void addToShipLog(string message, glm::u8vec4 color) { addToSpecificShipLog(message, color, "generic"); }
     void addToShipLogBy(string message, P<SpaceObject> target);
     const std::vector<ShipLogEntry>& getShipsLog(string station) const;
 

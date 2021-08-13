@@ -377,7 +377,7 @@ class GuiShipTweakMessages : public GuiTweakPage
 private:
     P<PlayerSpaceship> target;
 
-    sf::Color color_message;
+    glm::u8vec4 color_message;
     string type_log;
     string message;
 

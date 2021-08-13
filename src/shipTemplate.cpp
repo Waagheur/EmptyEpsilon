@@ -628,7 +628,7 @@ void ShipTemplate::setCustomWeaponMultiple(string weapon_name, int fire_count, i
 
 void ShipTemplate::setCustomWeaponColor(string weapon_name, char color_r, char color_g, char color_b)
 {
-    CustomMissileWeaponRegistry::getMissileWeapon(weapon_name).color = sf::Color(color_r, color_g, color_b);
+    CustomMissileWeaponRegistry::getMissileWeapon(weapon_name).color = glm::u8vec4(color_r, color_g, color_b, 255);
 }
 
 void ShipTemplate::onCustomWeaponDetonation(string weapon_name, ScriptSimpleCallback callback)

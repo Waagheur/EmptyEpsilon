@@ -29,7 +29,7 @@ const int COLUMN_WIDTH = 400;
 DroneMasterScreen::DroneMasterScreen(GuiContainer *owner)
     : GuiOverlay(owner, "DOCK_MASTER_SCREEN", colorConfig.background)
 {
-    GuiOverlay *background_crosses = new GuiOverlay(this, "BACKGROUND_CROSSES", sf::Color::White);
+    GuiOverlay *background_crosses = new GuiOverlay(this, "BACKGROUND_CROSSES", glm::u8vec4(255,255,255,255));
     background_crosses->setTextureTiled("gui/background/crosses.png");
 
     GuiAutoLayout *rootLayout = new GuiAutoLayout(this, "ROOT_LAYOUT", GuiAutoLayout::LayoutHorizontalLeftToRight);
@@ -141,7 +141,7 @@ DroneMasterScreen::DroneMasterScreen(GuiContainer *owner)
     (new GuiPowerDamageIndicator(energy_slider, "DOCKS_DPI", SYS_Docks, sp::Alignment::BottomCenter, my_spaceship))->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);
 
     energy_bar = new GuiProgressbar(energy_slider, "ENERGY_BAR", 0.0, 10.0, 0.0);
-    energy_bar->setColor(sf::Color(192, 192, 32, 128))->setText("Energie")->setDrawBackground(false)->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax)->setMargins(10, 0, 10, 0);
+    energy_bar->setColor(glm::u8vec4(192, 192, 32, 128))->setText("Energie")->setDrawBackground(false)->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax)->setMargins(10, 0, 10, 0);
 
     action_weapons = new GuiAutoLayout(topPanel, "ACTION_WEAPONS", GuiAutoLayout::LayoutVerticalColumns);
 //    action_weapons = new GuiAutoLayout(topPanel, "ACTION_WEAPONS", GuiAutoLayout::LayoutVerticalTopToBottom);
@@ -344,7 +344,7 @@ DroneMasterScreen::DroneMasterScreen(GuiContainer *owner)
 
     (new GuiCustomShipFunctions(this, dockMaster, "CUSTOM_FUNCTIONS", my_spaceship))->setPosition(20, 550, sp::Alignment::TopLeft)->setSize(360, GuiElement::GuiSizeMax);
 
-    overlay = new GuiOverlay(this, "OVERLAY", sf::Color(0, 0, 0, 128));
+    overlay = new GuiOverlay(this, "OVERLAY", glm::u8vec4(0, 0, 0, 128));
     overlay->setBlocking(true)->setPosition(COLUMN_WIDTH, 100, sp::Alignment::TopLeft)->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);
     overlay_label = new GuiLabel(overlay, "OVERLAY_LABEL", "Transporting cargo out", 30);
     overlay_label->setPosition(0, 0, sp::Alignment::Center)->setSize(COLUMN_WIDTH, 50);

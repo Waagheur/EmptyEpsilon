@@ -13,7 +13,7 @@ ProbeScreen::ProbeScreen()
     rotatetime = 0.0007;
     angle = 0.0f;
      // Render the background decorations.
-    background_crosses = new GuiOverlay(this, "BACKGROUND_CROSSES", sf::Color::White);
+    background_crosses = new GuiOverlay(this, "BACKGROUND_CROSSES", glm::u8vec4(255,255,255,255));
     background_crosses->setTextureTiled("gui/Background/crosses.png");
 
     viewport = new GuiViewport3D(this, "VIEWPROBE");

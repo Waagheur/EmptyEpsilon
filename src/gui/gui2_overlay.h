@@ -6,7 +6,7 @@
 class GuiOverlay : public GuiElement
 {
 private:
-    sf::Color color;
+    glm::u8vec4 color;
     enum ETextureMode
     {
         TM_None,
@@ -15,11 +15,11 @@ private:
     string texture;
     bool blocking;
 public:
-    GuiOverlay(GuiContainer* owner, string id, sf::Color color);
+    GuiOverlay(GuiContainer* owner, string id, glm::u8vec4 color);
 
     virtual void onDraw(sp::RenderTarget& target) override;
 
-    GuiOverlay* setColor(sf::Color color);
+    GuiOverlay* setColor(glm::u8vec4 color);
     GuiOverlay* setBlocking(bool blocking){ this->blocking = blocking; return this;}
     GuiOverlay* setAlpha(int alpha);
     GuiOverlay* setTextureTiled(string texture);

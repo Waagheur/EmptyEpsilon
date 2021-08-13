@@ -22,7 +22,7 @@ REGISTER_SCRIPT_SUBCLASS(PlayerSpaceship, SpaceShip)
     /// Takes a Boolean value.
     REGISTER_SCRIPT_CLASS_FUNCTION(PlayerSpaceship, setShieldsActive);
     /// Adds a message to the ship's log. Takes a string as the message and a
-    /// sf::Color.
+    /// glm::u8vec4.
     REGISTER_SCRIPT_CLASS_FUNCTION(PlayerSpaceship, addToShipLog);
     /// Move all players connected to this ship to the same stations on a
     /// different PlayerSpaceship. If the target isn't a PlayerSpaceship, this
@@ -864,7 +864,7 @@ void PlayerSpaceship::update(float delta)
                 if ((current_warp > n-0.1 && current_warp < n+0.1) && warp_indicator != n)
                 {
                     warp_indicator = n;
-                    addToSpecificShipLog("WARP " + string(abs(n)), sf::Color::White,"intern");
+                    addToSpecificShipLog("WARP " + string(abs(n)), glm::u8vec4(255,255,255,255),"intern");
                 }
             }
         }
@@ -1034,7 +1034,7 @@ void PlayerSpaceship::takeHullDamage(float damage_amount, DamageInfo& info)
             system_damage += string(getSystemName(ESystem(n))) + string(" / ");
     }
     system_damage.erase(system_damage.end()-2, system_damage.end());
-    addToSpecificShipLog(system_damage,sf::Color::Red,"intern");
+    addToSpecificShipLog(system_damage,glm::u8vec4(255,0,0,255),"intern");
 }
 
 void PlayerSpaceship::setMaxCoolant(float coolant)
@@ -1273,7 +1273,7 @@ void PlayerSpaceship::setRepairCrewCount(int amount)
     max_repair = (float) amount;
 }
 
-void PlayerSpaceship::addToSpecificShipLog(string message, sf::Color color, string station)
+void PlayerSpaceship::addToSpecificShipLog(string message, glm::u8vec4 color, string station)
 {
     if (station == "generic")
     {
@@ -1454,7 +1454,7 @@ void PlayerSpaceship::setCommsMessage(string message)
 {
     // Record a new comms message to the ship's log.
     for(string line : message.split("\n"))
-        addToShipLog(line, sf::Color(192, 192, 255));
+        addToShipLog(line, glm::u8vec4(192, 192, 255, 255));
     // Display the message in the messaging window.
     comms_incomming_message = message;
 }
@@ -1463,7 +1463,7 @@ void PlayerSpaceship::addCommsIncommingMessage(string message)
 {
     // Record incoming comms messages to the ship's log.
     for(string line : message.split("\n"))
-        addToShipLog(line, sf::Color(192, 192, 255));
+        addToShipLog(line, glm::u8vec4(192, 192, 255, 255));
     // Add the message to the messaging window.
     comms_incomming_message = comms_incomming_message + "\n> " + message;
 }
@@ -1598,28 +1598,28 @@ void PlayerSpaceship::onReceiveClientCommand(int32_t client_id, sp::io::DataBuff
             float distance;
             packet >> distance;
             initializeJump(distance);
-            addToSpecificShipLog("Initialisation du Jump",sf::Color::White,"intern");
+            addToSpecificShipLog("Initialisation du Jump",glm::u8vec4(255,255,255,255),"intern");
         }
         break;
     case CMD_SET_TARGET:
         {
             packet >> target_id;
             //if (target_id != int32_t(-1))
-            //    addToSpecificShipLog("Cible active : " + string(SpaceShip::getTarget()->SpaceObject::getCallSign()),sf::Color::Yellow,"intern");
+            //    addToSpecificShipLog("Cible active : " + string(SpaceShip::getTarget()->SpaceObject::getCallSign()),glm::u8vec4(255,255,0,255),"intern");
         }
         break;
     case CMD_SET_DOCK_TARGET:
         {
             packet >> dock_target_id;
             //if (dock_target_id != int32_t(-1))
-            //    addToSpecificShipLog("Cible du docking : " + string(SpaceShip::getDockTarget()->SpaceObject::getCallSign()),sf::Color::Yellow,"intern");
+            //    addToSpecificShipLog("Cible du docking : " + string(SpaceShip::getDockTarget()->SpaceObject::getCallSign()),glm::u8vec4(255,255,0,255),"intern");
         }
         break;
     case CMD_SET_LANDING_TARGET:
         {
             packet >> landing_target_id;
             //if (landing_target_id != int32_t(-1))
-            //    addToSpecificShipLog("Cible de l'atterrissage : " + string(SpaceShip::getLandingTarget()->SpaceObject::getCallSign()),sf::Color::Yellow,"intern");
+            //    addToSpecificShipLog("Cible de l'atterrissage : " + string(SpaceShip::getLandingTarget()->SpaceObject::getCallSign()),glm::u8vec4(255,255,0,255),"intern");
         }
         break;
     case CMD_LOAD_TUBE:
@@ -1652,7 +1652,7 @@ void PlayerSpaceship::onReceiveClientCommand(int32_t client_id, sp::io::DataBuff
             if (tube_nr >= 0 && tube_nr < max_weapon_tubes)
             {
                 weapon_tube[tube_nr].fire(missile_target_angle);
-                addToSpecificShipLog("Missile tire",sf::Color::Yellow,"intern");
+                addToSpecificShipLog("Missile tire",glm::u8vec4(255,255,0,255),"intern");
             }
         }
         break;
@@ -1668,13 +1668,13 @@ void PlayerSpaceship::onReceiveClientCommand(int32_t client_id, sp::io::DataBuff
                 {
                     //Tdelc : son joue volontairement sur le client
                     soundManager->playSound("sfx/shield_up.wav");
-                    addToSpecificShipLog("Boucliers actives",sf::Color::Green,"intern");
+                    addToSpecificShipLog("Boucliers actives",glm::u8vec4(0,255,0,255),"intern");
                 }
                 else
                 {
                     //Tdelc : son joue volontairement sur le client
                     soundManager->playSound("sfx/shield_down.wav");
-                    addToSpecificShipLog("Boucliers desactives",sf::Color::Green,"intern");
+                    addToSpecificShipLog("Boucliers desactives",glm::u8vec4(0,255,0,255),"intern");
                 }
             }
         }
@@ -1770,7 +1770,7 @@ void PlayerSpaceship::onReceiveClientCommand(int32_t client_id, sp::io::DataBuff
             int32_t id;
             packet >> id;
             requestDock(game_server->getObjectById(id));
-            addToSpecificShipLog("Procedure de dock demandee",sf::Color::Cyan,"intern");
+            addToSpecificShipLog("Procedure de dock demandee",glm::u8vec4(0,255,255,255),"intern");
         }
         break;
     case CMD_LAND:
@@ -1778,25 +1778,25 @@ void PlayerSpaceship::onReceiveClientCommand(int32_t client_id, sp::io::DataBuff
             int32_t id;
             packet >> id;
             requestLanding(game_server->getObjectById(id));
-            addToSpecificShipLog("Procedure d'atterrissage",sf::Color::Cyan,"intern");
+            addToSpecificShipLog("Procedure d'atterrissage",glm::u8vec4(0,255,255,255),"intern");
         }
         break;
     case CMD_UNDOCK:
         {
             requestUndock();
-            addToSpecificShipLog("Procedure de dedock demandee",sf::Color::Cyan,"intern");
+            addToSpecificShipLog("Procedure de dedock demandee",glm::u8vec4(0,255,255,255),"intern");
         }
         break;
     case CMD_ABORT_DOCK:
         {
             abortDock();
-            addToSpecificShipLog("Procedure de dedock abandonnee",sf::Color::Cyan,"intern");
+            addToSpecificShipLog("Procedure de dedock abandonnee",glm::u8vec4(0,255,255,255),"intern");
         }
         break;
     case CMD_ABORT_LANDING:
         {
             abortLanding();
-            addToSpecificShipLog("Procedure d'atterrissage abandonnee",sf::Color::Cyan,"intern");
+            addToSpecificShipLog("Procedure d'atterrissage abandonnee",glm::u8vec4(0,255,255,255),"intern");
         }
         break;
     case CMD_OPEN_TEXT_COMM:
@@ -1941,7 +1941,7 @@ void PlayerSpaceship::onReceiveClientCommand(int32_t client_id, sp::io::DataBuff
     case CMD_SET_AUTO_REPAIR:
         packet >> auto_repair_enabled;
 		if (auto_repair_enabled)
-			addToSpecificShipLog("Reparation automatique active",sf::Color::White,"intern");
+			addToSpecificShipLog("Reparation automatique active",glm::u8vec4(255,255,255,255),"intern");
         break;
     case CMD_SET_BEAM_FREQUENCY:
         {
@@ -1952,7 +1952,7 @@ void PlayerSpaceship::onReceiveClientCommand(int32_t client_id, sp::io::DataBuff
                 beam_frequency = 0;
             if (beam_frequency > SpaceShip::max_frequency)
                 beam_frequency = SpaceShip::max_frequency;
-            addToSpecificShipLog("Frequence de laser modifiee : " + frequencyToString(new_frequency),sf::Color::Yellow,"intern");
+            addToSpecificShipLog("Frequence de laser modifiee : " + frequencyToString(new_frequency),glm::u8vec4(255,255,0,255),"intern");
         }
         break;
     case CMD_SET_BEAM_SYSTEM_TARGET:
@@ -1964,7 +1964,7 @@ void PlayerSpaceship::onReceiveClientCommand(int32_t client_id, sp::io::DataBuff
                 beam_system_target = SYS_None;
             if (beam_system_target > ESystem(int(SYS_COUNT) - 1))
                 beam_system_target = ESystem(int(SYS_COUNT) - 1);
-            addToSpecificShipLog("Cible systeme des lasers modifiee : " + getLocaleSystemName(system),sf::Color::Yellow,"intern");
+            addToSpecificShipLog("Cible systeme des lasers modifiee : " + getLocaleSystemName(system),glm::u8vec4(255,255,0,255),"intern");
         }
         break;
     case CMD_SET_SHIELD_FREQUENCY:
@@ -1981,7 +1981,7 @@ void PlayerSpaceship::onReceiveClientCommand(int32_t client_id, sp::io::DataBuff
                     shield_frequency = 0;
                 if (shield_frequency > SpaceShip::max_frequency)
                     shield_frequency = SpaceShip::max_frequency;
-                addToSpecificShipLog("Frequence des boucliers modifiee : " + frequencyToString(new_frequency),sf::Color::Green,"intern");
+                addToSpecificShipLog("Frequence des boucliers modifiee : " + frequencyToString(new_frequency),glm::u8vec4(0,255,0,255),"intern");
             }
         }
         break;
@@ -2012,7 +2012,7 @@ void PlayerSpaceship::onReceiveClientCommand(int32_t client_id, sp::io::DataBuff
         break;
     case CMD_ACTIVATE_SELF_DESTRUCT:
         activate_self_destruct = true;
-        addToSpecificShipLog("Auto destruction activee",sf::Color::Red,"intern");
+        addToSpecificShipLog("Auto destruction activee",glm::u8vec4(255,0,0,255),"intern");
         for(int n=0; n<max_self_destruct_codes; n++)
         {
             self_destruct_code[n] = irandom(0, 99999);
@@ -2041,7 +2041,7 @@ void PlayerSpaceship::onReceiveClientCommand(int32_t client_id, sp::io::DataBuff
         if (self_destruct_countdown <= 0.0f)
         {
             activate_self_destruct = false;
-            addToSpecificShipLog("Auto destruction annulee",sf::Color::Red,"intern");
+            addToSpecificShipLog("Auto destruction annulee",glm::u8vec4(255,0,0,255),"intern");
         }
         break;
     case CMD_CONFIRM_SELF_DESTRUCT:
@@ -2134,9 +2134,9 @@ void PlayerSpaceship::onReceiveClientCommand(int32_t client_id, sp::io::DataBuff
         {
             packet >> alert_level;
             if(alertLevelToString(alert_level) == "RED ALERT")
-                addToSpecificShipLog("Alerte Rouge",sf::Color::Red,"intern");
+                addToSpecificShipLog("Alerte Rouge",glm::u8vec4(255,0,0,255),"intern");
             if(alertLevelToString(alert_level) == "YELLOW ALERT")
-                addToSpecificShipLog("Alerte jaune",sf::Color::Yellow,"intern");
+                addToSpecificShipLog("Alerte jaune",glm::u8vec4(255,255,0,255),"intern");
         }
         break;
     case CMD_SET_SCIENCE_LINK:
@@ -2714,10 +2714,10 @@ void PlayerSpaceship::drawOnGMRadar(sp::RenderTarget& renderer, glm::vec2 positi
     if (long_range)
     {
         // Draw long-range radar radius indicator
-        renderer.drawCircleOutline(position, getLongRangeRadarRange() * scale, 3.0, sf::Color(255, 255, 255, 64));
+        renderer.drawCircleOutline(position, getLongRangeRadarRange() * scale, 3.0, glm::u8vec4(255, 255, 255, 64));
 
         // Draw short-range radar radius indicator
-        renderer.drawCircleOutline(position, getShortRangeRadarRange() * scale, 3.0, sf::Color(255, 255, 255, 64));
+        renderer.drawCircleOutline(position, getShortRangeRadarRange() * scale, 3.0, glm::u8vec4(255, 255, 255, 64));
 
     }
 }
