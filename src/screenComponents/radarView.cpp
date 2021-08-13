@@ -391,15 +391,10 @@ void GuiRadarView::drawNebulaBlockedAreas(sp::RenderTarget& renderer)
 
 void GuiRadarView::drawGhostDots(sp::RenderTarget& renderer)
 {
-    /* TODO_GFX
-    sf::VertexArray ghost_points(sf::Points, ghost_dots.size());
     for(unsigned int n=0; n<ghost_dots.size(); n++)
     {
-        ghost_points[n].position = worldToScreen(ghost_dots[n].position);
-        ghost_points[n].color = glm::u8vec4(255, 255, 255, 255 * std::max(((ghost_dots[n].end_of_life - engine->getElapsedTime()) / GhostDot::total_lifetime), 0.f));
+        renderer.drawPoint(worldToScreen(ghost_dots[n].position), glm::u8vec4(255, 255, 255, 255 * std::max(((ghost_dots[n].end_of_life - engine->getElapsedTime()) / GhostDot::total_lifetime), 0.f)));
     }
-    window.draw(ghost_points);
-    */
 }
 
 void GuiRadarView::drawWaypoints(sp::RenderTarget& renderer)
@@ -782,20 +777,9 @@ void GuiRadarView::drawRadarCutoff(sp::RenderTarget& renderer)
     window.draw(cutOff);
 
     renderer.fillRect(sp::Rect(rect.position.x, rect.position.y, rect.size.x, radar_screen_center.y - screen_size - rect.position.y), glm::u8vec4(0, 0, 0, 255));
-
-    sf::RectangleShape rectBottom(sf::Vector2f(rect.size.x, rect.size.y - screen_size - (radar_screen_center.y - rect.position.y)));
-    rectBottom.setFillColor(sf::Color(0, 0, 0, 255));
-    rectBottom.setPosition(rect.position.x, radar_screen_center.y + screen_size);
-    window.draw(rectBottom);
-
-    sf::RectangleShape rectLeft(sf::Vector2f(radar_screen_center.x - screen_size - rect.position.x, rect.size.y));
-    rectLeft.setFillColor(sf::Color(0, 0, 0, 255));
-    rectLeft.setPosition(rect.position.x, rect.position.y);
-    window.draw(rectLeft);
-    sf::RectangleShape rectRight(sf::Vector2f(rect.size.x - screen_size - (radar_screen_center.x - rect.position.x), rect.size.y));
-    rectRight.setFillColor(sf::Color(0, 0, 0, 255));
-    rectRight.setPosition(radar_screen_center.x + screen_size, rect.position.y);
-    window.draw(rectRight);
+    renderer.fillRect(sp::Rect(rect.position.x, radar_screen_center.y + screen_size, rect.size.x, rect.size.y - screen_size - (radar_screen_center.y - rect.position.y)), glm::u8vec4(0, 0, 0, 255));
+    renderer.fillRect(sp::Rect(rect.position.x, rect.position.y, radar_screen_center.x - screen_size - rect.position.x, rect.size.y), glm::u8vec4(0, 0, 0, 255));
+    renderer.fillRect(sp::Rect(radar_screen_center.x + screen_size, rect.position.y, rect.size.x - screen_size - (radar_screen_center.x - rect.position.x), rect.size.y), glm::u8vec4(0, 0, 0, 255));
 }
 
 bool GuiRadarView::onMouseDown(glm::vec2 position)

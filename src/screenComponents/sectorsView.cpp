@@ -97,24 +97,22 @@ void SectorsView::drawSectorGrid(sp::RenderTarget &renderer)
         renderer.drawLine(worldToScreen(glm::vec2((sector_x_min-1)*sector_size_scaled, y)), worldToScreen(glm::vec2((sector_x_max+1)*sector_size_scaled, y)), color);
     }
 
-    /*
-    glm::u8vec4 color = glm::u8vec4(64, 64, 128, 255);
+    color = glm::u8vec4(64, 64, 128, 255);
     int sub_sector_x_min = floor((view_position.x - (radar_screen_center.x - rect.position.x) / scale) / sub_sector_size) + 1;
     int sub_sector_x_max = floor((view_position.x + (rect.position.x + rect.size.x - radar_screen_center.x) / scale) / sub_sector_size);
     int sub_sector_y_min = floor((view_position.y - (radar_screen_center.y - rect.position.y) / scale) / sub_sector_size) + 1;
     int sub_sector_y_max = floor((view_position.y + (rect.position.y + rect.size.y - radar_screen_center.y) / scale) / sub_sector_size);
-    for (int sector_x = sub_sector_x_min; sector_x <= sub_sector_x_max; sector_x++)
+
+    for(int sector_x = sub_sector_x_min; sector_x <= sub_sector_x_max; sector_x++)
     {
         float x = sector_x * sub_sector_size;
-        glm::vec2 oldpos(x, sub_sector_y_min * sub_sector_size);
-        for (int sector_y = sub_sector_y_min+1; sector_y <= sub_sector_y_max; sector_y++)
+        for(int sector_y = sub_sector_y_min; sector_y <= sub_sector_y_max; sector_y++)
         {
             float y = sector_y * sub_sector_size;
-            renderer.drawPoints(worldToScreen(oldpos), worldToScreen(glm::vec2(x,y)), color);
-            oldpos = glm::vec2(x,y);
+            renderer.drawPoint(worldToScreen(glm::vec2(x,y)), color);
         }
     }
-    */
+    
 }
 
 void SectorsView::drawTargets(sp::RenderTarget& renderer)
