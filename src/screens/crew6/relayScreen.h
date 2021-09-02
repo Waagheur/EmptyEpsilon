@@ -70,7 +70,7 @@ private:
     //GuiHackingDialog* hacking_dialog;
     GuiHackDialog* hacking_dialog;
 
-    sf::Vector2f mouse_down_position;
+    glm::vec2 mouse_down_position;
     const float max_distance = 10000000.0f;
     const float min_distance = 6250.0f;
     float distance;

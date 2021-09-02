@@ -49,10 +49,16 @@ endif()
 
 message(STATUS "EmptyEpsilon Version = ${PROJECT_VERSION}")
 
+# Enable colored output with Ninja
+if((CMAKE_GENERATOR MATCHES "Ninja") AND (CMAKE_CXX_COMPILER_ID MATCHES "GNU"))
+    add_compile_options (-fdiagnostics-color)
+endif()
+
 # Dependencies
 
-# Setup OpenGl
+# Setup OpenGL
 if(NOT ANDROID)
+    set(OpenGL_GL_PREFERENCE LEGACY)
     find_package(OpenGL REQUIRED)
 endif()
 
@@ -60,8 +66,6 @@ endif()
 # Use SP provided json library.
 set(SERIOUSPROTON_WITH_JSON ON CACHE BOOL "" FORCE)
 add_subdirectory("${SERIOUS_PROTON_DIR}" "${PROJECT_BINARY_DIR}/SeriousProton" EXCLUDE_FROM_ALL)
-
-message(STATUS "Crash Logger is: ${ENABLE_CRASH_LOGGER}")
 
 set(EXTERNALS_DIR "${PROJECT_BINARY_DIR}/externals")
 set(DOWNLOADS_DIR "${PROJECT_BINARY_DIR}/downloads")
@@ -105,223 +109,400 @@ if(WITH_DISCORD)
   target_link_libraries(discord INTERFACE discord_h)
 endif()
 
-# GLM
-set(GLM_BASE_PATH "${EXTERNALS_DIR}")
-
-if(NOT EXISTS "${GLM_BASE_PATH}/glm/CMakeLists.txt")
-  set(GLM_ZIP "${DOWNLOADS_DIR}/glm.zip")
-  file(DOWNLOAD "https://github.com/g-truc/glm/releases/download/0.9.9.8/glm-0.9.9.8.zip" "${GLM_ZIP}" TIMEOUT 60 TLS_VERIFY ON)
-
-  file(MAKE_DIRECTORY "${GLM_BASE_PATH}/glm")
-  execute_process(COMMAND ${CMAKE_COMMAND} -E tar -xf "${GLM_ZIP}" WORKING_DIRECTORY "${GLM_BASE_PATH}")
-endif()
-
-add_subdirectory("${GLM_BASE_PATH}/glm" "${PROJECT_BINARY_DIR}/glm" EXCLUDE_FROM_ALL)
-
 set(SOURCES
-	src/main.cpp
-	src/cargo.cpp
-	src/shipCargo.cpp
-	src/threatLevelEstimate.cpp
-	src/preferenceManager.cpp
-	src/pathPlanner.cpp
-	src/epsilonServer.cpp
-	src/particleEffect.cpp
-	src/mouseCalibrator.cpp
-	src/httpScriptAccess.cpp
-	src/modelInfo.cpp
-	src/packResourceProvider.cpp
-	src/scienceDatabase.cpp
-	src/commsScriptInterface.cpp
-	src/modelData.cpp
-	src/gameGlobalInfo.cpp
-	src/GMActions.cpp
-	src/script.cpp
-	src/playerInfo.cpp
-	src/gameStateLogger.cpp
-	src/shipTemplate.cpp
-	src/beamTemplate.cpp
-	src/missileWeaponData.cpp
-	src/factionInfo.cpp
-	src/mesh.cpp
-	src/scenarioInfo.cpp
-	src/repairCrew.cpp
-	src/GMMessage.cpp
-	src/tutorialGame.cpp
-	src/EDamageType.cpp
-	src/scriptDataStorage.cpp
-	src/glObjects.cpp
-	src/menus/joinServerMenu.cpp
-	src/menus/serverBrowseMenu.cpp
-	src/menus/mainMenus.cpp
-	src/menus/serverCreationScreen.cpp
-	src/menus/tutorialMenu.cpp
-	src/menus/optionsMenu.cpp
-	src/menus/shipSelectionScreen.cpp
-	src/menus/autoConnectScreen.cpp
-	src/menus/hotkeyMenu.cpp
-	src/screens/cinematicViewScreen.cpp
-	src/screens/crewStationScreen.cpp
-	src/screens/topDownScreen.cpp
-	src/screens/windowScreen.cpp
-	src/screens/mainScreen.cpp
-	src/screens/spectatorScreen.cpp
-	src/screens/crew4/operationsScreen.cpp
-	src/screens/crew4/engineeringAdvancedScreen.cpp
-	src/screens/crew4/tacticalScreen.cpp
-	src/screens/crew6/engineeringScreen.cpp
-	src/screens/crew6/scienceScreen.cpp
-	src/screens/crew6/relayScreen.cpp
-	src/screens/crew6/weaponsScreen.cpp
-	src/screens/crew6/helmsScreen.cpp
-	src/screens/crew1/singlePilotScreen.cpp
-	src/screens/crew1/singlePilotView.cpp
-	src/screens/extra/damcon.cpp
-	src/screens/extra/oxygenScreen.cpp
-	src/screens/extra/powerManagement.cpp
-	src/screens/extra/databaseScreen.cpp
-	src/screens/extra/commsScreen.cpp
-	src/screens/extra/shipLogScreen.cpp
-	src/screens/extra/radarScreen.cpp
-	src/screens/extra/navigationScreen.cpp
-	src/screens/extra/commsScreen.cpp
-	src/screens/extra/probeScreen.cpp
-	src/screens/gm/gameMasterScreen.cpp
-	src/screens/gm/objectCreationView.cpp
-	src/screens/gm/globalMessageEntryView.cpp
-	src/screens/gm/chatDialog.cpp
-	src/screens/gm/tweak.cpp
-	src/screens/extra/droneOperatorScreen.cpp
-	src/screens/extra/dockMasterScreen.cpp
-	src/screens/extra/droneMasterScreen.cpp
-	src/screens/extra/targetAnalysisScreen.cpp
-	src/screenComponents/aimLock.cpp
-	src/screenComponents/alertOverlay.cpp
-	src/screenComponents/helpOverlay.cpp
-	src/screenComponents/missileTubeControls.cpp
-	src/screenComponents/selfDestructIndicator.cpp
-	src/screenComponents/viewport3d.cpp
-	src/screenComponents/viewportMainScreen.cpp
-	src/screenComponents/selfDestructEntry.cpp
-	src/screenComponents/dockingButton.cpp
+	  src/main.cpp
+	  src/cargo.cpp
+	  src/shipCargo.cpp
+	  src/threatLevelEstimate.cpp
+	  src/preferenceManager.cpp
+	  src/pathPlanner.cpp
+	  src/epsilonServer.cpp
+	  src/particleEffect.cpp
+	  src/mouseCalibrator.cpp
+	  src/httpScriptAccess.cpp
+	  src/modelInfo.cpp
+	  src/packResourceProvider.cpp
+	  src/scienceDatabase.cpp
+	  src/commsScriptInterface.cpp
+	  src/modelData.cpp
+	  src/gameGlobalInfo.cpp
+	  src/GMActions.cpp
+	  src/script.cpp
+	  src/playerInfo.cpp
+	  src/gameStateLogger.cpp
+	  src/shipTemplate.cpp
+	  src/beamTemplate.cpp
+	  src/missileWeaponData.cpp
+	  src/factionInfo.cpp
+	  src/mesh.cpp
+	  src/scenarioInfo.cpp
+	  src/repairCrew.cpp
+	  src/GMMessage.cpp
+	  src/tutorialGame.cpp
+	  src/EDamageType.cpp
+	  src/scriptDataStorage.cpp
+	  src/glObjects.cpp
+	  src/menus/joinServerMenu.cpp
+	  src/menus/serverBrowseMenu.cpp
+	  src/menus/mainMenus.cpp
+	  src/menus/serverCreationScreen.cpp
+	  src/menus/tutorialMenu.cpp
+	  src/menus/optionsMenu.cpp
+	  src/menus/shipSelectionScreen.cpp
+	  src/menus/autoConnectScreen.cpp
+	  src/menus/hotkeyMenu.cpp
+	  src/screens/cinematicViewScreen.cpp
+	  src/screens/crewStationScreen.cpp
+	  src/screens/topDownScreen.cpp
+	  src/screens/windowScreen.cpp
+	  src/screens/mainScreen.cpp
+	  src/screens/spectatorScreen.cpp
+	  src/screens/crew4/operationsScreen.cpp
+	  src/screens/crew4/engineeringAdvancedScreen.cpp
+	  src/screens/crew4/tacticalScreen.cpp
+	  src/screens/crew6/engineeringScreen.cpp
+	  src/screens/crew6/scienceScreen.cpp
+	  src/screens/crew6/relayScreen.cpp
+	  src/screens/crew6/weaponsScreen.cpp
+	  src/screens/crew6/helmsScreen.cpp
+	  src/screens/crew1/singlePilotScreen.cpp
+	  src/screens/crew1/singlePilotView.cpp
+	  src/screens/extra/damcon.cpp
+	  src/screens/extra/oxygenScreen.cpp
+	  src/screens/extra/powerManagement.cpp
+	  src/screens/extra/databaseScreen.cpp
+	  src/screens/extra/commsScreen.cpp
+	  src/screens/extra/shipLogScreen.cpp
+	  src/screens/extra/radarScreen.cpp
+	  src/screens/extra/navigationScreen.cpp
+	  src/screens/extra/commsScreen.cpp
+	  src/screens/extra/probeScreen.cpp
+	  src/screens/gm/gameMasterScreen.cpp
+	  src/screens/gm/objectCreationView.cpp
+	  src/screens/gm/globalMessageEntryView.cpp
+	  src/screens/gm/chatDialog.cpp
+	  src/screens/gm/tweak.cpp
+	  src/screens/extra/droneOperatorScreen.cpp
+	  src/screens/extra/dockMasterScreen.cpp
+	  src/screens/extra/droneMasterScreen.cpp
+	  src/screens/extra/targetAnalysisScreen.cpp
+	  src/screenComponents/aimLock.cpp
+	  src/screenComponents/alertOverlay.cpp
+	  src/screenComponents/helpOverlay.cpp
+	  src/screenComponents/missileTubeControls.cpp
+	  src/screenComponents/selfDestructIndicator.cpp
+	  src/screenComponents/viewport3d.cpp
+	  src/screenComponents/viewportMainScreen.cpp
+	  src/screenComponents/selfDestructEntry.cpp
+	  src/screenComponents/dockingButton.cpp
     src/screenComponents/landingButton.cpp
-	src/screenComponents/shieldsEnableButton.cpp
-	src/screenComponents/selfDestructButton.cpp
-	src/screenComponents/shieldFreqencySelect.cpp
-	src/screenComponents/sectorsView.cpp
-	src/screenComponents/navigationView.cpp
-	src/screenComponents/jumpControls.cpp
-	src/screenComponents/impulseControls.cpp
-	src/screenComponents/frequencyCurve.cpp
-	src/screenComponents/noiseOverlay.cpp
-	src/screenComponents/powerDamageIndicator.cpp
-	src/screenComponents/beamTargetSelector.cpp
-	src/screenComponents/shipInternalView.cpp
-	src/screenComponents/beamFrequencySelector.cpp
-	src/screenComponents/radarView.cpp
-	src/screenComponents/rawScannerDataRadarOverlay.cpp
-	src/screenComponents/scanTargetButton.cpp
-	src/screenComponents/snapSlider.cpp
-	src/screenComponents/indicatorOverlays.cpp
-	src/screenComponents/openCommsButton.cpp
-	src/screenComponents/combatManeuver.cpp
-	src/screenComponents/rotatingModelView.cpp
-	src/screenComponents/shipDestroyedPopup.cpp
-	src/screenComponents/warpControls.cpp
-	src/screenComponents/targetsContainer.cpp
-	src/screenComponents/globalMessage.cpp
-	src/screenComponents/commsOverlay.cpp
-	src/screenComponents/jumpIndicator.cpp
-	src/screenComponents/scanningDialog.cpp
-	src/screenComponents/signalQualityIndicator.cpp
-	src/screenComponents/mainScreenControls.cpp
-	src/screenComponents/databaseView.cpp
-	src/screenComponents/shipsLogControl.cpp
-	src/screenComponents/onScreenKeyboard.cpp
-	src/screenComponents/hackingDialog.cpp
-	src/screenComponents/hackDialog.cpp
-	src/screenComponents/customShipFunctions.cpp
-	src/screenComponents/scrollingBanner.cpp
-	src/screenComponents/lightsOut.cpp
-	src/screenComponents/miniGame.cpp
-	src/screenComponents/mineSweeper.cpp
-	src/screenComponents/impulseSound.cpp
-	src/screenComponents/noRadarPopup.cpp
-	src/gui/colorConfig.cpp
-	src/gui/hotkeyBinder.cpp
-	src/gui/hotkeyConfig.cpp
-	src/gui/joystickConfig.cpp
-	src/gui/mouseRenderer.cpp
-	src/gui/scriptError.cpp
-	src/gui/gui2_slider.cpp
-	src/gui/gui2_togglebutton.cpp
-	src/gui/gui2_arrow.cpp
-	src/gui/gui2_selector.cpp
-	src/gui/gui2_canvas.cpp
-	src/gui/gui2_rotationdial.cpp
-	src/gui/gui2_textentry.cpp
-	src/gui/gui2_label.cpp
-	src/gui/gui2_image.cpp
-	src/gui/gui2_autolayout.cpp
-	src/gui/gui2_arrowbutton.cpp
-	src/gui/gui2_entrylist.cpp
-	src/gui/gui2_progressbar.cpp
-	src/gui/gui2_progressslider.cpp
-	src/gui/gui2_scrolltext.cpp
-	src/gui/gui2_advancedscrolltext.cpp
-	src/gui/gui2_button.cpp
-	src/gui/gui2_resizabledialog.cpp
-	src/gui/debugRenderer.cpp
-	src/gui/gui2_element.cpp
-	src/gui/gui2_keyvaluedisplay.cpp
-	src/gui/gui2_listbox.cpp
-	src/gui/gui2_scrollbar.cpp
-	src/gui/gui2_container.cpp
-	src/gui/gui2_panel.cpp
-	src/gui/gui2_overlay.cpp
-	src/spaceObjects/missiles/missileWeapon.cpp
-	src/spaceObjects/missiles/EMPMissile.cpp
-	src/spaceObjects/missiles/homingMissile.cpp
-	src/spaceObjects/missiles/hvli.cpp
-	src/spaceObjects/missiles/nuke.cpp
-	src/spaceObjects/spaceStation.cpp
-	src/spaceObjects/spaceship.cpp
-	src/spaceObjects/wormHole.cpp
-	src/spaceObjects/spaceObject.cpp
-	src/spaceObjects/nebula.cpp
-	src/spaceObjects/explosionEffect.cpp
-	src/spaceObjects/cpuShip.cpp
-	src/spaceObjects/asteroid.cpp
-	src/spaceObjects/mine.cpp
-	src/spaceObjects/blackHole.cpp
-	src/spaceObjects/playerSpaceship.cpp
-	src/spaceObjects/beamEffect.cpp
-	src/spaceObjects/electricExplosionEffect.cpp
-	src/spaceObjects/supplyDrop.cpp
-	src/spaceObjects/warpJammer.cpp
-	src/spaceObjects/scanProbe.cpp
-	src/spaceObjects/artifact.cpp
-	src/spaceObjects/shipTemplateBasedObject.cpp
-	src/spaceObjects/planet.cpp
-	src/spaceObjects/zone.cpp
-	src/spaceObjects/spaceshipParts/beamWeapon.cpp
-	src/spaceObjects/spaceshipParts/weaponTube.cpp
-	src/spaceObjects/spaceshipParts/dock.cpp
-	src/ai/fighterAI.cpp
-	src/ai/ai.cpp
-	src/ai/aiFactory.cpp
-	src/ai/evasionAI.cpp
-	src/ai/missileVolleyAI.cpp
-	src/hardware/hardwareController.cpp
-	src/hardware/hardwareMappingEffects.cpp
-	src/hardware/serialDriver.cpp
-	src/hardware/devices/dmx512SerialDevice.cpp
-	src/hardware/devices/enttecDMXProDevice.cpp
-	src/hardware/devices/sACNDMXDevice.cpp
-	src/hardware/devices/uDMXDevice.cpp
-	src/hardware/devices/virtualOutputDevice.cpp
-	src/hardware/devices/philipsHueDevice.cpp
-	src/shaderRegistry.cpp
+	  src/screenComponents/shieldsEnableButton.cpp
+	  src/screenComponents/selfDestructButton.cpp
+	  src/screenComponents/shieldFreqencySelect.cpp
+	  src/screenComponents/sectorsView.cpp
+	  src/screenComponents/navigationView.cpp
+	  src/screenComponents/jumpControls.cpp
+	  src/screenComponents/impulseControls.cpp
+	  src/screenComponents/frequencyCurve.cpp
+	  src/screenComponents/noiseOverlay.cpp
+	  src/screenComponents/powerDamageIndicator.cpp
+	  src/screenComponents/beamTargetSelector.cpp
+	  src/screenComponents/shipInternalView.cpp
+	  src/screenComponents/beamFrequencySelector.cpp
+	  src/screenComponents/radarView.cpp
+	  src/screenComponents/rawScannerDataRadarOverlay.cpp
+	  src/screenComponents/scanTargetButton.cpp
+	  src/screenComponents/snapSlider.cpp
+	  src/screenComponents/indicatorOverlays.cpp
+	  src/screenComponents/openCommsButton.cpp
+	  src/screenComponents/combatManeuver.cpp
+	  src/screenComponents/rotatingModelView.cpp
+	  src/screenComponents/shipDestroyedPopup.cpp
+	  src/screenComponents/warpControls.cpp
+	  src/screenComponents/targetsContainer.cpp
+	  src/screenComponents/globalMessage.cpp
+	  src/screenComponents/commsOverlay.cpp
+	  src/screenComponents/jumpIndicator.cpp
+	  src/screenComponents/scanningDialog.cpp
+	  src/screenComponents/signalQualityIndicator.cpp
+	  src/screenComponents/mainScreenControls.cpp
+	  src/screenComponents/databaseView.cpp
+	  src/screenComponents/shipsLogControl.cpp
+	  src/screenComponents/onScreenKeyboard.cpp
+	  src/screenComponents/hackingDialog.cpp
+	  src/screenComponents/hackDialog.cpp
+	  src/screenComponents/customShipFunctions.cpp
+	  src/screenComponents/scrollingBanner.cpp
+	  src/screenComponents/lightsOut.cpp
+	  src/screenComponents/miniGame.cpp
+	  src/screenComponents/mineSweeper.cpp
+	  src/screenComponents/impulseSound.cpp
+	  src/screenComponents/noRadarPopup.cpp
+	  src/gui/colorConfig.cpp
+	  src/gui/hotkeyBinder.cpp
+	  src/gui/hotkeyConfig.cpp
+	  src/gui/joystickConfig.cpp
+	  src/gui/mouseRenderer.cpp
+	  src/gui/scriptError.cpp
+	  src/gui/gui2_slider.cpp
+	  src/gui/gui2_togglebutton.cpp
+	  src/gui/gui2_arrow.cpp
+	  src/gui/gui2_selector.cpp
+	  src/gui/gui2_canvas.cpp
+	  src/gui/gui2_rotationdial.cpp
+	  src/gui/gui2_textentry.cpp
+	  src/gui/gui2_label.cpp
+	  src/gui/gui2_image.cpp
+	  src/gui/gui2_autolayout.cpp
+	  src/gui/gui2_arrowbutton.cpp
+	  src/gui/gui2_entrylist.cpp
+	  src/gui/gui2_progressbar.cpp
+	  src/gui/gui2_progressslider.cpp
+	  src/gui/gui2_scrolltext.cpp
+	  src/gui/gui2_advancedscrolltext.cpp
+	  src/gui/gui2_button.cpp
+	  src/gui/gui2_resizabledialog.cpp
+	  src/gui/debugRenderer.cpp
+	  src/gui/gui2_element.cpp
+	  src/gui/gui2_keyvaluedisplay.cpp
+	  src/gui/gui2_listbox.cpp
+	  src/gui/gui2_scrollbar.cpp
+	  src/gui/gui2_container.cpp
+	  src/gui/gui2_panel.cpp
+	  src/gui/gui2_overlay.cpp
+	  src/spaceObjects/missiles/missileWeapon.cpp
+	  src/spaceObjects/missiles/EMPMissile.cpp
+	  src/spaceObjects/missiles/homingMissile.cpp
+	  src/spaceObjects/missiles/hvli.cpp
+	  src/spaceObjects/missiles/nuke.cpp
+	  src/spaceObjects/spaceStation.cpp
+	  src/spaceObjects/spaceship.cpp
+	  src/spaceObjects/wormHole.cpp
+	  src/spaceObjects/spaceObject.cpp
+	  src/spaceObjects/nebula.cpp
+	  src/spaceObjects/explosionEffect.cpp
+	  src/spaceObjects/cpuShip.cpp
+	  src/spaceObjects/asteroid.cpp
+	  src/spaceObjects/mine.cpp
+	  src/spaceObjects/blackHole.cpp
+	  src/spaceObjects/playerSpaceship.cpp
+	  src/spaceObjects/beamEffect.cpp
+	  src/spaceObjects/electricExplosionEffect.cpp
+	  src/spaceObjects/supplyDrop.cpp
+	  src/spaceObjects/warpJammer.cpp
+	  src/spaceObjects/scanProbe.cpp
+	  src/spaceObjects/artifact.cpp
+	  src/spaceObjects/shipTemplateBasedObject.cpp
+	  src/spaceObjects/planet.cpp
+	  src/spaceObjects/zone.cpp
+	  src/spaceObjects/spaceshipParts/beamWeapon.cpp
+	  src/spaceObjects/spaceshipParts/weaponTube.cpp
+	  src/spaceObjects/spaceshipParts/dock.cpp
+	  src/ai/fighterAI.cpp
+	  src/ai/ai.cpp
+	  src/ai/aiFactory.cpp
+	  src/ai/evasionAI.cpp
+	  src/ai/missileVolleyAI.cpp
+	  src/hardware/hardwareController.cpp
+	  src/hardware/hardwareMappingEffects.cpp
+	  src/hardware/serialDriver.cpp
+	  src/hardware/devices/dmx512SerialDevice.cpp
+	  src/hardware/devices/enttecDMXProDevice.cpp
+	  src/hardware/devices/sACNDMXDevice.cpp
+	  src/hardware/devices/uDMXDevice.cpp
+	  src/hardware/devices/virtualOutputDevice.cpp
+	  src/hardware/devices/philipsHueDevice.cpp
+	  src/shaderRegistry.cpp
+
+    src/ai/aiFactory.h
+    src/ai/ai.h
+    src/ai/evasionAI.h
+    src/ai/fighterAI.h
+    src/ai/missileVolleyAI.h
+    src/beamTemplate.h
+    src/commsScriptInterface.h
+    src/discord.h
+    src/epsilonServer.h
+    src/factionInfo.h
+    src/featureDefs.h
+    src/gameGlobalInfo.h
+    src/gameStateLogger.h
+    src/glObjects.h
+    src/GMActions.h
+    src/GMMessage.h
+    src/GMScriptCallback.h
+    src/gui/colorConfig.h
+    src/gui/debugRenderer.h
+    src/gui/gui2_advancedscrolltext.h
+    src/gui/gui2_arrowbutton.h
+    src/gui/gui2_arrow.h
+    src/gui/gui2_autolayout.h
+    src/gui/gui2_button.h
+    src/gui/gui2_canvas.h
+    src/gui/gui2_container.h
+    src/gui/gui2_element.h
+    src/gui/gui2_entrylist.h
+    src/gui/gui2_image.h
+    src/gui/gui2_keyvaluedisplay.h
+    src/gui/gui2_label.h
+    src/gui/gui2_listbox.h
+    src/gui/gui2_overlay.h
+    src/gui/gui2_panel.h
+    src/gui/gui2_progressbar.h
+    src/gui/gui2_progressslider.h
+    src/gui/gui2_resizabledialog.h
+    src/gui/gui2_rotationdial.h
+    src/gui/gui2_scrollbar.h
+    src/gui/gui2_scrolltext.h
+    src/gui/gui2_selector.h
+    src/gui/gui2_slider.h
+    src/gui/gui2_textentry.h
+    src/gui/gui2_togglebutton.h
+    src/gui/hotkeyBinder.h
+    src/gui/hotkeyConfig.h
+    src/gui/joystickConfig.h
+    src/gui/mouseRenderer.h
+    src/gui/scriptError.h
+    src/hardware/devices/dmx512SerialDevice.h
+    src/hardware/devices/enttecDMXProDevice.h
+    src/hardware/devices/philipsHueDevice.h
+    src/hardware/devices/sACNDMXDevice.h
+    src/hardware/devices/uDMXDevice.h
+    src/hardware/devices/virtualOutputDevice.h
+    src/hardware/hardwareController.h
+    src/hardware/hardwareMappingEffects.h
+    src/hardware/hardwareOutputDevice.h
+    src/hardware/serialDriver.h
+    src/httpScriptAccess.h
+    src/main.h
+    src/math/centerOfMass.h
+    src/math/triangulate.h
+    src/menus/autoConnectScreen.h
+    src/menus/hotkeyMenu.h
+    src/menus/joinServerMenu.h
+    src/menus/mainMenus.h
+    src/menus/optionsMenu.h
+    src/menus/serverBrowseMenu.h
+    src/menus/serverCreationScreen.h
+    src/menus/shipSelectionScreen.h
+    src/menus/tutorialMenu.h
+    src/mesh.h
+    src/missileWeaponData.h
+    src/modelData.h
+    src/modelInfo.h
+    src/mouseCalibrator.h
+    src/packResourceProvider.h
+    src/particleEffect.h
+    src/pathPlanner.h
+    src/playerInfo.h
+    src/preferenceManager.h
+    src/repairCrew.h
+    src/scenarioInfo.h
+    src/scienceDatabase.h
+    src/screenComponents/aimLock.h
+    src/screenComponents/alertOverlay.h
+    src/screenComponents/beamFrequencySelector.h
+    src/screenComponents/beamTargetSelector.h
+    src/screenComponents/combatManeuver.h
+    src/screenComponents/commsOverlay.h
+    src/screenComponents/customShipFunctions.h
+    src/screenComponents/databaseView.h
+    src/screenComponents/dockingButton.h
+    src/screenComponents/frequencyCurve.h
+    src/screenComponents/globalMessage.h
+    src/screenComponents/hackingDialog.h
+    src/screenComponents/helpOverlay.h
+    src/screenComponents/impulseControls.h
+    src/screenComponents/impulseSound.h
+    src/screenComponents/indicatorOverlays.h
+    src/screenComponents/jumpControls.h
+    src/screenComponents/jumpIndicator.h
+    src/screenComponents/lightsOut.h
+    src/screenComponents/mainScreenControls.h
+    src/screenComponents/mineSweeper.h
+    src/screenComponents/miniGame.h
+    src/screenComponents/missileTubeControls.h
+    src/screenComponents/noiseOverlay.h
+    src/screenComponents/onScreenKeyboard.h
+    src/screenComponents/openCommsButton.h
+    src/screenComponents/powerDamageIndicator.h
+    src/screenComponents/radarView.h
+    src/screenComponents/rawScannerDataRadarOverlay.h
+    src/screenComponents/rotatingModelView.h
+    src/screenComponents/scanningDialog.h
+    src/screenComponents/scanTargetButton.h
+    src/screenComponents/scrollingBanner.h
+    src/screenComponents/selfDestructButton.h
+    src/screenComponents/selfDestructEntry.h
+    src/screenComponents/selfDestructIndicator.h
+    src/screenComponents/shieldFreqencySelect.h
+    src/screenComponents/shieldsEnableButton.h
+    src/screenComponents/shipDestroyedPopup.h
+    src/screenComponents/shipInternalView.h
+    src/screenComponents/shipsLogControl.h
+    src/screenComponents/signalQualityIndicator.h
+    src/screenComponents/snapSlider.h
+    src/screenComponents/targetsContainer.h
+    src/screenComponents/viewport3d.h
+    src/screenComponents/viewportMainScreen.h
+    src/screenComponents/warpControls.h
+    src/screens/cinematicViewScreen.h
+    src/screens/crew1/singlePilotScreen.h
+    src/screens/crew4/engineeringAdvancedScreen.h
+    src/screens/crew4/operationsScreen.h
+    src/screens/crew4/tacticalScreen.h
+    src/screens/crew6/engineeringScreen.h
+    src/screens/crew6/helmsScreen.h
+    src/screens/crew6/relayScreen.h
+    src/screens/crew6/scienceScreen.h
+    src/screens/crew6/weaponsScreen.h
+    src/screens/crewStationScreen.h
+    src/screens/extra/commsScreen.h
+    src/screens/extra/damcon.h
+    src/screens/extra/databaseScreen.h
+    src/screens/extra/powerManagement.h
+    src/screens/extra/shipLogScreen.h
+    src/screens/gm/chatDialog.h
+    src/screens/gm/gameMasterScreen.h
+    src/screens/gm/globalMessageEntryView.h
+    src/screens/gm/objectCreationView.h
+    src/screens/gm/tweak.h
+    src/screens/mainScreen.h
+    src/screens/spectatorScreen.h
+    src/screens/topDownScreen.h
+    src/screens/windowScreen.h
+    src/script.h
+    src/shaderRegistry.h
+    src/shipTemplate.h
+    src/spaceObjects/artifact.h
+    src/spaceObjects/asteroid.h
+    src/spaceObjects/beamEffect.h
+    src/spaceObjects/blackHole.h
+    src/spaceObjects/cpuShip.h
+    src/spaceObjects/electricExplosionEffect.h
+    src/spaceObjects/explosionEffect.h
+    src/spaceObjects/mine.h
+    src/spaceObjects/missiles/EMPMissile.h
+    src/spaceObjects/missiles/homingMissile.h
+    src/spaceObjects/missiles/hvli.h
+    src/spaceObjects/missiles/missileWeapon.h
+    src/spaceObjects/missiles/nuke.h
+    src/spaceObjects/nebula.h
+    src/spaceObjects/planet.h
+    src/spaceObjects/playerSpaceship.h
+    src/spaceObjects/scanProbe.h
+    src/spaceObjects/shipTemplateBasedObject.h
+    src/spaceObjects/spaceObject.h
+    src/spaceObjects/spaceship.h
+    src/spaceObjects/spaceshipParts/beamWeapon.h
+    src/spaceObjects/spaceshipParts/weaponTube.h
+    src/spaceObjects/spaceStation.h
+    src/spaceObjects/supplyDrop.h
+    src/spaceObjects/warpJammer.h
+    src/spaceObjects/wormHole.h
+    src/spaceObjects/zone.h
+    src/threatLevelEstimate.h
+    src/tutorialGame.h
 )
 
 if (WITH_DISCORD)
@@ -332,6 +513,9 @@ if (WIN32)
   list(APPEND SOURCES EmptyEpsilon.rc)
 endif()
 
+# Config header.
+configure_file(cmake/config.h.in include/config.h)
+
 
 if(ANDROID)
     add_library(${PROJECT_NAME} SHARED ${SOURCES})
@@ -339,22 +523,17 @@ else()
     add_executable(${PROJECT_NAME} MACOSX_BUNDLE ${SOURCES})
 endif()
 
-target_compile_definitions(seriousproton_deps
-    INTERFACE
-        WINDOW_TITLE="${PROJECT_NAME}"
-        VERSION_NUMBER=${PROJECT_VERSION_MAJOR}${PROJECT_VERSION_MINOR}${PROJECT_VERSION_PATCH}
-
+target_compile_definitions(${PROJECT_NAME}
+    PUBLIC
         # Set RESOURCE_BASE_DIR on Unix so the built binary is able to find resources
         $<$<BOOL:${UNIX}>:RESOURCE_BASE_DIR="${CMAKE_INSTALL_FULL_DATADIR}/emptyepsilon/">
         $<$<BOOL:${CONFIG_DIR}>:CONFIG_DIR="${CONFIG_DIR}">
         $<$<NOT:$<BOOL:${CONFIG_DIR}>>:CONFIG_DIR="${CMAKE_INSTALL_FULL_DATADIR}/emptyepsilon/">
 )
 
-target_compile_definitions(${PROJECT_NAME} PUBLIC WITH_DISCORD=$<BOOL:${WITH_DISCORD}>)
-
 target_include_directories(${PROJECT_NAME}
     PUBLIC
-        $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/src>
+        "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/src;${CMAKE_CURRENT_BINARY_DIR}/include>"
 )
 
 add_library(opengl INTERFACE)
@@ -365,7 +544,7 @@ target_link_libraries(opengl
 
 target_link_libraries(${PROJECT_NAME}
     PUBLIC
-        seriousproton glm::glm opengl
+        seriousproton opengl
         "$<$<BOOL:${ANDROID}>:log;android>"
         "$<$<BOOL:${WIN32}>:iphlpapi>"
         "$<$<BOOL:${WITH_DISCORD}>:discord_h>"
@@ -395,7 +574,6 @@ if(WIN32)
       install(FILES "$<TARGET_PDB_FILE:${PROJECT_NAME}>" DESTINATION . OPTIONAL)
     endif()
 elseif(APPLE)
-  install(TARGETS ${PROJECT_NAME} BUNDLE DESTINATION . RUNTIME DESTINATION bin)
   install(FILES logo.icns DESTINATION "$<TARGET_BUNDLE_CONTENT_DIR:${PROJECT_NAME}>/Resources" RENAME "${PROJECT_NAME}.icns")
   install(DIRECTORY ${EE_RESOURCES} DESTINATION "$<TARGET_BUNDLE_CONTENT_DIR:${PROJECT_NAME}>/Resources")
 elseif(ANDROID)
@@ -444,6 +622,13 @@ add_custom_target(update_locale
     COMMAND xgettext --keyword=_:1c,2 --keyword=_:1 --omit-header -j -d resources/locale/main.en scripts/shipTemplates_*.lua scripts/comms_ship.lua scripts/comms_station.lua scripts/comms_supply_drop.lua scripts/factionInfo.lua scripts/science_db.lua
     COMMAND xgettext --keyword=_:1c,2 --keyword=_:1 --omit-header -d resources/locale/tutorial.en scripts/tutorial_*.lua
     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR})
+
+if(APPLE)
+  # This *MUST* be the last install target.
+  # Otherwise, for some messed up reason,
+  # other install targets will not be accounted for when creating a DMG bundle.
+  install(TARGETS ${PROJECT_NAME} BUNDLE DESTINATION . RUNTIME DESTINATION bin)
+endif()
 
 # Generic settings
 set(CPACK_PACKAGE_EXECUTABLES "${PROJECT_NAME};Empty Epsilon (${CPACK_PACKAGE_VERSION_MAJOR}.${CPACK_PACKAGE_VERSION_MINOR}.${CPACK_PACKAGE_VERSION_PATCH})")

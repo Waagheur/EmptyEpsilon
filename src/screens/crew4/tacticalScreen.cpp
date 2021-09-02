@@ -45,20 +45,20 @@ TacticalScreen::TacticalScreen(GuiContainer* owner)
 
     // Control targeting and piloting with radar interactions.
     radar->setCallbacks(
-        [this](sf::Vector2f position) {
+        [this](glm::vec2 position) {
             targets.setToClosestTo(position, 250, TargetsContainer::Targetable, my_spaceship);
             if (my_spaceship && targets.get())
                 my_spaceship->commandSetTarget(targets.get());
             else if (my_spaceship)
-                my_spaceship->commandTargetRotation(sf::vector2ToAngle(position - my_spaceship->getPosition()));
+                my_spaceship->commandTargetRotation(vec2ToAngle(position - my_spaceship->getPosition()));
         },
-        [this](sf::Vector2f position) {
+        [this](glm::vec2 position) {
             if (my_spaceship)
-                my_spaceship->commandTargetRotation(sf::vector2ToAngle(position - my_spaceship->getPosition()));
+                my_spaceship->commandTargetRotation(vec2ToAngle(position - my_spaceship->getPosition()));
         },
-        [this](sf::Vector2f position) {
+        [this](glm::vec2 position) {
             if (my_spaceship)
-                my_spaceship->commandTargetRotation(sf::vector2ToAngle(position - my_spaceship->getPosition()));
+                my_spaceship->commandTargetRotation(vec2ToAngle(position - my_spaceship->getPosition()));
         }
     );
     radar->setAutoRotating(PreferencesManager::get("tactical_radar_lock","0")=="1");
@@ -123,7 +123,7 @@ void TacticalScreen::onDraw(sf::RenderTarget& window)
     {
         energy_display->setValue(string(int(my_spaceship->energy_level)));
         heading_display->setValue(string(fmodf(my_spaceship->getRotation() + 360.0 + 360.0 - 270.0, 360.0), 1));
-        float velocity = sf::length(my_spaceship->getVelocity()) / 1000 * 60;
+        float velocity = glm::length(my_spaceship->getVelocity()) / 1000 * 60;
         velocity_display->setValue(tr("{value} {unit}/min").format({{"value", string(velocity, 1)}, {"unit", DISTANCE_UNIT_1K}}));
 
         warp_controls->setVisible(my_spaceship->has_warp_drive);
@@ -189,7 +189,7 @@ void TacticalScreen::onHotkey(const HotkeyResult& key)
                     current_found = true;
                     continue;
                 }
-                if (current_found && sf::length(obj->getPosition() - my_spaceship->getPosition()) < my_spaceship->getShortRangeRadarRange() && my_spaceship->isEnemy(obj) && my_spaceship->getScannedStateFor(obj) >= SS_FriendOrFoeIdentified && obj->canBeTargetedBy(my_spaceship))
+                if (current_found && glm::length(obj->getPosition() - my_spaceship->getPosition()) < my_spaceship->getShortRangeRadarRange() && my_spaceship->isEnemy(obj) && my_spaceship->getScannedStateFor(obj) >= SS_FriendOrFoeIdentified && obj->canBeTargetedBy(my_spaceship))
                 {
                     targets.set(obj);
                     my_spaceship->commandSetTarget(targets.get());
@@ -202,7 +202,7 @@ void TacticalScreen::onHotkey(const HotkeyResult& key)
                 {
                     continue;
                 }
-                if (my_spaceship->isEnemy(obj) && sf::length(obj->getPosition() - my_spaceship->getPosition()) < my_spaceship->getShortRangeRadarRange() && my_spaceship->getScannedStateFor(obj) >= SS_FriendOrFoeIdentified && obj->canBeTargetedBy(my_spaceship))
+                if (my_spaceship->isEnemy(obj) && glm::length(obj->getPosition() - my_spaceship->getPosition()) < my_spaceship->getShortRangeRadarRange() && my_spaceship->getScannedStateFor(obj) >= SS_FriendOrFoeIdentified && obj->canBeTargetedBy(my_spaceship))
                 {
                     targets.set(obj);
                     my_spaceship->commandSetTarget(targets.get());
@@ -222,7 +222,7 @@ void TacticalScreen::onHotkey(const HotkeyResult& key)
                 }
                 if (obj == my_spaceship)
                     continue;
-                if (current_found && sf::length(obj->getPosition() - my_spaceship->getPosition()) < my_spaceship->getShortRangeRadarRange() && obj->canBeTargetedBy(my_spaceship))
+                if (current_found && glm::length(obj->getPosition() - my_spaceship->getPosition()) < my_spaceship->getShortRangeRadarRange() && obj->canBeTargetedBy(my_spaceship))
                 {
                     targets.set(obj);
                     my_spaceship->commandSetTarget(targets.get());
@@ -233,7 +233,7 @@ void TacticalScreen::onHotkey(const HotkeyResult& key)
             {
                 if (obj == targets.get() || obj == my_spaceship)
                     continue;
-                if (sf::length(obj->getPosition() - my_spaceship->getPosition()) < my_spaceship->getShortRangeRadarRange() && obj->canBeTargetedBy(my_spaceship))
+                if (glm::length(obj->getPosition() - my_spaceship->getPosition()) < my_spaceship->getShortRangeRadarRange() && obj->canBeTargetedBy(my_spaceship))
                 {
                     targets.set(obj);
                     my_spaceship->commandSetTarget(targets.get());

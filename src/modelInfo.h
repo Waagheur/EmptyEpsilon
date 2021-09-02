@@ -3,7 +3,7 @@
 
 #include "modelData.h"
 
-class ModelInfo : sf::NonCopyable
+class ModelInfo : sp::NonCopyable
 {
 private:
     P<ModelData> data;
@@ -15,7 +15,7 @@ public:
     float engine_scale;
     float warp_scale;
 
-    void render(sf::Vector2f position, float rotation, float alpha = 1.0f);
+    void render(glm::vec2 position, float rotation, float alpha = 1.0f);
     void renderOverlay(sf::Texture* texture, float alpha);
     void renderShield(float alpha);
     void renderShield(float alpha, float angle);

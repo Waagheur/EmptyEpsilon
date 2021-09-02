@@ -53,7 +53,7 @@ void ProbeScreen::update(float delta)
 			camera_yaw = angle;
 			camera_pitch = 0.0f;
 
-			sf::Vector2f position = probe->getPosition() + sf::rotateVector(sf::Vector2f(probe->getRadius(), 0), camera_yaw);
+			glm::vec2 position = probe->getPosition() + rotateVec2(glm::vec2(probe->getRadius(), 0), camera_yaw);
  			camera_position.x = position.x;
 			camera_position.y = position.y;
 			camera_position.z = 0.0;

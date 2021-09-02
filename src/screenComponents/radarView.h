@@ -25,8 +25,8 @@ public:
         NoObjects
     };
 
-    typedef std::function<void(sf::Vector2f position)> func_t;
-    typedef std::function<void(float position)>        ffunc_t;
+    typedef std::function<void(glm::vec2 position)> pfunc_t;
+    typedef std::function<void(float position)>     ffunc_t;
 private:
     sf::RenderTexture background_texture;
 
@@ -35,10 +35,10 @@ private:
     public:
         constexpr static float total_lifetime = 60.0f;
 
-        sf::Vector2f position;
+        glm::vec2 position{};
         float end_of_life;
 
-        GhostDot(sf::Vector2f pos) : position(pos), end_of_life(engine->getElapsedTime() + total_lifetime) {}
+        GhostDot(glm::vec2 pos) : position(pos), end_of_life(engine->getElapsedTime() + total_lifetime) {}
     };
     std::vector<GhostDot> ghost_dots;
     float next_ghost_dot_update;
@@ -60,9 +60,9 @@ private:
     uint8_t background_alpha;
     ERadarStyle style;
     EFogOfWarStyle fog_style;
-    func_t mouse_down_func;
-    func_t mouse_drag_func;
-    func_t mouse_up_func;
+    pfunc_t mouse_down_func;
+    pfunc_t mouse_drag_func;
+    pfunc_t mouse_up_func;
     P<PlayerSpaceship> target_spaceship;
 
 public:
@@ -98,8 +98,8 @@ public:
     bool getAutoRotating() { return auto_rotate_on_my_ship; }
     GuiRadarView* setAutoRotating(bool value) { this->auto_rotate_on_my_ship = value; return this; }
    
-    virtual GuiRadarView* setCallbacks(func_t mouse_down_func, func_t mouse_drag_func, func_t mouse_up_func) { SectorsView::setCallbacks(mouse_down_func, mouse_drag_func, mouse_up_func); return this; }
-    virtual GuiRadarView* setViewPosition(sf::Vector2f view_position) { SectorsView::setViewPosition(view_position); return this; }
+    virtual GuiRadarView* setCallbacks(pfunc_t mouse_down_func, pfunc_t mouse_drag_func, pfunc_t mouse_up_func) { SectorsView::setCallbacks(mouse_down_func, mouse_drag_func, mouse_up_func); return this; }
+    virtual GuiRadarView* setViewPosition(glm::vec2 view_position) { SectorsView::setViewPosition(view_position); return this; }
 
     virtual bool onMouseDown(sf::Vector2f position);
     void setTargetSpaceship(P<PlayerSpaceship> targetSpaceship){target_spaceship = targetSpaceship;}

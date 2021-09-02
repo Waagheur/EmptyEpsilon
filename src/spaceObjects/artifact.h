@@ -52,6 +52,9 @@ public:
     void onPlayerCollision(ScriptSimpleCallback callback);
 
     virtual string getExportLine() override;
+
+protected:
+    glm::mat4 getModelMatrix() const override;
 };
 
 #endif//ARTIFACT_H

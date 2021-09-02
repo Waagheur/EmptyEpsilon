@@ -24,6 +24,9 @@ public:
     void setModel(int model_number);
 
     virtual string getExportLine() override { return "Asteroid():setPosition(" + string(getPosition().x, 0) + ", " + string(getPosition().y, 0) + "):setCallSign(" + getCallSign() + ")" + ":setSize(" + string(getSize(),0) + ")"; }
+    
+protected:
+    glm::mat4 getModelMatrix() const override;
 };
 
 class VisualAsteroid : public SpaceObject
@@ -47,6 +50,9 @@ public:
     virtual bool canBeScannedBy(P<SpaceObject> other) { return false; };
 
     virtual string getExportLine() override { return "VisualAsteroid():setPosition(" + string(getPosition().x, 0) + ", " + string(getPosition().y, 0) + ")" + ":setSize(" + string(getSize(),0) + ")"; }
+
+protected:
+    glm::mat4 getModelMatrix() const override;
 };
 
 #endif//ASTEROID_H

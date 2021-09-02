@@ -10,6 +10,7 @@
 #include "gui/gui2_panel.h"
 #include "gui/gui2_label.h"
 #include "gui/gui2_listbox.h"
+#include <set>
 
 class GuiKeyValueDisplay;
 class GuiAutoLayout;

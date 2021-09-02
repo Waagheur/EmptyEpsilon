@@ -7,7 +7,7 @@ class TargetsContainer;
 class SectorsView : public GuiElement
 {
     public:
-        typedef std::function<void(sf::Vector2f position)> func_t;
+        typedef std::function<void(glm::vec2 position)> pfunc_t;
         typedef std::function<void(float position)> ffunc_t;
         static const int grid_scale_size = 5;
 
@@ -15,13 +15,13 @@ class SectorsView : public GuiElement
         sf::Color grid_colors[SectorsView::grid_scale_size];
         const float sub_sectors_count = 8;
         float distance;
-        sf::Vector2f view_position;
+        glm::vec2 view_position;
         float view_rotation;
 
         TargetsContainer *targets;
-        func_t mouse_down_func;
-        func_t mouse_drag_func;
-        func_t mouse_up_func;
+        pfunc_t mouse_down_func;
+        pfunc_t mouse_drag_func;
+        pfunc_t mouse_up_func;
     public:
         SectorsView(GuiContainer *owner, string id, float distance, TargetsContainer *targets);
         virtual SectorsView *setDistance(float distance)
@@ -30,25 +30,25 @@ class SectorsView : public GuiElement
             return this;
         }
         float getDistance() { return distance; }
-        virtual SectorsView* setViewPosition(sf::Vector2f view_position)
+        virtual SectorsView* setViewPosition(glm::vec2 view_position)
         {
             this->view_position = view_position;
             return this;
         }
-        virtual sf::Vector2f getViewPosition() { return view_position; }
+        virtual glm::vec2 getViewPosition() { return view_position; }
         virtual void setViewRotation(float view_rotation) 
         { 
             this->view_rotation = view_rotation; 
         }
         virtual float getViewRotation() { return view_rotation; }
-        virtual sf::Vector2f worldToScreen(sf::Vector2f world_position);
-        virtual sf::Vector2f screenToWorld(sf::Vector2f screen_position);
+        virtual sf::Vector2f worldToScreen(glm::vec2 world_position);
+        virtual glm::vec2 screenToWorld(sf::Vector2f screen_position);
         virtual float getScale() { return std::min(rect.width, rect.height) / 2.0f / distance; };
         void drawSectorGrid(sf::RenderTarget &window);
         virtual bool onMouseDown(sf::Vector2f position);
         virtual void onMouseDrag(sf::Vector2f position);
         virtual void onMouseUp(sf::Vector2f position);
-        virtual SectorsView *setCallbacks(func_t mouse_down_func, func_t mouse_drag_func, func_t mouse_up_func)
+        virtual SectorsView *setCallbacks(pfunc_t mouse_down_func, pfunc_t mouse_drag_func, pfunc_t mouse_up_func)
         {
             this->mouse_down_func = mouse_down_func;
             this->mouse_drag_func = mouse_drag_func;
