@@ -136,21 +136,21 @@ void ScanProbe::update(float delta)
 
     // The probe moves in a straight line to its destination, independent of
     // physics and at a fixed rate of speed.
-    sf::Vector2f diff = target_position - getPosition();
+    auto diff = target_position - getPosition();
     float movement = delta * probe_speed;
-    float distance = sf::length(diff);
+    float distance = glm::length(diff);
 
     // If the probe's outer radius hasn't reached the target position ...
-    if (diff > getRadius())
+    if (distance > getRadius())
     {
         // The probe is still in transit.
         has_arrived = false;
 
         // Normalize the diff.
-        sf::Vector2f v = normalize(diff);
+        auto v = glm::normalize(diff);
 
         // Update the probe's heading.
-        setHeading(vector2ToAngle(v) + 90.0f);
+        setHeading(vec2ToAngle(v) + 90.0f);
 
         // Move toward the target position at the given rate of speed.
         // However, don't overshoot the target if traveling so fast that the
@@ -184,7 +184,7 @@ void ScanProbe::collide(Collisionable* target, float force)
         return;
     if (player -> getMultiplayerId() != owner_id)
         return;
-    if ((getTarget() - getPosition()) > getRadius())
+    if (glm::length(getTarget() - getPosition()) > getRadius())
         return;
     player -> scan_probe_stock = player -> scan_probe_stock + 1;
     destroy();
@@ -193,7 +193,7 @@ void ScanProbe::collide(Collisionable* target, float force)
 bool ScanProbe::canBeTargetedBy(P<SpaceObject> other)
 {
     // The probe cannot be targeted until it reaches its destination.
-    return (getTarget() - getPosition()) < getRadius();
+    return glm::length2(getTarget() - getPosition()) < getRadius()*getRadius();
 }
 
 void ScanProbe::takeDamage(float damage_amount, DamageInfo info)
@@ -231,9 +231,10 @@ void ScanProbe::drawOnRadar(sf::RenderTarget& window, sf::Vector2f position, flo
     {
         sf::VertexArray a(sf::Lines, 2);
         a[0].position = position;
-        a[1].position = position + (target_position - getPosition()) * scale;
+        a[1].position = position + (sf::Vector2f(target_position.x, target_position.y) - 
+                        sf::Vector2f(getPosition().x, getPosition().y)) * scale;
         a[0].color = sf::Color(255, 255, 255, 32);
-        float distance = sf::length(position - target_position);
+        float distance = sf::length(position - sf::Vector2f(target_position.x, target_position.y));
         if (distance > 1000.0)
             window.draw(a);
     }

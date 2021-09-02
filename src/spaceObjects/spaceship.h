@@ -249,7 +249,7 @@ public:
     ELandingState landing_state;
     P<SpaceObject> docking_target; //Server only
     P<SpaceObject> landing_target; // Server only
-    sf::Vector2f docking_offset; //Server only
+    glm::vec2 docking_offset{0, 0}; //Server only
 
     int32_t base_carrier_id;
 

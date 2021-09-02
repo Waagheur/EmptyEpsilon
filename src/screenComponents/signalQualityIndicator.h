@@ -7,7 +7,7 @@
 
 class GuiSignalQualityIndicator : public GuiElement
 {
-    sf::Clock clock;
+    sp::SystemStopwatch clock;
     float max_amp;
     float target_period;
     float error_noise;

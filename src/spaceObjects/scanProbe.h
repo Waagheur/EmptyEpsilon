@@ -12,8 +12,7 @@ private:
     // Remaining lifetime in seconds.
     float lifetime;
     // Probe target coordinates.
-    // Probe target coordinates.
-    sf::Vector2f target_position;
+    glm::vec2 target_position{0, 0};
     // Whether the probe has arrived to the target_position.
     bool has_arrived;
 public:
@@ -40,8 +39,8 @@ public:
     virtual void collide(Collisionable* target, float force) override;
     virtual void drawOnGMRadar(sf::RenderTarget& window, sf::Vector2f position, float scale, float rotation, bool long_range) override;
     bool hasArrived() { return has_arrived; }
-    void setTarget(sf::Vector2f target) { target_position = target; }
-    sf::Vector2f getTarget() { return target_position; }
+    void setTarget(glm::vec2 target) { target_position = target; }
+    glm::vec2 getTarget() { return target_position; }
     P<SpaceObject> getOwner() { return game_server->getObjectById(owner_id); }
     void setOwner(P<SpaceObject> owner);
 

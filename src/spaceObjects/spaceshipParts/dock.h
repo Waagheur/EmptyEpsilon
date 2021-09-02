@@ -76,7 +76,7 @@ class Dock : public sf::NonCopyable
         move_target_index = index;
     }
     
-    sf::Vector2f getLaunchPosition(float cargoRadius);
+    glm::vec2 getLaunchPosition(float cargoRadius);
     float getLaunchRotation();
     unsigned int getFactionId();
 

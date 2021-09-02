@@ -27,10 +27,10 @@ NavigationScreen::NavigationScreen(GuiContainer *owner)
     radar = new NavigationView(this, "NAVIGATION_RADAR", min_distance, &targets);
     radar->setPosition(0, 0, ATopLeft)->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);
     radar->setCallbacks(
-        [this](sf::Vector2f position) { //down
+        [this](glm::vec2 position) { //down
             if (mode == TargetSelection && targets.getWaypointIndex() > -1 && my_spaceship)
             {
-                if (sf::length(my_spaceship->waypoints[targets.getWaypointIndex()] - position) < 25.0 / radar->getScale())
+                if (glm::length(my_spaceship->waypoints[targets.getWaypointIndex()] - position) < 25.0 / radar->getScale())
                 {
                     mode = MoveWaypoint;
                     drag_waypoint_index = targets.getWaypointIndex();
@@ -38,11 +38,11 @@ NavigationScreen::NavigationScreen(GuiContainer *owner)
             }
             mouse_down_position = position;
         },
-        [this](sf::Vector2f position) { //drag
+        [this](glm::vec2 position) { //drag
             if (mode == TargetSelection)
             {
                 position_text_custom = false;
-                sf::Vector2f newPosition = radar->getViewPosition() - (position - mouse_down_position);
+                glm::vec2 newPosition = radar->getViewPosition() - (position - mouse_down_position);
                 radar->setViewPosition(newPosition);
                 if (!position_text_custom)
                     position_text->setText(getStringFromPosition(newPosition));
@@ -50,7 +50,7 @@ NavigationScreen::NavigationScreen(GuiContainer *owner)
             if (mode == MoveWaypoint && my_spaceship)
                 my_spaceship->commandMoveWaypoint(drag_waypoint_index, position);
         },
-        [this](sf::Vector2f position) { //up
+        [this](glm::vec2 position) { //up
             switch (mode)
             {
             case TargetSelection:
@@ -94,7 +94,7 @@ NavigationScreen::NavigationScreen(GuiContainer *owner)
         position_text_custom = false;
         if (position_text->isValid())
         {
-            sf::Vector2f pos = getPositionFromSring(text);
+            glm::vec2 pos = getPositionFromSring(text);
             radar->setViewPosition(pos);
         }
     });

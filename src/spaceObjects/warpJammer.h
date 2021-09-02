@@ -21,8 +21,8 @@ public:
 
     virtual void drawOnRadar(sf::RenderTarget& window, sf::Vector2f position, float scale, float rotation, bool long_range) override;
 
-    static bool isWarpJammed(sf::Vector2f position);
-    static sf::Vector2f getFirstNoneJammedPosition(sf::Vector2f start, sf::Vector2f end);
+    static bool isWarpJammed(glm::vec2 position);
+    static glm::vec2 getFirstNoneJammedPosition(glm::vec2 start, glm::vec2 end);
 
     void onTakingDamage(ScriptSimpleCallback callback);
     void onDestruction(ScriptSimpleCallback callback);

@@ -10,11 +10,13 @@
 #include "glObjects.h"
 #include "shaderRegistry.h"
 
+#include <glm/ext/matrix_transform.hpp>
+
 #if FEATURE_3D_RENDERING
 struct VertexAndTexCoords
 {
-    sf::Vector3f vertex;
-    sf::Vector2f texcoords;
+    glm::vec3 vertex;
+    glm::vec2 texcoords;
 };
 #endif
 
@@ -46,7 +48,7 @@ Nebula::Nebula()
         clouds[n].z = random(-200.0, 200.0);
         float dist_min = clouds[n].size / 2.0f;
         float dist_max = getRadius() - clouds[n].size;
-        clouds[n].offset = sf::vector2FromAngle(float(n * 360 / cloud_count)) * random(dist_min, dist_max);
+        clouds[n].offset = vec2FromAngle(float(n * 360 / cloud_count)) * random(dist_min, dist_max);
     }
 
     nebula_list.push_back(this);
@@ -59,10 +61,10 @@ void Nebula::draw3DTransparent()
     glTranslatef(-getPosition().x, -getPosition().y, 0);
 
     std::array<VertexAndTexCoords, 4> quad{
-        sf::Vector3f(), {0.f, 1.f},
-        sf::Vector3f(), {1.f, 1.f},
-        sf::Vector3f(), {1.f, 0.f},
-        sf::Vector3f(), {0.f, 0.f}
+        glm::vec3{}, {0.f, 1.f},
+        glm::vec3{}, {1.f, 1.f},
+        glm::vec3{}, {1.f, 0.f},
+        glm::vec3{}, {0.f, 0.f}
     };
 
     gl::ScopedVertexAttribArray positions(shader.get().attribute(ShaderRegistry::Attributes::Position));
@@ -72,10 +74,10 @@ void Nebula::draw3DTransparent()
     {
         NebulaCloud& cloud = clouds[n];
 
-        sf::Vector3f position = sf::Vector3f(getPosition().x, getPosition().y, 0) + sf::Vector3f(cloud.offset.x, cloud.offset.y, 0);
+        glm::vec3 position = glm::vec3(getPosition().x, getPosition().y, 0) + glm::vec3(cloud.offset.x, cloud.offset.y, 0);
         float size = cloud.size;
 
-        float distance = sf::length(camera_position - position);
+        float distance = glm::length(camera_position - position);
         float alpha = 1.0 - (distance / 100000.0f);
         if (alpha < 0.0)
             continue;
@@ -90,7 +92,7 @@ void Nebula::draw3DTransparent()
         glUniform4f(shader.get().uniform(ShaderRegistry::Uniforms::Color), alpha * 0.8f, alpha * 0.8f, alpha * 0.8f, size);
 
         glVertexAttribPointer(positions.get(), 3, GL_FLOAT, GL_FALSE, sizeof(VertexAndTexCoords), (GLvoid*)quad.data());
-        glVertexAttribPointer(texcoords.get(), 2, GL_FLOAT, GL_FALSE, sizeof(VertexAndTexCoords), (GLvoid*)((char*)quad.data() + sizeof(sf::Vector3f)));
+        glVertexAttribPointer(texcoords.get(), 2, GL_FLOAT, GL_FALSE, sizeof(VertexAndTexCoords), (GLvoid*)((char*)quad.data() + sizeof(glm::vec3)));
         std::initializer_list<uint8_t> indices = { 0, 3, 2, 0, 2, 1 };
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_BYTE, std::begin(indices));
     }
@@ -120,33 +122,33 @@ void Nebula::drawOnGMRadar(sf::RenderTarget& window, sf::Vector2f position, floa
     window.draw(range_circle);
 }
 
-bool Nebula::inNebula(sf::Vector2f position)
+bool Nebula::inNebula(glm::vec2 position)
 {
     foreach(Nebula, n, nebula_list)
     {
-        if ((n->getPosition() - position) < n->getRadius())
+        if (glm::length2(n->getPosition() - position) < n->getRadius() * n->getRadius())
             return true;
     }
     return false;
 }
 
-bool Nebula::blockedByNebula(sf::Vector2f start, sf::Vector2f end, float radar_short_range)
+bool Nebula::blockedByNebula(glm::vec2 start, glm::vec2 end, float radar_short_range)
 {
-    sf::Vector2f startEndDiff = end - start;
-    float startEndLength = sf::length(startEndDiff);
+    auto startEndDiff = end - start;
+    float startEndLength = glm::length(startEndDiff);
     if (startEndLength < radar_short_range)
         return false;
 
     foreach(Nebula, n, nebula_list)
     {
         //Calculate point q, which is a point on the line start-end that is closest to n->getPosition
-        float f = sf::dot(startEndDiff, n->getPosition() - start) / startEndLength;
+        float f = glm::dot(startEndDiff, n->getPosition() - start) / startEndLength;
         if (f < 0.0f)
             f = 0.0f;
         if (f > startEndLength)
             f = startEndLength;
-        sf::Vector2f q = start + startEndDiff / startEndLength * f;
-        if ((q - n->getPosition()) < n->getRadius())
+        auto q = start + startEndDiff / startEndLength * f;
+        if (glm::length2(q - n->getPosition()) < n->getRadius()*n->getRadius())
         {
             return true;
         }
@@ -154,20 +156,20 @@ bool Nebula::blockedByNebula(sf::Vector2f start, sf::Vector2f end, float radar_s
     return false;
 }
 
-sf::Vector2f Nebula::getFirstBlockedPosition(sf::Vector2f start, sf::Vector2f end)
+glm::vec2 Nebula::getFirstBlockedPosition(glm::vec2 start, glm::vec2 end)
 {
-    sf::Vector2f startEndDiff = end - start;
-    float startEndLength = sf::length(startEndDiff);
+    auto startEndDiff = end - start;
+    float startEndLength = glm::length(startEndDiff);
     P<Nebula> first_nebula;
     float first_nebula_f = startEndLength;
-    sf::Vector2f first_nebula_q;
+    glm::vec2 first_nebula_q{};
     foreach(Nebula, n, nebula_list)
     {
-        float f = sf::dot(startEndDiff, n->getPosition() - start) / startEndLength;
+        float f = glm::dot(startEndDiff, n->getPosition() - start) / startEndLength;
         if (f < 0.0)
             f = 0;
-        sf::Vector2f q = start + startEndDiff / startEndLength * f;
-        if ((q - n->getPosition()) < n->getRadius())
+        glm::vec2 q = start + startEndDiff / startEndLength * f;
+        if (glm::length2(q - n->getPosition()) < n->getRadius() * n->getRadius())
         {
             if (!first_nebula || f < first_nebula_f)
             {
@@ -180,11 +182,16 @@ sf::Vector2f Nebula::getFirstBlockedPosition(sf::Vector2f start, sf::Vector2f en
     if (!first_nebula)
         return end;
 
-    float d = sf::length(first_nebula_q - first_nebula->getPosition());
-    return first_nebula_q + sf::normalize(start - end) * sqrtf(first_nebula->getRadius() * first_nebula->getRadius() - d * d);
+    float d = glm::length(first_nebula_q - first_nebula->getPosition());
+    return first_nebula_q + glm::normalize(start - end) * sqrtf(first_nebula->getRadius() * first_nebula->getRadius() - d * d);
 }
 
 PVector<Nebula> Nebula::getNebulas()
 {
     return nebula_list;
+}
+
+glm::mat4 Nebula::getModelMatrix() const
+{
+    return glm::identity<glm::mat4>();
 }

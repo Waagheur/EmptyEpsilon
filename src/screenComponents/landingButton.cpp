@@ -110,7 +110,7 @@ void GuiLandingButton::onHotkey(const HotkeyResult& key)
 
 P<SpaceObject> GuiLandingButton::findLandingTarget()
 {
-    PVector<Collisionable> obj_list = CollisionManager::queryArea(landing_spaceship->getPosition() - sf::Vector2f(1000, 1000), landing_spaceship->getPosition() + sf::Vector2f(1000, 1000));
+    PVector<Collisionable> obj_list = CollisionManager::queryArea(landing_spaceship->getPosition() - glm::vec2(1000, 1000), landing_spaceship->getPosition() + glm::vec2(1000, 1000));
     P<SpaceObject> land_object;
     P<SpaceShip> land_ship;
     foreach(Collisionable, obj, obj_list)
@@ -131,7 +131,7 @@ P<SpaceObject> GuiLandingButton::findLandingTarget()
         if (land_object
             &&(land_object != landing_spaceship)
             &&(land_object->canBeLandedOn(landing_spaceship))
-            &&(land_object->getPosition() - landing_spaceship->getPosition()) < 1000.0f + land_object->getRadius())
+            &&(glm::length(land_object->getPosition() - landing_spaceship->getPosition())) < 1000.0f + land_object->getRadius())
             break;
         land_object = NULL;
     }

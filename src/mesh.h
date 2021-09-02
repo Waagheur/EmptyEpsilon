@@ -1,8 +1,10 @@
 #ifndef MESH_H
 #define MESH_H
 
-#include <SFML/System.hpp>
+#include "nonCopyable.h"
 #include "stringImproved.h"
+
+#include <glm/vec3.hpp>
 
 struct MeshVertex
 {
@@ -11,7 +13,7 @@ struct MeshVertex
     float uv[2];
 };
 
-class Mesh : public sf::NonCopyable
+class Mesh : sp::NonCopyable
 {
     std::vector<MeshVertex> vertices;
     uint32_t vbo;
@@ -20,7 +22,7 @@ public:
     ~Mesh();
 
     void render(int32_t position_attrib, int32_t texcoords_attrib, int32_t normal_attrib);
-    sf::Vector3f randomPoint();
+    glm::vec3 randomPoint();
 
     static Mesh* getMesh(const string& filename);
 };

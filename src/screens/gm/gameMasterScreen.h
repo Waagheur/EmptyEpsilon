@@ -80,8 +80,8 @@ private:
         CD_BoxSelect,
         CD_DragObjects
     } click_and_drag_state;
-    sf::Vector2f drag_start_position;
-    sf::Vector2f drag_previous_position;
+    glm::vec2 drag_start_position{};
+    glm::vec2 drag_previous_position{};
     const float max_distance = 30000000.0f;
     const float min_distance = 6250.0f;
     GuiButton* create_button;
@@ -93,9 +93,9 @@ public:
 
     virtual void update(float delta);
 
-    void onMouseDown(sf::Vector2f position);
-    void onMouseDrag(sf::Vector2f position);
-    void onMouseUp(sf::Vector2f position);
+    void onMouseDown(glm::vec2 position);
+    void onMouseDrag(glm::vec2 position);
+    void onMouseUp(glm::vec2 position);
 
     virtual void onKey(sf::Event::KeyEvent key, int unicode);
 

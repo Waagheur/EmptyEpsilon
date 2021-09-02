@@ -29,14 +29,14 @@ GameMasterActions::GameMasterActions()
     gameMasterActions = this;
 }
 
-static inline sf::Packet& operator << (sf::Packet& packet, const P<SpaceObject>& object) { return packet << object->getMultiplayerId(); }
-static inline sf::Packet& operator >> (sf::Packet& packet, P<SpaceObject>& object) {
+static inline sp::io::DataBuffer& operator << (sp::io::DataBuffer& packet, const P<SpaceObject>& object) { return packet << object->getMultiplayerId(); }
+static inline sp::io::DataBuffer& operator >> (sp::io::DataBuffer& packet, P<SpaceObject>& object) {
     int selectedItemId;
     packet >> selectedItemId;
     object = game_server->getObjectById(selectedItemId);
     return packet;
 }
-static inline sf::Packet& operator << (sf::Packet& packet, /*const*/ PVector<SpaceObject>& objects) {
+static inline sp::io::DataBuffer& operator << (sp::io::DataBuffer& packet, /*const*/ PVector<SpaceObject>& objects) {
     packet << int(objects.size());
     foreach(SpaceObject, object, objects)
     {
@@ -44,7 +44,7 @@ static inline sf::Packet& operator << (sf::Packet& packet, /*const*/ PVector<Spa
     }
     return packet;
 }
-static inline sf::Packet& operator >> (sf::Packet& packet, PVector<SpaceObject>& objects) {
+static inline sp::io::DataBuffer& operator >> (sp::io::DataBuffer& packet, PVector<SpaceObject>& objects) {
     int selectedItemsLeft;
     packet >> selectedItemsLeft;
     while (selectedItemsLeft--) {
@@ -88,7 +88,7 @@ namespace
 
 }
 
-void GameMasterActions::onReceiveClientCommand(int32_t client_id, sf::Packet& packet)
+void GameMasterActions::onReceiveClientCommand(int32_t client_id, sp::io::DataBuffer& packet)
 {
     CalledFromClient raii;
     if(client_id != 0)
@@ -150,7 +150,7 @@ void GameMasterActions::onReceiveClientCommand(int32_t client_id, sf::Packet& pa
         break;
         case CMD_MOVE_OBJECTS:
         {
-            sf::Vector2f delta;
+            glm::vec2 delta;
             PVector<SpaceObject> selection;
             packet >> delta >> selection;
             for(P<SpaceObject> obj : selection)
@@ -190,7 +190,7 @@ void GameMasterActions::onReceiveClientCommand(int32_t client_id, sf::Packet& pa
         break;
         case CMD_CONTEXTUAL_GO_TO:
         {
-            sf::Vector2f position;
+            glm::vec2 position;
             bool force;
             PVector<SpaceObject> selection;
             packet >> position >> force >> selection;
@@ -258,77 +258,77 @@ void GameMasterActions::onReceiveClientCommand(int32_t client_id, sf::Packet& pa
 
 void GameMasterActions::commandRunScript(string code)
 {
-    sf::Packet packet;
+    sp::io::DataBuffer packet;
     packet << CMD_RUN_SCRIPT << code;
     sendClientCommand(packet);
 }
 void GameMasterActions::commandSendGlobalMessage(string message)
 {
-    sf::Packet packet;
+    sp::io::DataBuffer packet;
     packet << CMD_SEND_GLOBAL_MESSAGE << message;
     sendClientCommand(packet);
 }
 void GameMasterActions::commandInterceptAllCommsToGm(bool value)
 {
-    sf::Packet packet;
+    sp::io::DataBuffer packet;
     packet << CMD_INTERCEPT_ALL_COMMS_TO_GM << value;
     sendClientCommand(packet);
 }
 void GameMasterActions::commandCallGmScript(uint32_t index, PVector<SpaceObject> selection)
 {
-    sf::Packet packet;
+    sp::io::DataBuffer packet;
     packet << CMD_CALL_GM_SCRIPT << index << selection;
     sendClientCommand(packet);
 }
-void GameMasterActions::commandMoveObjects(sf::Vector2f delta, PVector<SpaceObject> selection)
+void GameMasterActions::commandMoveObjects(glm::vec2 delta, PVector<SpaceObject> selection)
 {
-    sf::Packet packet;
+    sp::io::DataBuffer packet;
     packet << CMD_MOVE_OBJECTS << delta << selection;
     sendClientCommand(packet);
 }
 void GameMasterActions::commandSetGameSpeed(float speed)
 {
-    sf::Packet packet;
+    sp::io::DataBuffer packet;
     packet << CMD_SET_GAME_SPEED << speed;
     sendClientCommand(packet);
 }
 void GameMasterActions::commandSetFactionId(uint32_t faction_id, PVector<SpaceObject> selection)
 {
-    sf::Packet packet;
+    sp::io::DataBuffer packet;
     packet << CMD_SET_FACTION_ID << faction_id << selection;
     sendClientCommand(packet);
 }
 void GameMasterActions::commandSetPersonalityId(uint32_t personality_id, PVector<SpaceObject> selection)
 {
-    sf::Packet packet;
+    sp::io::DataBuffer packet;
     packet << CMD_SET_PERSONALITY_ID << personality_id << selection;
     sendClientCommand(packet);
 }
-void GameMasterActions::commandContextualGoTo(sf::Vector2f position, bool force, PVector<SpaceObject> selection)
+void GameMasterActions::commandContextualGoTo(glm::vec2 position, bool force, PVector<SpaceObject> selection)
 {
-    sf::Packet packet;
+    sp::io::DataBuffer packet;
     packet << CMD_CONTEXTUAL_GO_TO << position << force << selection;
     sendClientCommand(packet);
 }
 void GameMasterActions::commandOrderShip(EShipOrder order, PVector<SpaceObject> selection)
 {
-    sf::Packet packet;
+    sp::io::DataBuffer packet;
     packet << CMD_ORDER_SHIP << int(order) << selection;
     sendClientCommand(packet);
 }
 void GameMasterActions::commandDestroy(PVector<SpaceObject> selection)
 {
-    sf::Packet packet;
+    sp::io::DataBuffer packet;
     packet << CMD_DESTROY << selection;
     sendClientCommand(packet);
 }
 void GameMasterActions::commandSendCommToPlayerShip(P<PlayerSpaceship> target, string line)
 {
-    sf::Packet packet;
+    sp::io::DataBuffer packet;
     packet << CMD_SEND_COMM_TO_PLAYER_SHIP << target << line;
     sendClientCommand(packet);
 }
-void GameMasterActions::executeContextualGoTo(sf::Vector2f position, bool force, PVector<SpaceObject> selection)
+void GameMasterActions::executeContextualGoTo(glm::vec2 position, bool force, PVector<SpaceObject> selection)
 {
     P<SpaceObject> target;
     PVector<Collisionable> list = CollisionManager::queryArea(position, position);
@@ -337,12 +337,12 @@ void GameMasterActions::executeContextualGoTo(sf::Vector2f position, bool force,
         P<SpaceObject> space_object = collisionable;
         if (space_object)
         {
-            if (!target || sf::length(position - space_object->getPosition()) < sf::length(position - target->getPosition()))
+            if (!target || glm::length(position - space_object->getPosition()) < glm::length(position - target->getPosition()))
                 target = space_object;
         }
     }
-    sf::Vector2f upper_bound(-std::numeric_limits<float>::max(), -std::numeric_limits<float>::max());
-    sf::Vector2f lower_bound(std::numeric_limits<float>::max(), std::numeric_limits<float>::max());
+    glm::vec2 upper_bound(-std::numeric_limits<float>::max(), -std::numeric_limits<float>::max());
+    glm::vec2 lower_bound(std::numeric_limits<float>::max(), std::numeric_limits<float>::max());
     for (P<SpaceObject> obj : selection)
     {
         P<CpuShip> cpu_ship = obj;
@@ -354,7 +354,7 @@ void GameMasterActions::executeContextualGoTo(sf::Vector2f position, bool force,
         upper_bound.x = std::max(upper_bound.x, obj->getPosition().x);
         upper_bound.y = std::max(upper_bound.y, obj->getPosition().y);
     }
-    sf::Vector2f objects_center = (upper_bound + lower_bound) / 2.0f;
+    glm::vec2 objects_center = (upper_bound + lower_bound) / 2.0f;
      for (P<SpaceObject> obj : selection)
     {
         P<CpuShip> cpu_ship = obj;
@@ -461,7 +461,7 @@ static int onGMClick(lua_State* L)
 
     if (callback.isSet())
     {
-        gameGlobalInfo->on_gm_click=[callback](sf::Vector2f position) mutable
+        gameGlobalInfo->on_gm_click=[callback](glm::vec2 position) mutable
         {
             callback.call<void>(position.x,position.y);
         };

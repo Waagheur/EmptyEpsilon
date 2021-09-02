@@ -35,10 +35,10 @@ RelayScreen::RelayScreen(GuiContainer* owner, bool allow_comms)
     radar->setAutoCentering(false);
     radar->setPosition(0, 0, ATopLeft)->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);
     radar->setCallbacks(
-        [this](sf::Vector2f position) { //down
+        [this](glm::vec2 position) { //down
             if (mode == TargetSelection && targets.getWaypointIndex() > -1 && my_spaceship)
             {
-                if (sf::length(my_spaceship->waypoints[targets.getWaypointIndex()] - position) < 1000.0f)
+                if (glm::length(my_spaceship->waypoints[targets.getWaypointIndex()] - position) < 1000.0f)
                 {
                     mode = MoveWaypoint;
                     drag_waypoint_index = targets.getWaypointIndex();
@@ -46,11 +46,11 @@ RelayScreen::RelayScreen(GuiContainer* owner, bool allow_comms)
             }
             mouse_down_position = position;
         },
-        [this](sf::Vector2f position) { //drag
+        [this](glm::vec2 position) { //drag
             if (mode == TargetSelection)
                 {
                     position_text_custom = false;
-                    sf::Vector2f newPosition = radar->getViewPosition() - (position - mouse_down_position);
+                    glm::vec2 newPosition = radar->getViewPosition() - (position - mouse_down_position);
                     radar->setViewPosition(newPosition);
                     if(!position_text_custom && my_spaceship)
                         position_text->setText(getStringFromPosition(newPosition, my_spaceship->correction_x, my_spaceship->correction_y));
@@ -58,7 +58,7 @@ RelayScreen::RelayScreen(GuiContainer* owner, bool allow_comms)
             if (mode == MoveWaypoint && my_spaceship)
                 my_spaceship->commandMoveWaypoint(drag_waypoint_index, position);
         },
-        [this](sf::Vector2f position) { //up
+        [this](glm::vec2 position) { //up
             switch(mode)
             {
             case TargetSelection:
@@ -131,7 +131,7 @@ RelayScreen::RelayScreen(GuiContainer* owner, bool allow_comms)
         {
             if (my_spaceship)
             {
-                sf::Vector2f pos = getPositionFromSring(text, my_spaceship->correction_x, my_spaceship->correction_y);
+                glm::vec2 pos = getPositionFromSring(text, my_spaceship->correction_x, my_spaceship->correction_y);
                 radar->setViewPosition(pos);
             }
         }
@@ -372,8 +372,13 @@ void RelayScreen::onDraw(sf::RenderTarget& window)
                 }
             }
 
-            radar_range = stb_obj ? stb_obj->getShortRangeRadarRange() : 5000.0f;
-            if (obj->getPosition() - target->getPosition() < radar_range)
+            // Set the targetable radius to getShortRangeRadarRange() if the
+            // object's a ShipTemplateBasedObject. Otherwise, default to 5U.
+            float r = stb_obj ? stb_obj->getShortRangeRadarRange() : 5000.0f;
+
+            // If the target is within the short-range radar range/5U of the
+            // object, consider it near a friendly object.
+            if (glm::length2(obj->getPosition() - target->getPosition()) < r * r)
             {
                 near_friendly = true;
                 break;
@@ -396,7 +401,7 @@ void RelayScreen::onDraw(sf::RenderTarget& window)
         P<SpaceStation> station = obj;
         P<ScanProbe> probe = obj;
 
-        distance = sf::length(obj->getPosition() - my_spaceship->getPosition()) / 1000.0f;
+        distance = glm::length(obj->getPosition() - my_spaceship->getPosition()) / 1000.0f;
         info_distance -> setValue(string(distance, 1.0f) + " U");
 
         info_callsign->setValue(obj->getCallSign());
@@ -417,7 +422,7 @@ void RelayScreen::onDraw(sf::RenderTarget& window)
             link_to_science_button->enable();
 
             info_probe->show();
-            float distance = sf::length(probe->getPosition() - probe->getTarget());
+            float distance = glm::length(probe->getPosition() - probe->getTarget());
             if (distance > 1000.0)
                 info_probe->setValue(string(int(ceilf(distance / probe->getSpeed()))) + " S");
             else
@@ -464,7 +469,7 @@ void RelayScreen::onDraw(sf::RenderTarget& window)
     if (targets.getWaypointIndex() >= 0)
     {
         delete_waypoint_button->enable();
-        distance = sf::length(my_spaceship->waypoints[targets.getWaypointIndex()] - my_spaceship->getPosition()) / 1000.0f;
+        distance = glm::length(my_spaceship->waypoints[targets.getWaypointIndex()] - my_spaceship->getPosition()) / 1000.0f;
         info_distance -> setValue(string(distance, 1.0f) + " U");
     }
     else
@@ -489,7 +494,7 @@ void RelayScreen::onHotkey(const HotkeyResult& key)
                     current_found = true;
                     continue;
                 }
-                if (current_found && sf::length(obj->getPosition() - my_spaceship->getPosition()) < radar->getDistance() && my_spaceship->isEnemy(obj) && my_spaceship->getScannedStateFor(obj) >= SS_FriendOrFoeIdentified && obj->canBeTargetedBy(my_spaceship))
+                if (current_found && glm::length(obj->getPosition() - my_spaceship->getPosition()) < radar->getDistance() && my_spaceship->isEnemy(obj) && my_spaceship->getScannedStateFor(obj) >= SS_FriendOrFoeIdentified && obj->canBeTargetedBy(my_spaceship))
                 {
                     targets.set(obj);
                     // my_spaceship->commandSetTarget(targets.get());
@@ -502,7 +507,7 @@ void RelayScreen::onHotkey(const HotkeyResult& key)
                 {
                     continue;
                 }
-                if (my_spaceship->isEnemy(obj) && sf::length(obj->getPosition() - my_spaceship->getPosition()) < radar->getDistance() && my_spaceship->getScannedStateFor(obj) >= SS_FriendOrFoeIdentified && obj->canBeTargetedBy(my_spaceship))
+                if (my_spaceship->isEnemy(obj) && glm::length(obj->getPosition() - my_spaceship->getPosition()) < radar->getDistance() && my_spaceship->getScannedStateFor(obj) >= SS_FriendOrFoeIdentified && obj->canBeTargetedBy(my_spaceship))
                 {
                     targets.set(obj);
                     // my_spaceship->commandSetTarget(targets.get());
@@ -526,7 +531,7 @@ void RelayScreen::onHotkey(const HotkeyResult& key)
                 }
                 if (obj == my_spaceship)
                     continue;
-                if (current_found && sf::length(obj->getPosition() - my_spaceship->getPosition()) < radar->getDistance() && obj->canBeTargetedBy(my_spaceship))
+                if (current_found && glm::length(obj->getPosition() - my_spaceship->getPosition()) < radar->getDistance() && obj->canBeTargetedBy(my_spaceship))
                 {
                     targets.set(obj);
                     return;
@@ -547,7 +552,7 @@ void RelayScreen::onHotkey(const HotkeyResult& key)
                         }
                         if (obj == my_spaceship)
                             continue;
-                        if (current_found && sf::length(obj->getPosition() - obj_relai->getPosition()) < radar->getDistance() && obj->canBeTargetedBy(my_spaceship))
+                        if (current_found && glm::length(obj->getPosition() - obj_relai->getPosition()) < radar->getDistance() && obj->canBeTargetedBy(my_spaceship))
                         {
                             targets.set(obj);
                             return;
@@ -561,7 +566,7 @@ void RelayScreen::onHotkey(const HotkeyResult& key)
             {
                 if (obj == targets.get()  || obj == my_spaceship)
                     continue;
-                if (sf::length(obj->getPosition() - my_spaceship->getPosition()) < radar->getDistance() && obj->canBeTargetedBy(my_spaceship))
+                if (glm::length(obj->getPosition() - my_spaceship->getPosition()) < radar->getDistance() && obj->canBeTargetedBy(my_spaceship))
                 {
                     targets.set(obj);
                     return;
@@ -577,7 +582,7 @@ void RelayScreen::onHotkey(const HotkeyResult& key)
                     {
                         if (obj == targets.get() || obj == my_spaceship)
                             continue;
-                        if (sf::length(obj->getPosition() - obj_relai->getPosition()) < radar->getDistance() && obj->canBeTargetedBy(my_spaceship))
+                        if (glm::length(obj->getPosition() - obj_relai->getPosition()) < radar->getDistance() && obj->canBeTargetedBy(my_spaceship))
                         {
                             targets.set(obj);
                             return;

@@ -4,6 +4,8 @@
 #include "playerSpaceship.h"
 #include "main.h"
 
+#include <glm/ext/matrix_transform.hpp>
+
 #include "scriptInterface.h"
 
 /// An artifact.
@@ -101,9 +103,9 @@ void Artifact::update(float delta)
             orbit_target = game_client->getObjectById(orbit_target_id);
         if (orbit_target)
         {
-            float angle = sf::vector2ToAngle(getPosition() - orbit_target->getPosition());
+            float angle = vec2ToAngle(getPosition() - orbit_target->getPosition());
             angle += delta / orbit_time * 360.0f;
-            setPosition(orbit_target->getPosition() + sf::vector2FromAngle(angle) * orbit_distance);
+            setPosition(orbit_target->getPosition() + vec2FromAngle(angle) * orbit_distance);
         }
     }
 }
@@ -113,7 +115,7 @@ void Artifact::setOrbit(P<SpaceObject> target, float orbit_time)
     if (!target)
         return;
     this->orbit_target_id = target->getMultiplayerId();
-    this->orbit_distance = sf::length(getPosition() - target->getPosition());
+    this->orbit_distance = glm::length(getPosition() - target->getPosition());
     this->orbit_time = orbit_time;
 }
 
@@ -257,4 +259,13 @@ string Artifact::getExportLine()
     if (allow_pickup)
         ret += ":allowPickup(true)";
     return ret;
+}
+
+glm::mat4 Artifact::getModelMatrix() const
+{
+    auto matrix = SpaceObject::getModelMatrix();
+
+    if (artifact_spin != 0.f)
+        matrix = glm::rotate(matrix, glm::radians(engine->getElapsedTime() * artifact_spin), glm::vec3(0.f, 0.f, 1.f));
+    return matrix;
 }

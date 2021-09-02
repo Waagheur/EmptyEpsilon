@@ -5,6 +5,7 @@ GuiTextEntry::GuiTextEntry(GuiContainer* owner, string id, string text)
 : GuiElement(owner, id), text(text), text_size(30), func(nullptr), enter_func(nullptr), validator_func(nullptr), valid(true)
 {
     text_font = main_font;
+    blink_timer.repeat(blink_rate);
 }
 
 void GuiTextEntry::onDraw(sf::RenderTarget& window)
@@ -13,14 +14,10 @@ void GuiTextEntry::onDraw(sf::RenderTarget& window)
         drawStretched(window, rect, "gui/TextEntryBackground.focused", selectColor(colorConfig.text_entry.background));
     else
         drawStretched(window, rect, "gui/TextEntryBackground", selectColor(colorConfig.text_entry.background));
-    bool typing_indicator = focus;
-    const float blink_rate = 0.530;
-    if (blink_clock.getElapsedTime().asSeconds() < blink_rate)
-        typing_indicator = false;
-    if (blink_clock.getElapsedTime().asSeconds() > blink_rate * 2.0f)
-        blink_clock.restart();
     sf::Color textColor = (valid || !validator_func) ? selectColor(colorConfig.text_entry.forground) : colorConfig.text_entry_invalid;
-    drawText(window, sf::FloatRect(rect.left + 16, rect.top, rect.width, rect.height), text + (typing_indicator ? "_" : ""), ACenterLeft, text_size, text_font, textColor);
+    if (blink_timer.isExpired())
+        typing_indicator = !typing_indicator;
+    drawText(window, sf::FloatRect(rect.left + 16, rect.top, rect.width, rect.height), text + (typing_indicator && focus ? "_" : ""), ACenterLeft, text_size, text_font, textColor);
 }
 
 bool GuiTextEntry::onMouseDown(sf::Vector2f position)
@@ -98,6 +95,8 @@ bool GuiTextEntry::isValid() const
 
 void GuiTextEntry::onFocusGained()
 {
+    typing_indicator = true;
+    blink_timer.repeat(blink_rate);
     sf::Keyboard::setVirtualKeyboardVisible(true);
 }
 
