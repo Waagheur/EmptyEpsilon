@@ -9,10 +9,10 @@ class BeamEffect : public SpaceObject, public Updatable
     float lifetime;
     int32_t sourceId;
     int32_t target_id;
-    sf::Vector3f sourceOffset;
-    sf::Vector3f targetOffset;
-    sf::Vector2f targetLocation;
-    sf::Vector3f hitNormal;
+    glm::vec3 sourceOffset;
+    glm::vec3 targetOffset;
+    glm::vec2 targetLocation{};
+    glm::vec3 hitNormal;
 public:
     bool fire_ring;
     string beam_texture;
@@ -26,8 +26,8 @@ public:
 #endif
     virtual void update(float delta);
 
-    void setSource(P<SpaceObject> source, sf::Vector3f offset);
-    void setTarget(P<SpaceObject> target, sf::Vector2f hitLocation);
+    void setSource(P<SpaceObject> source, glm::vec3 offset);
+    void setTarget(P<SpaceObject> target, glm::vec2 hitLocation);
 
     ///Set the texture used for this beam. Default is beam_orange.png
     void setTexture(string texture) {this->beam_texture = texture;}
@@ -39,6 +39,7 @@ public:
     void setDuration(float duration) {this->lifetime = duration;}
     void setRing(bool ring) {this->fire_ring = ring;}
 protected:
+    glm::mat4 getModelMatrix() const override;
     bool beam_sound_played;
 };
 

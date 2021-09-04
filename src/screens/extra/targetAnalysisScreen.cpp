@@ -282,9 +282,9 @@ void TargetAnalysisScreen::onDraw(sf::RenderTarget &window)
                 }
             }
             
-            sf::Vector2f position_diff = obj->getPosition() - my_spaceship->getPosition();
-            float distance = sf::length(position_diff);
-            float heading = sf::vector2ToAngle(position_diff) - 270;
+            glm::vec2 position_diff = obj->getPosition() - my_spaceship->getPosition();
+            float distance = glm::length(position_diff);
+            float heading = vec2ToAngle(position_diff) - 270;
 
             while(heading < 0) heading += 360;
 

@@ -11,7 +11,7 @@ class AutoConnectScreen : public GuiCanvas, public Updatable
 {
     GuiOverlay* screen_connect;
     P<ServerScanner> scanner;
-    sf::IpAddress connect_to_address;
+    sp::io::network::Address connect_to_address;
     ECrewPosition crew_position;
     bool control_main_screen;
     int auto_mainscreen;

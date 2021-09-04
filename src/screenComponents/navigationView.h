@@ -19,7 +19,7 @@ class NavigationView : public SectorsView
         SectorsView::setDistance(distance);
         return this;
     }
-    virtual NavigationView *setViewPosition(sf::Vector2f view_position)
+    virtual NavigationView *setViewPosition(glm::vec2 view_position)
     {
         SectorsView::setViewPosition(view_position);
         return this;

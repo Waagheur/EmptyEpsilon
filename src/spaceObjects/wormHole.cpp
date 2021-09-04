@@ -9,6 +9,8 @@
 #include "glObjects.h"
 #include "shaderRegistry.h"
 
+#include <glm/ext/matrix_transform.hpp>
+
 #define FORCE_MULTIPLIER          50.0
 #define FORCE_MAX                 10000.0
 #define ALPHA_MULTIPLIER          10.0
@@ -19,8 +21,8 @@
 #if FEATURE_3D_RENDERING
 struct VertexAndTexCoords
 {
-    sf::Vector3f vertex;
-    sf::Vector2f texcoords;
+    glm::vec3 vertex;
+    glm::vec2 texcoords;
 };
 #endif
 
@@ -54,7 +56,7 @@ WormHole::WormHole()
     {
         clouds[n].size = random(1024, 1024 * 4);
         clouds[n].texture = irandom(1, 3);
-        clouds[n].offset = sf::Vector2f(0, 0);
+        clouds[n].offset = glm::vec2(0, 0);
     }
 }
 
@@ -65,10 +67,10 @@ void WormHole::draw3DTransparent()
     glTranslatef(-getPosition().x, -getPosition().y, 0);
 
     std::array<VertexAndTexCoords, 4> quad{
-        sf::Vector3f(), {0.f, 1.f},
-        sf::Vector3f(), {1.f, 1.f},
-        sf::Vector3f(), {1.f, 0.f},
-        sf::Vector3f(), {0.f, 0.f}
+        glm::vec3{}, {0.f, 1.f},
+        glm::vec3{}, {1.f, 1.f},
+        glm::vec3{}, {1.f, 0.f},
+        glm::vec3{}, {0.f, 0.f}
     };
 
     gl::ScopedVertexAttribArray positions(shader.get().attribute(ShaderRegistry::Attributes::Position));
@@ -78,10 +80,10 @@ void WormHole::draw3DTransparent()
     {
         NebulaCloud& cloud = clouds[n];
 
-        sf::Vector3f position = sf::Vector3f(getPosition().x, getPosition().y, 0) + sf::Vector3f(cloud.offset.x, cloud.offset.y, 0);
+        auto position = glm::vec3(getPosition().x, getPosition().y, 0) + glm::vec3(cloud.offset.x, cloud.offset.y, 0);
         float size = cloud.size * getRadarSignatureGravity();
 
-        float distance = sf::length(camera_position - position);
+        float distance = glm::length(camera_position - position);
         float alpha = 1.0 - (distance / 100000.0f);
         if (alpha < 0.0)
             continue;
@@ -90,7 +92,7 @@ void WormHole::draw3DTransparent()
         glUniform4f(shader.get().uniform(ShaderRegistry::Uniforms::Color), alpha * 0.8f, alpha * 0.8f, alpha * 0.8f, size);
 
         glVertexAttribPointer(positions.get(), 3, GL_FLOAT, GL_FALSE, sizeof(VertexAndTexCoords), (GLvoid*)quad.data());
-        glVertexAttribPointer(texcoords.get(), 2, GL_FLOAT, GL_FALSE, sizeof(VertexAndTexCoords), (GLvoid*)((char*)quad.data() + sizeof(sf::Vector3f)));
+        glVertexAttribPointer(texcoords.get(), 2, GL_FLOAT, GL_FALSE, sizeof(VertexAndTexCoords), (GLvoid*)((char*)quad.data() + sizeof(glm::vec3)));
         std::initializer_list<uint8_t> indices = { 0, 2, 1, 0, 3, 2 };
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_BYTE, std::begin(indices));
     }
@@ -116,9 +118,10 @@ void WormHole::drawOnRadar(sf::RenderTarget& window, sf::Vector2f position, floa
 // Draw a line toward the target position
 void WormHole::drawOnGMRadar(sf::RenderTarget& window, sf::Vector2f position, float scale, float rotation, bool long_range)
 {
+    auto offset = target_position - getPosition();
     sf::VertexArray a(sf::Lines, 2);
     a[0].position = position;
-    a[1].position = position + (target_position - getPosition()) * scale;
+    a[1].position = position + sf::Vector2f(offset.x, offset.y) * scale;
     a[0].color = sf::Color(255, 255, 255, 32);
     window.draw(a);
 
@@ -151,8 +154,8 @@ void WormHole::collide(Collisionable* target, float collision_force)
     if (P<Nebula>(obj))
         return;
 
-    sf::Vector2f diff = getPosition() - target->getPosition();
-    float distance = sf::length(diff);
+    auto diff = getPosition() - target->getPosition();
+    float distance = glm::length(diff);
     float force = (getRadius() * getRadius() * FORCE_MULTIPLIER) / (distance * distance);
     P<SpaceShip> spaceship = P<Collisionable>(target);
 
@@ -165,8 +168,7 @@ void WormHole::collide(Collisionable* target, float collision_force)
         force = FORCE_MAX;
         if (isServer())
             target->setPosition( (target_position +
-                                  sf::Vector2f(random(-TARGET_SPREAD, TARGET_SPREAD),
-                                               random(-TARGET_SPREAD, TARGET_SPREAD))));
+                                  glm::vec2(random(-TARGET_SPREAD, TARGET_SPREAD), random(-TARGET_SPREAD, TARGET_SPREAD))));
         if (on_teleportation.isSet())
         {
             on_teleportation.call<void>(P<WormHole>(this), obj);
@@ -181,12 +183,12 @@ void WormHole::collide(Collisionable* target, float collision_force)
     target->setPosition(target->getPosition() + diff / distance * update_delta * force);
 }
 
-void WormHole::setTargetPosition(sf::Vector2f v)
+void WormHole::setTargetPosition(glm::vec2 v)
 {
     target_position = v;
 }
 
-sf::Vector2f WormHole::getTargetPosition()
+glm::vec2 WormHole::getTargetPosition()
 {
     return target_position;
 }
@@ -194,4 +196,9 @@ sf::Vector2f WormHole::getTargetPosition()
 void WormHole::onTeleportation(ScriptSimpleCallback callback)
 {
     this->on_teleportation = callback;
+}
+
+glm::mat4 WormHole::getModelMatrix() const
+{
+    return glm::identity<glm::mat4>();
 }

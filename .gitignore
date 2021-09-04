@@ -44,3 +44,5 @@ EmptyEpsilon.cscope_file_list
 _*
 *.orig
 logs
+cmake/android
+_debug

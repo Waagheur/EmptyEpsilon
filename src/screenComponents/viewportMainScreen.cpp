@@ -43,8 +43,8 @@ void GuiViewportMainScreen::onDraw(sf::RenderTarget& window)
         case MSS_Target:
             if (target_ship)
             {
-                sf::Vector2f target_camera_diff = my_spaceship->getPosition() - target_ship->getPosition();
-                target_camera_yaw = sf::vector2ToAngle(target_camera_diff) + 180;
+                auto target_camera_diff = my_spaceship->getPosition() - target_ship->getPosition();
+                target_camera_yaw = vec2ToAngle(target_camera_diff) + 180;
             }
             break;
         default: break;
@@ -69,7 +69,7 @@ void GuiViewportMainScreen::onDraw(sf::RenderTarget& window)
             camera_yaw = angle;
             camera_pitch = 0.0f;
 
-            sf::Vector2f position = probe->getPosition() + sf::rotateVector(sf::Vector2f(probe->getRadius(), 0), camera_yaw);
+            glm::vec2 position = probe->getPosition() + rotateVec2(glm::vec2(probe->getRadius(), 0), camera_yaw);
             camera_position.x = position.x;
             camera_position.y = position.y;
             camera_position.z = 0.0;
@@ -84,8 +84,8 @@ void GuiViewportMainScreen::onDraw(sf::RenderTarget& window)
                 camera_ship_height = my_spaceship->getRadius() / 10.f;
                 camera_pitch = 0;
             }    
-            sf::Vector2f cameraPosition2D = my_spaceship->getPosition() + sf::vector2FromAngle(target_camera_yaw) * -camera_ship_distance;
-            sf::Vector3f targetCameraPosition(cameraPosition2D.x, cameraPosition2D.y, camera_ship_height);
+            glm::vec2 cameraPosition2D = my_spaceship->getPosition() + vec2FromAngle(target_camera_yaw) * -camera_ship_distance;
+            glm::vec3 targetCameraPosition(cameraPosition2D.x, cameraPosition2D.y, camera_ship_height);
 #ifdef DEBUG
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z))
             {
@@ -103,7 +103,7 @@ void GuiViewportMainScreen::onDraw(sf::RenderTarget& window)
             else
             {
                 camera_position = camera_position * 0.9f + targetCameraPosition * 0.1f;
-                camera_yaw += sf::angleDifference(camera_yaw, target_camera_yaw) * 0.1f;
+                camera_yaw += angleDifference(camera_yaw, target_camera_yaw) * 0.1f;
             }
         }
 

@@ -5,13 +5,14 @@
 #include "resources.h"
 #include <regex>
 
-static inline sf::Packet& operator << (sf::Packet& packet, const ECommsGmInterception& cgi) { return packet << int(cgi); }
-static inline sf::Packet& operator >> (sf::Packet& packet, ECommsGmInterception& cgi) {
+static inline sp::io::DataBuffer& operator << (sp::io::DataBuffer& packet, const ECommsGmInterception& cgi) { return packet << int(cgi); }
+static inline sp::io::DataBuffer& operator >> (sp::io::DataBuffer& packet, ECommsGmInterception& cgi) {
     int value;
     packet >> value;
     cgi = ECommsGmInterception(value);
     return packet;
 }
+#include "config.h"
 
 P<GameGlobalInfo> gameGlobalInfo;
 
@@ -274,7 +275,7 @@ bool isValidPositionString(string positionStr)
     }
 }
 
-sf::Vector2f getSectorPosition(string sectorName, float correction_x, float correction_y)
+glm::vec2 getSectorPosition(string sectorName, float correction_x, float correction_y)
 {
     std::smatch matches;
     if(std::regex_match(sectorName, matches, sector_rgx))
@@ -290,29 +291,29 @@ sf::Vector2f getSectorPosition(string sectorName, float correction_x, float corr
             sector_x = -1 - sector_x;
         if ((quadrant /2) % 2)
             sector_y = -1 - sector_y;
-        return sf::Vector2f(sector_x * GameGlobalInfo::sector_size + correction_x, sector_y * GameGlobalInfo::sector_size + correction_y);
+        return glm::vec2(sector_x * GameGlobalInfo::sector_size + correction_x, sector_y * GameGlobalInfo::sector_size + correction_y);
     }
     else
     {
-        return sf::Vector2f(0,0);
+        return glm::vec2(0,0);
     }
 }
 
-sf::Vector2f getPositionFromSring(string positionStr, float correction_x, float correction_y)
+glm::vec2 getPositionFromSring(string positionStr, float correction_x, float correction_y)
 {
      if (isValidSectorName(positionStr))
         return getSectorPosition(positionStr, correction_x, correction_y);
     std::smatch matches;
     if(std::regex_match(positionStr, matches, location_rgx))
     {
-        sf::Vector2f sectorPosition = getSectorPosition(matches.str(1), correction_x, correction_y);
-        return sectorPosition + sf::Vector2f(std::stoi(matches.str(2)), std::stoi(matches.str(3)));
+        glm::vec2 sectorPosition = getSectorPosition(matches.str(1), correction_x, correction_y);
+        return sectorPosition + glm::vec2(std::stoi(matches.str(2)), std::stoi(matches.str(3)));
     } else {
-        return sf::Vector2f(correction_x,correction_y);
+        return glm::vec2(correction_x,correction_y);
     }
 }
 
-string getStringFromPosition(sf::Vector2f position, float correction_x, float correction_y)
+string getStringFromPosition(glm::vec2 position, float correction_x, float correction_y)
 {
     int offset_x = fmod(fmod(position.x, GameGlobalInfo::sector_size) + GameGlobalInfo::sector_size, GameGlobalInfo::sector_size);
     int offset_y = fmod(fmod(position.y, GameGlobalInfo::sector_size) + GameGlobalInfo::sector_size, GameGlobalInfo::sector_size);
@@ -324,7 +325,7 @@ string getStringFromPosition(sf::Vector2f position, float correction_x, float co
     }
 }
 
-string getSectorName(sf::Vector2f position, float correction_x, float correction_y)
+string getSectorName(glm::vec2 position, float correction_x, float correction_y)
 {
     position.x = position.x - correction_x;
     position.y = position.y - correction_y;
@@ -355,7 +356,7 @@ int getSectorName(lua_State* L)
 {
     float x = luaL_checknumber(L, 1);
     float y = luaL_checknumber(L, 2);
-    lua_pushstring(L, getSectorName(sf::Vector2f(x, y)).c_str());
+    lua_pushstring(L, getSectorName(glm::vec2(x, y)).c_str());
     return 1;
 }
 /// getSectorName(x, y)
@@ -468,14 +469,14 @@ static int getObjectsInRadius(lua_State* L)
     float y = luaL_checknumber(L, 2);
     float r = luaL_checknumber(L, 3);
 
-    sf::Vector2f position(x, y);
+    glm::vec2 position(x, y);
 
     PVector<SpaceObject> objects;
-    PVector<Collisionable> objectList = CollisionManager::queryArea(position - sf::Vector2f(r, r), position + sf::Vector2f(r, r));
+    PVector<Collisionable> objectList = CollisionManager::queryArea(position - glm::vec2(r, r), position + glm::vec2(r, r));
     foreach(Collisionable, obj, objectList)
     {
         P<SpaceObject> sobj = obj;
-        if (sobj && (sobj->getPosition() - position) < r)
+        if (sobj && glm::length2(sobj->getPosition() - position) < r*r)
             objects.push_back(sobj);
     }
 

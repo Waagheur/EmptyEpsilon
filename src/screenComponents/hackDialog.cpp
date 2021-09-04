@@ -261,7 +261,7 @@ void GuiHackDialog::commandHack()
                 if (!ship)
                     continue;
 
-                if (sf::length(obj->getPosition() - my_spaceship->getPosition()) > 50000.0)
+                if (glm::length(obj->getPosition() - my_spaceship->getPosition()) > 50000.0)
                     continue;
 
                 hack_test = obj -> getCallSign();

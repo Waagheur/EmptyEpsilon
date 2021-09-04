@@ -105,7 +105,7 @@ public:
     //Callback called when a new ship is created.
     ScriptSimpleCallback on_new_ship;
 
-    std::function<void(sf::Vector2f)> on_gm_click;
+    std::function<void(glm::vec2)> on_gm_click;
 
     GameGlobalInfo();
     virtual ~GameGlobalInfo();
@@ -138,11 +138,11 @@ public:
 };
 
 string playerWarpJumpDriveToString(EPlayerWarpJumpDrive player_warp_jump_drive);
-string getSectorName(sf::Vector2f position, float correction_x = 0.0, float correction_y = 0.0);
-sf::Vector2f getSectorPosition(string sectorName, float correction_x = 0.0, float correction_y = 0.0);
+string getSectorName(glm::vec2 position, float correction_x = 0.0, float correction_y = 0.0);
+glm::vec2 getSectorPosition(string sectorName, float correction_x = 0.0, float correction_y = 0.0);
 bool isValidSectorName(string sectorName);
-sf::Vector2f getPositionFromSring(string sectorName, float correction_x = 0.0, float correction_y = 0.0);
-string getStringFromPosition(sf::Vector2f position,float correction_x = 0.0, float correction_y = 0.0);
+glm::vec2 getPositionFromSring(string sectorName, float correction_x = 0.0, float correction_y = 0.0);
+string getStringFromPosition(glm::vec2 position,float correction_x = 0.0, float correction_y = 0.0);
 bool isValidPositionString(string sectorName);
 
 REGISTER_MULTIPLAYER_ENUM(EScanningComplexity);

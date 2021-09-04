@@ -33,9 +33,9 @@ GameMasterScreen::GameMasterScreen()
     main_radar->setStyle(GuiRadarView::Rectangular)->longRange()->gameMaster()->enableTargetProjections(nullptr)->setAutoCentering(false);
     main_radar->setPosition(0, 0, ATopLeft)->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);
     main_radar->setCallbacks(
-        [this](sf::Vector2f position) { this->onMouseDown(position); },
-        [this](sf::Vector2f position) { this->onMouseDrag(position); },
-        [this](sf::Vector2f position) { this->onMouseUp(position); }
+        [this](glm::vec2 position) { this->onMouseDown(position); },
+        [this](glm::vec2 position) { this->onMouseDrag(position); },
+        [this](glm::vec2 position) { this->onMouseUp(position); }
     );
     box_selection_overlay = new GuiOverlay(main_radar, "BOX_SELECTION", sf::Color(255, 255, 255, 32));
     box_selection_overlay->hide();
@@ -48,7 +48,7 @@ GameMasterScreen::GameMasterScreen()
 //     });
 //     pause_button->setValue(engine->getGameSpeed() == 0.0f)->setPosition(20, 20, ATopLeft)->setSize(250, 50);
 
-    pause_button = new GuiSlider(this, "PAUSE_BUTTON", 0.0, 10.0, 1.0, [this](float value) {
+    pause_button = new GuiSlider(this, "PAUSE_BUTTON", 0.0, 10.0, 1.0, [](float value) {
                                  gameMasterActions->commandSetGameSpeed(value);
     });
 
@@ -114,7 +114,7 @@ GameMasterScreen::GameMasterScreen()
         position_text_custom = false;
         if (position_text->isValid())
         {
-            sf::Vector2f pos = getPositionFromSring(text);
+            glm::vec2 pos = getPositionFromSring(text);
             main_radar->setViewPosition(pos);
         }
     });
@@ -294,7 +294,7 @@ GameMasterScreen::GameMasterScreen()
 
     message_text = new GuiScrollText(message_frame, "", "");
     message_text->setTextSize(20)->setPosition(20, 20, ATopLeft)->setSize(900 - 40, 200 - 40);
-    message_close_button = new GuiButton(message_frame, "", tr("button", "Close"), [this]() {
+    message_close_button = new GuiButton(message_frame, "", tr("button", "Close"), []() {
         if (!gameGlobalInfo->gm_messages.empty())
         {
             gameGlobalInfo->gm_messages.pop_front();
@@ -432,7 +432,7 @@ void GameMasterScreen::update(float delta)
             P<PlayerSpaceship> ship = gameGlobalInfo->getPlayerShip(n);
             if (ship)
             {
-                float distance = sf::length(targets.getTargets()[0]->getPosition() - ship->getPosition());
+                float distance = glm::length(targets.getTargets()[0]->getPosition() - ship->getPosition());
                 selection_info["Distance " + ship->callsign] = string(distance / 1000.0f,0) + " U";
             }
         }
@@ -499,7 +499,7 @@ void GameMasterScreen::update(float delta)
     }
 }
 
-void GameMasterScreen::onMouseDown(sf::Vector2f position)
+void GameMasterScreen::onMouseDown(glm::vec2 position)
 {
     if (click_and_drag_state != CD_None)
         return;
@@ -519,7 +519,7 @@ void GameMasterScreen::onMouseDown(sf::Vector2f position)
 
             for(P<SpaceObject> obj : targets.getTargets())
             {
-                if ((obj->getPosition() - position) < std::max(min_drag_distance, obj->getRadius()))
+                if (glm::length(obj->getPosition() - position) < std::max(min_drag_distance, obj->getRadius()))
                     click_and_drag_state = CD_DragObjects;
             }
         }
@@ -528,7 +528,7 @@ void GameMasterScreen::onMouseDown(sf::Vector2f position)
     drag_previous_position = position;
 }
 
-void GameMasterScreen::onMouseDrag(sf::Vector2f position)
+void GameMasterScreen::onMouseDrag(glm::vec2 position)
 {
     switch(click_and_drag_state)
     {
@@ -554,7 +554,7 @@ void GameMasterScreen::onMouseDrag(sf::Vector2f position)
     drag_previous_position = position;
 }
 
-void GameMasterScreen::onMouseUp(sf::Vector2f position)
+void GameMasterScreen::onMouseUp(glm::vec2 position)
 {
     switch(click_and_drag_state)
     {

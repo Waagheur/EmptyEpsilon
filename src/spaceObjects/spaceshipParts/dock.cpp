@@ -102,8 +102,8 @@ void Dock::setParent(SpaceShip *parent)
     parent->registerMemberReplication(&current_distance);
 }
 
-sf::Vector2f Dock::getLaunchPosition(float cargoRadius) {
-    return parent->getPosition() - sf::vector2FromAngle(parent->getRotation()) * (cargoRadius + parent->getRadius());
+glm::vec2 Dock::getLaunchPosition(float cargoRadius) {
+    return parent->getPosition() - vec2FromAngle(parent->getRotation()) * (cargoRadius + parent->getRadius());
 }
 
  float Dock::getLaunchRotation(){

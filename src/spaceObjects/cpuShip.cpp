@@ -193,7 +193,7 @@ void CpuShip::orderIdle()
 {
     orders = AI_Idle;
     order_target = NULL;
-    order_target_location = sf::Vector2f();
+    order_target_location = glm::vec2(0, 0);
 }
 
 void CpuShip::orderRoaming()
@@ -201,11 +201,11 @@ void CpuShip::orderRoaming()
     target_rotation = getRotation();
     orders = AI_Roaming;
     order_target = NULL;
-    order_target_location = sf::Vector2f();
+    order_target_location = glm::vec2(0, 0);
     this->addBroadcast(FVF_Friendly, tr("cpulog", "Searching for targets."));
 }
 
-void CpuShip::orderRoamingAt(sf::Vector2f position)
+void CpuShip::orderRoamingAt(glm::vec2 position)
 {
     target_rotation = getRotation();
     orders = AI_Roaming;
@@ -225,7 +225,7 @@ void CpuShip::orderRetreat(P<SpaceObject> object)
         order_target = object;
         this->addBroadcast(FVF_Friendly, tr("cpulog", "Docking to {callsign}.").format({{"callsign", object->getCallSign()}}));
     }
-    order_target_location = sf::Vector2f();
+    order_target_location = glm::vec2(0, 0);
 }
 
 void CpuShip::orderStandGround()
@@ -233,11 +233,11 @@ void CpuShip::orderStandGround()
     target_rotation = getRotation();
     orders = AI_StandGround;
     order_target = NULL;
-    order_target_location = sf::Vector2f();
+    order_target_location = glm::vec2(0, 0);
     this->addBroadcast(FVF_Friendly, tr("cpulog", "Standing ground for now."));
 }
 
-void CpuShip::orderDefendLocation(sf::Vector2f position)
+void CpuShip::orderDefendLocation(glm::vec2 position)
 {
     orders = AI_DefendLocation;
     order_target = NULL;
@@ -251,11 +251,11 @@ void CpuShip::orderDefendTarget(P<SpaceObject> object)
         return;
     orders = AI_DefendTarget;
     order_target = object;
-    order_target_location = sf::Vector2f();
+    order_target_location = glm::vec2(0, 0);
     this->addBroadcast(FVF_Friendly, tr("cpulog", "Defending {callsign}.").format({{"callsign", object->getCallSign()}}));
 }
 
-void CpuShip::orderFlyFormation(P<SpaceObject> object, sf::Vector2f offset)
+void CpuShip::orderFlyFormation(P<SpaceObject> object, glm::vec2 offset)
 {
     if (!object)
         return;
@@ -265,7 +265,7 @@ void CpuShip::orderFlyFormation(P<SpaceObject> object, sf::Vector2f offset)
     this->addBroadcast(FVF_Friendly, tr("cpulog", "Following {callsign}.").format({{"callsign", object->getCallSign()}}));
 }
 
-void CpuShip::orderFlyTowards(sf::Vector2f target)
+void CpuShip::orderFlyTowards(glm::vec2 target)
 {
     orders = AI_FlyTowards;
     order_target = NULL;
@@ -273,7 +273,7 @@ void CpuShip::orderFlyTowards(sf::Vector2f target)
     this->addBroadcast(FVF_Friendly, tr("cpulog", "Moving to {x},{y}.").format({{"x", string(target.x)}, {"y", string(target.y)}}));
 }
 
-void CpuShip::orderFlyTowardsBlind(sf::Vector2f target)
+void CpuShip::orderFlyTowardsBlind(glm::vec2 target)
 {
     orders = AI_FlyTowardsBlind;
     order_target = NULL;
@@ -287,7 +287,7 @@ void CpuShip::orderAttack(P<SpaceObject> object)
         return;
     orders = AI_Attack;
     order_target = object;
-    order_target_location = sf::Vector2f();
+    order_target_location = glm::vec2(0, 0);
     this->addBroadcast(FVF_Friendly, tr("cpulog", "Moving to attack {callsign}!").format({{"callsign", object->getCallSign()}}));
 }
 
@@ -297,7 +297,7 @@ void CpuShip::orderDock(P<SpaceObject> object)
         return;
     orders = AI_Dock;
     order_target = object;
-    order_target_location = sf::Vector2f();
+    order_target_location = glm::vec2(0, 0);
     this->addBroadcast(FVF_Friendly, tr("cpulog", "Docking to {callsign}.").format({{"callsign", object->getCallSign()}}));
 }
 

@@ -38,7 +38,7 @@ private:
     GuiSlider* zoom_slider;
     GuiLabel* zoom_label;
 
-    sf::Vector2f mouse_down_position;
+    glm::vec2 mouse_down_position;
     const float max_distance = 10000000.0f; // has to match relay max_distance to have same zoom scale
     const float min_distance = 909090.0f; // not to zoom in too much
 public:

@@ -44,6 +44,9 @@ public:
 
     virtual string getExportLine() override;
 
+protected:
+    glm::mat4 getModelMatrix() const override;
+
 private:
     //Config:
     float planet_size;

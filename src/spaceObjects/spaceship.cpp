@@ -619,7 +619,8 @@ void SpaceShip::drawOnRadar(sf::RenderTarget& window, sf::Vector2f position, flo
 
             // Set the beam's origin on radar to its relative position on the
             // mesh.
-            sf::Vector2f beam_offset = sf::rotateVector(ship_template->model_data->getBeamPosition2D(n) * scale, getRotation()-rotation);
+            auto beam_offset_vec2 = rotateVec2(ship_template->model_data->getBeamPosition2D(n) * scale, getRotation()-rotation);
+            sf::Vector2f beam_offset(beam_offset_vec2.x, beam_offset_vec2.y);
 
             // Configure an array to hold each point of the arc. Each point in
             // the array draws a line to the next point. If the color between
@@ -787,8 +788,8 @@ void SpaceShip::update(float delta)
             if (!docking_target)
                 docking_state = DS_NotDocking;
             else
-                target_rotation = sf::vector2ToAngle(getPosition() - docking_target->getPosition());
-            if (fabs(sf::angleDifference(target_rotation, getRotation())) < 10.0)
+                target_rotation = vec2ToAngle(getPosition() - docking_target->getPosition());
+            if (fabs(angleDifference(target_rotation, getRotation())) < 10.0)
                 impulse_request = -1.0;
             else
                 impulse_request = 0.0;
@@ -801,8 +802,8 @@ void SpaceShip::update(float delta)
             if (!landing_target)
                 landing_state = LS_NotLanding;
             else
-                target_rotation = sf::vector2ToAngle(getPosition() - landing_target->getPosition());
-            if (fabs(sf::angleDifference(target_rotation, getRotation())) < 10.0)
+                target_rotation = vec2ToAngle(getPosition() - landing_target->getPosition());
+            if (fabs(angleDifference(target_rotation, getRotation())) < 10.0)
                 impulse_request = -1.0;
             else
                 impulse_request = 0.0;
@@ -813,8 +814,8 @@ void SpaceShip::update(float delta)
             {
                 docking_state = DS_NotDocking;
             }else{
-                setPosition(docking_target->getPosition() + sf::rotateVector(docking_offset, docking_target->getRotation()));
-                target_rotation = sf::vector2ToAngle(getPosition() - docking_target->getPosition());
+                setPosition(docking_target->getPosition() + rotateVec2(docking_offset, docking_target->getRotation()));
+                target_rotation = vec2ToAngle(getPosition() - docking_target->getPosition());
 
                 P<ShipTemplateBasedObject> docked_with_template_based = docking_target;
                 if (docked_with_template_based && docked_with_template_based->repair_docked)  //Check if what we are docked to allows hull repairs, and if so, do it.
@@ -837,7 +838,7 @@ void SpaceShip::update(float delta)
 
     float rotationDiff;
     if (fabs(turnSpeed) < 0.0005f) {
-        rotationDiff = sf::angleDifference(getRotation(), target_rotation);
+        rotationDiff = angleDifference(getRotation(), target_rotation);
     } else {
         rotationDiff = turnSpeed;
     }
@@ -970,7 +971,7 @@ void SpaceShip::update(float delta)
     addHeat(SYS_Warp, current_warp * delta * heat_per_warp);
 
     // Determine forward direction and velocity.
-    sf::Vector2f forward = sf::vector2FromAngle(getRotation());
+    auto forward = vec2FromAngle(getRotation());
     setVelocity(forward * (current_impulse * cap_speed * getSystemEffectiveness(SYS_Impulse) + current_warp * warp_speed_per_warp_level * getSystemEffectiveness(SYS_Warp)));
 
     if (combat_maneuver_boost_active > combat_maneuver_boost_request)
@@ -1014,7 +1015,7 @@ void SpaceShip::update(float delta)
         }else
         {
             setVelocity(getVelocity() + forward * combat_maneuver_boost_speed * combat_maneuver_boost_active);
-            setVelocity(getVelocity() + sf::vector2FromAngle(getRotation() + 90) * combat_maneuver_strafe_speed * combat_maneuver_strafe_active);
+            setVelocity(getVelocity() + vec2FromAngle(getRotation() + 90) * combat_maneuver_strafe_speed * combat_maneuver_strafe_active);
         }
     // If the ship isn't making a combat maneuver, recharge its boost.
     }else if (combat_maneuver_charge < 1.0)
@@ -1145,7 +1146,7 @@ void SpaceShip::executeJump(float distance)
         return;
 
     distance = (distance * f) + (distance * (1.0 - f) * random(0.5, 1.5));
-    sf::Vector2f target_position = getPosition() + sf::vector2FromAngle(getRotation()) * distance;
+    auto target_position = getPosition() + vec2FromAngle(getRotation()) * distance;
     if (WarpJammer::isWarpJammed(target_position))
         target_position = WarpJammer::getFirstNoneJammedPosition(getPosition(), target_position);
 
@@ -1177,19 +1178,19 @@ bool SpaceShip::canBeDockedBy(P<SpaceObject> obj)
 
 void SpaceShip::collide(Collisionable* other, float force)
 {
-    if (docking_state == DS_Docking && fabs(sf::angleDifference(target_rotation, getRotation())) < 10.0)
+    if (docking_state == DS_Docking && fabs(angleDifference(target_rotation, getRotation())) < 10.0)
     {
         P<SpaceObject> dock_object = P<Collisionable>(other);
         if (dock_object == docking_target)
         {
             docking_state = DS_Docked;
-            docking_offset = sf::rotateVector(getPosition() - other->getPosition(), -other->getRotation());
-            float length = sf::length(docking_offset);
+            docking_offset = rotateVec2(getPosition() - other->getPosition(), -other->getRotation());
+            float length = glm::length(docking_offset);
             docking_offset = docking_offset / length * (length + 2.0f);
         }
     }
 
-    if (landing_state == LS_Landing && fabs(sf::angleDifference(target_rotation, getRotation())) < 10.0)
+    if (landing_state == LS_Landing && fabs(angleDifference(target_rotation, getRotation())) < 10.0)
     {
         P<SpaceShip> land_object = P<Collisionable>(other);
         if (land_object && (land_object == landing_target))
@@ -1236,7 +1237,7 @@ void SpaceShip::requestDock(P<SpaceObject> target)
 {
     if (!target || docking_state != DS_NotDocking || !target->canBeDockedBy(this))
         return;
-    if (sf::length(getPosition() - target->getPosition()) > 1000 + target->getRadius())
+    if (glm::length(getPosition() - target->getPosition()) > 1000 + target->getRadius())
         return;
     if (!canStartDocking())
         return;
@@ -1251,7 +1252,7 @@ void SpaceShip::requestLanding(P<SpaceObject> target)
 {
     if (!target || landing_state != LS_NotLanding || !target->canBeLandedOn(this))
         return;
-    if (sf::length(getPosition() - target->getPosition()) > 1000 + target->getRadius())
+    if (glm::length(getPosition() - target->getPosition()) > 1000 + target->getRadius())
         return;
     if (!canStartLanding())
         return;
