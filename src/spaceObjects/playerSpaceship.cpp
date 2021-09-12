@@ -73,12 +73,16 @@ REGISTER_SCRIPT_SUBCLASS(PlayerSpaceship, SpaceShip)
     REGISTER_SCRIPT_CLASS_FUNCTION(PlayerSpaceship, setMaxScanProbeCount);
     REGISTER_SCRIPT_CLASS_FUNCTION(PlayerSpaceship, getMaxScanProbeCount);
 
+    REGISTER_SCRIPT_CLASS_FUNCTION(PlayerSpaceship, hasGravitySensor);
     REGISTER_SCRIPT_CLASS_FUNCTION(PlayerSpaceship, setGravitySensor);
     REGISTER_SCRIPT_CLASS_FUNCTION(PlayerSpaceship, hasElectricalSensor);
     REGISTER_SCRIPT_CLASS_FUNCTION(PlayerSpaceship, setElectricalSensor);
 	REGISTER_SCRIPT_CLASS_FUNCTION(PlayerSpaceship, hasBiologicalSensor);
     REGISTER_SCRIPT_CLASS_FUNCTION(PlayerSpaceship, setBiologicalSensor);
 
+
+    REGISTER_SCRIPT_CLASS_FUNCTION(PlayerSpaceship, addCustomButton);
+    REGISTER_SCRIPT_CLASS_FUNCTION(PlayerSpaceship, addCustomInfo);
     /// add a custom Button to the according station. Use order to sort (shared with custom info).
     /// add a custom Info Label to the according station. Use order to sort (shared with custom button).
     REGISTER_SCRIPT_CLASS_FUNCTION(PlayerSpaceship, addCustomMessage);
