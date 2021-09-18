@@ -36,16 +36,16 @@ Toutefois, les premiers engagements de ce type de vaisseaux lors de la Guerre Go
 template:setHull(1600)
 template:setEnergyStorage(1500)
 template:setShields(750, 750)
-template:setSpeed(85, 6, 8, 40, 10)
+template:setSpeed(85, 6, 8, 45, 8)
 template:setCombatManeuver(300, 250)
 template:setShortRangeRadarRange(7500)
 template:setEnergyConsumptionRatio(0.8)
 --                  Arc, Dir, Range, CycleTime, Dmg
 template:setBeam(0, 45, 0, 100.0, 30.0, 10)
-template:setBeam(1, 90, 90, 3000.0, 7.0, 25)
-template:setBeam(2, 90, -90, 3000.0, 7.0, 25)
-template:setBeam(3, 90, 90, 3000, 7, 25)
-template:setBeam(4, 90,-90, 3000, 7, 25)
+template:setBeam(1, 90, 90, 3000.0, 14.0, 35)
+template:setBeam(2, 90, -90, 3000.0, 14.0, 35)
+template:setBeam(3, 90, 90, 3000, 14, 35)
+template:setBeam(4, 90,-90, 3000, 14, 35)
 template:setBeam(5, 90, 90, 2000, 3, 12)
 template:setBeam(6, 90,-90, 2000, 3, 12)
 --                              Arc, Dir, Rotate speed
@@ -90,14 +90,13 @@ template:setDefaultAI('default')
 --[[Croiseur Gothic]]
 variation = template:copy("Croiseur Gothic"):setType("playership")
 variation:setLocaleName("Croiseur Gothic")
-variation:setSpeed(85, 10, 12, 40, 10)
-
+variation:setSpeed(85, 10, 12, 45, 10)
 variation:setSystemDamageRatio(0.9)
 variation:setSystemDamageHullThreshold(0.85)
 -- PJ
 variation:setCombatManeuver(300, 250)
 variation:setJumpDrive(true)
-variation:setRepairCrewCount(2)
+--variation:setRepairCrewCount(2)
 variation:addRoomSystem(0, 0, 1, 4, "RearShield")
 variation:addRoom(1, 0, 1, 1)
 variation:addRoomSystem(1, 1, 3, 2, "MissileSystem")
@@ -156,6 +155,77 @@ variation:setCustomWeaponStorage("TABORD", 30)
 variation:setCustomWeaponMultiple("TABORD",1,2)
 
 
+
+
+
+--[[Croiseur Impérial Lunar IA  ]]
+template = ShipTemplate():setName("Croiseur Lunar"):setClass("Croiseur", "Artillerie"):setModel("Navy_Cruiser")
+template:setRadarTrace("radar_battleship.png")
+template:setDescription([[ Concu pour remplacer l'ancien Croiseur Murder, le croiseur de classe Lunar est un vaisseau de conception simple et robuste pouvant etre produit par pratiquement tous les mondes imperiaux, y compris ceux incapables de produire des cuirasses ou des croiseurs.
+Cette facilite de production a fait du croiseur Lunar l'epine dorsale de l'ensemble de la Flotte Imperiale. La Flotte Obscuras comprend, par exemple, près de 600 vaisseaux de cette classe repartis dans les secteurs du Segmentum Obscurus, dont une vingtaine rien que dans le Secteur Gothique. 1
+De même, près d'un tiers des vaisseaux ayant participe à la Troisième Guerre d'Armageddon sous les ordres de l'Amiral Parol furent des croiseurs Lunar. 3
+
+Alliant la portee de ses Lance-Torpilles avec la puissance de ses Batteries d'armes et Pièces d'artillerie navale, le croiseur Lunar est arme pour remplir aussi bien des rôles d'escorte, de patrouille ou d'assaut. 
+La variante MK2 remplace son lance torpille par un canon nova ]])
+
+template:setHull(1600)
+template:setShields(700, 700)
+template:setSpeed(85, 6, 8)
+
+----template:setReverseSpeed(40,10)
+template:setSystemDamageRatio(0.9)
+template:setSystemDamageHullThreshold(0.85)
+template:setCombatManeuver(300, 250)
+--                  Arc, Dir, Range, CycleTime, Dmg
+template:setBeam(0, 45, 0, 100.0, 30.0, 10)
+template:setBeam(1, 90, 90, 3000.0, 14.0, 35)
+template:setBeam(2, 90, -90, 3000.0, 14.0, 35)
+template:setBeam(3, 90, 90, 2000, 3, 12)
+template:setBeam(4, 90,-90, 2000, 3, 12)
+template:setBeam(5, 90, 90, 2000, 3, 12)
+template:setBeam(6, 90,-90, 2000, 3, 12)
+
+template:setSystemDamageRatio(0.9)
+template:setSystemDamageHullThreshold(0.85)
+template:setCanHack(false)
+template:setJumpDrive(false)
+template:setShortRangeRadarRange(7500)
+
+
+--MCAN et Torpille
+template:setCustomWeapon("HVLI", "MCANMK3", 4, 1500.0, "Kinetic", 25)
+template:setCustomWeaponMultiple("MCANMK3",1,4)
+template:setCustomWeaponColor("MCANMK3", 255, 150, 103)
+template:setCustomWeaponStorage("MCANMK3", 120)
+
+template:setCustomWeapon("Nuke", "SEEKMK2", 2, 400.0, "Kinetic", 60)
+template:setCustomWeaponColor("SEEKMK2", 255, 204, 0)
+template:setCustomWeaponStorage("SEEKMK2", 12)
+template:setCustomWeaponMultiple("SEEKMK2",1,2)
+
+
+template:setTubes(7, 12.0)
+
+template:setTubeDirection(0, 1)
+template:setTubeSize(0, "small"):weaponTubeDisallowCustomMissile(0,"MCANMK3"):weaponTubeDisallowCustomMissile(0,"MAGMCAN")
+template:setTubeDirection(1, -1)
+template:setTubeSize(1, "small"):weaponTubeDisallowCustomMissile(1,"MCANMK3"):weaponTubeDisallowCustomMissile(1,"MAGMCAN")
+template:setTubeDirection(2, 0)
+template:setTubeSize(2, "small")
+
+
+
+
+template:setTubeDirection(3, 90):weaponTubeDisallowCustomMissile(1,'SEEKMK2')
+template:setTubeDirection(4, -90):weaponTubeDisallowCustomMissile(2,'SEEKMK2')
+template:setTubeDirection(5, 90):weaponTubeDisallowCustomMissile(3,'SEEKMK2')
+template:setTubeDirection(6, -90):weaponTubeDisallowCustomMissile(4,'SEEKMK2')
+
+
+
+
+
+
 --[[Croiseur Impérial Lunar + nova / jouable  ]]
 template = ShipTemplate():setName("Croiseur Lunar MK2"):setClass("Croiseur", "Artillerie"):setModel("Navy_Cruiser"):setType("playership")
 template:setRadarTrace("radar_battleship.png")
@@ -168,7 +238,8 @@ La variante MK2 remplace son lance torpille par un canon nova ]])
 
 template:setHull(1600)
 template:setShields(700, 700)
-template:setSpeed(85, 6, 8, 40, 10)
+template:setSpeed(85, 6, 8, 40, 8)
+----template:setReverseSpeed(40,10)
 template:setSystemDamageRatio(0.9)
 template:setSystemDamageHullThreshold(0.85)
 template:setCombatManeuver(300, 250)
@@ -185,7 +256,7 @@ template:setSystemDamageRatio(0.9)
 template:setSystemDamageHullThreshold(0.85)
 template:setCanHack(false)
 template:setJumpDrive(true)
-template:setRepairCrewCount(2)
+--template:setRepairCrewCount(2)
 template:addRoomSystem(0, 0, 1, 4, "RearShield")
 template:addRoom(1, 0, 1, 1)
 template:addRoomSystem(1, 1, 3, 2, "MissileSystem")
@@ -240,7 +311,7 @@ template:setCustomWeaponStorage("MAGMCAN", 20)
 
 
 -- macro canon EMP 
-template:setCustomWeapon("HVLI", "MCANMK3", 6, 1500.0, "Kinetic", 25)
+template:setCustomWeapon("HVLI", "MCANMK3", 4, 1500.0, "Kinetic", 25)
 template:setCustomWeaponMultiple("MCANMK3",1,4)
 template:setCustomWeaponColor("MCANMK3", 255, 150, 103)
 template:setCustomWeaponStorage("MCANMK3", 120)
@@ -261,9 +332,9 @@ De même, près d'un tiers des vaisseaux ayant participe à la Troisième Guerre
 Alliant la portee de ses Lance-Torpilles avec la puissance de ses Batteries d'armes et Pièces d'artillerie navale, le croiseur Lunar est arme pour remplir aussi bien des rôles d'escorte, de patrouille ou d'assaut. 
 La variante MK3 utilise par l'adeptus mechanicus remplace son lance torpille par un canon nova a graviton ]])
 
-template:setHull(1600)
-template:setShields(700, 700)
-template:setSpeed(95, 6, 8, 40, 10)
+template:setHull(1500)
+template:setShields(800, 800)
+template:setSpeed(95, 6, 8, 45, 10)
 template:setCombatManeuver(350, 200)
 --                  Arc, Dir, Range, CycleTime, Dmg
 template:setBeam(0, 30, 0, 4000.0, 30.0, 150)
@@ -274,11 +345,12 @@ template:setBeam(4, 90,-90, 3000, 14, 25)
 template:setBeam(5, 90, 90, 2000, 3, 12)
 template:setBeam(6, 90,-90, 2000, 3, 12)
 template:setEnergyConsumptionRatio(0.92)
-
+template:setSystemDamageRatio(0.95)
+template:setSystemDamageHullThreshold(0.9)
 
 template:setCanHack(true)
 template:setJumpDrive(true)
-template:setRepairCrewCount(2)
+--template:setRepairCrewCount(2)
 template:addRoomSystem(0, 0, 1, 4, "RearShield")
 template:addRoom(1, 0, 1, 1)
 template:addRoomSystem(1, 1, 3, 2, "MissileSystem")
@@ -308,7 +380,7 @@ template:addDoor(4, 3, false)
 template:addDoor(6, 3, false)
 template:addDoor(7, 3, false)
 template:setShortRangeRadarRange(7500)
-
+template:setLongRangeRadarRange(45000)
 template:setTubes(5, 12.0)
 template:setTubeDirection(0, 0)
 template:setTubeSize(0, "large")
@@ -347,7 +419,7 @@ template:setCustomWeaponStorage("MAGMCAN", 20)
 
 
 -- macro canon EMP 
-template:setCustomWeapon("HVLI", "MCANMK3", 6, 1500.0, "Kinetic", 25)
+template:setCustomWeapon("HVLI", "MCANMK3", 4, 1500.0, "Kinetic", 25)
 template:setCustomWeaponMultiple("MCANMK3",1,4)
 template:setCustomWeaponColor("MCANMK3", 255, 150, 103)
 template:setCustomWeaponStorage("MCANMK3", 120)
@@ -364,7 +436,7 @@ En consequence, ils sont plus rapides, mieux armes et mieux proteges que les nav
 Ces navires sont generalement utilises par les inquisiteurs en mission avant d'etre transferes, bien qu'il ne soit pas rare que des inquisiteurs aient des croiseurs permanents attaches a leurs noms. ]])
 template:setHull(1600)
 template:setShields(750, 750)
-template:setSpeed(95, 6, 8, 40, 10)
+template:setSpeed(95, 6, 8, 45, 10)
 --                  Arc, Dir, Range, CycleTime, Dmg
 template:setBeam(0, 45, 0, 100.0, 30.0, 100)
 template:setBeam(1, 90, 90, 3000.0, 14.0, 35)
@@ -406,7 +478,7 @@ template:setCustomWeaponColor("MAGSEEK", 0, 204, 255)
 template:setCustomWeaponStorage("MAGSEEK", 4)
 template:setCustomWeaponMultiple("MAGSEEK",1,2)
 -- macro canon 4 
-template:setCustomWeapon("HVLI", "MCANMK3", 6, 1500.0, "Kinetic", 25)
+template:setCustomWeapon("HVLI", "MCANMK3", 4, 1500.0, "Kinetic", 25)
 template:setCustomWeaponMultiple("MCANMK3",1,4)
 template:setCustomWeaponColor("MCANMK3", 255, 150, 103)
 template:setCustomWeaponStorage("MCANMK3", 120)
@@ -423,14 +495,102 @@ template:setDockClasses("Drone","Vaisseau leger","Fregate","destroyer")
 template:setCanHack(false)
 
 
+--[[Croiseur Inquisitoriale PJ ]]
+template = ShipTemplate():setName("Croiseur Inquisitorial MK2"):setClass("Croiseur", "Furtif"):setModel("Inquisitorial_Cruiser"):setType("playership")
+template:setRadarTrace("radar_battleship.png")
+template:setDescription([[Les croiseurs inquisitoires sont des navires de classe Croiseur utilises par l'Inquisition. Ces navires sont specialement construits pour l'Inquisition et utilisent une technologie et des armes disponibles uniquement pour les flottes de Mars elles-memes.
+En consequence, ils sont plus rapides, mieux armes et mieux proteges que les navires de meme classe chez l'Imperium. Bien que quelques modeles standard soient utilises par l'Inquisition, ils sont tout aussi souvent concus a cet effet et optimises pour des roles specifiques.
+Ces navires sont generalement utilises par les inquisiteurs en mission avant d'etre transferes, bien qu'il ne soit pas rare que des inquisiteurs aient des croiseurs permanents attaches a leurs noms. ]])
+
+
+
+template:setHull(1600)
+template:setEnergyStorage(1500)
+template:setShields(750, 750)
+template:setSpeed(100, 6, 8, 45, 10)
+--template:setReverseSpeed(45,10)
+template:setCombatManeuver(300, 250)
+template:setShortRangeRadarRange(7500)
+template:setEnergyConsumptionRatio(1)
+--                  Arc, Dir, Range, CycleTime, Dmg
+template:setBeam(0, 20, 0, 5000.0, 30.0, 300)
+template:setBeam(1, 90, 90, 3000.0, 7.0, 25)
+template:setBeam(2, 90, -90, 3000.0, 7.0, 25)
+template:setBeam(3, 90, 90, 2000, 3, 12)
+template:setBeam(4, 90,-90, 2000, 3, 12)
+--                              Arc, Dir, Rotate speed
+--template:setBeamWeaponTurret(1, 100,  90, 5)
+--template:setBeamWeaponTurret(2, 100, -90, 5)
+--template:setBeamWeaponTurret(3, 150,  90, 5)
+--template:setBeamWeaponTurret(4, 150, -90, 5)
+--template:setBeamWeaponTurret(5, 150,  90, 5)
+--template:setBeamWeaponTurret(6, 150, -90, 5)
+--       Tubes
+template:setTubes(6, 12.0)
+--template:setTubeDirection(0, 1)template:setTubeSize(0, "small"):weaponTubeDisallowCustomMissile(0,"MCANMK3"):weaponTubeDisallowCustomMissile(0,"MAGMCAN")
+--template:setTubeDirection(1, -1)template:setTubeSize(1, "small"):weaponTubeDisallowCustomMissile(1,"MCANMK3"):weaponTubeDisallowCustomMissile(1,"MAGMCAN")
+--template:setTubeLoadTime(0, 45)
+--template:setTubeLoadTime(1, 45)
+template:setTubeDirection(0, 90):weaponTubeDisallowCustomMissile(2,"SEEKMK2"):weaponTubeDisallowCustomMissile(2,"MAGSEEK")
+template:setTubeDirection(1, -90):weaponTubeDisallowCustomMissile(3,"SEEKMK2"):weaponTubeDisallowCustomMissile(3,"MAGSEEK")
+template:setTubeDirection(2, 90):weaponTubeDisallowCustomMissile(4,"SEEKMK2"):weaponTubeDisallowCustomMissile(4,"MAGSEEK")
+template:setTubeDirection(3, -90):weaponTubeDisallowCustomMissile(5,"SEEKMK2"):weaponTubeDisallowCustomMissile(5,"MAGSEEK")
+template:setTubeDirection(4, 90):weaponTubeDisallowCustomMissile(6,"SEEKMK2"):weaponTubeDisallowCustomMissile(6,"MAGSEEK")
+template:setTubeDirection(5, -90):weaponTubeDisallowCustomMissile(7,"SEEKMK2"):weaponTubeDisallowCustomMissile(7,"MAGSEEK")
+
+
+--Torpille
+--template:setCustomWeapon("Nuke", "SEEKMK2", 2, 400.0, "Kinetic", 60)
+--template:setCustomWeaponColor("SEEKMK2", 255, 204, 0)
+--template:setCustomWeaponStorage("SEEKMK2", 12)
+--template:setCustomWeaponMultiple("SEEKMK2",1,2)
+-- Torpille EMP 
+--template:setCustomWeapon("EMP", "MAGSEEK", 0.5, 400.0, "EMP", 30)
+--template:setCustomWeaponColor("MAGSEEK", 0, 204, 255)
+--template:setCustomWeaponStorage("MAGSEEK", 6)
+--template:setCustomWeaponMultiple("MAGSEEK",1,2)
+
+
+template:setCustomWeapon("HVLI", "MAGMCAN", 1, 1000.0, "EMP", 25)
+template:setCustomWeaponMultiple("MAGMCAN",1,4)
+template:setCustomWeaponColor("MAGMCAN", 51, 51, 255)
+template:setCustomWeaponStorage("MAGMCAN", 20)
+
+
+
+-- macro canon EMP 
+template:setCustomWeapon("HVLI", "MCANMK3", 4, 1500.0, "Kinetic", 25)
+template:setCustomWeaponMultiple("MCANMK3",1,4)
+template:setCustomWeaponColor("MCANMK3", 255, 150, 103)
+template:setCustomWeaponStorage("MCANMK3", 120)
+
+
+template:setDefaultAI('default')
+template:setDockClasses("Drone","Vaisseau leger","Fregate","destroyer")
+template:setCanHack(false)
+
+template:addDrones("Chasseur Lourd Mk2",2)
+template:addDrones("Vaisseau d'abordage Shark Mk2",2)
+template:addDrones("Intercepteur Fury",4)
+template:addDrones("Bombardier Starhawk",4)
+template:setDocks(3, 0, 0, 0, 4, 6)
+
+
+--DockClasses
+template:setDockClasses("Drone","Vaisseau leger","Fregate","destroyer")
+template:setDefaultAI('default')
+
+
+
 --[[Croiseur Corsair Shadow]]
 template = ShipTemplate():setName("Croiseur Corsaire Shadow"):setClass("Croiseur", "Combat"):setModel("Eldar_Corsair_Cruiser")
 template:setRadarTrace("radar_battleship.png")
 template:setDescription([[Le Croiseur Shadow est un vaisseau de ligne des Flottes Eldars.
 Le modele Shadow est le plus grand des vaisseaux qui composent generalement les flottes des Eldars. Comme beaucoup de vaisseaux Xenos, le Croiseur Shadow est souvent confondu avec d'autres classes de croiseur et de nombreuses attaques sont ainsi attribuees faussement a leurs cousins Eldars. ]])
-template:setHull(1300)
+template:setHull(1400)
 template:setShields(500, 500)
-template:setSpeed(105, 18, 18, 40, 10)
+template:setSpeed(150, 18, 18)
+--template:setReverseSpeed(40,10)
 --                  Arc, Dir, Range, CycleTime, Dmg
 template:setBeam(0, 20, 0, 4500.0, 30.0, 300)
 template:setBeam(1, 45, 0, 4000.0, 14.0, 35)
@@ -457,7 +617,7 @@ template:setTubeDirection(7, -90):weaponTubeDisallowCustomMissile(7,"SEEKMK2"):w
 template:setWeaponStorage("EMP", 5) -- degats bouclier 150
 
 --TG Seeker (homing) 
-template:setCustomWeapon("HVLI", "MCANMK3", 6, 1500.0, "Kinetic", 25)
+template:setCustomWeapon("HVLI", "MCANMK3", 4, 1500.0, "Kinetic", 25)
 template:setCustomWeaponMultiple("MCANMK3",1,4)
 template:setCustomWeaponColor("MCANMK3", 255, 150, 103)
 template:setCustomWeaponStorage("MCANMK3", 120)
@@ -487,9 +647,10 @@ template = ShipTemplate():setName("Croiseur du Chaos Carnage"):setClass("Croiseu
 template:setRadarTrace("radar_battleship.png")
 template:setDescription([[Le Croiseur Carnage fut developpe par la Flotte Obscura afin d'obtenir un vaisseau pouvant fournir des tirs de soutien a longue portee a d'autres croiseurs tout en restant a l'abris des ripostes.
 Basee sur des nombreux emplacements de Batteries d'armes, la conception du Carnage se retrouva entravee par les difficultes d'approvisionnement en energie pour ces armes. Ces difficultes conduisirent a de profondes dissensions au sein des commandants de la Flotte au sujet de la pertinence de cette classe de navire. ]])
-template:setHull(1600)
+template:setHull(1700)
 template:setShields(650, 650)
-template:setSpeed(85, 6, 8, 40, 10)
+template:setSpeed(85, 9, 8)
+--template:setReverseSpeed(40,10)
 --                  Arc, Dir, Range, CycleTime, Dmg
 template:setBeam(0, 10, 0, 100.0, 30.0, 20)
 template:setBeam(1, 90, 90, 4500.0, 14.0, 35)
@@ -510,7 +671,7 @@ template:setCustomWeaponStorage("chaosM", 36)
 template:setCustomWeaponMultiple("chaosM",2,3)
 
 
-template:setCustomWeapon("HVLI", "MCANMK3", 6, 1500.0, "Kinetic", 25)
+template:setCustomWeapon("HVLI", "MCANMK3", 4, 1500.0, "Kinetic", 25)
 template:setCustomWeaponMultiple("MCANMK3",1,4)
 template:setCustomWeaponColor("MCANMK3", 255, 150, 103)
 template:setCustomWeaponStorage("MCANMK3", 120)
@@ -545,7 +706,8 @@ template:setRadarTrace("radar_transport.png")
 template:setDescription([[Ces transporteurs sont generalement des vaisseaux civils issus de la Flotte Marchande. Malgre leur courage et leur volonte, ces vaisseaux ne sont pas equipes pour lutter contre des vaisseaux de guerre, ne disposant que d'un armement leger contre les attaques de pirates, manquant d'officiers experimentes et n'ayant pas la motorisation permettant de semer leurs adversaires.]])
 template:setHull(1000)
 template:setShields(500, 500)
-template:setSpeed(80, 6, 8, 40, 10)
+template:setSpeed(80, 6, 8)
+--template:setReverseSpeed(40,10)
 --                  Arc, Dir, Range, CycleTime, Dmg
 template:setBeam(0, 10, 0, 100.0, 30.0, 10)
 template:setBeam(1, 90, 90, 3000.0, 14.0, 35)
@@ -566,13 +728,13 @@ template:setTubeDirection(3, -90)
 template:setTubeDirection(4, 90)
 template:setTubeDirection(5, -90)
 --MGAA Skyreaper (homing trés rapide) fregrate et plus
-template:setCustomWeapon("HVLI", "MCANMK2", 5, 1500.0, "Kinetic", 25)
+template:setCustomWeapon("HVLI", "MCANMK2", 3, 1500.0, "Kinetic", 25)
 template:setCustomWeaponMultiple("MCANMK2",1,4)
 template:setCustomWeaponColor("MCANMK2", 255, 150, 103)
 template:setCustomWeaponStorage("MCANMK2", 120)
 --Macro-canon : (rafale, non homing) 
 
-
+template:setDefaultAI('missilevolley')
 
 --DockClasses
 template:setDockClasses("Drone","Vaisseau leger")
@@ -585,13 +747,17 @@ template:setLocaleName("Croiseur Marchand Rogue")
 template:setClass("Croiseur", "Marchand","Rogue")
 template:setModel("Rogue_Trader_Cruiser")
 template:setDescription([[Ce croiseur repulse est construit à Kar Duniash. Rapide mais lourdement armée, Cette version concu pour les libres-marchands offre un bon compromis pour celui qui veux faire du commerce tranquillement]])
-template:setHull(1400)
+template:setHull(1600)
 template:setShields(600, 600)
-template:setSpeed(100, 17, 10, 40, 10)
+template:setSpeed(100, 17, 10)
+--template:setReverseSpeed(40,10)
 template:setDefaultAI('default')
 template:setDockClasses("Drone","Vaisseau leger","Fregate","destroyer")
 template:setCanHack(false)
-
+template:setJumpDrive(false)
+template:setJumpDriveRange(5000.0, 1300000.0)
+--template:setJumpDriveEnergy(0.1)
+template:setJumpDriveEnergy(1)
 
 template:setTubes(8, 12.0)
 template:setTubeDirection(0, 1)template:setTubeSize(0, "small"):weaponTubeDisallowCustomMissile(0,"MCANMK3"):weaponTubeDisallowCustomMissile(0,"MAGMCAN")
@@ -606,40 +772,47 @@ template:setTubeDirection(6, 90):weaponTubeDisallowCustomMissile(6,"SEEKMK2"):we
 template:setTubeDirection(7, -90):weaponTubeDisallowCustomMissile(7,"SEEKMK2"):weaponTubeDisallowCustomMissile(7,"MAGSEEK")
 template:setShortRangeRadarRange(7500)
 
+--template:setSystemDamageRatio(1.2)
 
 
 --Macro-canon : (rafale, non homing) 
-template:setCustomWeapon("HVLI", "MCANMK3", 6, 1500.0, "Kinetic", 25)
+template:setCustomWeapon("HVLI", "MCANMK3", 4, 1500.0, "Kinetic", 25)
 template:setCustomWeaponMultiple("MCANMK3",1,4)
 template:setCustomWeaponColor("MCANMK3", 255, 150, 103)
 template:setCustomWeaponStorage("MCANMK3", 120)
  
 -- Torpille EMP 
-template:setCustomWeapon("EMP", "MAGSEEK", 0.5, 400.0, "EMP", 30)
-template:setCustomWeaponColor("MAGSEEK", 0, 204, 255)
-template:setCustomWeaponStorage("MAGSEEK", 8)
-template:setCustomWeaponMultiple("MAGSEEK",1,2)
+--template:setCustomWeapon("EMP", "MAGSEEK", 0.5, 400.0, "EMP", 30)
+--template:setCustomWeaponColor("MAGSEEK", 0, 204, 255)
+--template:setCustomWeaponStorage("MAGSEEK", 8)
+--template:setCustomWeaponMultiple("MAGSEEK",1,2)
 
 -- macro canon EMP
-template:setCustomWeapon("HVLI", "MAGMCAN", 1, 1000.0, "EMP", 25)
-template:setCustomWeaponMultiple("MAGMCAN",1,4)
-template:setCustomWeaponColor("MAGMCAN", 51, 51, 255)
-template:setCustomWeaponStorage("MAGMCAN", 20)
-template:setDefaultAI('default')
+--template:setCustomWeapon("HVLI", "MAGMCAN", 1, 1000.0, "EMP", 25)
+--template:setCustomWeaponMultiple("MAGMCAN",1,4)
+--template:setCustomWeaponColor("MAGMCAN", 51, 51, 255)
+--template:setCustomWeaponStorage("MAGMCAN", 20)
+template:setDefaultAI('missilevolley')
 
 --[[Croiseur Rogue Repulse]]
-template = ShipTemplate():setName("Croiseur Rogue Repulse MK2"):setClass("Croiseur", "Transport Lourd"):setModel("Rogue_Trader_Cruiser"):setType("playership")
+template = ShipTemplate():setName("Croiseur Rogue Repulse MK2"):setClass("Croiseur Marchand", "Experimental"):setModel("Rogue_Trader_Cruiser"):setType("playership")
 template:setRadarTrace("radar_tug.png")
 template:setDescription([[Ce croiseur repulse est construit à Kar Duniash. Rapide mais lourdement armée, Cette version concu pour les libres-marchands offre un bon compromis pour celui qui veux faire du commerce tranquillement]])
-template:setHull(1250)
+template:setHull(1300)
 template:setShields(800, 800)
-template:setSpeed(100, 17, 10, 40, 10)
+template:setSpeed(100, 15, 10, 50, 10)
 template:addDrones("Chasseur Lourd Mk2",2)
+template:addDrones("Chasseur Lourd MKX2",1)
 template:addDrones("Vaisseau d'abordage Shark Mk2",2)
-template:addDrones("Intercepteur Fury",2)
-template:addDrones("Bombardier Starhawk",2)
-template:setDocks(3, 0, 0, 0, 4, 4)
+template:addDrones("Intercepteur Fury",4)
+template:addDrones("Bombardier Starhawk",4)
+template:setDocks(3, 0, 0, 0, 6, 7)
 template:setEnergyConsumptionRatio(0.9)
+
+template:setJumpDrive(true)
+template:setJumpDriveRange(5000.0, 1300000.0)
+--template:setJumpDriveEnergy(0.1)
+template:setJumpDriveEnergy(1)
 --                  Arc, Dir, Range, CycleTime, Dmg
 template:setBeam(0, 90, 0, 100.0, 30.0, 10)
 template:setBeam(1, 90, 90, 3000.0, 14.0, 35)
@@ -653,6 +826,9 @@ template:setCustomWeapon("EMP", "XSEEK", 1.5, 600.0, "EMP", 30)
 template:setCustomWeaponColor("XSEEK", 0, 204, 255)
 template:setCustomWeaponStorage("XSEEK", 10)
 template:setCustomWeaponMultiple("XSEEK",1,2)
+
+
+
 --       Tubes
 template:setTubes(8, 12.0)
 template:setTubeDirection(0, 1)template:setTubeSize(0, "small"):weaponTubeDisallowCustomMissile(0,"MCANMK3"):weaponTubeDisallowCustomMissile(0,"MAGMCAN")
@@ -689,7 +865,7 @@ template:setCustomWeaponStorage("TABORD", 30)
 template:setCustomWeaponMultiple("TABORD",1,2)
 
 --Macro-canon : (rafale, non homing) 
-template:setCustomWeapon("HVLI", "MCANMK3", 6, 1500.0, "Kinetic", 25)
+template:setCustomWeapon("HVLI", "MCANMK3", 4, 1500.0, "Kinetic", 25)
 template:setCustomWeaponMultiple("MCANMK3",1,4)
 template:setCustomWeaponColor("MCANMK3", 255, 150, 103)
 template:setCustomWeaponStorage("MCANMK3", 120)
@@ -741,8 +917,9 @@ template:setRadarTrace("radar_transport.png")
 template:setDescription([[Les Il'porruis servent souvent de transport pour des dignitaire de la Caste de l'Eau, desCommandeurs ou des Etheres. Malgre sa fonction, il est suffisamment bien arme pour se defendre contre des ennemis du meme gabarit que lui.
 Les Il'porrui sont devenus communs dans l'Empire Tau et sont meme souvent utilises en dehors lors de missions diplomatiques. Ces navires font egalement d'excellents vaisseaux de commerce et sont de vrai betes de somme au sein de leur jeune empire. ]])
 template:setHull(1200)
-template:setShields(600, 600)
-template:setSpeed(80, 6, 8, 40, 10)
+template:setShields(1000, 1000)
+template:setSpeed(80, 6, 8)
+--template:setReverseSpeed(40,10)
 --                  Arc, Dir, Range, CycleTime, Dmg
 template:setBeam(0, 60, 0, 4500.0, 30.0, 200)
 template:setBeam(1, 120, 90, 4000.0, 14.0, 35)

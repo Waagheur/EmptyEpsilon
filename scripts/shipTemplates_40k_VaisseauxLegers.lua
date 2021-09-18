@@ -58,7 +58,7 @@ variation:setModel("Eldar_Corsair_Fighter")
 variation:setDescription([[Ce chasseur Eldar est rapide tout en possedant une grande puissance de feu, il ne faut surtout pas le sous estimer.]])
 variation:setHull(55)
 variation:setShields(35)
-variation:setSpeed(220, 32, 35)
+variation:setSpeed(240, 32, 35)
 --MGAA Skyreaper ( homing trés rapide ) fregrate et plus
 variation:setCustomWeapon("Homing", "SKYR", 0.5, 500.0, "Kinetic", -1)
 variation:setCustomWeaponMultiple("SKYR",1,3)
@@ -114,7 +114,7 @@ template:setRadarTrace("radar_fighter.png")
 template:setDescription([[On trouve cet Intercepteur dans de nombreux coins de la galaxie. Il est facile de trouver des pieces de rechange, non seulement parce qu'ils sont produites en grand nombre, mais aussi parce qu'ils subissent des pertes elevees au combat.]])
 template:setHull(50)
 template:setShields(20)
-template:setSpeed(190, 22, 25)
+template:setSpeed(190, 22, 25, 100, 22)
 template:setDefaultAI('fighter')
 --                  Arc, Dir, Range, CycleTime, Dmg
 template:setBeam(0, 150, 1, 1500.0, 1.5, 2)
@@ -154,10 +154,10 @@ Malgre cette diversite, les chasseurs Intercepteur Fury partagent les memes cara
 variation:setCustomWeapon("Homing", "SKYR", 0.5, 500.0, "Kinetic", -1)
 variation:setCustomWeaponMultiple("SKYR",1,3)
 variation:setCustomWeaponColor("SKYR", 255, 204, 0)
-variation:setCustomWeaponStorage("SKYR", 1)
+variation:setCustomWeaponStorage("SKYR", 6)
 variation:setCustomWeapon("Homing", "SEEK", 3, 600.0, "Kinetic", -1)
 variation:setCustomWeaponColor("SEEK", 255, 204, 0)
-variation:setCustomWeaponStorage("SEEK", 1)
+variation:setCustomWeaponStorage("SEEK", 3)
 
 variation:setCombatManeuver(600, 300)
 variation:setEnergyStorage(400)
@@ -189,7 +189,7 @@ template:setRadarTrace("radar_cruiser.png")
 template:setDescription([[Plus lourd et moins rapide que le chasseur Swiftdeath, le bombardier Doomfire n'en est pas moins un appareil d'attaque craint par toutes les classes de vaisseaux, depuis le plus petit escorteur jusqu'au massifs vaisseaux de ligne.]])
 template:setHull(80)
 template:setShields(40)
-template:setSpeed(140, 20, 15)
+template:setSpeed(140, 20, 15, 80, 10)
 --                  Arc, Dir, Range, CycleTime, Dmg
 template:setBeam(0, 60, 0, 2000.0, 7.0, 25)
 --                                Arc, Dir, Rotate speed
@@ -227,7 +227,7 @@ variation = template:copy("Bombardier Imperial Starhawk")
 variation:setLocaleName("Bombardier Imperial Starhawk")
 variation:setModel("AdlerLongRangeScoutGreen")
 variation:setDescription([[Comme tous les appareils d'attaque a bord des vaisseaux de la Flotte Imperiale, le Bombardier Starhawk est en fait une appellation regroupant une grande diversite d'engins spatiaux issus d'usines de differents mondes.]])
-variation:setShields(20)
+variation:setShields(40)
 variation:setCanHack(false)
 variation:setCanDock(true)
 variation:setTubeDirection(0, 0)
@@ -282,7 +282,7 @@ template:setRadarTrace("radar_cruiser.png")
 template:setDescription([[Chasseur stellaire de classe bombardier. Construit pour des frappes chirurgicales, son objectif principal est de rejoindre la cible, la detruire et de repartir avant d'etre detruit.]])
 template:setHull(70)
 template:setShields(30)
-template:setSpeed(170, 35, 20)
+template:setSpeed(210, 35, 20)
 --                  Arc, Dir, Range, CycleTime, Dmg
 template:setBeam(0, 60, 0, 2000.0, 7.0, 50)
 --                           
@@ -342,7 +342,7 @@ template:setRadarTrace("radar_fighter.png")
 template:setDescription([[Ce chasseur stellaire est l'un des mieux proteges en service actif, ses deux lanceurs peuvent donner un coup de poing. Son objectif est de voler, detruire sa cible et repartir ou etre detruit.]])
 template:setHull(80)
 template:setShields(60)
-template:setSpeed(140, 20, 25)
+template:setSpeed(140, 20, 25, 80, 15)
 template:setDefaultAI('fighter')
 --Preset retirer preset ? redurie cool, reduire efficacité energetique 
 --                  Arc, Dir, Range, CycleTime, Dmg
@@ -367,10 +367,10 @@ template:setCustomWeaponStorage("AC", 40)
 --[[Chasseur Lourd Mk2]]
 variation = template:copy("Chasseur Lourd Mk2"):setType("playership")
 variation:setLocaleName("Chasseur Lourd Mk2")
---variation:setJumpDrive(true)
+variation:setJumpDrive(true)
 variation:setHull(100)
 variation:setShields(60)
-variation:setSpeed(150, 20, 20)
+variation:setSpeed(150, 20, 25, 80, 15)
 variation:setTubes(2, 12.0)
 --MGAA Flakburst (nuke faible dommage) 
 variation:setShortRangeRadarRange(7500)
@@ -384,9 +384,9 @@ variation:setDockClasses("Drone")
 --variation:setScanProbeCount(6)
 --variation:setMaxScanProbeCount(6)
 
-variation:setCustomWeapon("Nuke", "SEEK XS", 3, 400.0, "Kinetic", 15)
+variation:setCustomWeapon("Nuke", "SEEK XS", 2, 400.0, "Kinetic", 15)
 variation:setCustomWeaponColor("SEEK XS", 255, 204, 0)
-variation:setCustomWeaponStorage("SEEK XS", 4)
+variation:setCustomWeaponStorage("SEEK XS", 2)
 
 
 variation:setCustomWeapon("Homing", "SKYMK2", 4, 600.0, "Kinetic", -1)
@@ -399,6 +399,116 @@ variation:setCustomWeaponStorage("SKYMK2", 8)
 --variation:setCustomWeaponStorage("SKYR", 3)
 --Rajouter missile guidé
 --                  Arc, Dir, Range, CycleTime, Dmg
+
+--								  Arc, Dir, Rotate speed
+-- PJ
+variation:setCombatManeuver(500, 350)
+variation:setEnergyStorage(400)
+variation:setRepairCrewCount(2)
+variation:addRoomSystem(0,0,1,3,"RearShield")
+variation:addRoomSystem(1,1,3,1,"MissileSystem")
+variation:addRoomSystem(4,1,2,1,"Beamweapons")
+variation:addRoomSystem(3,2,2,1,"Reactor")
+variation:addRoomSystem(2,3,2,1,"Warp")
+variation:addRoomSystem(4,3,5,1,"JumpDrive")
+variation:addRoomSystem(0,4,1,3,"Impulse")
+variation:addRoomSystem(3,4,2,1,"Maneuver")
+variation:addRoomSystem(1,5,3,1,"FrontShield")
+variation:addRoom(4,5,2,1)
+variation:addDoor(1,1,false)
+variation:addDoor(1,5,false)
+variation:addDoor(3,2,true)
+variation:addDoor(4,2,true)
+variation:addDoor(3,3,true)
+variation:addDoor(4,3,true)
+variation:addDoor(3,4,true)
+variation:addDoor(4,4,true)
+variation:addDoor(3,5,true)
+variation:addDoor(4,5,true)
+
+
+
+
+--[[Chasseur Lourd Mkx longue portée "inigo federation" ]]
+
+
+
+
+
+--[[Chasseur Lourd Mkx longue portée "inigo federation" ]] 
+template = ShipTemplate():setName("Chasseur Lourd MKX"):setClass("Experimental", "Combat"):setModel("small_frigate_3")
+template:setRadarTrace("radar_fighter.png")
+template:setDescription([[ Chasseur lourd scapula lourdement modifiée par des technologies non impérial ]])
+template:setHull(80)
+template:setShields(200)
+template:setSpeed(160, 20, 25, 80, 15)
+template:setDefaultAI('fighter')
+--Preset retirer preset ? redurie cool, reduire efficacité energetique 
+--                  Arc, Dir, Range, CycleTime, Dmg
+template:setBeam(0, 90, 1, 1500.0, 1.5, 5)
+template:setBeam(1, 90, -1, 1500.0, 1.5, 5)
+template:setCanHack(false)
+--template:setScanProbeCount(1)--template:setMaxScanProbeCount(0)
+
+--       Tubes
+template:setTubes(2, 12.0)
+template:setTubeDirection(0, 1)
+template:setTubeDirection(1, -1)
+template:setTubeSize(0,"Small")
+template:setTubeSize(1,"Small")
+template:setDockClasses("Drone")
+-- Autocanon : (rafale longue , degat faible)
+template:setCustomWeapon("HVLI", "AC", 8, 1200.0, "Kinetic", 25)
+template:setCustomWeaponMultiple("AC",4,1)
+template:setCustomWeaponColor("AC", 255, 51, 0)
+template:setCustomWeaponStorage("AC", 40)
+
+
+template:setCustomWeapon("EMP", "MAGSEEK", 0.5, 400.0, "EMP", 30)
+template:setCustomWeaponColor("MAGSEEK", 0, 204, 255)
+template:setCustomWeaponStorage("MAGSEEK", 4)
+template:setCustomWeaponMultiple("MAGSEEK",1,2)
+
+--[[Chasseur Lourd MkX PJ ( federation) ]]
+
+variation = template:copy("Chasseur Lourd MKX2"):setType("playership")
+variation:setDescription([[Ce chasseur d'origine inconnu est basé sur le chasseur lourd imperial "SCAPULA" puis a été lourdement modifié, les capteurs indiquent des moteurs d'origine non standard ainsi qu'un moteur warp bien plus gourmand qu'un simple moteur de saut ]])
+
+variation:setLocaleName("Chasseur Lourd MkX")
+variation:setJumpDrive(true)
+variation:setJumpDriveRange(5000.0, 1000000.0)
+variation:setJumpDriveEnergy(0.1)
+variation:setHull(100)
+variation:setShields(120)
+variation:setSpeed(150, 25, 25, 80, 15)
+variation:setTubes(2, 12.0)
+--MGAA Flakburst (nuke faible dommage) 
+variation:setShortRangeRadarRange(7500)
+
+--variation:setCustomWeapon("Nuke", "FLAK", 2, 800.0, "Kinetic", -1)
+--variation:setCustomWeaponColor("FLAK", 220, 87, 20)
+--variation:setCustomWeaponStorage("FLAK", 2)
+
+variation:setCanHack(false)
+variation:setDockClasses("Drone")
+--variation:setScanProbeCount(6)
+--variation:setMaxScanProbeCount(6)
+
+variation:setCustomWeapon("Nuke", "SEEK XS", 2, 400.0, "Kinetic", 15)
+variation:setCustomWeaponColor("SEEK XS", 255, 204, 0)
+variation:setCustomWeaponStorage("SEEK XS", 2)
+
+
+variation:setCustomWeapon("Homing", "SKYMK2", 4, 600.0, "Kinetic", -1)
+variation:setCustomWeaponColor("SKYMK2", 255, 204, 0)
+variation:setCustomWeaponStorage("SKYMK2", 4)
+
+
+variation:setCustomWeapon("EMP", "MAGSEEK", 0.5, 400.0, "EMP", 30)
+variation:setCustomWeaponColor("MAGSEEK", 0, 204, 255)
+variation:setCustomWeaponStorage("MAGSEEK", 2)
+
+
 
 --								  Arc, Dir, Rotate speed
 -- PJ

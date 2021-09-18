@@ -16,7 +16,7 @@ freelancers:setGMColor(178, 102, 255)
 freelancers:setDescription([[Mercenaires independants]])
 
 pirates = FactionInfo():setName("Pirates")
-pirates:setGMColor(128, 128, 128)
+pirates:setGMColor(209, 75, 209)
 pirates:setDescription([[Pirates. Reconnu comme pirate par un transpondeur classifie comme tel par l'amiraute ou non reconnu par les cogitators du vaisseau. ]])
 
 ares = FactionInfo():setName("ARES")

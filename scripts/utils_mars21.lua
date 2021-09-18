@@ -130,6 +130,8 @@ end
 -- Functions appelees par les callbacks EE 
 
 function doOnNewShip(ship)
+--recharge X2 sur tout les vaisseaux
+ship:setShieldRechargeRate(0.6)
 	-- ATTENTION MODIFIER ICI SI ON NE VEUT PAS QUE TOUS LES VAISSEAUX SOIENT TRANSFORMABLES EN EPAVE
 		if (ship:getClass() ~= "Chasseur" and ship:getClass() ~= "Destroyer") then ship:addInfos(12,"Peut_Epave", 1) end
 		-- FIN DE MODIFICATION
@@ -199,22 +201,31 @@ function doOnNewPlayerShip(pc)
 	pc.popWarpJammer = function()
 			popWarpJammer(pc)
 	end
+	
 	pc:addInfos(11,"Nb Warpjam", "0")
-		
-	pc:setMaxCoolant(10)
+		pc:setMaxCoolant(10)
 	pc:setCanDock(true)
 	pc:setRepairCrewCount(3)
-	pc:setFaction("Imperium")
-	pc:setJumpDriveEnergy(5)
-	pc:setJumpDriveChargeTime(60)
+--	pc:setFaction("Imperium")
 	
-	pc:setMaxScanProbeCount(16)
-	pc:setScanProbeCount(16)
+	
+	if (pc:getClass() ~= "Chasseur" ) 
+	then
+		pc:setMaxScanProbeCount(16)
+		pc:setScanProbeCount(16)
+	end 
+	
+	if (pc:getClass() ~= "Experimental" and pc:getClass() ~= "Croiseur Marchand") 
+	then
+		pc:setJumpDriveEnergy(5)
+		pc:setJumpDriveChargeTime(60)
+	end 
 --	PC:setJumpDriveCharge(50000)
 	if pc:hasJumpDrive() then
 		pc.emergencyJump = function()
 			print(string.format("%f", pc:getSystemHealth("jumpdrive")))
-			if((pc:getSystemHealth("jumpdrive") > 0.5) and (pc:getMaxRepairPerSystem() > 0.75)) then
+			if((pc:getSystemHealth("jumpdrive") > 0.5) and (pc:getMaxRepairPerSystem() > 0.75)) 
+			then
 				if(pc:getMaxRepair() >= 0.7) then
 					activateEmergencyJump(10, pc, pc.emergencyJump)
 				else

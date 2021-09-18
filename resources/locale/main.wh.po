@@ -697,7 +697,7 @@ msgstr "{energy}/min"
 #: src/screens/crew6/engineeringScreen.cpp:232
 #: src/screens/crew6/engineeringScreen.cpp:259
 msgid "Energy production"
-msgstr "Production d'energie"
+msgstr "Prod. energie"
 
 #: src/screens/crew6/engineeringScreen.cpp:234
 #: src/screens/crew6/engineeringScreen.cpp:235
@@ -1052,7 +1052,7 @@ msgstr "Artefact"
 #: src/screens/gm/objectCreationView.cpp:59
 msgctxt "create"
 msgid "Warp Jammer"
-msgstr "Brouilleur de vitesse lumière"
+msgstr "Brouilleur Warp"
 
 #: src/screens/gm/objectCreationView.cpp:63
 msgctxt "create"
@@ -1656,11 +1656,11 @@ msgstr "Réputation actuelle :"
 
 #: src/screens/gm/tweak.cpp:861
 msgid "Max energy:"
-msgstr "Énergie max :"
+msgstr "Energie max:"
 
 #: src/screens/gm/tweak.cpp:869
 msgid "Current energy:"
-msgstr "Énergie actuelle :"
+msgstr "Energie:"
 
 #: src/screens/gm/tweak.cpp:877
 msgid "Boost Speed:"
@@ -2038,7 +2038,7 @@ msgstr "laser"
 #: src/screens/crew6/relayScreen.cpp:151
 #: src/screens/gm/gameMasterScreen.cpp:132
 msgid "Mission Clock"
-msgstr ""
+msgstr "Horloge de mission"
 
 #: src/spaceObjects/playerSpaceship.cpp:279
 #: src/spaceObjects/playerSpaceship.cpp:280
@@ -2083,7 +2083,7 @@ msgstr ""
 
 #: src/screenComponents/indicatorOverlays.cpp:23
 msgid "Game Paused"
-msgstr "En pause"
+msgstr "Coupure d'energie"
 
 #: scripts/shipTemplates_Stations.lua:12
 msgid ""
@@ -2541,15 +2541,15 @@ msgstr "Code du MJ : "
 
 #: src/screens/gm/tweak.cpp:607
 msgid "Max energy:"
-msgstr ""
+msgstr "Energie Max"
 
 #: src/screens/gm/tweak.cpp:615
 msgid "Current energy:"
-msgstr ""
+msgstr "Energie Actuel"
 
 #: src/screens/gm/tweak.cpp:623
 msgid "Boost Speed:"
-msgstr ""
+msgstr "Augmentation vitesse"
 
 #: src/screens/gm/tweak.cpp:629
 #, fuzzy
@@ -2623,11 +2623,11 @@ msgstr "Liq. de refroid. auto"
 #: src/screens/gm/tweak.cpp:772
 msgctxt "button"
 msgid "Auto repair"
-msgstr ""
+msgstr "Auto reparation"
 
 #: src/screens/gm/tweak.cpp:809
 msgid "Callsign:"
-msgstr ""
+msgstr "Signature"
 
 #: src/screens/gm/tweak.cpp:820
 msgid "Unscanned description:"
