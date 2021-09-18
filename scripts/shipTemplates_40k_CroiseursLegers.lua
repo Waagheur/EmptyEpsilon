@@ -34,8 +34,9 @@ template:setDescription([[Le croiseur leger de classe Dauntless est le vaisseau 
 Le Dauntless est un croiseur alliant la vitesse et la manoeuvrabilite d'une fregate a la puissance de feu superieure d'un croiseur.
 Les vaisseaux de ce type sont reconnus et prises par tous les officiers de la Flotte car ils peuvent aussi bien patrouiller seuls sans soutien logistique pendant une longue duree que proteger les autres vaisseaux de lignes des escorteurs adverses.]])
 template:setHull(1100)
-template:setShields(300, 300)
-template:setSpeed(90, 14, 12, 40, 10)
+template:setShields(400, 400)
+template:setSpeed(90, 14, 12)
+template:setSpeed(90, 14, 12, 45, 10)
 template:setCombatManeuver(350, 250)
 
 template:setLocaleName("Croiseur leger DauntlessMK2")
@@ -50,7 +51,7 @@ template:setBeam(4, 100,-90, 2000.0, 3, 9)
 --                              Arc, Dir, Rotate speed
 
 
-template:setCustomWeapon("HVLI", "MCANMK2", 5, 1500.0, "Kinetic", 25)
+template:setCustomWeapon("HVLI", "MCANMK2", 3, 1500.0, "Kinetic", 25)
 template:setCustomWeaponMultiple("MCANMK2",1,4)
 template:setCustomWeaponColor("MCANMK2", 255, 150, 103)
 template:setCustomWeaponStorage("MCANMK2", 120)
@@ -127,8 +128,9 @@ template:setDescription([[Le croiseur leger de classe Dauntless est le vaisseau 
 Le Dauntless est un croiseur alliant la vitesse et la manoeuvrabilite d'une fregate a la puissance de feu superieure d'un croiseur.
 Les vaisseaux de ce type sont reconnus et prises par tous les officiers de la Flotte car ils peuvent aussi bien patrouiller seuls sans soutien logistique pendant une longue duree que proteger les autres vaisseaux de lignes des escorteurs adverses.]])
 template:setHull(1100)
-template:setShields(300, 300)
-template:setSpeed(90, 10, 12, 40, 10)
+template:setShields(400, 400)
+template:setSpeed(90, 10, 12)
+--template:setReverseSpeed(40,10)
 --                  Arc, Dir, Range, CycleTime, Dmg
 template:setBeam(0, 10, 0, 10.0, 30.0, 150)
 template:setBeam(1, 100, 90, 2000.0, 3, 9)
@@ -137,7 +139,7 @@ template:setBeam(3, 100, 90, 2000.0, 3, 9)
 template:setBeam(4, 100,-90, 2000.0, 3, 9)
 --                              Arc, Dir, Rotate speed
 
-template:setCustomWeapon("HVLI", "MCANMK2", 5, 1500.0, "Kinetic", 25)
+template:setCustomWeapon("HVLI", "MCANMK2", 3, 1500.0, "Kinetic", 25)
 template:setCustomWeaponMultiple("MCANMK2",1,4)
 template:setCustomWeaponColor("MCANMK2", 255, 150, 103)
 template:setCustomWeaponStorage("MCANMK2", 120)
@@ -184,7 +186,8 @@ template:setDescription([[Le Croiseur leger Corsair est le plus grand des vaisse
 Certains enregistrements pretent aux Croiseur leger Corsair des similitudes avec les classes Eclipse et Shadow alors que d'autres experts xenologues les considerent comme des amalgames de diverses classes. Les nombreux rapports contradictoires qui concernent le croiseur en font un appareil difficile a classer pour l'Imperium. Certains recits rapportent meme des combats entre vaisseaux Eldars, ce qui ajoute encore plus de confusion aux effort de categorisation imperiale.]])
 template:setHull(700)
 template:setShields(350, 250)
-template:setSpeed(120, 25, 22, 40, 10)
+template:setSpeed(160, 25, 22)
+--template:setReverseSpeed(40,10)
 --                  Arc, Dir, Range, CycleTime, Dmg
 
 template:setBeam(0, 10, 0, 4500.0, 30.0, 250)
@@ -208,7 +211,7 @@ template:setTubeLoadTime(2, 45)
 template:setTubeDirection(3, 90)
 template:setTubeDirection(4, -90)
 --Macro-canon : (rafale, non homing) 
-template:setCustomWeapon("HVLI", "MCANMK2", 5, 1500.0, "Kinetic", 25)
+template:setCustomWeapon("HVLI", "MCANMK2", 3, 1500.0, "Kinetic", 25)
 template:setCustomWeaponMultiple("MCANMK2",1,4)
 template:setCustomWeaponColor("MCANMK2", 255, 150, 103)
 template:setCustomWeaponStorage("MCANMK2", 120)
@@ -238,8 +241,8 @@ template:setDescription([[Le Croiseur Hellbringer est un vaisseau de ligne lège
 Cette vitesse exceptionnelle pour un vaisseau de ce tonnage est obtenue grace a des moteurs utilisant des Bobines de Scartix, une Archeo-Technologie uniquement connue du Monde Forge de Sethelan.
 Cette specificite se revela etre le point faible de la strategie imperiale de production de croiseur Hellbringer lorsque l'un d'entre eux, le Dutiful se rebella et bombarda les installations de Sethelan, provoquant la perte des plans des Bobines Scartix.]])
 template:setHull(1200)
-template:setShields(300, 300)
-template:setSpeed(100, 12, 20, 40, 10)
+template:setShields(400, 400)
+template:setSpeed(100, 12, 20, 50, 10)
 --                  Arc, Dir, Range, CycleTime, Dmg
 template:setBeam(0, 30, 0, 4500.0, 30.0, 150)
 template:setBeam(1, 100, 90, 4500.0, 14.0, 25)
@@ -255,7 +258,7 @@ template:setTubeDirection(1, -90)
 template:setTubeDirection(2, 90)
 template:setTubeDirection(3, -90)
 --MGAA Skyreaper (homing trés rapide) fregrate et plus
-template:setCustomWeapon("HVLI", "MCANMK2", 5, 1500.0, "Kinetic", 25)
+template:setCustomWeapon("HVLI", "MCANMK2", 3, 1500.0, "Kinetic", 25)
 template:setCustomWeaponMultiple("MCANMK2",1,4)
 template:setCustomWeaponColor("MCANMK2", 255, 150, 103)
 template:setCustomWeaponStorage("MCANMK2", 120)

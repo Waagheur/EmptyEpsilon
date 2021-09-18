@@ -29,8 +29,8 @@ end
 template = ShipTemplate():setName("Drone Mechanicum"):setType("Drone"):setModel("sci_fi_alien_ship_1")
 template:setRadarTrace("radar_ktlitan_fighter.png")
 template:setHull(250)
-template:setSpeed(125,32,25)
-template:setBeam(0, 150, 0, 1500.0, 1.5, 6)
+template:setSpeed(175,32,25)
+template:setBeam(0, 150, 0, 1500.0, 1, 18)
 template:setDefaultAI('fighter')
 
 
@@ -38,8 +38,8 @@ template:setDefaultAI('fighter')
 template = ShipTemplate():setName("Drone Inconnu"):setType("Drone"):setModel("sci_fi_alien_ship_4")
 template:setRadarTrace("radar_ktlitan_drone.png")
 template:setHull(250)
-template:setSpeed(125,32,25)
-template:setBeam(0, 150, 0, 1500.0, 1.5, 6)
+template:setSpeed(195,32,25)
+template:setBeam(0, 150, 0, 1500.0, 1, 18)
 
 
 --[[Signature Inconnue]]
@@ -47,4 +47,4 @@ template = ShipTemplate():setName("Signature Inconnue"):setType("Alien"):setMode
 template:setRadarTrace("radar_ktlitan_scout.png")
 template:setHull(300)
 template:setSpeed(195,32,25)
-template:setBeam(0, 150, 0, 1500.0, 1.5, 6)
+template:setBeam(0, 150, 0, 1500.0, 1, 18)
