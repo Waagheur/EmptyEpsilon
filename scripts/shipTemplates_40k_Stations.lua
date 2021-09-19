@@ -11,8 +11,8 @@ Stations;
 Les Stations apporte un soutien aux vaisseaux de combat et sert d'atelier de reparations.
 ----------------------------------------------------------]]
 
---[[Petite Station]]
-template = ShipTemplate():setName("Petite Station"):setModel("space_station_4"):setType("station"):setClass(_("Installation Fixe"),_("subclass", "Support"))
+	
+template = ShipTemplate():setName("Petite Station"):setModel("space_station_4"):setType("station"):setClass(_("Installation Fixe"), _("subclass", "Support"))
 template:setDescription([[ Petite station spatiale, elle sert pour le ravitaillement en espace profond]])
 template:setHull(150)
 template:setShields(300)
@@ -141,12 +141,12 @@ template:setSpeed(0, 0.5, 0)
 template:setDockClasses("Drone","Vaisseau leger","Fregate","Destroyer","Croiseur leger","Croiseur","Cuirasse","Vaisseau-Mere","Alpha")
 
 --               Arc, Dir, Range, CycleTime, Dmg
-template:setBeam(0, 30,   0, 5000.0, 1.5, 20)
-template:setBeam(1, 30,  60, 5000.0, 1.5, 20)
-template:setBeam(2, 30, 120, 5000.0, 1.5, 20)
-template:setBeam(3, 30, 180, 5000.0, 1.5, 20)
-template:setBeam(4, 30, 240, 5000.0, 1.5, 20)
-template:setBeam(5, 30, 300, 5000.0, 1.5, 20)
+template:setBeam(0, 30,   0, 5000.0, 1.5, 50)
+template:setBeam(1, 30,  60, 5000.0, 1.5, 50)
+template:setBeam(2, 30, 120, 5000.0, 1.5, 50)
+template:setBeam(3, 30, 180, 5000.0, 1.5, 50)
+template:setBeam(4, 30, 240, 5000.0, 1.5, 50)
+template:setBeam(5, 30, 300, 5000.0, 1.5, 50)
 
 
 
@@ -179,21 +179,21 @@ template:setBeam(5, 30, 300, 7000.0, 10, 150)
 
 --[[Réappro imperial ]]
 template = ShipTemplate():setName("Plateforme logistique militaire"):setModel("Navy_Station"):setClass(_("Installation Fixe"), _("subclass", "Support"))
-template:setDescription([[De la taille d'une ville tentaculaire, les stations de cette echelle representent le centre de la puissance spatiale de cette region. Elles remplissent plusieurs fonctions a la fois et representent un investissement considerable en temps, en argent et en main d'oeuvre. Les boucliers et l'epaisse coque d'une enorme station peuvent la maintenir intacte assez longtemps pour que des renforts arrivent, même en cas de siege ou d'assaut massif parfaitement coordonne.]])
+template:setDescription([[De la taille d'une ville tentaculaire, les stations de cette echelle representent le centre de la puissance spatiale de cette region. Elles remplissent plusieurs fonctions a la fois et representent un investissement considerable en temps, en argent et en main d'oeuvre. Les boucliers, les armes et l'epaisse coque d'une enorme station peuvent la maintenir intacte assez longtemps pour que des renforts arrivent, même en cas de siege ou d'assaut massif parfaitement coordonne.]])
 template:setHull(2000)
-template:setShields(500, 500, 500,500)
+template:setShields(700, 700, 700,700)
 template:setSpeed(0, 0.5, 0)
 template:setRadarTrace("radartrace_hugestation.png")
 --                  Arc, Dir, Range, CycleTime, Dmg
 
-template:setCustomWeapon("HVLI", "AC", 8, 1200.0, "Kinetic", -1)
-template:setCustomWeaponMultiple("AC",4,1)
-template:setCustomWeaponColor("AC", 255, 51, 0)
-template:setCustomWeaponStorage("AC", 180)
+template:setCustomWeapon("HVLI", "XLAC", 8, 2200.0, "Kinetic", -1)
+template:setCustomWeaponMultiple("XLAC",4,2)
+template:setCustomWeaponColor("XLAC", 255, 51, 0)
+template:setCustomWeaponStorage("XLAC", 180)
 
-template:setCustomWeapon("Nuke", "FLAK", 0.25, 500.0, "Kinetic", -1)
+template:setCustomWeapon("Nuke", "FLAK", 0.25, 1000.0, "Kinetic", -1)
 template:setCustomWeaponColor("FLAK", 220, 87, 20)
-template:setCustomWeaponStorage("FLAK", 6)	
+template:setCustomWeaponStorage("FLAK", 12)	
 
 template:setTubes(6, 6.0)
 template:setTubeDirection(0, 0)
@@ -202,6 +202,13 @@ template:setTubeDirection(2, 120)
 template:setTubeDirection(3, 180)
 template:setTubeDirection(4, 240)
 template:setTubeDirection(5, 300)
+
+template:setTubeSize(0, "large")
+template:setTubeSize(1, "large")
+template:setTubeSize(2, "large")
+template:setTubeSize(3, "large")
+template:setTubeSize(4, "large")
+template:setTubeSize(5, "large")
 
 
 

@@ -43,13 +43,13 @@ template:setBeam(1, 100,-90, 2000.0, 3, 9)
 --                                Arc, Dir, Rotate speed
 
 --       Tubes
-template:setCustomWeapon("HVLI", "MCANMK2", 5, 1500.0, "Kinetic", 25)
+template:setCustomWeapon("HVLI", "MCANMK2", 3, 1500.0, "Kinetic", 25)
 template:setCustomWeaponMultiple("MCANMK2",1,3)
 template:setCustomWeaponColor("MCANMK2", 255, 150, 103)
 template:setCustomWeaponStorage("MCANMK2", 120)
 
 
-template:setCustomWeapon("HVLI", "MCANMK2", 5, 1500.0, "Kinetic", 25)
+template:setCustomWeapon("HVLI", "MCANMK2", 3, 1500.0, "Kinetic", 25)
 template:setCustomWeaponMultiple("MCANMK2",1,3)
 template:setCustomWeaponColor("MCANMK2", 255, 150, 103)
 template:setCustomWeaponStorage("MCANMK2", 120)
@@ -96,7 +96,7 @@ template:setShields(250, 250)
 template:setSpeed(105, 12, 15)
 
 template:setTubes(4, 12.0)
-template:setCustomWeapon("HVLI", "MCANMK2", 5, 1500.0, "Kinetic", 25)
+template:setCustomWeapon("HVLI", "MCANMK2", 3, 1500.0, "Kinetic", 25)
 template:setCustomWeaponMultiple("MCANMK2",1,3)
 template:setCustomWeaponColor("MCANMK2", 255, 150, 103)
 template:setCustomWeaponStorage("MCANMK2", 120)
@@ -132,7 +132,7 @@ variation:setLocaleName("Destroyer widowmaker MK2")
 variation:setDescription([[Le destroyer de classe Windowmaker est un escorteur léger multirole, poseur de mine et detecteur longue portée. Il est  également capable deminer les mines ennemies. il dispose de torpilles à l'avant sur le modèle du Cobra et de lasers legers de défense]])
 variation:setHull(700)
 variation:setShields(250, 250)
-variation:setSpeed(105, 12, 15)
+variation:setSpeed(105, 14, 12, 55, 10)
 
 variation:setTubeDirection(0, 180):weaponTubeDisallowCustomMissile(0,"MCANMK2"):weaponTubeDisallowCustomMissile(0,"SEEKMK2")
 variation:setTubeDirection(1, 0):weaponTubeDisallowCustomMissile(1,"MCANMK2"):weaponTubeDisallowCustomMissile(1,"Mineswarm")
@@ -179,7 +179,7 @@ variation:setCustomWeaponStorage("Mineswarm", 12)
 variation:setCustomWeaponMultiple("Mineswarm",1,2)
 
 
-variation:setCustomWeapon("HVLI", "MCANMK2", 5, 1500.0, "Kinetic", 25)
+variation:setCustomWeapon("HVLI", "MCANMK2", 3, 1500.0, "Kinetic", 25)
 variation:setCustomWeaponMultiple("MCANMK2",1,3)
 variation:setCustomWeaponColor("MCANMK2", 255, 150, 103)
 variation:setCustomWeaponStorage("MCANMK2", 120)
@@ -204,23 +204,25 @@ template:setRadarTrace("RadarArrow.png")
 template:setDescription([[Le Destroyer Iconoclast est un vaisseau de conception simple reprenant les principales caracteristiques des differents escorteurs utilises par les Libre-Marchands ou la Flotte Marchande, ce qui fait qu'il peut etre produit dans pratiquement n'importe quel Dock Orbital de la Galaxie.
 Le destroyer Iconoclast est redoute pour sa puissance de feu, important pour un vaisseau de cette taille, et constitue une menace permanente pour tous les vaisseaux navigants dans les immensite de l'espace, y compris pour les vaisseaux de ligne pouvant etre mis a mal par un escadron d'Iconoclast.]])
 
-template:setHull(600)
-template:setShields(250, 250)
-template:setSpeed(105, 12, 15)
+template:setHull(700)
+template:setShields(300, 300)
+template:setSpeed(110, 12, 15)
 
 
 template:setBeam(0, 100, 90, 3000.0, 3, 12)
 template:setBeam(1, 100,-90, 3000.0, 3, 12)
 
-template:setCustomWeapon("homing", "chaosM", 1.5, 1000.0, "Kinetic", 60)
+template:setCustomWeapon("homing", "chaosM", 1.5, 800.0, "Kinetic", 60)
 template:setCustomWeaponColor("chaosM", 255, 204, 0)
-template:setCustomWeaponStorage("chaosM", 90)
-template:setCustomWeaponMultiple("chaosM",4,1)
+template:setCustomWeaponStorage("chaosM", 300)
+template:setCustomWeaponMultiple("chaosM",1,2)
 template:setDefaultAI('default')
 
-template:setTubes(4, 12.0)
-template:setTubeDirection(0, 90):setWeaponTubeExclusiveForCustom(0,"chaosM")
-template:setTubeDirection(1, -90):setWeaponTubeExclusiveForCustom(1,"chaosM")
-template:setTubeDirection(2, 90):setWeaponTubeExclusiveForCustom(2,"chaosM")
-template:setTubeDirection(3, -90):setWeaponTubeExclusiveForCustom(3,"chaosM")
+template:setTubes(6, 24.0)
+template:setTubeDirection(0, 1):setWeaponTubeExclusiveForCustom(0,"chaosM")
+template:setTubeDirection(1, 2):setWeaponTubeExclusiveForCustom(1,"chaosM")
+template:setTubeDirection(2, -1):setWeaponTubeExclusiveForCustom(2,"chaosM")
+template:setTubeDirection(3, -2):setWeaponTubeExclusiveForCustom(3,"chaosM")
+template:setTubeDirection(4, -90):setWeaponTubeExclusiveForCustom(2,"chaosM")
+template:setTubeDirection(5, 90):setWeaponTubeExclusiveForCustom(2,"chaosM")
 
