@@ -129,7 +129,7 @@ void GameMasterActions::onReceiveClientCommand(int32_t client_id, sp::io::DataBu
         break;
         case CMD_CALL_GM_SCRIPT:
         {
-            int index;
+            uint32_t index;
             PVector<SpaceObject> selection;
             packet >> index >> selection;
             // set selection for the possible duration of the script
@@ -199,7 +199,7 @@ void GameMasterActions::onReceiveClientCommand(int32_t client_id, sp::io::DataBu
         break;
         case CMD_ORDER_SHIP:
         {
-            int i_order;
+            uint32_t i_order;
             PVector<SpaceObject> selection;
             packet >> i_order >> selection;
             for(P<SpaceObject> obj : selection)
@@ -313,7 +313,7 @@ void GameMasterActions::commandContextualGoTo(glm::vec2 position, bool force, PV
 void GameMasterActions::commandOrderShip(EShipOrder order, PVector<SpaceObject> selection)
 {
     sp::io::DataBuffer packet;
-    packet << CMD_ORDER_SHIP << int(order) << selection;
+    packet << CMD_ORDER_SHIP << uint32_t(order) << selection;
     sendClientCommand(packet);
 }
 void GameMasterActions::commandDestroy(PVector<SpaceObject> selection)

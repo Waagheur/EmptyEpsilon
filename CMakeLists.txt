@@ -330,7 +330,6 @@ set(SOURCES
     src/glObjects.h
     src/GMActions.h
     src/GMMessage.h
-    src/GMScriptCallback.h
     src/gui/colorConfig.h
     src/gui/debugRenderer.h
     src/gui/gui2_advancedscrolltext.h
