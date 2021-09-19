@@ -134,7 +134,7 @@ void GameMasterActions::onReceiveClientCommand(int32_t client_id, sp::io::DataBu
             packet >> index >> selection;
             // set selection for the possible duration of the script
             gmSelectionForRunningScript = &selection;
-            int n = 0;
+            uint32_t n = 0;
             for(ScriptSimpleCallback& callback : gameGlobalInfo->gm_callback_functions)
             {
                 if (n == index)
