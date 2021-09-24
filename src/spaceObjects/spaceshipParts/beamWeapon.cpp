@@ -18,6 +18,9 @@ BeamWeapon::BeamWeapon()
     heat_per_beam_fire = 0.02;
     is_valid = true;
     parent = nullptr;
+    arc_color = {255, 0, 0, 128};
+    arc_color_fire = {255, 255, 0, 128};
+    damage_type = DT_Energy;
 }
 
 void BeamWeapon::setParent(SpaceShip* parent)
@@ -33,6 +36,8 @@ void BeamWeapon::setParent(SpaceShip* parent)
     parent->registerMemberReplication(&turret_rotation_rate);
     parent->registerMemberReplication(&cycle_time);
     parent->registerMemberReplication(&cooldown, 0.5);
+    parent->registerMemberReplication(&arc_color);
+    parent->registerMemberReplication(&arc_color_fire);
 }
 
 void BeamWeapon::setArc(float arc)
@@ -43,6 +48,31 @@ void BeamWeapon::setArc(float arc)
 float BeamWeapon::getArc()
 {
     return arc;
+}
+
+void BeamWeapon::setArcColor(glm::u8vec4 color)
+{
+    arc_color = color;
+}
+
+glm::u8vec4 BeamWeapon::getArcColor()
+{
+    return arc_color;
+}
+
+void BeamWeapon::setArcFireColor(glm::u8vec4 color)
+{
+    arc_color_fire = color;
+}
+
+glm::u8vec4 BeamWeapon::getArcFireColor()
+{
+    return arc_color_fire;
+}
+
+void BeamWeapon::setDamageType(EDamageType type)
+{
+    damage_type = type;
 }
 
 void BeamWeapon::setDirection(float direction)
@@ -263,7 +293,7 @@ void BeamWeapon::fire(P<SpaceObject> target, ESystem system_target)
     effect->beam_fire_sound = "sfx/laser_fire.wav";
     effect->beam_fire_sound_power = damage / 6.0f;
 
-    DamageInfo info(parent, DT_Energy, hit_location);
+    DamageInfo info(parent, damage_type, hit_location);
     info.frequency = parent->beam_frequency; // Beam weapons now always use frequency of the ship.
     info.system_target = system_target;
     target->takeDamage(damage, info);

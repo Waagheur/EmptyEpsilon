@@ -328,6 +328,7 @@ protected:
     bool has_weight = true;
 };
 
+template<> void convert<EDamageType>::param(lua_State* L, int& idx, EDamageType& dt);
 // Define a script conversion function for the DamageInfo structure.
 template<> void convert<DamageInfo>::param(lua_State* L, int& idx, DamageInfo& di);
 // Function to convert a lua parameter to a scan state.
