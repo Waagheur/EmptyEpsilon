@@ -186,8 +186,6 @@ void GameGlobalInfo::reset()
 
     flushDatabaseData();
 
-    foreach(GameEntity, e, entityList)
-        e->destroy();
     foreach(SpaceObject, o, space_object_list)
         o->destroy();
     if (engine->getObject("scenario"))

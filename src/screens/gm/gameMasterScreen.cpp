@@ -503,7 +503,7 @@ void GameMasterScreen::onMouseDown(glm::vec2 position)
 {
     if (click_and_drag_state != CD_None)
         return;
-    if (InputHandler::mouseIsDown(sf::Mouse::Right))
+    if (InputHandler::mouseIsDown(1))
     {
         click_and_drag_state = CD_DragViewOrOrder;
     }
@@ -561,16 +561,15 @@ void GameMasterScreen::onMouseUp(glm::vec2 position)
     case CD_DragViewOrOrder:
         {
             //Right click
-            bool shift_down = InputHandler::keyboardIsDown(sf::Keyboard::LShift) || InputHandler::keyboardIsDown(sf::Keyboard::RShift);
+            bool shift_down = SDL_GetModState() & KMOD_SHIFT;
             gameMasterActions->commandContextualGoTo(position, shift_down, targets.getTargets());
         }
         break;
     case CD_BoxSelect:
         {
-            bool shift_down = InputHandler::keyboardIsDown(sf::Keyboard::LShift) || InputHandler::keyboardIsDown(sf::Keyboard::RShift);
-            //Using sf::Keyboard::isKeyPressed, as CTRL does not seem to generate keydown/key up events in SFML.
-            bool ctrl_down = sf::Keyboard::isKeyPressed(sf::Keyboard::LControl) || sf::Keyboard::isKeyPressed(sf::Keyboard::RControl);
-            bool alt_down = InputHandler::keyboardIsDown(sf::Keyboard::LAlt) || InputHandler::keyboardIsDown(sf::Keyboard::RAlt);
+            bool shift_down = SDL_GetModState() & KMOD_SHIFT;
+            bool ctrl_down = SDL_GetModState() & KMOD_CTRL;
+            bool alt_down = SDL_GetModState() & KMOD_ALT;
             PVector<Collisionable> objects = CollisionManager::queryArea(drag_start_position, position);
             PVector<SpaceObject> space_objects;
             foreach(Collisionable, c, objects)
@@ -608,23 +607,23 @@ void GameMasterScreen::onMouseUp(glm::vec2 position)
     box_selection_overlay->hide();
 }
 
-void GameMasterScreen::onKey(sf::Event::KeyEvent key, int unicode)
+void GameMasterScreen::onKey(const SDL_KeyboardEvent& key, int unicode)
 {
-    switch(key.code)
+    switch(key.keysym.sym)
     {
-    case sf::Keyboard::Delete:
+    case SDLK_DELETE:
         gameMasterActions->commandDestroy(targets.getTargets());
         break;
-    case sf::Keyboard::F5:
+    case SDLK_F5:
         Clipboard::setClipboard(getScriptExport(false));
         break;
 
-    case sf::Keyboard::Escape:
-    case sf::Keyboard::Home:
+    case SDLK_ESCAPE:
+    case SDLK_HOME:
         destroy();
         returnToShipSelection();
         break;
-    case sf::Keyboard::P:
+    case SDLK_p:
         if (engine->getGameSpeed() == 0.0f)
             gameMasterActions->commandSetGameSpeed(1.0f);
         else

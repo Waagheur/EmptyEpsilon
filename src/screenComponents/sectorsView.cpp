@@ -56,7 +56,7 @@ int SectorsView::calcGridScaleMagnitude(int scale_magnitude, int position)
 
 void SectorsView::drawSectorGrid(sp::RenderTarget &renderer)
 {
-    glm::vec2 radar_screen_center(rect.position.x + rect.size.x / 2.0f, rect.position.y + rect.size.y / 2.0f);
+    auto radar_screen_center = rect.center();
     const float scale = getScale();
     const float factor = std::floor(std::log10(GameGlobalInfo::sector_size * scale));
     const int scale_magnitude = 2 - std::min(2.f, factor);
@@ -117,10 +117,10 @@ void SectorsView::drawSectorGrid(sp::RenderTarget &renderer)
 
 void SectorsView::drawTargets(sp::RenderTarget& renderer)
 {
-    auto& window = renderer.getSFMLTarget();
    	if (!targets)
         return;
-
+#warning SDL2 TODO
+/*
     sf::Sprite target_sprite;
     textureManager.setTexture(target_sprite, "redicule.png");
 
@@ -143,6 +143,7 @@ void SectorsView::drawTargets(sp::RenderTarget& renderer)
         target_sprite.setPosition(object_position_on_screen.x, object_position_on_screen.y-10);
         window.draw(target_sprite);
     }
+*/
 }
 
 bool SectorsView::onMouseDown(glm::vec2 position)

@@ -25,9 +25,9 @@ bool GuiTextEntry::onMouseDown(glm::vec2 position)
     return true;
 }
 
-bool GuiTextEntry::onKey(sf::Event::KeyEvent key, int unicode)
+bool GuiTextEntry::onKey(const SDL_KeyboardEvent& key, int unicode)
 {
-    if (key.code == sf::Keyboard::BackSpace && text.length() > 0)
+    if (key.keysym.sym == SDLK_BACKSPACE && text.length() > 0)
     {
         text = text.substr(0, -1);
         if (validator_func)
@@ -42,7 +42,7 @@ bool GuiTextEntry::onKey(sf::Event::KeyEvent key, int unicode)
         }
         return true;
     }
-    if (key.code == sf::Keyboard::Return)
+    if (key.keysym.sym == SDLK_RETURN)
     {
         if (enter_func)
         {
@@ -51,7 +51,7 @@ bool GuiTextEntry::onKey(sf::Event::KeyEvent key, int unicode)
         }
         return true;
     }
-    if (key.code == sf::Keyboard::V && key.control)
+    if (key.keysym.sym == SDLK_v && (key.keysym.mod & KMOD_CTRL))
     {
         for(int unicode : Clipboard::readClipboard())
         {
@@ -97,12 +97,12 @@ void GuiTextEntry::onFocusGained()
 {
     typing_indicator = true;
     blink_timer.repeat(blink_rate);
-    sf::Keyboard::setVirtualKeyboardVisible(true);
+    SDL_StartTextInput();
 }
 
 void GuiTextEntry::onFocusLost()
 {
-    sf::Keyboard::setVirtualKeyboardVisible(false);
+    SDL_StopTextInput();
 }
 
 string GuiTextEntry::getText() const
