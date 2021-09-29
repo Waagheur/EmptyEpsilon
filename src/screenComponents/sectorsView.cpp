@@ -119,10 +119,6 @@ void SectorsView::drawTargets(sp::RenderTarget& renderer)
 {
    	if (!targets)
         return;
-#warning SDL2 TODO
-/*
-    sf::Sprite target_sprite;
-    textureManager.setTexture(target_sprite, "redicule.png");
 
     for(P<SpaceObject> obj : targets->getTargets())
     {
@@ -131,8 +127,7 @@ void SectorsView::drawTargets(sp::RenderTarget& renderer)
         sp::Rect object_rect(object_position_on_screen.x - r, object_position_on_screen.y - r, r * 2, r * 2);
         if (obj != my_spaceship && rect.overlaps(object_rect))
         {
-            target_sprite.setPosition(object_position_on_screen.x, object_position_on_screen.y);
-            window.draw(target_sprite);
+            renderer.drawSprite("redicule.png", object_position_on_screen, 48);
         }
     }
 
@@ -140,10 +135,10 @@ void SectorsView::drawTargets(sp::RenderTarget& renderer)
     {
         auto object_position_on_screen = worldToScreen(my_spaceship->waypoints[targets->getWaypointIndex()]);
 
-        target_sprite.setPosition(object_position_on_screen.x, object_position_on_screen.y-10);
-        window.draw(target_sprite);
+        renderer.drawSprite("redicule.png", object_position_on_screen - glm::vec2{0, 10}, 48);
     }
-*/
+
+    
 }
 
 bool SectorsView::onMouseDown(glm::vec2 position)
