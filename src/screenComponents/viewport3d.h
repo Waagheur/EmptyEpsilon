@@ -15,10 +15,9 @@ class GuiViewport3D : public GuiElement
     bool show_target;
 
     glm::mat4 projection_matrix;
-    glm::mat4 model_matrix;
+    glm::mat4 view_matrix;
     glm::vec4 viewport;
 
-#if FEATURE_3D_RENDERING
     enum class Uniforms : uint8_t
     {
         Projection = 0,
@@ -64,8 +63,6 @@ class GuiViewport3D : public GuiElement
     gl::Buffers<static_cast<size_t>(Buffers::SpacedustCount)> spacedust_buffer;
     sp::Shader* spacedust_shader = nullptr;
 
-    
-#endif
 public:
     GuiViewport3D(GuiContainer* owner, string id);
 
