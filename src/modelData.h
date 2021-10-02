@@ -133,7 +133,7 @@ public:
     float getRadius();
 
     void load();
-    void render(float alpha = 1.0f);
+    void render(const glm::mat4& model_view);
 
     friend class ModelInfo;
     friend class GuiRotatingModelView;
