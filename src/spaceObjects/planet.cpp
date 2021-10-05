@@ -10,13 +10,11 @@
 #include <glm/vec4.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-#if FEATURE_3D_RENDERING
 struct VertexAndTexCoords
 {
     glm::vec3 vertex;
     glm::vec2 texcoords;
 };
-#endif
 
 static Mesh* planet_mesh[16];
 
@@ -307,7 +305,6 @@ void Planet::update(float delta)
 
 void Planet::draw3D(const glm::mat4& object_view_matrix)
 {
-#if FEATURE_3D_RENDERING
     float distance = glm::length(camera_position - glm::vec3(getPosition().x, getPosition().y, distance_from_movement_plane));
 
     //view_scale ~= about the size the planet is on the screen.
@@ -323,10 +320,9 @@ void Planet::draw3D(const glm::mat4& object_view_matrix)
 //    if (planet_texture != "" && planet_size > 0)
     if (planet_texture != "" && getRadius() > 0)
     {
-        glTranslatef(0, 0, distance_from_movement_plane);
-        glRotatef(rotation_axis, 0.0, 1.0, 0.0);
-//        glScalef(planet_size, planet_size, planet_size);
-        glScalef(getRadius(), getRadius(), getRadius());
+        auto model_matrix = glm::translate(glm::mat4(1.0f), {0, 0, distance_from_movement_plane});
+        model_matrix = glm::rotate(model_matrix, rotation_axis, {0.0f, 1.0f, 0.0f});
+        model_matrix = glm::scale(model_matrix, {getRadius(), getRadius(), getRadius()}); //tdelc planet_size -> getRadius
 
         if (!planet_mesh[level_of_detail])
         {
@@ -336,8 +332,11 @@ void Planet::draw3D(const glm::mat4& object_view_matrix)
 
         ShaderRegistry::ScopedShader shader(ShaderRegistry::Shaders::Planet);
 
+        glUniformMatrix4fv(shader.get().get()->getUniformLocation("view"), 1, GL_FALSE, glm::value_ptr(object_view_matrix));
+        glUniformMatrix4fv(shader.get().get()->getUniformLocation("model"), 1, GL_FALSE, glm::value_ptr(model_matrix));
         glUniform4f(shader.get().uniform(ShaderRegistry::Uniforms::Color), 1.f, 1.f, 1.f, 1.f);
         glUniform4fv(shader.get().uniform(ShaderRegistry::Uniforms::AtmosphereColor), 1, glm::value_ptr(glm::vec4(atmosphere_color.r, atmosphere_color.g, atmosphere_color.b, atmosphere_color.a) / 255.f));
+
         textureManager.getTexture(planet_texture)->bind();
         {
             gl::ScopedVertexAttribArray positions(shader.get().attribute(ShaderRegistry::Attributes::Position));
@@ -347,12 +346,10 @@ void Planet::draw3D(const glm::mat4& object_view_matrix)
             planet_mesh[level_of_detail]->render(positions.get(), texcoords.get(), normals.get());
         }
     }
-#endif
 }
 
 void Planet::draw3DTransparent(const glm::mat4& object_view_matrix)
 {
-#if FEATURE_3D_RENDERING
     float distance = glm::length(camera_position - glm::vec3(getPosition().x, getPosition().y, distance_from_movement_plane));
 
     //view_scale ~= about the size the planet is on the screen.
@@ -365,12 +362,11 @@ void Planet::draw3DTransparent(const glm::mat4& object_view_matrix)
         level_of_detail = 3;
     level_of_detail = 4;
 
-    glTranslatef(0, 0, distance_from_movement_plane);
+    auto model_matrix = glm::translate(glm::mat4(1.0f), {0, 0, distance_from_movement_plane});
     if (cloud_texture != "" && cloud_size > 0)
     {
-        glPushMatrix();
-        glScalef(cloud_size, cloud_size, cloud_size);
-        glRotatef(engine->getElapsedTime() * 1.0f, 0, 0, 1);
+        auto cloud_model_matrix = glm::scale(model_matrix, {cloud_size, cloud_size, cloud_size});
+        cloud_model_matrix = glm::rotate(cloud_model_matrix, engine->getElapsedTime() * 1.0f / 180.0f * float(M_PI), {0, 0, 1});
 
         if (!planet_mesh[level_of_detail])
         {
@@ -380,6 +376,8 @@ void Planet::draw3DTransparent(const glm::mat4& object_view_matrix)
 
         ShaderRegistry::ScopedShader shader(ShaderRegistry::Shaders::Planet);
 
+        glUniformMatrix4fv(shader.get().get()->getUniformLocation("view"), 1, GL_FALSE, glm::value_ptr(object_view_matrix));
+        glUniformMatrix4fv(shader.get().get()->getUniformLocation("model"), 1, GL_FALSE, glm::value_ptr(cloud_model_matrix));
         glUniform4f(shader.get().uniform(ShaderRegistry::Uniforms::Color), 1.f, 1.f, 1.f, 1.f);
         glUniform4fv(shader.get().uniform(ShaderRegistry::Uniforms::AtmosphereColor), 1, glm::value_ptr(glm::vec4(0.f)));
 
@@ -391,7 +389,6 @@ void Planet::draw3DTransparent(const glm::mat4& object_view_matrix)
 
             planet_mesh[level_of_detail]->render(positions.get(), texcoords.get(), normals.get());
         }
-        glPopMatrix();
     }
     if (atmosphere_texture != "" && atmosphere_size > 0)
     {
@@ -406,6 +403,7 @@ void Planet::draw3DTransparent(const glm::mat4& object_view_matrix)
 
         textureManager.getTexture(atmosphere_texture)->bind();
         glm::vec4 color(glm::vec3(atmosphere_color.r, atmosphere_color.g, atmosphere_color.b) / 255.f, atmosphere_size * 2.0f);
+        glUniformMatrix4fv(shader.get().get()->getUniformLocation("view"), 1, GL_FALSE, glm::value_ptr(object_view_matrix * model_matrix));
         glUniform4fv(shader.get().uniform(ShaderRegistry::Uniforms::Color), 1, glm::value_ptr(color));
         gl::ScopedVertexAttribArray positions(shader.get().attribute(ShaderRegistry::Attributes::Position));
         gl::ScopedVertexAttribArray texcoords(shader.get().attribute(ShaderRegistry::Attributes::Texcoords));
@@ -416,7 +414,6 @@ void Planet::draw3DTransparent(const glm::mat4& object_view_matrix)
         std::initializer_list<uint8_t> indices = { 0, 2, 1, 0, 3, 2 };
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_BYTE, std::begin(indices));
     }
-#endif
 }
 
 void Planet::drawOnRadar(sp::RenderTarget& renderer, glm::vec2 position, float scale, float rotation, bool long_range)
