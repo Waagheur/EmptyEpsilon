@@ -116,7 +116,6 @@ private:
     void drawObjects(sp::RenderTarget& window);
     void drawObjectsGM(sp::RenderTarget& window);
     void drawHeadingIndicators(sp::RenderTarget& window);
-    void drawRadarCutoff(sp::RenderTarget& window);
 };
 
 #endif//RADAR_VIEW_H
