@@ -67,7 +67,7 @@ public:
     GuiRadarView(GuiContainer* owner, string id, TargetsContainer* targets, P<PlayerSpaceship> targetSpaceship);
     GuiRadarView(GuiContainer* owner, string id, float distance, TargetsContainer* targets, P<PlayerSpaceship> targetSpaceship);
 
-    virtual void onDraw(sp::RenderTarget& target);
+    virtual void onDraw(sp::RenderTarget& target) override;
 
     virtual GuiRadarView* setDistance(float distance) { SectorsView::setDistance(distance); return this; }
     GuiRadarView* setRangeIndicatorStepSize(float step) { range_indicator_step_size = step; return this; }
