@@ -58,8 +58,8 @@ public:
     static const MissileWeaponData& getDataFor(const EMissileWeapons& type);
     static const MissileWeaponData& getDataFor(const string& type);
 
-    static const float convertSizeToCategoryModifier(EMissileSizes size);
-    static const EMissileSizes convertCategoryModifierToSize(float size);
+    static float convertSizeToCategoryModifier(EMissileSizes size);
+    static EMissileSizes convertCategoryModifierToSize(float size);
 
 };
 

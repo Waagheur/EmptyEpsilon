@@ -99,7 +99,7 @@ string getMissileSizeString(EMissileSizes size)
     }
 }
 
-const float MissileWeaponData::convertSizeToCategoryModifier(EMissileSizes size)
+float MissileWeaponData::convertSizeToCategoryModifier(EMissileSizes size)
 {
     switch(size)
     {
@@ -114,7 +114,7 @@ const float MissileWeaponData::convertSizeToCategoryModifier(EMissileSizes size)
     }
 }
 
-const EMissileSizes MissileWeaponData::convertCategoryModifierToSize(float size)
+EMissileSizes MissileWeaponData::convertCategoryModifierToSize(float size)
 {
     if (std::abs(size - 0.5) < 0.1)
         return MS_Small;

@@ -49,11 +49,11 @@ SinglePilotView::SinglePilotView(GuiContainer* owner, P<PlayerSpaceship> targetS
             else if (target_spaceship)
                 target_spaceship->commandTargetRotation(vec2ToAngle(position - target_spaceship->getPosition()));
         },
-        [this](glm::vec2 position) {
+        [](glm::vec2 position) {
             if (target_spaceship)
                 target_spaceship->commandTargetRotation(vec2ToAngle(position - target_spaceship->getPosition()));
         },
-        [this](glm::vec2 position) {
+        [](glm::vec2 position) {
             if (target_spaceship)
                 target_spaceship->commandTargetRotation(vec2ToAngle(position - target_spaceship->getPosition()));
         }
