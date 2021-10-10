@@ -202,7 +202,7 @@ float BeamWeapon::getCooldown()
 
 void BeamWeapon::update(float delta)
 {
-    if (cooldown > 0.0)
+    if (cooldown > 0.0f)
         cooldown -= delta * parent->getSystemEffectiveness(SYS_BeamWeapons);
 
     P<SpaceObject> target = parent->getTarget();
@@ -210,11 +210,11 @@ void BeamWeapon::update(float delta)
     // Check on beam weapons only if we are on the server, have a target, and
     // not paused, and if the beams are cooled down or have a turret arc.
 //    if (game_server && range > 0.0 && target && delta > 0 && parent->current_warp == 0.0 && parent->docking_state == DS_NotDocking)
-    if (game_server && is_valid && range > 0.0 && target && delta > 0 && parent->docking_state == DS_NotDocking)
+    if (game_server && is_valid && range > 0.0f && target && delta > 0 && parent->docking_state == DS_NotDocking)
     {
         // Get the angle to the target.
         auto diff = target->getPosition() - (parent->getPosition() + rotateVec2(glm::vec2(position.x, position.y), parent->getRotation()));
-        float distance = glm::length(diff) - target->getRadius() / 2.0;
+        float distance = glm::length(diff) - target->getRadius() / 2.0f;
 
         // We also only care if the target is within no more than its
         // range * 1.3, which is when we want to start rotating the turret.
@@ -258,7 +258,7 @@ void BeamWeapon::update(float delta)
             // down, and the beam can consume enough energy to fire ...
             P<SpaceShip> ship = target;
 
-            if (parent->lock_fire && distance < range + target->getRadius()/4 && cooldown <= 0.0 && fabsf(angle_diff) < arc / 2.0 && parent->useEnergy(energy_per_beam_fire) && (!ship || ship->docking_target != parent))
+            if (parent->lock_fire && distance < range + target->getRadius()/4.0f && cooldown <= 0.0f && fabsf(angle_diff) < arc / 2.0f && parent->useEnergy(energy_per_beam_fire) && (!ship || ship->docking_target != parent))
             {
                 // ... add heat to the beam and zap the target.
                 parent->addHeat(SYS_BeamWeapons, heat_per_beam_fire);
@@ -267,7 +267,7 @@ void BeamWeapon::update(float delta)
         }
     // If the beam is turreted and can move, but doesn't have a target, reset it
     // if necessary.
-    } else if (game_server && range > 0.0 && delta > 0 && turret_arc > 0.0 && direction != turret_direction && turret_rotation_rate > 0) {
+    } else if (game_server && range > 0.0f && delta > 0 && turret_arc > 0.0f && direction != turret_direction && turret_rotation_rate > 0) {
         float reset_angle_diff = angleDifference(direction, turret_direction);
 
         if (fabsf(reset_angle_diff) > 0)

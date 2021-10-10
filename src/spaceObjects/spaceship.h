@@ -80,7 +80,7 @@ public:
 
     float getHeatingDelta() const
     {
-        return powf(1.7, power_level - 1.0) - (1.01 + coolant_level * 0.1);
+        return powf(1.7f, power_level - 1.0f) - (1.01f + coolant_level * 0.1f);
 //        if (health > -0.5)
 //            return powf(1.7, power_level - 1.0) - (1.01 + coolant_level * 0.1);
 //            return powf(1.7, power_level - 1.0) - (1.01 + coolant_level * 0.06);
@@ -404,8 +404,8 @@ public:
     bool isDocked() { return docking_state == DS_Docked; }
     bool isDockedWith(P<SpaceObject> target) { return docking_state == DS_Docked && docking_target == target; }
     P<SpaceObject> getDockedWith() { if (docking_state == DS_Docked) return docking_target; return NULL; }
-    bool canStartDocking() { return current_warp <= 0.0 && (!has_jump_drive || jump_delay <= 0.0); }
-    bool canStartLanding() { return current_warp <= 0.0 && (!has_jump_drive || jump_delay <= 0.0); }
+    bool canStartDocking() { return current_warp <= 0.0f && (!has_jump_drive || jump_delay <= 0.0f); }
+    bool canStartLanding() { return current_warp <= 0.0f && (!has_jump_drive || jump_delay <= 0.0f); }
     int getCustomWeaponStorage(string weapon) { return custom_weapon_storage[weapon]; }
     int getCustomWeaponStorageMax(string weapon) { return custom_weapon_storage_max[weapon]; }
     void setCustomWeaponStorage(string weapon, int amount) { custom_weapon_storage.insert(std::map<string,int>::value_type(weapon,amount)); }
@@ -418,9 +418,9 @@ public:
     void setWeaponStorageMax(EMissileWeapons weapon, int amount) { if (weapon == MW_None) return; weapon_storage_max[weapon] = amount; weapon_storage[weapon] = std::min(int(weapon_storage[weapon]), amount); }
 
     float getMaxEnergy() { return max_energy_level; }
-    void setMaxEnergy(float amount) { if (amount > 0.0) { max_energy_level = amount;} }
+    void setMaxEnergy(float amount) { if (amount > 0.0f) { max_energy_level = amount;} }
     float getEnergy() { return energy_level; }
-    void setEnergy(float amount) { if ( (amount > 0.0) && (amount <= max_energy_level)) { energy_level = amount; } }
+    void setEnergy(float amount) { if ( (amount > 0.0f) && (amount <= max_energy_level)) { energy_level = amount; } }
     float getSystemHackedLevel(ESystem system) { if (system >= SYS_COUNT) return 0.0; if (system <= SYS_None) return 0.0; return systems[system].hacked_level; }
     void setSystemHackedLevel(ESystem system, float hacked_level) { if (system >= SYS_COUNT) return; if (system <= SYS_None) return; systems[system].hacked_level = std::min(1.0f, std::max(0.0f, hacked_level)); }
     float getSystemHealth(ESystem system) { if (system >= SYS_COUNT) return 0.0; if (system <= SYS_None) return 0.0; return systems[system].health; }
@@ -485,10 +485,10 @@ public:
         has_warp_drive = has_warp;
         if (has_warp_drive)
         {
-            if (warp_speed_per_warp_level < 100)
-                warp_speed_per_warp_level = 1000;
+            if (warp_speed_per_warp_level < 100.0f)
+                warp_speed_per_warp_level = 1000.0f;
         }else{
-            warp_request = 0.0;
+            warp_request = 0.0f;
             warp_speed_per_warp_level = 0;
         }
     }

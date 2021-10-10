@@ -33,7 +33,7 @@ void SpaceStation::drawOnRadar(sp::RenderTarget& renderer, glm::vec2 position, f
     glm::u8vec4 color = glm::u8vec4(255,255,255,255);
     // If the object is a station that hasn't been scanned, draw the default icon.
     // Otherwise, draw the station-specific icon.
-	float sprite_scale = 0.2;
+	float sprite_scale = 0.2f;
 	if (my_spaceship && (getScannedStateFor(my_spaceship) == SS_NotScanned || getScannedStateFor(my_spaceship) == SS_FriendOrFoeIdentified) && getFactionId() != my_spaceship->getFactionId())
     {
         color = glm::u8vec4(192, 192, 192, 255);
@@ -44,12 +44,12 @@ void SpaceStation::drawOnRadar(sp::RenderTarget& renderer, glm::vec2 position, f
         color = factionInfo[getFactionId()]->gm_color;
         object_sprite = radar_trace;
         //sprite_scale = scale * getRadius() * 1.5 / objectSprite.getTextureRect().width;
-        sprite_scale = scale * getRadius() * 2 / 32;
+        sprite_scale = scale * getRadius() * 2.0f / 32;
     }
 
     if (!long_range)
     {
-        sprite_scale *= 0.7;
+        sprite_scale *= 0.7f;
         drawShieldsOnRadar(renderer, position, scale, rotation, sprite_scale, true);
     }
     sprite_scale = std::max(0.15f, sprite_scale);
@@ -95,11 +95,11 @@ void SpaceStation::destroyedByDamage(DamageInfo& info)
         {
             for(int n=0; n<shield_count; n++)
             {
-                points += shield_max[n] * 0.1;
+                points += shield_max[n] * 0.1f;
             }
             points /= shield_count;
         }
-        points += hull_max * 0.1;
+        points += hull_max * 0.1f;
         if (isEnemy(info.instigator))
             info.instigator->addReputationPoints(points);
         else
