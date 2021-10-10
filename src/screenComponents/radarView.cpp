@@ -733,7 +733,7 @@ void GuiRadarView::drawHeadingIndicators(sp::RenderTarget& renderer)
     }
 }
 
-bool GuiRadarView::onMouseDown(glm::vec2 position)
+bool GuiRadarView::onMouseDown(sp::io::Pointer::Button button, glm::vec2 position, int id)
 {
     if (style == Circular || style == CircularMasked)
     {
@@ -741,5 +741,5 @@ bool GuiRadarView::onMouseDown(glm::vec2 position)
         if (glm::length(position - getCenterPoint()) > radius)
             return false;
     }
-    return SectorsView::onMouseDown(position);
+    return SectorsView::onMouseDown(sp::io::Pointer::Button button, glm::vec2 position, int id);
 }

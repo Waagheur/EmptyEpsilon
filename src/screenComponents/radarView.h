@@ -25,6 +25,7 @@ public:
         NoObjects
     };
 
+    typedef std::function<void(sp::io::Pointer::Button button, glm::vec2 position)> bpfunc_t;
     typedef std::function<void(glm::vec2 position)> pfunc_t;
     typedef std::function<void(float position)>     ffunc_t;
 private:
@@ -58,7 +59,7 @@ private:
     uint8_t background_alpha;
     ERadarStyle style;
     EFogOfWarStyle fog_style;
-    pfunc_t mouse_down_func;
+    bpfunc_t mouse_down_func;
     pfunc_t mouse_drag_func;
     pfunc_t mouse_up_func;
     P<PlayerSpaceship> target_spaceship;
@@ -96,10 +97,10 @@ public:
     bool getAutoRotating() { return auto_rotate_on_my_ship; }
     GuiRadarView* setAutoRotating(bool value) { this->auto_rotate_on_my_ship = value; return this; }
    
-    virtual GuiRadarView* setCallbacks(pfunc_t mouse_down_func, pfunc_t mouse_drag_func, pfunc_t mouse_up_func) { SectorsView::setCallbacks(mouse_down_func, mouse_drag_func, mouse_up_func); return this; }
+    virtual GuiRadarView* setCallbacks(bpfunc_t mouse_down_func, pfunc_t mouse_drag_func, pfunc_t mouse_up_func) { SectorsView::setCallbacks(mouse_down_func, mouse_drag_func, mouse_up_func); return this; }
     virtual GuiRadarView* setViewPosition(glm::vec2 view_position) { SectorsView::setViewPosition(view_position); return this; }
 
-    virtual bool onMouseDown(glm::vec2 position);
+    virtual bool onMouseDown(sp::io::Pointer::Button button, glm::vec2 position, int id);
     void setTargetSpaceship(P<PlayerSpaceship> targetSpaceship){target_spaceship = targetSpaceship;}
 
 private:
