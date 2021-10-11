@@ -39,7 +39,7 @@ void GuiShieldsEnableButton::onDraw(sp::RenderTarget& target)
         {
             hide();
         }
-        else if (target_spaceship->shield_calibration_delay > 0.0)
+        else if (target_spaceship->shield_calibration_delay > 0.0f)
         {
             show();
             button->hide();
