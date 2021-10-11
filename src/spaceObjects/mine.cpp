@@ -70,7 +70,7 @@ void Mine::update(float delta)
         particleTimeout = 0.4;
     }
 
-    if (ejectTimeout > 0.0)
+    if (ejectTimeout > 0.0f)
     {
         ejectTimeout -= delta;
         setVelocity(vec2FromAngle(getRotation()) * speed);
@@ -88,7 +88,7 @@ void Mine::update(float delta)
 
 void Mine::collide(Collisionable* target, float force)
 {
-    if (!game_server || triggered || ejectTimeout > 0.0)
+    if (!game_server || triggered || ejectTimeout > 0.0f)
         return;
     
     P<SpaceObject> hitObject = P<Collisionable>(target);
@@ -110,7 +110,7 @@ void Mine::eject()
 void Mine::explode()
 {
     DamageInfo info(owner, DT_Kinetic, getPosition());
-    SpaceObject::damageArea(getPosition(), blastRange, damageAtEdge * damage_multiplier, damageAtCenter * damage_multiplier, info, blastRange / 2.0);
+    SpaceObject::damageArea(getPosition(), blastRange, damageAtEdge * damage_multiplier, damageAtCenter * damage_multiplier, info, blastRange / 2.0f);
 
     P<ExplosionEffect> e = new ExplosionEffect();
     e->setSize(blastRange);

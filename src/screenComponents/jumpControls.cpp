@@ -40,7 +40,7 @@ void GuiJumpControls::onDraw(sp::RenderTarget& target)
 {
     if (target_spaceship)
     {
-        if (target_spaceship->jump_delay > 0.0)
+        if (target_spaceship->jump_delay > 0.0f)
         {
             label->setKey(tr("jumpcontrol","Jump in"));
             label->setValue(string(int(ceilf(target_spaceship->jump_delay / target_spaceship->getJumpDriveRechargeRate()))) + " S");
@@ -64,7 +64,7 @@ void GuiJumpControls::onDraw(sp::RenderTarget& target)
             charge_bar->setValue(target_spaceship->jump_drive_charge)->show();
         }else{
             label->setKey(tr("jumpcontrol", "Distance"));
-            label->setValue(string(slider->getValue() / 1000.0, 0) + " " + DISTANCE_UNIT_1K);
+            label->setValue(string(slider->getValue() / 1000.0f, 0) + " " + DISTANCE_UNIT_1K);
             slider->enable()->show();
             //float factor_jump = std::max(1.0f,target_spaceship->getSystemEffectiveness(SYS_JumpDrive));
             slider->setRange(target_spaceship->jump_drive_max_distance, target_spaceship->jump_drive_min_distance);

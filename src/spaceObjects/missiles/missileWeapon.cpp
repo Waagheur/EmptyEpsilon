@@ -54,7 +54,7 @@ void MissileWeapon::drawOnRadar(sp::RenderTarget& renderer, glm::vec2 position, 
 {
     if (long_range) return;
 
-    renderer.drawRotatedSprite("radar/arrow.png", position, 32 * (0.25 + 0.25 * category_modifier), getRotation()-rotation, color);
+    renderer.drawRotatedSprite("radar/arrow.png", position, 32 * (0.25f + 0.25f * category_modifier), getRotation()-rotation, color);
 }
 
 void MissileWeapon::update(float delta)
@@ -158,7 +158,7 @@ void MissileWeapon::takeDamage(float damage_amount, DamageInfo info)
 
 void MissileWeapon::updateMovement()
 {
-    if (data.turnrate > 0.0)
+    if (data.turnrate > 0.0f)
     {
         if (data.homing_range > 0)
         {
@@ -186,9 +186,9 @@ void MissileWeapon::updateMovement()
 
         float angle_diff = angleDifference(getRotation(), target_angle);
 
-        if (angle_diff > 1.0)
+        if (angle_diff > 1.0f)
             setAngularVelocity(data.turnrate * size_speed_modifier);
-        else if (angle_diff < -1.0)
+        else if (angle_diff < -1.0f)
             setAngularVelocity(data.turnrate * -1.0f * size_speed_modifier);
         else
             setAngularVelocity(angle_diff * data.turnrate * size_speed_modifier);

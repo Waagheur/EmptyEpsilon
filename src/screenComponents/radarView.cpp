@@ -244,7 +244,7 @@ void GuiRadarView::updateGhostDots()
 {
     if (next_ghost_dot_update < engine->getElapsedTime())
     {
-        next_ghost_dot_update = engine->getElapsedTime() + 5.0;
+        next_ghost_dot_update = engine->getElapsedTime() + 5.0f;
         foreach(SpaceObject, obj, space_object_list)
         {
             P<SpaceShip> ship = obj;
@@ -343,8 +343,8 @@ void GuiRadarView::drawNebulaBlockedAreas(sp::RenderTarget& renderer)
                 renderer.fillCircle(worldToScreen(n->getPosition()), r, glm::u8vec4(0, 0, 0, 255));
 
                 float diff_angle = vec2ToAngle(diff);
-                float angle = acosf(n->getRadius() / diff_len) / M_PI * 180.0f;
-                
+                float angle = glm::degrees(acosf(n->getRadius() / diff_len));
+
                 auto pos_a = n->getPosition() - vec2FromAngle(diff_angle + angle) * n->getRadius();
                 auto pos_b = n->getPosition() - vec2FromAngle(diff_angle - angle) * n->getRadius();
                 auto pos_c = scan_center + glm::normalize(pos_a - scan_center) * getDistance() * 3.0f;

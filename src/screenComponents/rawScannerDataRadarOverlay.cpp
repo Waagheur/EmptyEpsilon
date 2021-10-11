@@ -62,7 +62,7 @@ void RawScannerDataRadarOverlay::onDraw(sp::RenderTarget& renderer)
             distance_modif = distance * std::sqrt(my_spaceship->getSystemEffectiveness(SYS_Drones));
         }
 
-        if (dist > distance_modif * 3)
+        if (dist > distance_modif * 3.0f)
             continue;
 
         // The further away the object is, the less its effect on radar data.
@@ -78,7 +78,7 @@ void RawScannerDataRadarOverlay::onDraw(sp::RenderTarget& renderer)
         }else{
             // Otherwise, measure the affected range of angles by the object's
             // distance and radius.
-            float a_diff = asinf(obj->getRadius() / dist) / M_PI * 180.0f;
+            float a_diff = glm::degrees(asinf(obj->getRadius() / dist));
             float a_center = vec2ToAngle(obj->getPosition() - view_position);
             a_0 = a_center - a_diff;
             a_1 = a_center + a_diff;

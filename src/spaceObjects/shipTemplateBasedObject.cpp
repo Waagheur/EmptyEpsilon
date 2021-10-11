@@ -196,7 +196,7 @@ void ShipTemplateBasedObject::drawShieldsOnRadar(sp::RenderTarget& renderer, glm
             float level = shield_level[0] / shield_max[0];
             color = Tween<glm::u8vec4>::linear(level, 1.0f, 0.0f, glm::u8vec4(128, 128, 255, 128), glm::u8vec4(255, 0, 0, 64));
         }
-        if (shield_hit_effect[0] > 0.0)
+        if (shield_hit_effect[0] > 0.0f)
         {
             color = Tween<glm::u8vec4>::linear(shield_hit_effect[0], 0.0f, 1.0f, color, glm::u8vec4(255, 0, 0, 128));
         }
@@ -213,7 +213,7 @@ void ShipTemplateBasedObject::drawShieldsOnRadar(sp::RenderTarget& renderer, glm
                 float level = shield_level[n] / shield_max[n];
                 color = Tween<glm::u8vec4>::linear(level, 1.0f, 0.0f, glm::u8vec4(128, 128, 255, 128), glm::u8vec4(255, 0, 0, 64));
             }
-            if (shield_hit_effect[n] > 0.0)
+            if (shield_hit_effect[n] > 0.0f)
             {
                 color = Tween<glm::u8vec4>::linear(shield_hit_effect[n], 0.0f, 1.0f, color, glm::u8vec4(255, 0, 0, 128));
             }
@@ -348,7 +348,7 @@ void ShipTemplateBasedObject::takeDamage(float damage_amount, DamageInfo info)
         } else {
             shield_hit_effect[shield_index] = 1.0;
         }
-        if (damage_amount < 0.0)
+        if (damage_amount < 0.0f)
         {
             damage_amount = 0.0;
         }
@@ -372,7 +372,7 @@ void ShipTemplateBasedObject::takeDamage(float damage_amount, DamageInfo info)
         }
     }
 
-    if (info.type != DT_EMP && damage_amount > 0.0)
+    if (info.type != DT_EMP && damage_amount > 0.0f)
     {
         soundManager->playSound("explosion.wav", getPosition(), 200.0, 1.0, 1.0f + random(-0.1f, 0.1f),damage_amount*100.0);
         takeHullDamage(damage_amount, info);
@@ -395,11 +395,11 @@ void ShipTemplateBasedObject::takeDamage(float damage_amount, DamageInfo info)
 void ShipTemplateBasedObject::takeHullDamage(float damage_amount, DamageInfo& info)
 {
     hull_strength -= damage_amount;
-    if (hull_strength <= 0.0 && !can_be_destroyed)
+    if (hull_strength <= 0.0f && !can_be_destroyed)
     {
         hull_strength = 1;
     }
-    if (hull_strength <= 0.0)
+    if (hull_strength <= 0.0f)
     {
         destroyedByDamage(info);
         if (on_destruction.isSet())

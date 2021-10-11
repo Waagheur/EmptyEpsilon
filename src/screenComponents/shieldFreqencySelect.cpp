@@ -37,8 +37,8 @@ void GuiShieldFrequencySelect::onDraw(sp::RenderTarget& renderer)
 {
     if (target_spaceship)
     {
-        calibrate_button->setEnable(target_spaceship->shield_calibration_delay <= 0.0);
-        new_frequency->setEnable(target_spaceship->shield_calibration_delay <= 0.0);
+        calibrate_button->setEnable(target_spaceship->shield_calibration_delay <= 0.0f);
+        new_frequency->setEnable(target_spaceship->shield_calibration_delay <= 0.0f);
     }
     GuiElement::onDraw(renderer);
 }

@@ -575,7 +575,7 @@ void PlayerSpaceship::update(float delta)
     // subsystem effectiveness when determining the tick rate.
     if (shield_calibration_delay > 0)
     {
-        shield_calibration_delay -= delta * (getSystemEffectiveness(SYS_FrontShield) + getSystemEffectiveness(SYS_RearShield)) / 2.0;
+        shield_calibration_delay -= delta * (getSystemEffectiveness(SYS_FrontShield) + getSystemEffectiveness(SYS_RearShield)) / 2.0f;
     }
 
     // Docking actions.
@@ -651,7 +651,7 @@ void PlayerSpaceship::update(float delta)
             if (!hasSystem(ESystem(n))) continue;
             total_heat += systems[n].heat_level;
         }
-        if (total_heat > 0.0)
+        if (total_heat > 0.0f)
         {
             for(int n = 0; n < SYS_COUNT; n++)
             {
@@ -808,7 +808,7 @@ void PlayerSpaceship::update(float delta)
         
         // If reactor health is worse than -90% and overheating, it explodes,
         // destroying the ship and damaging a 0.5U radius.
-        /* if (systems[SYS_Reactor].health < -0.9 && systems[SYS_Reactor].heat_level == 1.0)
+        /* if (systems[SYS_Reactor].health < -0.9 && systems[SYS_Reactor].heat_level == 1.0f)
         {
             ExplosionEffect* e = new ExplosionEffect();
             e->setSize(1000.0f);
@@ -822,11 +822,11 @@ void PlayerSpaceship::update(float delta)
             return;
         }
         */
-        if (energy_level < 0.0)
-            energy_level = 0.0;
+        if (energy_level < 0.0f)
+            energy_level = 0.0f;
 
         // If the ship has less than 10 energy, drop shields automatically.
-        if (energy_level < 10.0)
+        if (energy_level < 10.0f)
         {
             shields_active = false;
         }
@@ -855,7 +855,7 @@ void PlayerSpaceship::update(float delta)
         {
             // If warping, consume energy at a rate of 120% the warp request.
             // If shields are up, that rate is increased by an additional 50%.
-            if (!useEnergy(getEnergyWarpPerSecond() * delta * getSystemEffectiveness(SYS_Warp) * powf(current_warp, 1.2f) * (shields_active ? 1.5 : 1.0)))
+            if (!useEnergy(getEnergyWarpPerSecond() * delta * getSystemEffectiveness(SYS_Warp) * powf(current_warp, 1.2f) * (shields_active ? 1.5f : 1.0f)))
                 // If there's not enough energy, fall out of warp.
                 warp_request = 0;
 
@@ -890,7 +890,7 @@ void PlayerSpaceship::update(float delta)
         if (activate_self_destruct)
         {
             // If self-destruct has been activated but not started ...
-            if (self_destruct_countdown <= 0.0)
+            if (self_destruct_countdown <= 0.0f)
             {
                 bool do_self_destruct = true;
                 // ... wait until the confirmation codes are entered.
@@ -910,7 +910,7 @@ void PlayerSpaceship::update(float delta)
 
                 // When time runs out, blow up the ship and damage a
                 // configurable radius.
-                if (self_destruct_countdown <= 0.0)
+                if (self_destruct_countdown <= 0.0f)
                 {
                     for(int n = 0; n < 5; n++)
                     {
@@ -936,7 +936,7 @@ void PlayerSpaceship::update(float delta)
         // the scan delay timer.
         if (scanning_complexity < 1)
         {
-            if (scanning_delay > 0.0)
+            if (scanning_delay > 0.0f)
                 scanning_delay -= delta;
         }
 
@@ -1168,10 +1168,10 @@ void PlayerSpaceship::addHeat(ESystem system, float amount)
 
     systems[system].heat_level += amount;
 
-    if (systems[system].heat_level > 0.95)
+    if (systems[system].heat_level > 0.95f)
     {
-        float overheat = systems[system].heat_level - 0.95;
-        systems[system].heat_level = 0.95;
+        float overheat = systems[system].heat_level - 0.95f;
+        systems[system].heat_level = 0.95f;
 
         if (gameGlobalInfo->use_system_damage)
         {
@@ -1180,13 +1180,13 @@ void PlayerSpaceship::addHeat(ESystem system, float amount)
             // calculate the actual damage taken.
             systems[system].health -= overheat / systems[system].heat_rate_per_second * damage_per_second_on_overheat;
 
-            if (systems[system].health < -1.0)
-                systems[system].health = -1.0;
+            if (systems[system].health < -1.0f)
+                systems[system].health = -1.0f;
         }
     }
 
-    if (systems[system].heat_level < 0.0)
-        systems[system].heat_level = 0.0;
+    if (systems[system].heat_level < 0.0f)
+        systems[system].heat_level = 0.0f;
 }
 
 void PlayerSpaceship::playSoundOnMainScreen(string sound_name)
@@ -1661,7 +1661,7 @@ void PlayerSpaceship::onReceiveClientCommand(int32_t client_id, sp::io::DataBuff
             bool active;
             packet >> active;
 
-            if (shield_calibration_delay <= 0.0 && active != shields_active)
+            if (shield_calibration_delay <= 0.0f && active != shields_active)
             {
                 shields_active = active;
                 if (active)
@@ -1719,7 +1719,7 @@ void PlayerSpaceship::onReceiveClientCommand(int32_t client_id, sp::io::DataBuff
             ESystem system;
             float request;
             packet >> system >> request;
-            if (system < SYS_COUNT && request >= 0.0 && request <= 3.0)
+            if (system < SYS_COUNT && request >= 0.0f && request <= 3.0f)
                 systems[system].power_request = request;
         }
         break;
@@ -1728,7 +1728,7 @@ void PlayerSpaceship::onReceiveClientCommand(int32_t client_id, sp::io::DataBuff
             ESystem system;
             float request;
             packet >> system >> request;
-            if (system < SYS_COUNT && request >= 0.0 && request <= 10.0)
+            if (system < SYS_COUNT && request >= 0.0f && request <= 10.0f)
                 setSystemCoolantRequest(system, request);
         }
         break;
@@ -1968,7 +1968,7 @@ void PlayerSpaceship::onReceiveClientCommand(int32_t client_id, sp::io::DataBuff
         }
         break;
     case CMD_SET_SHIELD_FREQUENCY:
-        if (shield_calibration_delay <= 0.0)
+        if (shield_calibration_delay <= 0.0f)
         {
             int32_t new_frequency;
             packet >> new_frequency;
@@ -2057,7 +2057,7 @@ void PlayerSpaceship::onReceiveClientCommand(int32_t client_id, sp::io::DataBuff
         {
             float request_amount;
             packet >> request_amount;
-            if (request_amount >= 0.0 && request_amount <= 1.0)
+            if (request_amount >= 0.0f && request_amount <= 1.0f)
                 combat_maneuver_boost_request = request_amount;
         }
         break;
@@ -2065,7 +2065,7 @@ void PlayerSpaceship::onReceiveClientCommand(int32_t client_id, sp::io::DataBuff
         {
             float request_amount;
             packet >> request_amount;
-            if (request_amount >= -1.0 && request_amount <= 1.0)
+            if (request_amount >= -1.0f && request_amount <= 1.0f)
                 combat_maneuver_strafe_request = request_amount;
         }
         break;

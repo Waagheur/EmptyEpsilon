@@ -42,11 +42,11 @@ public:
         {
             float u = vec2ToAngle(glm::vec2(vertices[n].position[1], vertices[n].position[0])) / 360.0f;
             if (u < 0.0f)
-                u = 1.0 + u;
-            if (std::abs(u - vertices[n].uv[0]) > 0.5)
+                u = 1.0f + u;
+            if (std::abs(u - vertices[n].uv[0]) > 0.5f)
                 u += 1.0f;
             vertices[n].uv[0] = u;
-            vertices[n].uv[1] = 0.5 + vec2ToAngle(glm::vec2(glm::length(glm::vec2(vertices[n].position[0], vertices[n].position[1])), vertices[n].position[2])) / 180.0f;
+            vertices[n].uv[1] = 0.5f + vec2ToAngle(glm::vec2(glm::length(glm::vec2(vertices[n].position[0], vertices[n].position[1])), vertices[n].position[2])) / 180.0f;
         }
     }
 
@@ -237,8 +237,8 @@ void Planet::setPlanetRadius(float size)
 {
     setRadius(size);
     this->planet_size = size;
-    this->cloud_size = size * 1.05;
-    this->atmosphere_size = size * 1.2;
+    this->cloud_size = size * 1.05f;
+    this->atmosphere_size = size * 1.2f;
 }
 
 void Planet::setPlanetCloudRadius(float size)
@@ -280,7 +280,7 @@ void Planet::update(float delta)
     if (collision_size == -2.0f)
     {
         updateCollisionSize();
-        if (collision_size > 0.0)
+        if (collision_size > 0.0f)
             PathPlannerManager::getInstance()->addAvoidObject(this, collision_size);
     }
 
@@ -311,9 +311,9 @@ void Planet::draw3D(const glm::mat4& object_view_matrix)
 //    float view_scale = planet_size / distance;
     float view_scale = getRadius() / distance;
     int level_of_detail = 4;
-    if (view_scale < 0.01)
+    if (view_scale < 0.01f)
         level_of_detail = 2;
-    if (view_scale < 0.1)
+    if (view_scale < 0.1f)
         level_of_detail = 3;
 //    level_of_detail = 4;
 
@@ -356,9 +356,9 @@ void Planet::draw3DTransparent(const glm::mat4& object_view_matrix)
 //    float view_scale = planet_size / distance;
     float view_scale = getRadius() / distance;
     int level_of_detail = 4;
-    if (view_scale < 0.01)
+    if (view_scale < 0.01f)
         level_of_detail = 2;
-    if (view_scale < 0.1)
+    if (view_scale < 0.1f)
         level_of_detail = 3;
     level_of_detail = 4;
 
