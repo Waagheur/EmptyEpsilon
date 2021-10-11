@@ -48,12 +48,12 @@ ScienceScreen::ScienceScreen(GuiContainer* owner, ECrewPosition crew_position)
     radar_view->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);
 
     // Draw the science radar.
-    science_radar = new GuiRadarView(radar_view, "SCIENCE_RADAR", my_spaceship ? my_spaceship->getLongRangeRadarRange() : 30000.0, &targets, my_spaceship);
+    science_radar = new GuiRadarView(radar_view, "SCIENCE_RADAR", my_spaceship ? my_spaceship->getLongRangeRadarRange() : 30000.0f, &targets, my_spaceship);
     science_radar->setPosition(-270, 0, sp::Alignment::CenterRight)->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);
     science_radar->setRangeIndicatorStepSize(5000.0)->longRange()->enableWaypoints()->enableCallsigns()->enableHeadingIndicators()->setStyle(GuiRadarView::Circular)->setFogOfWarStyle(GuiRadarView::NebulaFogOfWar);
     science_radar->setCallbacks(
         [this](sp::io::Pointer::Button button, glm::vec2 position) {
-            if (!my_spaceship || my_spaceship->scanning_delay > 0.0)
+            if (!my_spaceship || my_spaceship->scanning_delay > 0.0f)
                 return;
 
             targets.setToClosestTo(position, 1000, TargetsContainer::Selectable, my_spaceship);
@@ -68,7 +68,7 @@ ScienceScreen::ScienceScreen(GuiContainer* owner, ECrewPosition crew_position)
     probe_radar->setAutoCentering(false)->longRange()->enableWaypoints()->enableCallsigns()->enableHeadingIndicators()->setStyle(GuiRadarView::Circular)->setFogOfWarStyle(GuiRadarView::NoFogOfWar);
     probe_radar->setCallbacks(
         [this](sp::io::Pointer::Button button, glm::vec2 position) {
-            if (!my_spaceship || my_spaceship->scanning_delay > 0.0)
+            if (!my_spaceship || my_spaceship->scanning_delay > 0.0f)
                 return;
 
             targets.setToClosestTo(position, 1000, TargetsContainer::Selectable, my_spaceship);
@@ -291,7 +291,7 @@ void ScienceScreen::onDraw(sp::RenderTarget& renderer)
     float mouse_wheel_delta=InputHandler::getMouseWheelDelta();
     if (mouse_wheel_delta!=0)
     {
-        view_distance *= (1.0 - (mouse_wheel_delta * 0.1f));
+        view_distance *= (1.0f - (mouse_wheel_delta * 0.1f));
     }
     view_distance = std::min(view_distance,my_spaceship->getLongRangeRadarRange());
     view_distance = std::max(view_distance,my_spaceship->getShortRangeRadarRange());
@@ -412,8 +412,8 @@ void ScienceScreen::onDraw(sp::RenderTarget& renderer)
 
         float rel_velocity = dot(obj->getVelocity(), position_diff / distance) - dot(my_spaceship->getVelocity(), position_diff / distance);
 
-        if (fabs(rel_velocity) < 0.01)
-            rel_velocity = 0.0;
+        if (std::abs(rel_velocity) < 0.01f)
+            rel_velocity = 0.0f;
 
         string duration = "";
         if (fabs(rel_velocity) > 0.01)
@@ -751,7 +751,7 @@ void ScienceScreen::onDraw(sp::RenderTarget& renderer)
 
         float rel_velocity = -dot(my_spaceship->getVelocity(), position_diff / distance);
 
-        if (fabs(rel_velocity) < 0.01)
+        if (std::abs(rel_velocity) < 0.01f)
             rel_velocity = 0.0;
 
         info_distance->setValue(string(distance / 1000.0f, 1) + DISTANCE_UNIT_1K);
@@ -767,7 +767,7 @@ void ScienceScreen::onHotkey(const HotkeyResult& key)
          // Initiate a scan on scannable objects.
         if (key.hotkey == "SCAN_OBJECT" &&
             my_spaceship->getCanScan() &&
-            my_spaceship->scanning_delay == 0.0)
+            my_spaceship->scanning_delay == 0.0f)
         {
             P<SpaceObject> obj = targets.get();
 
@@ -783,7 +783,7 @@ void ScienceScreen::onHotkey(const HotkeyResult& key)
 
         // Cycle selection through scannable objects.
         if (key.hotkey == "NEXT_SCANNABLE_OBJECT" &&
-            my_spaceship->scanning_delay == 0.0)
+            my_spaceship->scanning_delay == 0.0f)
         {
             bool current_found = false;
             for (P<SpaceObject> obj : space_object_list)

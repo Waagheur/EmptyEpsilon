@@ -291,9 +291,9 @@ void RelayScreen::onDraw(sp::RenderTarget& renderer)
 {
     ///Handle mouse wheel
     float mouse_wheel_delta = InputHandler::getMouseWheelDelta();
-    if (mouse_wheel_delta != 0.0)
+    if (mouse_wheel_delta != 0.0f)
     {
-        float view_distance = radar->getDistance() * (1.0 - (mouse_wheel_delta * 0.1f));
+        float view_distance = radar->getDistance() * (1.0f - (mouse_wheel_delta * 0.1f));
         zoom_slider->setValue(view_distance);
         view_distance = zoom_slider->getValue();
         radar->setDistance(view_distance);

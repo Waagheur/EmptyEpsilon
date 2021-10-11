@@ -312,9 +312,9 @@ GameMasterScreen::~GameMasterScreen()
 void GameMasterScreen::update(float delta)
 {
     float mouse_wheel_delta = InputHandler::getMouseWheelDelta();
-    if (mouse_wheel_delta != 0.0)
+    if (mouse_wheel_delta != 0.0f)
     {
-        float view_distance = main_radar->getDistance() * (1.0 - (mouse_wheel_delta * 0.1f));
+        float view_distance = main_radar->getDistance() * (1.0f - (mouse_wheel_delta * 0.1f));
         if (view_distance > max_distance)
             view_distance = max_distance;
         if (view_distance < min_distance)

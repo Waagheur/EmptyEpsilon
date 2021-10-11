@@ -211,15 +211,15 @@ void RepairCrew::update(float delta)
                 ship->hull_strength += repair_per_second * delta * 20;
                 float hull_new = ship->hull_strength / ship->hull_max;
 
-                if (hull_old <= 0.2 && hull_new > 0.2)
+                if (hull_old <= 0.2f && hull_new > 0.2f)
                     ship->hull_strength = ship->hull_max * 0.2f;
-                else if (hull_old <= 0.4 && hull_new > 0.4)
+                else if (hull_old <= 0.4f && hull_new > 0.4f)
                     ship->hull_strength = ship->hull_max * 0.4f;
-                else if (hull_old <= 0.6 && hull_new > 0.6)
+                else if (hull_old <= 0.6f && hull_new > 0.6f)
                     ship->hull_strength = ship->hull_max * 0.6f;
-                else if (hull_old <= 0.8 && hull_new > 0.8)
+                else if (hull_old <= 0.8f && hull_new > 0.8f)
                     ship->hull_strength = ship->hull_max * 0.8f;
-                else if (hull_new > 1.0)
+                else if (hull_new > 1.0f)
                     ship->hull_strength = ship->hull_max;
             }
             if (ship->auto_repair_enabled && pos == target_position && (system == SYS_None || !ship->hasSystem(system) || ship->systems[system].health == ship->systems[system].health_max))
