@@ -23,6 +23,19 @@ ProbeScreen::ProbeScreen()
 
 void ProbeScreen::update(float delta)
 {
+    angle += (keys.helms_turn_right.getValue() - keys.helms_turn_left.getValue()) * 5.0f;
+     //TODO: This is more generic code and is duplicated.
+    if (keys.escape.getDown())
+    {
+        destroy();
+        returnToShipSelection();
+    }
+     if (keys.pause.getDown())
+     {
+        if (game_server)
+            engine->setGameSpeed(0.0);
+     }
+    
 
     if (game_client && game_client->getStatus() == GameClient::Disconnected)
     {
@@ -64,27 +77,3 @@ void ProbeScreen::update(float delta)
     }
 }
 
-void ProbeScreen::onKey(const SDL_KeyboardEvent& key, int unicode)
-{
-    switch(key.keysym.sym)
-    {
-    case SDLK_LEFT:
-        angle -= 5.0f;
-        break;
-    case SDLK_RIGHT:
-        angle += 5.0f;
-        break;
-     //TODO: This is more generic code and is duplicated.
-    case SDLK_ESCAPE:
-    case SDLK_HOME:
-        destroy();
-        returnToShipSelection();
-        break;
-    case SDLK_p:
-        if (game_server)
-            engine->setGameSpeed(0.0);
-        break;
-    default:
-        break;
-    }
-}

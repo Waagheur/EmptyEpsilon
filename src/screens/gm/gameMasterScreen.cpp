@@ -311,7 +311,7 @@ GameMasterScreen::~GameMasterScreen()
 
 void GameMasterScreen::update(float delta)
 {
-    float mouse_wheel_delta = InputHandler::getMouseWheelDelta();
+    float mouse_wheel_delta = keys.zoom_in.getValue() - keys.zoom_out.getValue();
     if (mouse_wheel_delta != 0.0f)
     {
         float view_distance = main_radar->getDistance() * (1.0f - (mouse_wheel_delta * 0.1f));
@@ -324,6 +324,28 @@ void GameMasterScreen::update(float delta)
             main_radar->shortRange();
         else
             main_radar->longRange();
+    }
+
+    if (keys.gm_delete.getDown())
+    {
+        gameMasterActions->commandDestroy(targets.getTargets());
+    }
+    if (keys.gm_clipboardcopy.getDown())
+    {
+        Clipboard::setClipboard(getScriptExport(false));
+    }
+
+    if (keys.escape.getDown())
+    {
+        destroy();
+        returnToShipSelection();
+    }
+    if (keys.pause.getDown())
+    {
+        if (engine->getGameSpeed() == 0.0f)
+            gameMasterActions->commandSetGameSpeed(1.0f);
+        else
+            gameMasterActions->commandSetGameSpeed(0.0f);
     }
 
     bool has_object = false;
@@ -605,33 +627,6 @@ void GameMasterScreen::onMouseUp(glm::vec2 position)
     }
     click_and_drag_state = CD_None;
     box_selection_overlay->hide();
-}
-
-void GameMasterScreen::onKey(const SDL_KeyboardEvent& key, int unicode)
-{
-    switch(key.keysym.sym)
-    {
-    case SDLK_DELETE:
-        gameMasterActions->commandDestroy(targets.getTargets());
-        break;
-    case SDLK_F5:
-        Clipboard::setClipboard(getScriptExport(false));
-        break;
-
-    case SDLK_ESCAPE:
-    case SDLK_HOME:
-        destroy();
-        returnToShipSelection();
-        break;
-    case SDLK_p:
-        if (engine->getGameSpeed() == 0.0f)
-            gameMasterActions->commandSetGameSpeed(1.0f);
-        else
-            gameMasterActions->commandSetGameSpeed(0.0f);
-        break;
-    default:
-        break;
-    }
 }
 
 PVector<SpaceObject> GameMasterScreen::getSelection()
