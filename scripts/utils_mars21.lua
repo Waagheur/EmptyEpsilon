@@ -170,17 +170,17 @@ ship:setShieldRechargeRate(0.6)
                             local current_energy = ship:getEnergy()
                             ship:setEnergy((current_energy - hullDamage) *10 ) --set the multiplier as it's total energy - damage
                             
-                            --inflicts heat (between 0 and 1)
+                            --inflicts heat (heat is between 0 and 1, damage can be high)
                             local current_heat = ship:getSystemHeat(list_of_systems[count])
-                            ship:setSystemHeat(list_of_systems[count], (current_heat + hullDamage)/100) --set this as for now it's 1 damage = 1%
+                            ship:setSystemHeat(list_of_systems[count], current_heat + hullDamage/100) --set this as for now it's 1 damage = 1%
                             
-                            --inflicts hack (between 0 and 1)
+                            --inflicts hack (hack is between 0 and 1, damage can be high)
                             local current_hack = ship:getSystemHackedLevel(list_of_systems[count])
-                            ship:setSystemHackedLevel(list_of_systems[count], (current_hack + hullDamage)/100) --set this as for now it's 1 damage = 1%
+                            ship:setSystemHackedLevel(list_of_systems[count], current_hack + hullDamage/100) --set this as for now it's 1 damage = 1%
 
-                            --inflicts damage on system (overrides system harness set by ratio or minimal damage needed to hit) (between 0 and 1)
+                            --inflicts damage on system (overrides system harness set by ratio or minimal damage needed to hit) (health is between 0 and 1, damage can be high)
                             local current_health = ship:getSystemHealth(list_of_systems[count])
-                            ship:setSystemHealth(list_of_systems[count], (current_health - hullDamage)/100) --set this as for now it's 1 damage = 1%
+                            ship:setSystemHealth(list_of_systems[count], current_health - hullDamage/100) --set this as for now it's 1 damage = 1%
 
                             -- END BALANCE MODIFICATION
                             -- END BALANCE MODIFICATION
