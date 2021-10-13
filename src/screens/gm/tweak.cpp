@@ -299,7 +299,8 @@ GuiTemplateTweak::GuiTemplateTweak(GuiContainer* owner)
 
     (new GuiLabel(left_col, "", tr("Heading:"), 30))->setSize(GuiElement::GuiSizeMax, 50);
     heading_slider = new GuiSlider(left_col, "", 0.0, 359.9, 0.0, [this](float value) {
-        target->setHeading(value);
+        if(target)
+            target->setHeading(value);
 
         // If the target is a player, also set its target rotation.
         P<PlayerSpaceship> player = target;
@@ -310,14 +311,16 @@ GuiTemplateTweak::GuiTemplateTweak(GuiContainer* owner)
 
     (new GuiLabel(left_col, "", "Rotation:", 30))->setSize(GuiElement::GuiSizeMax, 50);
     rotation_slider = new GuiSlider(left_col, "", -100.0, 100.0, 0.0, [this](float value) {
-        target->setRotationSpeed(value/10.0);
+        if(target)
+            target->setRotationSpeed(value/10.0);
     });
     rotation_slider->addOverlay()->setSize(GuiElement::GuiSizeMax, 40);
 
     // Transparency slider
     (new GuiLabel(left_col, "", "Transparence:", 30))->setSize(GuiElement::GuiSizeMax, 50);
     transparency_slider = new GuiSlider(left_col, "", 0.0, 100.0, 0.0, [this](float value) {
-       target->setTransparency(value / 100.0);
+       if(target)
+        target->setTransparency(value / 100.0);
     });
     transparency_slider->addOverlay()->setSize(GuiElement::GuiSizeMax, 40);
 
@@ -348,39 +351,47 @@ GuiTemplateTweak::GuiTemplateTweak(GuiContainer* owner)
     type_name = new GuiTextEntry(right_col, "", "");
     type_name->setSize(GuiElement::GuiSizeMax, 50);
     type_name->callback([this](string text) {
-        target->setTypeName(text);
+        if(target)
+            target->setTypeName(text);
     });
 
     // Right column
     // Hull max and state sliders
     (new GuiLabel(right_col, "", tr("Hull max:"), 30))->setSize(GuiElement::GuiSizeMax, 50);
     hull_max_slider = new GuiSlider(right_col, "", 0.0, 4000, 0.0, [this](float value) {
-        target->hull_max = round(value);
-        target->hull_strength = std::min(target->hull_strength, target->hull_max);
+        if(target)
+        {
+            target->hull_max = round(value);
+            target->hull_strength = std::min(target->hull_strength, target->hull_max);
+        }
     });
     hull_max_slider->addOverlay()->setSize(GuiElement::GuiSizeMax, 40);
 
     (new GuiLabel(right_col, "", tr("Hull current:"), 30))->setSize(GuiElement::GuiSizeMax, 50);
     hull_slider = new GuiSlider(right_col, "", 0.0, 4000, 0.0, [this](float value) {
-        target->hull_strength = std::min(roundf(value), target->hull_max);
+        if(target)
+            target->hull_strength = std::min(roundf(value), target->hull_max);
     });
     hull_slider->addOverlay()->setSize(GuiElement::GuiSizeMax, 40);
 
    // Can be destroyed bool
    can_be_destroyed_toggle = new GuiToggleButton(right_col, "", tr("Could be destroyed"), [this](bool value) {
-       target->setCanBeDestroyed(value);
+       if(target)
+        target->setCanBeDestroyed(value);
    });
    can_be_destroyed_toggle->setSize(GuiElement::GuiSizeMax, 40);
 
     (new GuiLabel(right_col, "", "Ratio de degats aux systemes :", 30))->setSize(GuiElement::GuiSizeMax, 50);
     system_damage_ratio_slider = new GuiSlider(right_col, "", 0.0, 100.0, 0.0, [this](float value) {
-        target->system_damage_ratio = value / 100.0f;
+        if(target)
+            target->system_damage_ratio = value / 100.0f;
     });
     system_damage_ratio_slider->addOverlay()->setSize(GuiElement::GuiSizeMax, 40);
 
     (new GuiLabel(right_col, "", "Min% hull avant degats systeme :", 30))->setSize(GuiElement::GuiSizeMax, 50);
     system_damage_hull_threshold_slider = new GuiSlider(right_col, "", 0.0, 100.0, 0.0, [this](float value) {
-        target->system_damage_hull_threshold = value / 100.0f;
+        if(target)
+            target->system_damage_hull_threshold = value / 100.0f;
     });
     system_damage_hull_threshold_slider->addOverlay()->setSize(GuiElement::GuiSizeMax, 40);
 }
@@ -425,15 +436,17 @@ GuiShipTweakShields::GuiShipTweakShields(GuiContainer* owner)
     {
         (new GuiLabel(left_col, "", tr("Shield {id_shield} max:").format({{"id_shield", string(n + 1)}}), 20))->setSize(GuiElement::GuiSizeMax, 30);
         shield_max_slider[n] = new GuiSlider(left_col, "", 0.0, 2000, 0.0, [this, n](float value) {
+            if(target)
+            {
+                target->shield_max[n] = roundf(value);
+                target->shield_level[n] = std::min(target->shield_level[n], target->shield_max[n]);
 
-            target->shield_max[n] = roundf(value);
-            target->shield_level[n] = std::min(target->shield_level[n], target->shield_max[n]);
-
-            int actual_shield_count = 0;
-            for(int k=0; k<max_shield_count; k++)
-                if (target->shield_max[k] > 0)
-                    actual_shield_count = k+1;
-            target->setShieldCount(actual_shield_count);
+                int actual_shield_count = 0;
+                for(int k=0; k<max_shield_count; k++)
+                    if (target->shield_max[k] > 0)
+                        actual_shield_count = k+1;
+                target->setShieldCount(actual_shield_count);
+            }
         });
         shield_max_slider[n]->addOverlay()->setSize(GuiElement::GuiSizeMax, 40);
     }
@@ -442,14 +455,16 @@ GuiShipTweakShields::GuiShipTweakShields(GuiContainer* owner)
     {
         (new GuiLabel(right_col, "", tr("Shield {id_shield}:").format({{"id_shield", string(n + 1)}}), 20))->setSize(GuiElement::GuiSizeMax, 30);
         shield_slider[n] = new GuiSlider(right_col, "", 0.0, 2000, 0.0, [this, n](float value) {
-            target->shield_level[n] = std::min(roundf(value), target->shield_max[n]);
+            if(target)
+                target->shield_level[n] = std::min(roundf(value), target->shield_max[n]);
         });
         shield_slider[n]->addOverlay()->setSize(GuiElement::GuiSizeMax, 40);
     }
 
     (new GuiLabel(left_col, "", "Vitesse de recharge des boucliers :", 20))->setSize(GuiElement::GuiSizeMax, 30);
     shield_recharge_slider = new GuiSlider(left_col, "", 0.0, 200, 30, [this](float value) {
-        target->shield_recharge_rate = value/100.0f;
+        if(target)
+            target->shield_recharge_rate = value/100.0f;
     });
     shield_recharge_slider->addOverlay()->setSize(GuiElement::GuiSizeMax, 40);
 }
@@ -493,54 +508,63 @@ GuiShipTweak::GuiShipTweak(GuiContainer* owner)
     // Left column
     (new GuiLabel(left_col, "",  tr("Impulse speed:"), 30))->setSize(GuiElement::GuiSizeMax, 45);
     impulse_speed_slider = new GuiSlider(left_col, "", 0.0, 250, 0.0, [this](float value) {
-        target->impulse_max_speed = value;
+        if(target)
+            target->impulse_max_speed = value;
     });
     impulse_speed_slider->addOverlay()->setSize(GuiElement::GuiSizeMax, 35);
 
     (new GuiLabel(left_col, "", tr("Impulse reverse speed:"), 30))->setSize(GuiElement::GuiSizeMax, 50);
     impulse_reverse_speed_slider = new GuiSlider(left_col, "", 0.0, 250, 0.0, [this](float value) {
-        target->impulse_max_reverse_speed = value;
+        if(target)
+            target->impulse_max_reverse_speed = value;
     });
     impulse_reverse_speed_slider->addOverlay()->setSize(GuiElement::GuiSizeMax, 40);
 
     (new GuiLabel(left_col, "", tr("Turn speed:"), 30))->setSize(GuiElement::GuiSizeMax, 45);
     turn_speed_slider = new GuiSlider(left_col, "", 0.0, 35, 0.0, [this](float value) {
-        target->turn_speed = value;
+        if(target)
+            target->turn_speed = value;
     });
     turn_speed_slider->addOverlay()->setSize(GuiElement::GuiSizeMax, 35);
 
     // Display Boost/Strafe speed sliders
     (new GuiLabel(left_col, "", tr("Boost Speed:"), 30))->setSize(GuiElement::GuiSizeMax, 45);
     combat_maneuver_boost_speed_slider = new GuiSlider(left_col, "", 0.0, 1000, 0.0, [this](float value) {
-        target->combat_maneuver_boost_speed = value;
+        if(target)
+            target->combat_maneuver_boost_speed = value;
     });
     combat_maneuver_boost_speed_slider->addOverlay()->setSize(GuiElement::GuiSizeMax, 35);
 
     (new GuiLabel(left_col, "", tr("Strafe Speed:"), 30))->setSize(GuiElement::GuiSizeMax, 45);
     combat_maneuver_strafe_speed_slider = new GuiSlider(left_col, "", 0.0, 1000, 0.0, [this](float value) {
-        target->combat_maneuver_strafe_speed = value;
+        if(target)
+            target->combat_maneuver_strafe_speed = value;
     });
     combat_maneuver_strafe_speed_slider->addOverlay()->setSize(GuiElement::GuiSizeMax, 35);
 
     // Warp and jump drive toggles
     (new GuiLabel(left_col, "", "Moteurs speciaux:", 30))->setSize(GuiElement::GuiSizeMax, 45);
     warp_toggle = new GuiToggleButton(left_col, "", "Moteur WARP", [this](bool value) {
-        target->setWarpDrive(value);
+        if(target)
+            target->setWarpDrive(value);
     });
     warp_toggle->setSize(GuiElement::GuiSizeMax, 35);
 
     jump_toggle = new GuiToggleButton(right_col, "", tr("Jump Drive"), [this](bool value) {
-        target->setJumpDrive(value);
+        if(target)
+            target->setJumpDrive(value);
     });
     jump_toggle->setSize(GuiElement::GuiSizeMax, 35);
 
     reactor_toggle = new GuiToggleButton(left_col, "", "Reacteur", [this](bool value) {
-        target->setReactor(value);
+        if(target)
+            target->setReactor(value);
     });
     reactor_toggle->setSize(GuiElement::GuiSizeMax, 35);
 
     cloaking_toggle = new GuiToggleButton(left_col, "", "Invisibilite", [this](bool value) {
-        target->setCloaking(value);
+        if(target)
+            target->setCloaking(value);
     });
     cloaking_toggle->setSize(GuiElement::GuiSizeMax, 35);
 
@@ -554,33 +578,42 @@ GuiShipTweak::GuiShipTweak(GuiContainer* owner)
 
     (new GuiLabel(right_col, "", "JUMP, distance Min :", 30))->setSize(GuiElement::GuiSizeMax, 45);
     jump_drive_min_distance_slider = new GuiSlider(right_col, "", 0.0, 50000, 0.0, [this](float value) {
-        target->jump_drive_min_distance = round(value / 1000) * 1000000;
-        target->jump_drive_max_distance = std::max(target->jump_drive_min_distance, target->jump_drive_max_distance);
+        if(target)
+        {
+            target->jump_drive_min_distance = round(value / 1000) * 1000000;
+            target->jump_drive_max_distance = std::max(target->jump_drive_min_distance, target->jump_drive_max_distance);
+        }
     });
     jump_drive_min_distance_slider->addOverlay()->setSize(GuiElement::GuiSizeMax, 35);
 
     (new GuiLabel(right_col, "", "JUMP, distance Max :", 30))->setSize(GuiElement::GuiSizeMax, 45);
     jump_drive_max_distance_slider = new GuiSlider(right_col, "", 0.0, 100000, 0.0, [this](float value) {
-        target->jump_drive_max_distance = round(value / 1000) * 1000000;
-        target->jump_drive_min_distance = std::min(target->jump_drive_min_distance, target->jump_drive_max_distance);
+        if(target)
+        {
+            target->jump_drive_max_distance = round(value / 1000) * 1000000;
+            target->jump_drive_min_distance = std::min(target->jump_drive_min_distance, target->jump_drive_max_distance);
+        }
    });
     jump_drive_max_distance_slider->addOverlay()->setSize(GuiElement::GuiSizeMax, 35);
 
     (new GuiLabel(right_col, "", tr("Jump charge:"), 30))->setSize(GuiElement::GuiSizeMax, 45);
     jump_drive_charge_slider = new GuiSlider(right_col, "", 0.0, 100.0, 0.0, [this](float value) {
-        target->jump_drive_charge = value / 100.0 * target->jump_drive_max_distance;
+        if(target)
+            target->jump_drive_charge = value / 100.0 * target->jump_drive_max_distance;
     });
     jump_drive_charge_slider->addOverlay()->setSize(GuiElement::GuiSizeMax, 35);
 
     (new GuiLabel(right_col, "", "Jump charge complete :", 30))->setSize(GuiElement::GuiSizeMax, 45);
     jump_drive_charge_time_slider = new GuiSlider(right_col, "", 0.0, 90*60, 0.0, [this](float value) {
-        target->jump_drive_charge_time = value;
+        if(target)
+            target->jump_drive_charge_time = value;
     });
     jump_drive_charge_time_slider->addOverlay()->setSize(GuiElement::GuiSizeMax, 35);
 
     (new GuiLabel(right_col, "", "Jump, energie :", 30))->setSize(GuiElement::GuiSizeMax, 45);
     jump_drive_energy_slider = new GuiSlider(right_col, "", 0.0, 100, 0.0, [this](float value) {
-        target->jump_drive_energy_per_km_charge = value;
+        if(target)
+            target->jump_drive_energy_per_km_charge = value;
     });
     jump_drive_energy_slider->addOverlay()->setSize(GuiElement::GuiSizeMax, 35);
 
@@ -593,7 +626,8 @@ GuiShipTweak::GuiShipTweak(GuiContainer* owner)
 
     (new GuiLabel(right_col, "", "Warp, vitesse :", 30))->setSize(GuiElement::GuiSizeMax, 45);
     warp_speed_slider = new GuiSlider(right_col, "", 0.0, 90, 0.0, [this](float value) {
-        target->warp_speed_per_warp_level = value*16.667;
+        if(target)
+            target->warp_speed_per_warp_level = value*16.667;
     });
     warp_speed_slider->addOverlay()->setSize(GuiElement::GuiSizeMax, 35);
 
@@ -669,8 +703,11 @@ GuiShipTweakMissileWeapons::GuiShipTweakMissileWeapons(GuiContainer* owner)
         custom_missile_storage_labels.push_back(new GuiLabel(left_col, "", getMissileWeaponName(kv.first) + ":", 20));
         custom_missile_storage_labels.back()->setSize(GuiElement::GuiSizeMax, 30);
         missile_storage_amount_slider.push_back(new GuiSlider(left_col, "", 0.0, 300, 0.0, [this, kv](float value) {
-            target->custom_weapon_storage_max[kv.first] = int(round(value));
-            target->custom_weapon_storage[kv.first] = std::min(target->custom_weapon_storage[kv.first], target->custom_weapon_storage_max[kv.first]);
+            if(target)
+            {
+                target->custom_weapon_storage_max[kv.first] = int(round(value));
+                target->custom_weapon_storage[kv.first] = std::min(target->custom_weapon_storage[kv.first], target->custom_weapon_storage_max[kv.first]);
+            }
         }));
         missile_storage_amount_slider.back()->addOverlay()->setSize(GuiElement::GuiSizeMax, 40);
     }
@@ -679,8 +716,11 @@ GuiShipTweakMissileWeapons::GuiShipTweakMissileWeapons(GuiContainer* owner)
     {
         (new GuiLabel(left_col, "", getLocaleMissileWeaponName(EMissileWeapons(n)) + ":", 20))->setSize(GuiElement::GuiSizeMax, 30);
         missile_storage_amount_slider.push_back(new GuiSlider(left_col, "", 0.0, 300, 0.0, [this, n](float value) {
-            target->weapon_storage_max[n] = int(round(value));
-            target->weapon_storage[n] = std::min(target->weapon_storage[n], target->weapon_storage_max[n]);
+            if(target)
+            {
+                target->weapon_storage_max[n] = int(round(value));
+                target->weapon_storage[n] = std::min(target->weapon_storage[n], target->weapon_storage_max[n]);
+            }
         }));
         missile_storage_amount_slider.back()->addOverlay()->setSize(GuiElement::GuiSizeMax, 40);
     }
@@ -693,7 +733,8 @@ GuiShipTweakMissileWeapons::GuiShipTweakMissileWeapons(GuiContainer* owner)
         custom_missile_current_labels.push_back(new GuiLabel(right_col, "", getMissileWeaponName(kv.first) + ":", 20));
         custom_missile_current_labels.back()->setSize(GuiElement::GuiSizeMax, 30);
         missile_current_amount_slider.push_back(new GuiSlider(right_col, "", 0.0, 300, 0.0, [this, kv](float value) {
-            target->custom_weapon_storage[kv.first] = std::min(int(round(value)), target->custom_weapon_storage_max[kv.first]);
+            if(target)
+                target->custom_weapon_storage[kv.first] = std::min(int(round(value)), target->custom_weapon_storage_max[kv.first]);
         }));
         missile_current_amount_slider.back()->addOverlay()->setSize(GuiElement::GuiSizeMax, 40);
     }
@@ -702,7 +743,8 @@ GuiShipTweakMissileWeapons::GuiShipTweakMissileWeapons(GuiContainer* owner)
     {
         (new GuiLabel(right_col, "", getLocaleMissileWeaponName(EMissileWeapons(n)) + ":", 20))->setSize(GuiElement::GuiSizeMax, 30);
         missile_current_amount_slider.push_back(new GuiSlider(right_col, "", 0.0, 300, 0.0, [this, n](float value) {
-            target->weapon_storage[n] = std::min(int(round(value)), target->weapon_storage_max[n]);
+            if(target)
+                target->weapon_storage[n] = std::min(int(round(value)), target->weapon_storage_max[n]);
         }));
         missile_current_amount_slider.back()->addOverlay()->setSize(GuiElement::GuiSizeMax, 40);
     }
@@ -721,7 +763,8 @@ GuiJammerTweak::GuiJammerTweak(GuiContainer* owner)
 
     (new GuiLabel(left_col, "", tr("Jammer Range:"), 30))->setSize(GuiElement::GuiSizeMax, 50);
     jammer_range_slider = new GuiSlider(left_col, "", 0, 20000, 0, [this](float value) {
-        target->setRange(value);
+        if(target)
+            target->setRange(value);
     });
     jammer_range_slider->addOverlay()->setSize(GuiElement::GuiSizeMax, 40);
 }
@@ -734,6 +777,8 @@ void GuiJammerTweak::open(P<SpaceObject> target)
 
 void GuiJammerTweak::onDraw(sf::RenderTarget& window)
 {
+    if(!target)
+        return;
     jammer_range_slider->setValue(target->getRange());
 }
 
@@ -761,6 +806,8 @@ void GuiAsteroidTweak::open(P<SpaceObject> target)
 
 void GuiAsteroidTweak::onDraw(sf::RenderTarget& window)
 {
+    if(!target)
+        return;
     asteroid_size_slider->setValue(target->getSize());
 }
 
@@ -837,7 +884,8 @@ GuiShipTweakMissileTubes::GuiShipTweakMissileTubes(GuiContainer* owner)
     // Left column
     (new GuiLabel(left_col, "", tr("Tube count:"), 30))->setSize(GuiElement::GuiSizeMax, 50);
     missile_tube_amount_selector = new GuiSelector(left_col, "", [this](int index, string value) {
-        target->weapon_tube_count = index;
+        if(target)
+            target->weapon_tube_count = index;
     });
     for(int n=0; n<max_weapon_tubes; n++)
         missile_tube_amount_selector->addEntry(string(n), "");
@@ -847,15 +895,18 @@ GuiShipTweakMissileTubes::GuiShipTweakMissileTubes(GuiContainer* owner)
     tube_index = 0;
     index_selector = new GuiSelector(right_col, "", [this](int index, string value)
     {
-        if (index >= target->weapon_tube_count)
+        if(target)
         {
-            if (index == max_weapon_tubes - 1)
-                index = std::max(0, target->weapon_tube_count - 1);
-            else
-                index = 0;
-            index_selector->setSelectionIndex(index);
+            if (index >= target->weapon_tube_count)
+            {
+                if (index == max_weapon_tubes - 1)
+                    index = std::max(0, target->weapon_tube_count - 1);
+                else
+                    index = 0;
+                index_selector->setSelectionIndex(index);
+            }
+            tube_index = index;
         }
-        tube_index = index;
     });
     index_selector->setSize(GuiElement::GuiSizeMax, 40);
     for(int n=0; n<max_weapon_tubes; n++)
@@ -864,20 +915,23 @@ GuiShipTweakMissileTubes::GuiShipTweakMissileTubes(GuiContainer* owner)
 
     (new GuiLabel(right_col, "", tr("tube", "Direction:"), 20))->setSize(GuiElement::GuiSizeMax, 30);
     direction_slider = new GuiSlider(right_col, "", -180.0, 180, 0.0, [this](float value) {
-        target->weapon_tube[tube_index].setDirection(roundf(value));
+        if(target)
+            target->weapon_tube[tube_index].setDirection(roundf(value));
     });
     direction_slider->addOverlay()->setSize(GuiElement::GuiSizeMax, 40);
 
     (new GuiLabel(right_col, "", tr("tube", "Load time:"), 20))->setSize(GuiElement::GuiSizeMax, 30);
     load_time_slider = new GuiSlider(right_col, "", 0.0, 60.0, 0.0, [this](float value) {
-        target->weapon_tube[tube_index].setLoadTimeConfig(roundf(value * 10) / 10);
+        if(target)
+            target->weapon_tube[tube_index].setLoadTimeConfig(roundf(value * 10) / 10);
     });
     load_time_slider->addOverlay()->setSize(GuiElement::GuiSizeMax, 40);
 
     (new GuiLabel(right_col, "", tr("tube", "Size:"), 20))->setSize(GuiElement::GuiSizeMax, 30);
     size_selector=new GuiSelector(right_col, "", [this](int index, string value)
     {
-        target->weapon_tube[tube_index].setSize(EMissileSizes(index));
+        if(target)
+            target->weapon_tube[tube_index].setSize(EMissileSizes(index));
     });
     size_selector->addEntry(tr("tube", "Small"),MS_Small);
     size_selector->addEntry(tr("tube", "Medium"),MS_Medium);
@@ -890,9 +944,9 @@ GuiShipTweakMissileTubes::GuiShipTweakMissileTubes(GuiContainer* owner)
     for(n=0; n<MW_Count; n++)
     {
         allowed_use.push_back(new GuiToggleButton(right_col, "", getLocaleMissileWeaponName(EMissileWeapons(n)), [this, n](bool value) {
-            if (value)
+            if (value && target)
                 target->weapon_tube[tube_index].allowLoadOf(EMissileWeapons(n));
-            else
+            else if (target)
                 target->weapon_tube[tube_index].disallowLoadOf(EMissileWeapons(n));
         }));
         allowed_use[n]->setSize(GuiElement::GuiSizeMax, 40);
@@ -900,9 +954,9 @@ GuiShipTweakMissileTubes::GuiShipTweakMissileTubes(GuiContainer* owner)
     for(auto& kv : CustomMissileWeaponRegistry::getCustomMissileWeapons())
     {
          allowed_use.push_back(new GuiToggleButton(right_col, "", getLocaleMissileWeaponName(kv.first), [this, kv](bool value) {
-            if (value)
+            if (value && target)
                 target->weapon_tube[tube_index].allowLoadOf(kv.first);
-            else
+            else if (target)
                 target->weapon_tube[tube_index].disallowLoadOf(kv.first);
         }));
         allowed_use[n]->setSize(GuiElement::GuiSizeMax, 40);
@@ -959,31 +1013,36 @@ GuiShipTweakBeamweapons::GuiShipTweakBeamweapons(GuiContainer* owner)
     index_selector->setSelectionIndex(0);
 
     valid_toggle = new GuiToggleButton(left_col, "", "Valide", [this](bool value) {
-        target->beam_weapons[beam_index].setIsValid(value);
+        if(target)
+            target->beam_weapons[beam_index].setIsValid(value);
     });
     valid_toggle->setSize(GuiElement::GuiSizeMax, 40);
 
     (new GuiLabel(right_col, "", tr("beam", "Arc:"), 20))->setSize(GuiElement::GuiSizeMax, 30);
     arc_slider = new GuiSlider(right_col, "", 0.0, 360.0, 0.0, [this](float value) {
-        target->beam_weapons[beam_index].setArc(roundf(value));
+        if(target)
+            target->beam_weapons[beam_index].setArc(roundf(value));
     });
     arc_slider->addOverlay()->setSize(GuiElement::GuiSizeMax, 30);
 
     (new GuiLabel(right_col, "", tr("beam", "Direction:"), 20))->setSize(GuiElement::GuiSizeMax, 30);
     direction_slider = new GuiSlider(right_col, "", -180.0, 180.0, 0.0, [this](float value) {
-        target->beam_weapons[beam_index].setDirection(roundf(value));
+        if(target)
+            target->beam_weapons[beam_index].setDirection(roundf(value));
     });
     direction_slider->addOverlay()->setSize(GuiElement::GuiSizeMax, 30);
 
     (new GuiLabel(right_col, "", tr("beam", "Turret arc:"), 20))->setSize(GuiElement::GuiSizeMax, 30);
     turret_arc_slider = new GuiSlider(right_col, "", 0.0, 360.0, 0.0, [this](float value) {
-        target->beam_weapons[beam_index].setTurretArc(roundf(value));
+        if(target)
+            target->beam_weapons[beam_index].setTurretArc(roundf(value));
     });
     turret_arc_slider->addOverlay()->setSize(GuiElement::GuiSizeMax, 30);
 
     (new GuiLabel(right_col, "", tr("beam", "Turret direction:"), 20))->setSize(GuiElement::GuiSizeMax, 30);
     turret_direction_slider = new GuiSlider(right_col, "", -180.0, 180.0, 0.0, [this](float value) {
-        target->beam_weapons[beam_index].setTurretDirection(roundf(value));
+        if(target)
+            target->beam_weapons[beam_index].setTurretDirection(roundf(value));
     });
     turret_direction_slider->addOverlay()->setSize(GuiElement::GuiSizeMax, 30);
 
@@ -992,9 +1051,9 @@ GuiShipTweakBeamweapons::GuiShipTweakBeamweapons(GuiContainer* owner)
     // result in practicaly instantaneous turret rotation anyway.
     turret_rotation_rate_slider = new GuiSlider(right_col, "", 0.0, 250.0, 0.0, [this](float value) {
         // Divide a large value for granularity.
-        if (value > 0)
+        if ((value > 0) && target)
             target->beam_weapons[beam_index].setTurretRotationRate(value / 10.0);
-        else
+        else if (target)
             target->beam_weapons[beam_index].setTurretRotationRate(0.0);
     });
     turret_rotation_rate_slider->setSize(GuiElement::GuiSizeMax, 30);
@@ -1004,31 +1063,36 @@ GuiShipTweakBeamweapons::GuiShipTweakBeamweapons(GuiContainer* owner)
 
     (new GuiLabel(right_col, "", tr("beam", "Range:"), 20))->setSize(GuiElement::GuiSizeMax, 30);
     range_slider = new GuiSlider(right_col, "", 0.0, 5000.0, 0.0, [this](float value) {
-        target->beam_weapons[beam_index].setRange(roundf(value / 100) * 100);
+        if(target)
+            target->beam_weapons[beam_index].setRange(roundf(value / 100) * 100);
     });
     range_slider->addOverlay()->setSize(GuiElement::GuiSizeMax, 30);
 
     (new GuiLabel(right_col, "", tr("beam", "Cycle time:"), 20))->setSize(GuiElement::GuiSizeMax, 30);
     cycle_time_slider = new GuiSlider(right_col, "", 0.1, 20.0, 0.0, [this](float value) {
-        target->beam_weapons[beam_index].setCycleTime(value);
+        if(target)
+            target->beam_weapons[beam_index].setCycleTime(value);
     });
     cycle_time_slider->addOverlay()->setSize(GuiElement::GuiSizeMax, 30);
 
     (new GuiLabel(right_col, "", tr("beam", "Damage:"), 20))->setSize(GuiElement::GuiSizeMax, 30);
     damage_slider = new GuiSlider(right_col, "", 0.1, 50.0, 0.0, [this](float value) {
-        target->beam_weapons[beam_index].setDamage(value);
+        if(target)
+            target->beam_weapons[beam_index].setDamage(value);
     });
     damage_slider->addOverlay()->setSize(GuiElement::GuiSizeMax, 30);
 
     (new GuiLabel(right_col, "", "Surchauffe par tir (/100):", 20))->setSize(GuiElement::GuiSizeMax, 30);
     heat_slider = new GuiSlider(right_col, "", 0.1, 50.0, 0.0, [this](float value) {
-        target->beam_weapons[beam_index].setHeatPerFire(value / 100.0f);
+        if(target)
+            target->beam_weapons[beam_index].setHeatPerFire(value / 100.0f);
     });
     heat_slider->addOverlay()->setSize(GuiElement::GuiSizeMax, 30);
 
     (new GuiLabel(right_col, "", "Energie par tir:", 20))->setSize(GuiElement::GuiSizeMax, 30);
     energy_slider = new GuiSlider(right_col, "", 0.1, 50.0, 0.0, [this](float value) {
-        target->beam_weapons[beam_index].setEnergyPerFire(value);
+        if(target)
+            target->beam_weapons[beam_index].setEnergyPerFire(value);
     });
     energy_slider->addOverlay()->setSize(GuiElement::GuiSizeMax, 30);
 }
@@ -1099,7 +1163,8 @@ GuiShipTweakSystems::GuiShipTweakSystems(GuiContainer* owner)
         temp_4[n]->setSize(GuiElement::GuiSizeMax, 30);
 
         system_damage[n] = new GuiSlider(col_1, "", -1.0, 1.0, 0.0, [this, n](float value) {
-            target->systems[n].health = std::min(value,target->systems[n].health_max);
+            if(target)
+                target->systems[n].health = std::min(value,target->systems[n].health_max);
         });
         system_damage[n]->setSize(GuiElement::GuiSizeMax, 30);
         system_damage[n]->addSnapValue(-1.0, 0.01);
@@ -1110,8 +1175,11 @@ GuiShipTweakSystems::GuiShipTweakSystems(GuiContainer* owner)
 
         //(new GuiLabel(col_2, "", tr("{system} health max").format({{"system", getLocaleSystemName(system)}}), 20))->setSize(GuiElement::GuiSizeMax, 30);
         system_health_max[n] = new GuiSlider(col_2, "", -1.0, 1.0, 1.0, [this, n](float value) {
-            target->systems[n].health_max = value;
-            target->systems[n].health = std::min(value,target->systems[n].health);
+            if(target)
+            {
+                target->systems[n].health_max = value;
+                target->systems[n].health = std::min(value,target->systems[n].health);
+            }
         });
         system_health_max[n]->setSize(GuiElement::GuiSizeMax, 30);
         system_health_max[n]->addSnapValue(-1.0, 0.01);
@@ -1120,7 +1188,8 @@ GuiShipTweakSystems::GuiShipTweakSystems(GuiContainer* owner)
 
         //(new GuiLabel(col_3, "", tr("{system} heat").format({{"system", getLocaleSystemName(system)}}), 20))->setSize(GuiElement::GuiSizeMax, 30);
         system_heat[n] = new GuiSlider(col_3, "", 0.0, 1.0, 0.0, [this, n](float value) {
-            target->systems[n].heat_level = value;
+            if(target)
+                target->systems[n].heat_level = value;
         });
         system_heat[n]->setSize(GuiElement::GuiSizeMax, 30);
         system_heat[n]->addSnapValue( 0.0, 0.01);
@@ -1128,7 +1197,8 @@ GuiShipTweakSystems::GuiShipTweakSystems(GuiContainer* owner)
         system_heat[n]->addSnapValue( 1.0, 0.01);
 
         system_hack[n] = new GuiSlider(col_4, "", 0.0, 1.0, 0.0, [this, n](float value) {
-            target->systems[n].hacked_level = value;
+            if(target)
+                target->systems[n].hacked_level = value;
         });
         system_hack[n]->setSize(GuiElement::GuiSizeMax, 30);
         system_hack[n]->addSnapValue( 0.0, 0.01);
@@ -1325,6 +1395,8 @@ void GuiShipTweakSystemRates::onDraw(sf::RenderTarget& window)
 
 float GuiShipTweakSystemRates::getRateValue(ESystem system, Type type) const
 {
+    if(!target)
+        return 0.0;
     switch (type)
     {
     case Type::Coolant:
@@ -1341,6 +1413,8 @@ float GuiShipTweakSystemRates::getRateValue(ESystem system, Type type) const
 
 void GuiShipTweakSystemRates::setRateValue(ESystem system, Type type, float value)
 {
+    if(!target)
+        return;
     switch (type)
     {
     case Type::Coolant:
@@ -1378,7 +1452,8 @@ GuiShipTweakPlayer::GuiShipTweakPlayer(GuiContainer* owner)
     control_code = new GuiTextEntry(left_col, "", "");
     control_code->setSize(GuiElement::GuiSizeMax, 45);
     control_code->callback([this](string text) {
-        target->control_code = text.upper();
+        if(target)
+            target->control_code = text.upper();
     });
 
     // Edit reputation.
@@ -1386,21 +1461,24 @@ GuiShipTweakPlayer::GuiShipTweakPlayer(GuiContainer* owner)
     {
         (new GuiLabel(left_col, "", "Capacite de reparation:", 25))->setSize(GuiElement::GuiSizeMax, 45);
         repair_total_slider = new GuiSlider(left_col, "", 0, 15, 0, [this](int value) {
-            target->setRepairCrewCount(value);
+            if(target)
+                target->setRepairCrewCount(value);
         });
     }
     else
     {
         (new GuiLabel(left_col, "", "Nombre de droides:", 25))->setSize(GuiElement::GuiSizeMax, 45);
         repair_total_slider = new GuiSlider(left_col, "", 0, 15, 0, [this](int value) {
-            target->setRepairCrewCount(value);
+            if(target)
+                target->setRepairCrewCount(value);
         });
     }
     repair_total_slider->addOverlay()->setSize(GuiElement::GuiSizeMax, 35);
     //(new GuiLabel(left_col, "", tr("Reputation:"), 30))->setSize(GuiElement::GuiSizeMax, 50);
 
     auto_repair_toogle = new GuiToggleButton(left_col, "", tr("button", "Auto repair"), [this](bool value) {
-        target->commandSetAutoRepair(value);
+        if(target)
+            target->commandSetAutoRepair(value);
     });
     auto_repair_toogle->setSize(GuiElement::GuiSizeMax, 35);
 
@@ -1408,21 +1486,26 @@ GuiShipTweakPlayer::GuiShipTweakPlayer(GuiContainer* owner)
     (new GuiLabel(left_col, "", tr("Max energy:"), 25))->setSize(GuiElement::GuiSizeMax, 45);
 
     max_energy_level_slider = new GuiSlider(left_col, "", 0.0, 5000, 0.0, [this](float value) {
-        target->max_energy_level = value;
-        target->energy_level = std::min(target->energy_level, target->max_energy_level);
+        if(target)
+        {
+            target->max_energy_level = value;
+            target->energy_level = std::min(target->energy_level, target->max_energy_level);
+        }
     });
     max_energy_level_slider->addOverlay()->setSize(GuiElement::GuiSizeMax, 35);
 
     (new GuiLabel(left_col, "", tr("Current energy:"), 25))->setSize(GuiElement::GuiSizeMax, 45);
 
     energy_level_slider = new GuiSlider(left_col, "", 0.0, 5000, 0.0, [this](float value) {
-        target->energy_level = std::min(value, target->max_energy_level);
+        if(target)
+            target->energy_level = std::min(value, target->max_energy_level);
     });
     energy_level_slider->addOverlay()->setSize(GuiElement::GuiSizeMax, 35);
 
     (new GuiLabel(left_col, "", "Ratio de consommation d'energie:", 25))->setSize(GuiElement::GuiSizeMax, 45);
     energy_conso_ratio_slider = new GuiSlider(left_col, "", 0.0, 200, 0.0, [this](float value) {
-        target->energy_consumption_ratio = value/100.0f;
+        if(target)
+            target->energy_consumption_ratio = value/100.0f;
     });
     energy_conso_ratio_slider->addOverlay()->setSize(GuiElement::GuiSizeMax, 35);
 
@@ -1440,19 +1523,22 @@ GuiShipTweakPlayer::GuiShipTweakPlayer(GuiContainer* owner)
     (new GuiLabel(left_col, "", "Coolant (per system / max):", 25))->setSize(GuiElement::GuiSizeMax, 45);
 
     coolant_per_system_slider = new GuiSlider(left_col, "", 0, 20, 0, [this](int value) {
-        target->setMaxCoolantPerSystem(value);
+        if(target)
+            target->setMaxCoolantPerSystem(value);
     });
     coolant_per_system_slider->addSnapValue(10,1)->addOverlay()->setSize(GuiElement::GuiSizeMax, 35);
 
     (new GuiLabel(left_col, "", "Repair (per system / max):", 30))->setSize(GuiElement::GuiSizeMax, 45);
 
     repair_per_system_slider = new GuiSlider(left_col, "", 0, 10, 0, [this](int value) {
-        target->setMaxRepairPerSystem(value);
+        if(target)
+            target->setMaxRepairPerSystem(value);
     });
     repair_per_system_slider->addSnapValue(2,1)->addOverlay()->setSize(GuiElement::GuiSizeMax, 35);
     
     auto_coolant_toogle = new GuiToggleButton(left_col, "", tr("button", "Auto coolant"), [this](bool value) {
-        target->setAutoCoolant(value);
+        if(target)
+            target->setAutoCoolant(value);
     });
     auto_coolant_toogle->setSize(GuiElement::GuiSizeMax, 35);
 
@@ -1461,21 +1547,25 @@ GuiShipTweakPlayer::GuiShipTweakPlayer(GuiContainer* owner)
     // Radar Capabilities
     (new GuiLabel(right_col, "", "Radar Capabilities:", 25))->setSize(GuiElement::GuiSizeMax, 45);
     gravity_toggle = new GuiToggleButton(right_col, "", "Gravity Sensor", [this](bool value) {
-        target->setGravitySensor(value);
+        if(target)
+            target->setGravitySensor(value);
     });
     gravity_toggle->setSize(GuiElement::GuiSizeMax, 35);
     electrical_toggle = new GuiToggleButton(right_col, "", "Electrical Sensor", [this](bool value) {
-        target->setElectricalSensor(value);
+        if(target)
+            target->setElectricalSensor(value);
     });
     electrical_toggle->setSize(GuiElement::GuiSizeMax, 35);
     biological_toggle = new GuiToggleButton(right_col, "", "Biological Sensor", [this](bool value) {
-        target->setBiologicalSensor(value);
+        if(target)
+            target->setBiologicalSensor(value);
     });
     biological_toggle->setSize(GuiElement::GuiSizeMax, 35);
 
     (new GuiLabel(right_col, "", "Nombre de sondes max:", 25))->setSize(GuiElement::GuiSizeMax, 45);
     probe_max_slider = new GuiSlider(right_col, "", 0, 20, 0, [this](int value) {
-        target->setMaxScanProbeCount(value);
+        if(target)
+            target->setMaxScanProbeCount(value);
     });
     probe_max_slider->addOverlay()->setSize(GuiElement::GuiSizeMax, 35);
 
@@ -1528,37 +1618,43 @@ GuiShipTweakPlayer::GuiShipTweakPlayer(GuiContainer* owner)
         (new GuiLabel(right_col, "", "Capacites :", 30))->setSize(GuiElement::GuiSizeMax, 50);
         // Can scan bool
         can_scan = new GuiToggleButton(right_col, "", tr("button", "Can scan"), [this](bool value) {
-            target->setCanScan(value);
+            if(target)
+                target->setCanScan(value);
         });
         can_scan->setSize(GuiElement::GuiSizeMax, 30);
 
         // Can hack bool
         can_hack = new GuiToggleButton(right_col, "", tr("button", "Can hack"), [this](bool value) {
-            target->setCanHack(value);
+            if(target)
+                target->setCanHack(value);
         });
         can_hack->setSize(GuiElement::GuiSizeMax, 30);
 
         // Can dock bool
         can_dock = new GuiToggleButton(right_col, "", tr("button", "Can dock"), [this](bool value) {
-            target->setCanDock(value);
+            if(target)
+                target->setCanDock(value);
         });
         can_dock->setSize(GuiElement::GuiSizeMax, 30);
 
         // Can combat maneuver bool
         can_combat_maneuver = new GuiToggleButton(right_col, "", tr("button", "Can combat maneuver"), [this](bool value) {
-            target->setCanCombatManeuver(value);
+            if(target)
+                target->setCanCombatManeuver(value);
         });
         can_combat_maneuver->setSize(GuiElement::GuiSizeMax, 30);
 
         // Can self destruct bool
         can_self_destruct = new GuiToggleButton(right_col, "", tr("button", "Can self destruct"), [this](bool value) {
-            target->setCanSelfDestruct(value);
+            if(target)
+                target->setCanSelfDestruct(value);
         });
         can_self_destruct->setSize(GuiElement::GuiSizeMax, 30);
 
         // Can launch probe bool
         can_launch_probe = new GuiToggleButton(right_col, "", tr("button", "Can launch probes"), [this](bool value) {
-            target->setCanLaunchProbe(value);
+            if(target)
+                target->setCanLaunchProbe(value);
         });
         can_launch_probe->setSize(GuiElement::GuiSizeMax, 30);
     }
@@ -1644,7 +1740,8 @@ GuiShipTweakDock::GuiShipTweakDock(GuiContainer* owner)
         {
             type_selector.push_back(new GuiSelector(type_col, "", [this, n](int index, string value)
             {
-                target->docks[n].dock_type = getDockTypeEnum(value);
+                if(target)
+                    target->docks[n].dock_type = getDockTypeEnum(value);
             }));
 
             type_selector[n]->setSize(GuiElement::GuiSizeMax, 40);
@@ -1660,7 +1757,7 @@ GuiShipTweakDock::GuiShipTweakDock(GuiContainer* owner)
         {
 
             content_button.push_back(new GuiButton(content_col, "", "", [this, n]() {
-                if(target->docks[n].getCargo())
+                if(target && target->docks[n].getCargo())
                 {
                     target->docks[n].getCargo()->onLaunch(target->docks[n]);
                     target->docks[n].getCargo()->destroy();
@@ -1674,7 +1771,7 @@ GuiShipTweakDock::GuiShipTweakDock(GuiContainer* owner)
     list_envol_box = new GuiListbox(envol_col, "ENVOL", [this](int index, string value)
     {
         P<SpaceShip> ship = gameGlobalInfo->getPlayerShip(value.toInt());
-        if(ship)
+        if(ship && target)
         {
             Dock* dock = Dock::findOpenForDocking(target->docks, max_docks_count);
             if (dock)
@@ -1781,25 +1878,30 @@ GuiShipTweakOxygen::GuiShipTweakOxygen(GuiContainer* owner)
 
         // Edit oxygen max
         oxygen_max_slider[n] = new GuiSlider(left_col, "", 0, 5000, 0, [this, n](int value) {
-            target->oxygen_max[n] = value;
-            target->oxygen_points[n] = std::min(target->oxygen_points[n], target->oxygen_max[n]);
-            int actual_zones_count = 0;
-            for(int k=0; k<max_oxygen_zones; k++)
-                if (target->oxygen_max[k] > 0)
-                    actual_zones_count = k+1;
-            target->oxygen_zones = actual_zones_count;
+            if (target)
+            {
+                target->oxygen_max[n] = value;
+                target->oxygen_points[n] = std::min(target->oxygen_points[n], target->oxygen_max[n]);
+                int actual_zones_count = 0;
+                for(int k=0; k<max_oxygen_zones; k++)
+                    if (target->oxygen_max[k] > 0)
+                        actual_zones_count = k+1;
+                target->oxygen_zones = actual_zones_count;
+            }
         });
         oxygen_max_slider[n]->addOverlay()->setSize(GuiElement::GuiSizeMax, 40);
 
         // Edit oxygen.
          oxygen_point_slider[n] = new GuiSlider(center_col, "", 0, 5000, 0, [this, n](int value) {
-            target->oxygen_points[n] = std::min(float(value), target->oxygen_max[n]);
+            if(target)
+                target->oxygen_points[n] = std::min(float(value), target->oxygen_max[n]);
         });
         oxygen_point_slider[n]->addOverlay()->setSize(GuiElement::GuiSizeMax, 40);
 
         // Edit oxygen rate.
          oxygen_rate_slider[n] = new GuiSlider(right_col, "", -15, 2, 0, [this, n](int value) {
-            target->oxygen_rate[n] = value;
+            if(target)
+                target->oxygen_rate[n] = value;
         });
         oxygen_rate_slider[n]->addOverlay()->setSize(GuiElement::GuiSizeMax, 40);
         oxygen_rate_slider[n]->addSnapValue(-15, 0.05);
@@ -1813,13 +1915,15 @@ GuiShipTweakOxygen::GuiShipTweakOxygen(GuiContainer* owner)
 
     (new GuiLabel(left_col, "", "Passagers:", 30))->setSize(GuiElement::GuiSizeMax, 50);
     passagers_slider = new GuiSlider(left_col, "", 0.0, 20.0, 0.0, [this](float value) {
-       target->setPassagersCount(value);
+        if(target)
+            target->setPassagersCount(value);
     });
     passagers_slider->addOverlay()->setSize(GuiElement::GuiSizeMax, 40);
 
     (new GuiLabel(right_col, "", "Passagers Max:", 30))->setSize(GuiElement::GuiSizeMax, 50);
     max_passagers_slider = new GuiSlider(right_col, "", 0.0, 40.0, 0.0, [this](float value) {
-       target->setMaxPassagersCount(value);
+        if(target)
+            target->setMaxPassagersCount(value);
     });
     max_passagers_slider->addOverlay()->setSize(GuiElement::GuiSizeMax, 40);
 }
@@ -1940,7 +2044,7 @@ GuiShipTweakMessages::GuiShipTweakMessages(GuiContainer* owner)
                     ship -> addToSpecificShipLog(message,color_message,type_log);
             }
        }
-        else
+        else if(target)
             target -> addToSpecificShipLog(message,color_message,type_log);
     });
     send_message_log->setSize(GuiElement::GuiSizeMax, 40);
@@ -1950,41 +2054,52 @@ GuiShipTweakMessages::GuiShipTweakMessages(GuiContainer* owner)
     (new GuiLabel(right_col, "", "Sur un ecran", 30))->setSize(GuiElement::GuiSizeMax, 100);
 
     (new GuiButton(right_col, "", tr("station","Helms"), [this]() {
-        target->addCustomMessage(helmsOfficer,"helms_message", message);
+        if(target)
+            target->addCustomMessage(helmsOfficer,"helms_message", message);
     }))->setSize(GuiElement::GuiSizeMax, 30);
     (new GuiButton(right_col, "", tr("station","Weapons"), [this]() {
-        target->addCustomMessage(weaponsOfficer,"weapons_message", message);
+        if(target)
+            target->addCustomMessage(weaponsOfficer,"weapons_message", message);
     }))->setSize(GuiElement::GuiSizeMax, 30);
     (new GuiButton(right_col, "", tr("station","Engineering"), [this]() {
-        target->addCustomMessage(engineering,"engineering_message", message);
+        if(target)
+            target->addCustomMessage(engineering,"engineering_message", message);
     }))->setSize(GuiElement::GuiSizeMax, 30);
     (new GuiButton(right_col, "", tr("station","Science"), [this]() {
-        target->addCustomMessage(scienceOfficer,"science_message", message);
+        if(target)
+            target->addCustomMessage(scienceOfficer,"science_message", message);
     }))->setSize(GuiElement::GuiSizeMax, 30);
     (new GuiButton(right_col, "", tr("station","Relay"), [this]() {
-        target->addCustomMessage(relayOfficer,"relay_message", message);
+        if(target)
+            target->addCustomMessage(relayOfficer,"relay_message", message);
     }))->setSize(GuiElement::GuiSizeMax, 30);
     (new GuiButton(right_col, "", "Docks", [this]() {
-        target->addCustomMessage(dockMaster,"docks_message", message);
+        if(target)
+            target->addCustomMessage(dockMaster,"docks_message", message);
     }))->setSize(GuiElement::GuiSizeMax, 30);
     (new GuiButton(right_col, "", "Drone", [this]() {
-        target->addCustomMessage(dronePilot,"drone_message", message);
+        if(target)
+            target->addCustomMessage(dronePilot,"drone_message", message);
     }))->setSize(GuiElement::GuiSizeMax, 30);
         (new GuiButton(right_col, "", tr("station","Single Pilot"), [this]() {
-        target->addCustomMessage(singlePilot,"single_message", message);
+        if(target)
+            target->addCustomMessage(singlePilot,"single_message", message);
     }))->setSize(GuiElement::GuiSizeMax, 30);
 
     (new GuiButton(right_col, "", "Retirer message ecran", [this]() {
-        target->removeCustom("helms_message");
-        target->removeCustom("weapons_message");
-        target->removeCustom("engineering_message");
-        target->removeCustom("science_message");
-        target->removeCustom("relay_message");
-        target->removeCustom("docks_message");
-        target->removeCustom("drone_message");
-        target->removeCustom("single_message");
+        if(target)
+        {
+            target->removeCustom("helms_message");
+            target->removeCustom("weapons_message");
+            target->removeCustom("engineering_message");
+            target->removeCustom("science_message");
+            target->removeCustom("relay_message");
+            target->removeCustom("docks_message");
+            target->removeCustom("drone_message");
+            target->removeCustom("single_message");
 
-        message_entry -> setText("");
+            message_entry -> setText("");
+        }
     }))->setSize(GuiElement::GuiSizeMax, 30);
 
 }
@@ -2020,7 +2135,8 @@ GuiShipTweakPlanet::GuiShipTweakPlanet(GuiContainer* owner)
     (new GuiLabel(left_col, "", "Texture", 30))->setSize(GuiElement::GuiSizeMax, 50);
     texture_selector = new GuiSelector(left_col, "", [this](int index, string value)
     {
-        target->setPlanetSurfaceTexture(value);
+        if(target)
+            target->setPlanetSurfaceTexture(value);
     });
     texture_selector->setPosition(0, 0, ATopRight)->setSize(GuiElement::GuiSizeMax, 50);
 
@@ -2065,13 +2181,15 @@ GuiShipTweakInfos::GuiShipTweakInfos(GuiContainer* owner)
         infos_label[n] = new GuiTextEntry(left_col, "", "");
         infos_label[n]->setSize(GuiElement::GuiSizeMax, 45);
         infos_label[n]->callback([this, n](string text) {
-            target->infos_label[n] = text;
+            if(target)
+                target->infos_label[n] = text;
         });
 
         infos_value[n] = new GuiTextEntry(right_col, "", "");
         infos_value[n]->setSize(GuiElement::GuiSizeMax, 45);
         infos_value[n]->callback([this, n](string text) {
-            target->infos_value[n] = text;
+            if(target)
+                target->infos_value[n] = text;
         });
     }
     (new GuiLabel(left_col, "", "Labels prives", 30))->setSize(GuiElement::GuiSizeMax, 45);
@@ -2081,13 +2199,15 @@ GuiShipTweakInfos::GuiShipTweakInfos(GuiContainer* owner)
         infos_label[n] = new GuiTextEntry(left_col, "", "");
         infos_label[n]->setSize(GuiElement::GuiSizeMax, 45);
         infos_label[n]->callback([this, n](string text) {
-            target->infos_label[n] = text;
+            if(target)
+                target->infos_label[n] = text;
         });
 
         infos_value[n] = new GuiTextEntry(right_col, "", "");
         infos_value[n]->setSize(GuiElement::GuiSizeMax, 45);
         infos_value[n]->callback([this, n](string text) {
-            target->infos_value[n] = text;
+            if(target)
+                target->infos_value[n] = text;
         });
     }
 
@@ -2141,18 +2261,21 @@ GuiShipTweakSystemPowerFactors::GuiShipTweakSystemPowerFactors(GuiContainer* own
         system_power_factor[n]->setSize(GuiElement::GuiSizeMax, 30);
         system_power_factor[n]->enterCallback([this, n](const string& text)
             {
-                // Perform safe conversion (typos can happen).
-                char* end = nullptr;
-                auto converted = strtof(text.c_str(), &end);
-                if (converted == 0.f && end == text.c_str())
+                if (target)
                 {
-                    // failed - reset text to current value.
-                    system_power_factor[n]->setText(string(target->systems[n].power_factor, 1));
-                }
-                else
-                {
-                    // apply!
-                    target->systems[n].power_factor = converted;
+                    // Perform safe conversion (typos can happen).
+                    char* end = nullptr;
+                    auto converted = strtof(text.c_str(), &end);
+                    if (converted == 0.f && end == text.c_str())
+                    {
+                        // failed - reset text to current value.
+                        system_power_factor[n]->setText(string(target->systems[n].power_factor, 1));
+                    }
+                    else
+                    {
+                        // apply!
+                        target->systems[n].power_factor = converted;
+                    }
                 }
             });
     }
@@ -2162,6 +2285,8 @@ GuiShipTweakSystemPowerFactors::GuiShipTweakSystemPowerFactors(GuiContainer* own
 
 void GuiShipTweakSystemPowerFactors::open(P<SpaceObject> target)
 {
+    if(!target)
+        return;
     P<SpaceShip> ship = target;
     this->target = ship;
     for (int n = 0; n < SYS_COUNT; n++)
@@ -2172,6 +2297,8 @@ void GuiShipTweakSystemPowerFactors::open(P<SpaceObject> target)
 
 void GuiShipTweakSystemPowerFactors::onDraw(sf::RenderTarget& window)
 {
+    if(!target)
+        return;
     for (int n = 0; n < SYS_COUNT; n++)
     {
         system_current_power_factor[n]->setText(string(this->target->systems[n].power_factor, 1));
