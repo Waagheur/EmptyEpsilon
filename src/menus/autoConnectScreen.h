@@ -23,7 +23,7 @@ public:
     AutoConnectScreen(ECrewPosition crew_position, int auto_mainscreen, bool control_main_screen, string ship_filter);
     virtual ~AutoConnectScreen();
 
-    virtual void update(float delta);
+    virtual void update(float delta) override;
 
 private:
     bool isValidShip(int index);

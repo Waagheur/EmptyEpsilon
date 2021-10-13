@@ -95,7 +95,7 @@ public:
 
     P<ScienceDatabase> addEntry(string name);
 
-    virtual void destroy();
+    virtual void destroy() override;
 
     P<ScienceDatabase> getEntryByName(string name);
     bool hasEntries();
