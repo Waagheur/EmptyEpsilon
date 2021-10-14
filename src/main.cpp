@@ -192,6 +192,7 @@ int main(int argc, char** argv)
 
     colorConfig.load();
     HotkeyConfig::get().load();
+    keys.init();
     joystick.load();
 
     if (PreferencesManager::get("username", "") == "")
