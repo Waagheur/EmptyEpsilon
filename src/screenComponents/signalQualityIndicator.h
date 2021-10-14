@@ -19,7 +19,7 @@ class GuiSignalQualityIndicator : public GuiElement
 public:
     GuiSignalQualityIndicator(GuiContainer* owner, string id);
 
-    virtual void onDraw(sp::RenderTarget& target);
+    virtual void onDraw(sp::RenderTarget& target) override;
 
     void setMaxAmp(float f)  { max_amp = std::min(fabsf(f), 1.0f); }
     void setNoiseError(float f) { error_noise = std::min(fabsf(f), 1.0f); }

@@ -11,7 +11,7 @@ class GuiOpenCommsButton : public GuiButton
 public:
     GuiOpenCommsButton(GuiContainer* owner, string id, string name, TargetsContainer* targets);
 
-    virtual void onDraw(sp::RenderTarget& window);
+    virtual void onDraw(sp::RenderTarget& window) override;
     virtual void onHotkey(const HotkeyResult& key) override;
 };
 

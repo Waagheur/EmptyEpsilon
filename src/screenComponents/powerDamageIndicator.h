@@ -10,7 +10,7 @@ class GuiPowerDamageIndicator : public GuiElement
 public:
     GuiPowerDamageIndicator(GuiContainer* owner, string name, ESystem system, sp::Alignment icon_align, P<PlayerSpaceship> targetSpaceship);
 
-    virtual void onDraw(sp::RenderTarget& window);
+    virtual void onDraw(sp::RenderTarget& window) override;
     void setTargetSpaceship(P<PlayerSpaceship> targetSpaceship){target_spaceship = targetSpaceship;}
 
 private:
