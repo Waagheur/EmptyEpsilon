@@ -244,8 +244,12 @@ void ModelData::render(const glm::mat4& model_view)
     //glColor4f(1.0,1.0,1.0,alpha);
 
     ShaderRegistry::ScopedShader shader(shader_id);
-    glUniformMatrix4fv(shader.get().get()->getUniformLocation("view"), 1, GL_FALSE, glm::value_ptr(model_view));
-    glUniformMatrix4fv(shader.get().get()->getUniformLocation("model"), 1, GL_FALSE, glm::value_ptr(model_matrix));
+    glUniformMatrix4fv(shader.get().uniform(ShaderRegistry::Uniforms::View), 1, GL_FALSE, glm::value_ptr(model_view));
+    glUniformMatrix4fv(shader.get().uniform(ShaderRegistry::Uniforms::Model), 1, GL_FALSE, glm::value_ptr(model_matrix));
+
+
+    // Lights setup.
+    ShaderRegistry::setupLights(shader.get(), model_view, model_matrix);
 
     // Textures
     texture->bind();
