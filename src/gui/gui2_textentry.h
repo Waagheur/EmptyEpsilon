@@ -17,7 +17,7 @@ protected:
     func_t enter_func;
     Validator validator_func;
     bool valid;
-    const float blink_rate = 0.530;
+    const float blink_rate = 0.530f;
     sp::SystemTimer blink_timer;
     bool typing_indicator{false};
 public:
