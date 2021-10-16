@@ -30,12 +30,12 @@ Asteroid::Asteroid()
 : SpaceObject(random(110, 130), "Asteroid")
 {
     setRotation(random(0, 360));
-    rotation_speed = random(0.1, 0.8);
+    rotation_speed = random(0.1f, 0.8f);
     z = random(-50, 50);
     hull = random(25,75);
     size = getRadius();
     model_number = irandom(1, 10);
-    setRadarSignatureInfo(0.05, 0, 0);
+    setRadarSignatureInfo(0.05f, 0, 0);
 
     registerMemberReplication(&z);
     registerMemberReplication(&size);
@@ -43,18 +43,14 @@ Asteroid::Asteroid()
     PathPlannerManager::getInstance()->addAvoidObject(this, 300);
 }
 
-void Asteroid::draw3D(const glm::mat4& object_view_matrix)
+void Asteroid::draw3D()
 {
 //    if (size != getRadius())
 //        setRadius(size);
 
-    auto model_matrix = glm::translate(glm::mat4(1.0f), {0, 0, z});
-    model_matrix = glm::rotate(model_matrix, engine->getElapsedTime() * rotation_speed / 180.0f * float(M_PI), {0, 0, 1});
-    model_matrix = glm::scale(model_matrix, {getRadius(), getRadius(), getRadius()});
-
+    auto model_matrix = getModelMatrix();
     ShaderRegistry::ScopedShader shader(ShaderRegistry::Shaders::ObjectSpecular);
 
-    glUniformMatrix4fv(shader.get().uniform(ShaderRegistry::Uniforms::View), 1, GL_FALSE, glm::value_ptr(object_view_matrix));
     glUniformMatrix4fv(shader.get().uniform(ShaderRegistry::Uniforms::Model), 1, GL_FALSE, glm::value_ptr(model_matrix));
 
     textureManager.getTexture("Astroid_" + string(model_number) + "_d.png")->bind();
@@ -68,7 +64,7 @@ void Asteroid::draw3D(const glm::mat4& object_view_matrix)
     gl::ScopedVertexAttribArray texcoords(shader.get().attribute(ShaderRegistry::Attributes::Texcoords));
     gl::ScopedVertexAttribArray normals(shader.get().attribute(ShaderRegistry::Attributes::Normal));
 
-    ShaderRegistry::setupLights(shader.get(), object_view_matrix, model_matrix);
+    ShaderRegistry::setupLights(shader.get(), model_matrix);
     if(m)
         m->render(positions.get(), texcoords.get(), normals.get());
 
@@ -101,7 +97,7 @@ void Asteroid::collide(Collisionable* target, float force)
     P<ExplosionEffect> e = new ExplosionEffect();
     e->setSize(getRadius());
     e->setPosition(getPosition());
-    e->setRadarSignatureInfo(0.0, 0.1, 0.2);
+    e->setRadarSignatureInfo(0.f, 0.1f, 0.2f);
     destroy();
 }
 
@@ -147,7 +143,7 @@ VisualAsteroid::VisualAsteroid()
 : SpaceObject(random(110, 130), "VisualAsteroid")
 {
     setRotation(random(0, 360));
-    rotation_speed = random(0.1, 0.8);
+    rotation_speed = random(0.1f, 0.8f);
     z = random(300, 800);
     if (random(0, 100) < 50)
         z = -z;
@@ -160,18 +156,15 @@ VisualAsteroid::VisualAsteroid()
 
 }
 
-void VisualAsteroid::draw3D(const glm::mat4& object_view_matrix)
+void VisualAsteroid::draw3D()
 {
 //    if (size != getRadius())
 //        setRadius(size);
 
-    auto model_matrix = glm::translate(glm::mat4(1.0f), {0, 0, z});
-    model_matrix = glm::rotate(model_matrix, engine->getElapsedTime() * rotation_speed / 180.0f * float(M_PI), {0, 0, 1});
-    model_matrix = glm::scale(model_matrix, {getRadius(), getRadius(), getRadius()});
+    auto model_matrix = getModelMatrix();
 
     ShaderRegistry::ScopedShader shader(ShaderRegistry::Shaders::ObjectSpecular);
 
-    glUniformMatrix4fv(shader.get().uniform(ShaderRegistry::Uniforms::View), 1, GL_FALSE, glm::value_ptr(object_view_matrix));
     glUniformMatrix4fv(shader.get().uniform(ShaderRegistry::Uniforms::Model), 1, GL_FALSE, glm::value_ptr(model_matrix));
 
     textureManager.getTexture("Astroid_" + string(model_number) + "_d.png")->bind();
@@ -185,7 +178,7 @@ void VisualAsteroid::draw3D(const glm::mat4& object_view_matrix)
     gl::ScopedVertexAttribArray texcoords(shader.get().attribute(ShaderRegistry::Attributes::Texcoords));
     gl::ScopedVertexAttribArray normals(shader.get().attribute(ShaderRegistry::Attributes::Normal));
 
-    ShaderRegistry::setupLights(shader.get(), object_view_matrix, model_matrix);
+    ShaderRegistry::setupLights(shader.get(), model_matrix);
     if(m)
         m->render(positions.get(), texcoords.get(), normals.get());
 
@@ -197,7 +190,7 @@ void VisualAsteroid::setSize(float size)
     this->size = size;
     setRadius(size);
     while(fabs(z) < size * 2)
-        z *= random(1.2, 2.0);
+        z *= random(1.2f, 2.f);
 }
 
 void VisualAsteroid::setModel(int model_number)

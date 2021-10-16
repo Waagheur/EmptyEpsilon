@@ -412,9 +412,9 @@ SpaceObject::~SpaceObject()
 {
 }
 
-void SpaceObject::draw3D(const glm::mat4& object_view_matrix)
+void SpaceObject::draw3D()
 {
-    model_info.render(getPosition(), getRotation(), object_view_matrix);
+    model_info.render(getPosition(), getRotation(), getModelMatrix());
 }
 
 
