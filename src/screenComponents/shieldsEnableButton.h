@@ -19,9 +19,9 @@ public:
     GuiShieldsEnableButton(GuiContainer* owner, string id, P<PlayerSpaceship> targetSpaceship);
 
     virtual void onDraw(sp::RenderTarget& target) override;
-    virtual void onHotkey(const HotkeyResult& key) override;
     void setTargetSpaceship(P<PlayerSpaceship> targetSpaceship);
 
+    virtual void onUpdate() override;
 };
 
 #endif//SHIELDS_ENABLE_BUTTON_H

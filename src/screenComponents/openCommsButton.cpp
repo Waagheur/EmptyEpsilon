@@ -46,11 +46,11 @@ void GuiOpenCommsButton::onDraw(sp::RenderTarget& renderer)
     GuiButton::onDraw(renderer);
 }
 
-void GuiOpenCommsButton::onHotkey(const HotkeyResult& key)
+void GuiOpenCommsButton::onUpdate()
 {
-    if (key.category == "RELAY" && my_spaceship)
+    if (my_spaceship)
     {
-        if (key.hotkey == "OPEN_COMM")
+        if (keys.relay_open_comm.getDown())
         {
 			if (this->targets->get())
 				my_spaceship->commandOpenTextComm(this->targets->get());

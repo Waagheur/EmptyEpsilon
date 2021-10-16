@@ -12,7 +12,7 @@ public:
     GuiOpenCommsButton(GuiContainer* owner, string id, string name, TargetsContainer* targets);
 
     virtual void onDraw(sp::RenderTarget& window) override;
-    virtual void onHotkey(const HotkeyResult& key) override;
+    virtual void onUpdate() override;
 };
 
 #endif//OPEN_COMMS_BUTTON_H

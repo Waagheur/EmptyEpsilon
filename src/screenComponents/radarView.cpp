@@ -733,7 +733,7 @@ void GuiRadarView::drawHeadingIndicators(sp::RenderTarget& renderer)
     }
 }
 
-bool GuiRadarView::onMouseDown(sp::io::Pointer::Button button, glm::vec2 position, int id)
+bool GuiRadarView::onMouseDown(sp::io::Pointer::Button button, glm::vec2 position, sp::io::Pointer::ID id)
 {
     if (style == Circular || style == CircularMasked)
     {

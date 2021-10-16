@@ -61,15 +61,15 @@ void GuiShieldsEnableButton::onDraw(sp::RenderTarget& target)
     }
 }
 
-void GuiShieldsEnableButton::onHotkey(const HotkeyResult& key)
+void GuiShieldsEnableButton::onUpdate()
 {
-    if (key.category == "WEAPONS" && target_spaceship)
+    if (target_spaceship)
     {
-        if (key.hotkey == "TOGGLE_SHIELDS")
+        if (keys.weapons_toggle_shields.getDown())
             target_spaceship->commandSetShields(!target_spaceship->shields_active);
-        if (key.hotkey == "ENABLE_SHIELDS")
+        if (keys.weapons_enable_shields.getDown())
             target_spaceship->commandSetShields(true);
-        if (key.hotkey == "DISABLE_SHIELDS")
+        if (keys.weapons_disable_shields.getDown())
             target_spaceship->commandSetShields(false);
     }
 }

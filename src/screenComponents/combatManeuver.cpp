@@ -39,6 +39,26 @@ GuiCombatManeuver::GuiCombatManeuver(GuiContainer* owner, string id, P<PlayerSpa
 void GuiCombatManeuver::onUpdate()
 {
     setVisible(my_spaceship && my_spaceship->getCanCombatManeuver()); //FIXME c'est pas target spaceship ?
+
+    float strafe = keys.helms_combat_right.getValue() + keys.helms_combat_left.getValue();
+    float boost = keys.helms_combat_boost.getValue();
+    if (strafe != 0.0f)
+    {
+        setStrafeValue(strafe);
+        my_spaceship->commandCombatManeuverStrafe(strafe);
+    }
+    if (boost > 0.0f)
+    {
+        setBoostValue(boost);
+        my_spaceship->commandCombatManeuverBoost(boost);
+    }
+    // if (key.hotkey == "COMBAT_STOP") //FIXME
+    // {
+    //     setBoostValue(0.0f);
+    //     setStrafeValue(0.0f);
+    //     my_spaceship->commandCombatManeuverBoost(0.0f);
+    //     my_spaceship->commandCombatManeuverStrafe(0.0f);
+    // }
 }
 
 void GuiCombatManeuver::onDraw(sp::RenderTarget& target)
@@ -57,35 +77,6 @@ void GuiCombatManeuver::onDraw(sp::RenderTarget& target)
             setBoostValue(0.0f);
         if (target_spaceship->combat_maneuver_strafe_speed <= 0.0)
             setStrafeValue(0.0f);
-    }
-}
-
-void GuiCombatManeuver::onHotkey(const HotkeyResult& key)
-{
-    if (key.category == "HELMS" && target_spaceship && isVisible())
-    {
-        if (key.hotkey == "COMBAT_LEFT")
-        {
-            setStrafeValue(-1.0f);
-            my_spaceship->commandCombatManeuverStrafe(-1.0f);
-        }
-        if (key.hotkey == "COMBAT_RIGHT")
-        {
-            setStrafeValue(1.0f);
-			my_spaceship->commandCombatManeuverStrafe(1.0f);
-        }
-        if (key.hotkey == "COMBAT_BOOST")
-        {
-            setBoostValue(1.0f);
-			my_spaceship->commandCombatManeuverBoost(1.0f);
-        }
-        if (key.hotkey == "COMBAT_STOP")
-		{
-			setBoostValue(0.0f);
-			setStrafeValue(0.0f);
-			my_spaceship->commandCombatManeuverBoost(0.0f);
-			my_spaceship->commandCombatManeuverStrafe(0.0f);
-		}
     }
 }
 

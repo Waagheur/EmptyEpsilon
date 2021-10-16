@@ -23,8 +23,8 @@ public:
     GuiJumpControls(GuiContainer* owner, string id, P<PlayerSpaceship> targetSpaceship);
 
     virtual void onDraw(sp::RenderTarget& target) override;
-    virtual void onHotkey(const HotkeyResult& key) override;
     void setTargetSpaceship(P<PlayerSpaceship> targetSpaceship);
+    virtual void onUpdate() override;
 };
 
 #endif//JUMP_CONTROLS_H

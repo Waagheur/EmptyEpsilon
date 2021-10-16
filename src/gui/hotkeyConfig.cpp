@@ -52,6 +52,9 @@ Keys::Keys() :
     helms_dock_action("HELMS_DOCK_ACTION", "D"),
     helms_dock_request("HELMS_DOCK_REQUEST"),
     helms_dock_abort("HELMS_DOCK_ABORT"),
+    helms_land_action("HELMS_LAND_ACTION"),
+    helms_land_request("HELMS_LAND_REQUEST"),
+    helms_land_abort("HELMS_LAND_ABORT"),
     helms_undock("HELMS_UNDOCK"),
     helms_increase_jump_distance("HELMS_JUMP_INCREASE", "RBracket"),
     helms_decrease_jump_distance("HELMS_JUMP_DECREASE", "LBracket"),
@@ -141,6 +144,10 @@ Keys::Keys() :
     //Science
     science_scan_object("SCIENCE_SCAN_OBJECT", "S"),
     science_select_next_scannable("SCIENCE_SELECT_NEXT_SCANNABLE", "C"),
+    science_show_probe("SCIENCE_SHOW_PROBE"),
+    science_show_database("SCIENCE_SHOW_DATABASE"),
+    science_show_radar("SCIENCE_SHOW_RADAR"),
+
 
     //Engineering
     engineering_select_reactor("ENGINEERING_SELECT_SYSTEM_REACTOR", "1"),
@@ -172,11 +179,32 @@ Keys::Keys() :
     engineering_self_destruct_start("ENGINEERING_SELF_DESTRUCT_START"),
     engineering_self_destruct_confirm("ENGINEERING_SELF_DESTRUCT_CONFIRM"),
     engineering_self_destruct_cancel("ENGINEERING_SELF_DESTRUCT_CANCEL"),
+    engineering_set_minimum_coolant("ENGINEERING_SET_MINIMUM_COOLANT"),
+    engineering_reset("ENGINEERING_RESET"),
+    //engineering_preset_apply("ENGINEERING_PRESET_APPLY"),
+    //engineering_preset_update("ENGINEERING_PRESET_UPDATE"),
+
+
+    //relay
+    relay_next_enemy("RELAY_NEXT_ENEMY"),
+    relay_next("RELAY_NEXT"),
+    relay_link_science("RELAY_LINK_SCIENCE"),
+    relay_begin_hack("RELAY_BEGIN_HACK"),
+    relay_add_waypoint("RELAY_ADD_WAYPOINT"),
+    relay_delete_waypoint("RELAY_DELAY_WAYPOINT"),
+    relay_launch_probe("RELAY_LAUNCH_PROBE"),
+    relay_alert_normal("RELAY_ALERT_NORMAL"),
+    relay_alert_yellow("RELAY_ALERT_YELLOW"),
+    relay_alert_red("RELAY_ALERT_RED"),
+    relay_open_comm("RELAY_OPEN_COMM"),
+    
+
 
     gm_delete("GM_DELETE", "Delete"),
     gm_clipboardcopy("GM_CLIPBOARD_COPY", "F5"),
 
-    spectator_show_callsigns("SPECTATOR_SHOW_CALLSIGNS", "C")
+    spectator_show_callsigns("SPECTATOR_SHOW_CALLSIGNS", "C"),
+    open_log("OPEN_LOG")
 {
 }
 
@@ -227,6 +255,9 @@ void Keys::init()
     helms_dock_action.setLabel(tr("hotkey_Helms", "Dock request/abort/undock"));
     helms_dock_request.setLabel(tr("hotkey_Helms", "Initiate docking"));
     helms_dock_abort.setLabel(tr("hotkey_Helms", "Abort docking"));
+    helms_land_action.setLabel(tr("hotkey_Helms", "Land request/abort/undock"));
+    helms_land_request.setLabel(tr("hotkey_Helms", "Initiate landing"));
+    helms_land_abort.setLabel(tr("hotkey_Helms", "Abort landing"));
     helms_undock.setLabel(tr("hotkey_Helms", "Undock"));
     helms_increase_jump_distance.setLabel(tr("hotkey_Helms", "Increase jump distance"));
     helms_decrease_jump_distance.setLabel(tr("hotkey_Helms", "Decrease jump distance"));
@@ -268,6 +299,9 @@ void Keys::init()
     //Science
     science_scan_object.setLabel(tr("hotkey_Science", "Scan object"));
     science_select_next_scannable.setLabel(tr("hotkey_Science", "Select next scannable object"));
+    science_show_probe.setLabel(tr("hotkey_Science","Show probe"));
+    science_show_database.setLabel(tr("hotkey_Science","Show database"));
+    science_show_radar.setLabel(tr("hotkey_Science","Show radar"));
 
     //Engineering
     engineering_select_reactor.setLabel(tr("hotkey_Engineering", "Select reactor system"));
@@ -299,6 +333,23 @@ void Keys::init()
     engineering_self_destruct_start.setLabel(tr("hotkey_Engineering", "Start self-destruct"));
     engineering_self_destruct_confirm.setLabel(tr("hotkey_Engineering", "Confirm self-destruct"));
     engineering_self_destruct_cancel.setLabel(tr("hotkey_Engineering", "Cancel self-destruct"));
+    engineering_set_minimum_coolant.setLabel(tr("hotkey_Engineering", "Set minimum coolant"));
+    engineering_reset.setLabel(tr("hotkey_Engineering", "Reset system"));
+    //engineering_preset_apply.setLabel(tr("hotkey_Engineering", "Apply preset"));
+    //engineering_preset_update.setLabel(tr("hotkey_Engineering", "Update preset"));
+
+    //relay
+    relay_next_enemy.setLabel(tr("hotkey_Relay","Next enemy"));
+    relay_next.setLabel(tr("hotkey_Relay","Next relay"));
+    relay_link_science.setLabel(tr("hotkey_Relay","Link to science"));
+    relay_begin_hack.setLabel(tr("hotkey_Relay","Begin hack"));
+    relay_add_waypoint.setLabel(tr("hotkey_Relay","Add waypoint"));
+    relay_delete_waypoint.setLabel(tr("hotkey_Relay","Delete waypoint"));
+    relay_launch_probe.setLabel(tr("hotkey_Relay","Launch probe"));
+    relay_alert_normal.setLabel(tr("hotkey_Relay","Normal alert level"));
+    relay_alert_yellow.setLabel(tr("hotkey_Relay","Yellow alert"));
+    relay_alert_red.setLabel(tr("hotkey_Relay","Red alert"));
+    relay_open_comm.setLabel(tr("hotkey_Relay","Open communication"));
 
     //GM
     gm_delete.setLabel(tr("hotkey_GM", "Delete"));
@@ -306,6 +357,7 @@ void Keys::init()
 
     //Various
     spectator_show_callsigns.setLabel(tr("hotkey_various", "Show callsigns (spectator)"));
+    open_log.setLabel(tr("hotkey_various", "Open logs"));
 }
 
 

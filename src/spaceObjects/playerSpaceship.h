@@ -456,11 +456,11 @@ public:
     * Check if object can accept landing from this ship
     * \param object Object that wants to land
     */
-    virtual bool canBeLandedOn(P<SpaceObject> obj);
+    virtual bool canBeLandedOn(P<SpaceObject> obj) override;
     // Radar range
-    float getLongRangeRadarRange();
-    float getShortRangeRadarRange();
-    float getProbeRangeRadarRange();
+    float getLongRangeRadarRange() override;
+    float getShortRangeRadarRange() override;
+    float getProbeRangeRadarRange() override;
 
     //Ajout Tdelc, deplace depuis
     float getDronesControlRange();

@@ -177,32 +177,33 @@ void GuiScanningDialog::updateSignal()
     signal_quality->setPhaseError(phase);
 }
 
-void GuiScanningDialog::onHotkey(const HotkeyResult& key)
-{
-    if (key.category == "SCIENCE" && my_spaceship)
-    {
-		if (key.hotkey == "ABORD_SCAN")
-            my_spaceship->commandScanCancel();
+//TODO
+// void GuiScanningDialog::onHotkey(const HotkeyResult& key)
+// {
+//     if (key.category == "SCIENCE" && my_spaceship)
+//     {
+// 		if (key.hotkey == "ABORD_SCAN")
+//             my_spaceship->commandScanCancel();
             
-        for(int n=0; n<max_sliders; n++)
-        {
-            if (sliders[n]->isVisible())
-            {
-                if (key.hotkey == "MOVE_LEFT_SCAN_"+string(n+1))
-                {
-                    float new_value = sliders[n]->getValue()-0.05;
-                    if (new_value <= 0.0)
-                        new_value = 0.0;
-                    sliders[n]->setValue(new_value);
-                }
-                if (key.hotkey == "MOVE_RIGHT_SCAN_"+string(n+1))
-                {
-                    float new_value = sliders[n]->getValue()+0.05;
-                    if (new_value >= 1.0)
-                        new_value = 1.0;
-                    sliders[n]->setValue(new_value);
-                }
-            }
-        }
-    }
-}
+//         for(int n=0; n<max_sliders; n++)
+//         {
+//             if (sliders[n]->isVisible())
+//             {
+//                 if (key.hotkey == "MOVE_LEFT_SCAN_"+string(n+1))
+//                 {
+//                     float new_value = sliders[n]->getValue()-0.05;
+//                     if (new_value <= 0.0)
+//                         new_value = 0.0;
+//                     sliders[n]->setValue(new_value);
+//                 }
+//                 if (key.hotkey == "MOVE_RIGHT_SCAN_"+string(n+1))
+//                 {
+//                     float new_value = sliders[n]->getValue()+0.05;
+//                     if (new_value >= 1.0)
+//                         new_value = 1.0;
+//                     sliders[n]->setValue(new_value);
+//                 }
+//             }
+//         }
+//     }
+// }

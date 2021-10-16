@@ -90,7 +90,7 @@ void ShipsLog::onDraw(sp::RenderTarget& renderer)
     }
 }
 
-bool ShipsLog::onMouseDown(sp::io::Pointer::Button button, glm::vec2 position, int id)
+bool ShipsLog::onMouseDown(sp::io::Pointer::Button button, glm::vec2 position, sp::io::Pointer::ID id)
 {
     open = !open;
     if (open)
@@ -106,11 +106,11 @@ bool ShipsLog::onMouseDown(sp::io::Pointer::Button button, glm::vec2 position, i
     return true;
 }
 
-void ShipsLog::onHotkey(const HotkeyResult& key)
+void ShipsLog::onUpdate()
 {
-    if ((key.category == "RELAY" || key.category == "ENGINEERING") && my_spaceship)
+    if (my_spaceship)
     {
-        if (key.hotkey == "OPEN_LOG")
+        if (keys.open_log.getDown())
         {
 			open = !open;
 		    if (open)

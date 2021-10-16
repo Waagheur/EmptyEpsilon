@@ -33,7 +33,7 @@ public:
     virtual void onDraw(sp::RenderTarget& target) override;
     virtual bool onJoystickAxis(const AxisAction& axisAction) override;
 
-    virtual void onHotkey(const HotkeyResult& key) override;
+    //TODO onUpdate
     
     void setupParameters();
     void updateSignal();

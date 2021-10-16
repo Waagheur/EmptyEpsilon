@@ -186,19 +186,20 @@ void SinglePilotView::onDraw(sp::RenderTarget& renderer)
     GuiElement::onDraw(renderer);
 }
 
-void SinglePilotView::onHotkey(const HotkeyResult& key)
+void SinglePilotView::onUpdate()
 {
     if (isVisible()){
-        if (key.category == "HELMS" && target_spaceship)
+        if (target_spaceship)
         {
-            if (key.hotkey == "TURN_LEFT")
-                target_spaceship->commandTargetRotation(target_spaceship->getRotation() - 5.0f);
-            else if (key.hotkey == "TURN_RIGHT")
-                target_spaceship->commandTargetRotation(target_spaceship->getRotation() + 5.0f);
+            auto angle = (keys.helms_turn_right.getValue() - keys.helms_turn_left.getValue()) * 5.0f;
+            if (angle != 0.0f)
+            {
+                my_spaceship->commandTargetRotation(my_spaceship->getRotation() + angle);
+            }
         }
-        if (key.category == "WEAPONS" && target_spaceship)
+        if (target_spaceship)
         {
-            if (key.hotkey == "NEXT_ENEMY_TARGET")
+            if (keys.weapons_enemy_next_target.getDown())
             {
                 bool current_found = false;
                 foreach(SpaceObject, obj, space_object_list)
@@ -229,7 +230,7 @@ void SinglePilotView::onHotkey(const HotkeyResult& key)
                     }
                 }
             }
-            if (key.hotkey == "NEXT_TARGET")
+            if (keys.weapons_next_target.getDown())
             {
                 bool current_found = false;
                 foreach(SpaceObject, obj, space_object_list)
@@ -260,14 +261,10 @@ void SinglePilotView::onHotkey(const HotkeyResult& key)
                     }
                 }
             }
-            if (key.hotkey == "AIM_MISSILE_LEFT")
+            auto aim_adjust = keys.weapons_aim_left.getValue() - keys.weapons_aim_right.getValue();
+            if (aim_adjust != 0.0f)
             {
-                missile_aim->setValue(missile_aim->getValue() - 5.0f);
-                tube_controls->setMissileTargetAngle(missile_aim->getValue());
-            }
-            if (key.hotkey == "AIM_MISSILE_RIGHT")
-            {
-                missile_aim->setValue(missile_aim->getValue() + 5.0f);
+                missile_aim->setValue(missile_aim->getValue() - 5.0f * aim_adjust);
                 tube_controls->setMissileTargetAngle(missile_aim->getValue());
             }
         }

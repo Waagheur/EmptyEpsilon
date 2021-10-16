@@ -37,7 +37,7 @@ public:
     GuiMissileTubeControls(GuiContainer* owner, string id, P<PlayerSpaceship> targetSpaceship);
 
     virtual void onDraw(sp::RenderTarget& target) override;
-    virtual void onHotkey(const HotkeyResult& key) override;
+    virtual void onUpdate() override;
 
     void setMissileTargetAngle(float angle);
     float getMissileTargetAngle();

@@ -20,7 +20,7 @@ public:
 
     //Ajout Tdelc
     virtual bool canBeDockedBy(P<SpaceObject> obj) { return true; }
-    virtual bool canBeLandedOn(P<SpaceObject> obj) { return false; }
+    virtual bool canBeLandedOn(P<SpaceObject> obj) override { return false; }
 
     
     float getPlanetRadius();

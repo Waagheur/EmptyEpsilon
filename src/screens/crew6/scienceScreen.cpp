@@ -760,12 +760,12 @@ void ScienceScreen::onDraw(sp::RenderTarget& renderer)
     }
 }
 
-void ScienceScreen::onHotkey(const HotkeyResult& key)
+void ScienceScreen::onUpdate()
 {
-    if (key.category == "SCIENCE" && my_spaceship)
+    if (my_spaceship)
     {
-         // Initiate a scan on scannable objects.
-        if (key.hotkey == "SCAN_OBJECT" &&
+        // Initiate a scan on scannable objects.
+        if (keys.science_scan_object.getDown() &&
             my_spaceship->getCanScan() &&
             my_spaceship->scanning_delay == 0.0f)
         {
@@ -782,7 +782,7 @@ void ScienceScreen::onHotkey(const HotkeyResult& key)
         }
 
         // Cycle selection through scannable objects.
-        if (key.hotkey == "NEXT_SCANNABLE_OBJECT" &&
+        if (keys.science_select_next_scannable.getDown() &&
             my_spaceship->scanning_delay == 0.0f)
         {
             bool current_found = false;
@@ -829,7 +829,7 @@ void ScienceScreen::onHotkey(const HotkeyResult& key)
             }
         }
          
-        if (key.hotkey == "SHOW_PROBE")
+        if (keys.science_show_probe.getDown())
         {
             P<ScanProbe> probe;
              if (game_server)
@@ -849,7 +849,7 @@ void ScienceScreen::onHotkey(const HotkeyResult& key)
                 probe_radar->hide();
             }
         }
-        if (key.hotkey == "SHOW_DATABASE")
+        if (keys.science_show_database.getDown())
         {
             P<SpaceShip> ship = targets.get();
             if (ship && ship->getScannedStateFor(my_spaceship) >= SS_SimpleScan)
@@ -860,37 +860,38 @@ void ScienceScreen::onHotkey(const HotkeyResult& key)
             background_gradient->hide();
             database_view->show();
         }
-        if (key.hotkey == "SHOW_RADAR")
+        if (keys.science_show_radar.getDown())
         {
             view_mode_selection->setSelectionIndex(0);
             radar_view->show();
             background_gradient->show();
             database_view->hide();
         }
-        if (key.hotkey == "DECREASE_ZOOM")
-        {
-            float view_distance = science_radar->getDistance() + 1500.0f;
-            if (view_distance > my_spaceship->getLongRangeRadarRange())
-                view_distance = my_spaceship->getLongRangeRadarRange();
-            if (view_distance < my_spaceship->getShortRangeRadarRange() )
-                view_distance = my_spaceship->getShortRangeRadarRange();
-            science_radar->setDistance(view_distance);
-            // Keep the zoom slider in sync.
-            zoom_slider->setValue(view_distance);
-            zoom_label->setText("Zoom: " + string(my_spaceship->getLongRangeRadarRange() / view_distance, 1) + "x");
-        }
-        if (key.hotkey == "INCREASE_ZOOM")
-        {
-            float view_distance = science_radar->getDistance() - 1500.0f;
-            if (view_distance > my_spaceship->getLongRangeRadarRange())
-                view_distance = my_spaceship->getLongRangeRadarRange();
-            if (view_distance < my_spaceship->getShortRangeRadarRange() )
-                view_distance = my_spaceship->getShortRangeRadarRange();
-            science_radar->setDistance(view_distance);
-            // Keep the zoom slider in sync.
-            zoom_slider->setValue(view_distance);
-            zoom_label->setText("Zoom: " + string(my_spaceship->getLongRangeRadarRange() / view_distance, 1) + "x");
-        }
+        // TODO
+        // if (key.hotkey == "DECREASE_ZOOM")
+        // {
+        //     float view_distance = science_radar->getDistance() + 1500.0f;
+        //     if (view_distance > my_spaceship->getLongRangeRadarRange())
+        //         view_distance = my_spaceship->getLongRangeRadarRange();
+        //     if (view_distance < my_spaceship->getShortRangeRadarRange() )
+        //         view_distance = my_spaceship->getShortRangeRadarRange();
+        //     science_radar->setDistance(view_distance);
+        //     // Keep the zoom slider in sync.
+        //     zoom_slider->setValue(view_distance);
+        //     zoom_label->setText("Zoom: " + string(my_spaceship->getLongRangeRadarRange() / view_distance, 1) + "x");
+        // }
+        // if (key.hotkey == "INCREASE_ZOOM")
+        // {
+        //     float view_distance = science_radar->getDistance() - 1500.0f;
+        //     if (view_distance > my_spaceship->getLongRangeRadarRange())
+        //         view_distance = my_spaceship->getLongRangeRadarRange();
+        //     if (view_distance < my_spaceship->getShortRangeRadarRange() )
+        //         view_distance = my_spaceship->getShortRangeRadarRange();
+        //     science_radar->setDistance(view_distance);
+        //     // Keep the zoom slider in sync.
+        //     zoom_slider->setValue(view_distance);
+        //     zoom_label->setText("Zoom: " + string(my_spaceship->getLongRangeRadarRange() / view_distance, 1) + "x");
+        // }
         
     }
 }

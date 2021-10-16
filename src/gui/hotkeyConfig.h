@@ -66,6 +66,9 @@ public:
     sp::io::Keybinding helms_combat_left;
     sp::io::Keybinding helms_combat_right;
     sp::io::Keybinding helms_combat_boost;
+    sp::io::Keybinding helms_land_action;
+    sp::io::Keybinding helms_land_request;
+    sp::io::Keybinding helms_land_abort;
 
     //weapons
     sp::io::Keybinding weapons_select_homing;
@@ -97,6 +100,9 @@ public:
     //Science
     sp::io::Keybinding science_scan_object;
     sp::io::Keybinding science_select_next_scannable;
+    sp::io::Keybinding science_show_probe;
+    sp::io::Keybinding science_show_database;
+    sp::io::Keybinding science_show_radar;
 
     //Engineering
     sp::io::Keybinding engineering_select_reactor;
@@ -128,6 +134,24 @@ public:
     sp::io::Keybinding engineering_self_destruct_start;
     sp::io::Keybinding engineering_self_destruct_confirm;
     sp::io::Keybinding engineering_self_destruct_cancel;
+    sp::io::Keybinding engineering_set_minimum_coolant;
+    sp::io::Keybinding engineering_reset;
+    //sp::io::Keybinding engineering_preset_apply;
+    //sp::io::Keybinding engineering_preset_update;
+
+
+    //relay
+    sp::io::Keybinding relay_next_enemy;
+    sp::io::Keybinding relay_next;
+    sp::io::Keybinding relay_link_science;
+    sp::io::Keybinding relay_begin_hack;
+    sp::io::Keybinding relay_add_waypoint;
+    sp::io::Keybinding relay_delete_waypoint;
+    sp::io::Keybinding relay_launch_probe;
+    sp::io::Keybinding relay_alert_normal;
+    sp::io::Keybinding relay_alert_yellow;
+    sp::io::Keybinding relay_alert_red;
+    sp::io::Keybinding relay_open_comm;
 
     //GM
     sp::io::Keybinding gm_delete;
@@ -135,6 +159,7 @@ public:
 
     //Various
     sp::io::Keybinding spectator_show_callsigns;
+    sp::io::Keybinding open_log;
 };
 extern Keys keys;
 
