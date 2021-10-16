@@ -741,17 +741,16 @@ void EngineeringScreen::onUpdate()
             }
         }
 
-        //TODO
-        // for(int presetId=1; presetId < 10; presetId++) 
-        // {
-        //     if (presetId <= my_spaceship->active_engineer_presets_number)
-        //     {
-        //         if (key.hotkey == "PRESET_APPLY" + string(presetId))
-        //             applyPreset(presetId);
-        //         if (key.hotkey == "PRESET_UPDATE" + string(presetId))
-        //             updatePreset(presetId);
-        //     }
-        // }
+        for(int presetId=1; presetId < 10; presetId++) 
+        {
+            if (presetId <= my_spaceship->active_engineer_presets_number)
+            {
+                if (keys.engineering_apply_preset[presetId-1].getDown())
+                    applyPreset(presetId);
+                if (keys.engineering_update_preset[presetId-1].getDown())
+                    updatePreset(presetId);
+            }
+        }
     }
 }
 

@@ -100,9 +100,17 @@ public:
     //Science
     sp::io::Keybinding science_scan_object;
     sp::io::Keybinding science_select_next_scannable;
+    std::array<sp::io::Keybinding, 4> science_scan_param_increase;
+    std::array<sp::io::Keybinding, 4> science_scan_param_decrease;
+
+    //ajouts Tdelc
+    sp::io::Keybinding science_abort_scan;
     sp::io::Keybinding science_show_probe;
     sp::io::Keybinding science_show_database;
     sp::io::Keybinding science_show_radar;
+    std::array<sp::io::Keybinding, 4> science_move_left_scan;
+    std::array<sp::io::Keybinding, 4> science_move_right_scan;
+    //fin d'ajouts
 
     //Engineering
     sp::io::Keybinding engineering_select_reactor;
@@ -134,11 +142,15 @@ public:
     sp::io::Keybinding engineering_self_destruct_start;
     sp::io::Keybinding engineering_self_destruct_confirm;
     sp::io::Keybinding engineering_self_destruct_cancel;
+    //ajouts Tdelc
     sp::io::Keybinding engineering_set_minimum_coolant;
     sp::io::Keybinding engineering_reset;
-    //sp::io::Keybinding engineering_preset_apply;
-    //sp::io::Keybinding engineering_preset_update;
-
+    //fin d'ajouts
+    
+    //ajouts Tdelc
+    std::array<sp::io::Keybinding, 9> engineering_apply_preset;
+    std::array<sp::io::Keybinding, 9> engineering_update_preset;
+    //fin d'ajouts
 
     //relay
     sp::io::Keybinding relay_next_enemy;
@@ -151,7 +163,8 @@ public:
     sp::io::Keybinding relay_alert_normal;
     sp::io::Keybinding relay_alert_yellow;
     sp::io::Keybinding relay_alert_red;
-    sp::io::Keybinding relay_open_comm;
+    sp::io::Keybinding relay_open_comm; 
+    //fin d'ajouts
 
     //GM
     sp::io::Keybinding gm_delete;
@@ -159,7 +172,7 @@ public:
 
     //Various
     sp::io::Keybinding spectator_show_callsigns;
-    sp::io::Keybinding open_log;
+    sp::io::Keybinding open_log; //ajout tdelc
 };
 extern Keys keys;
 
@@ -204,7 +217,6 @@ public:
     std::vector<std::pair<string, string>> listHotkeysByCategory(const string& hotkey_category) const;
     std::vector<std::pair<string, string>> listAllHotkeysByCategory(const string& hotkey_category) const;
 
-    std::vector<HotkeyResult> getHotkey(const SDL_KeyboardEvent& key) const;
     bool setHotkey(const std::string& work_cat, const std::pair<string,string>& key, const string& new_value);
     string getStringForKey(SDL_Keycode key) const;
     SDL_Keycode getKeyByHotkey(const string& hotkey_category, const string& hotkey_name) const;

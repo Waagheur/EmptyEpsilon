@@ -79,19 +79,48 @@ void GuiScanningDialog::onDraw(sp::RenderTarget& target)
         }
     }
 }
-bool GuiScanningDialog::onJoystickAxis(const AxisAction& axisAction){
-    if(my_spaceship){
-        if (axisAction.category == "SCIENCE"){
-            for(int n=0; n<max_sliders; n++) {
-                if (axisAction.action == std::string("SCAN_PARAM_") + string(n+1)){
-                    sliders[n]->setValue((axisAction.value + 1) / 2.0f);
-                    updateSignal();
-                    return true;
+
+void GuiScanningDialog::onUpdate()
+{
+    if(my_spaceship)
+    {
+        for(int n=0; n<max_sliders; n++)
+        {
+            float adjust = (keys.science_scan_param_increase[n].getValue() - keys.science_scan_param_decrease[n].getValue()) * 0.01f;
+            if (adjust != 0.0f)
+            {
+                sliders[n]->setValue(sliders[n]->getValue() + adjust);
+                updateSignal();
+            }
+        }
+    }
+
+    if (my_spaceship)
+    {
+		if (keys.science_abort_scan.getDown())
+            my_spaceship->commandScanCancel();
+            
+        for(int n=0; n<max_sliders; n++)
+        {
+            if (sliders[n]->isVisible())
+            {
+                if (keys.science_move_left_scan[n].getDown())
+                {
+                    float new_value = sliders[n]->getValue()-0.05;
+                    if (new_value <= 0.0)
+                        new_value = 0.0;
+                    sliders[n]->setValue(new_value);
+                }
+                if (keys.science_move_right_scan[n].getDown())
+                {
+                    float new_value = sliders[n]->getValue()+0.05;
+                    if (new_value >= 1.0)
+                        new_value = 1.0;
+                    sliders[n]->setValue(new_value);
                 }
             }
         }
     }
-    return false;
 }
 
 void GuiScanningDialog::setupParameters()
@@ -177,33 +206,3 @@ void GuiScanningDialog::updateSignal()
     signal_quality->setPhaseError(phase);
 }
 
-//TODO
-// void GuiScanningDialog::onHotkey(const HotkeyResult& key)
-// {
-//     if (key.category == "SCIENCE" && my_spaceship)
-//     {
-// 		if (key.hotkey == "ABORD_SCAN")
-//             my_spaceship->commandScanCancel();
-            
-//         for(int n=0; n<max_sliders; n++)
-//         {
-//             if (sliders[n]->isVisible())
-//             {
-//                 if (key.hotkey == "MOVE_LEFT_SCAN_"+string(n+1))
-//                 {
-//                     float new_value = sliders[n]->getValue()-0.05;
-//                     if (new_value <= 0.0)
-//                         new_value = 0.0;
-//                     sliders[n]->setValue(new_value);
-//                 }
-//                 if (key.hotkey == "MOVE_RIGHT_SCAN_"+string(n+1))
-//                 {
-//                     float new_value = sliders[n]->getValue()+0.05;
-//                     if (new_value >= 1.0)
-//                         new_value = 1.0;
-//                     sliders[n]->setValue(new_value);
-//                 }
-//             }
-//         }
-//     }
-// }
