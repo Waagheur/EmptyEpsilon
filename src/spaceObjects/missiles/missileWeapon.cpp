@@ -258,7 +258,15 @@ std::unordered_map<string, string> MissileWeapon::getGMInfo()
         ret[trMark("gm_info", "Owner")] = owner->getCallSign();
     }
 
-    P<SpaceObject> target = game_server->getObjectById(target_id);
+    P<SpaceObject> target{nullptr};
+    if(game_server)
+    {
+        target = game_server->getObjectById(target_id);
+    }
+    else if(game_client)
+    {
+        target = game_client->getObjectById(target_id); //mj secondaire
+    }
 
     if (target)
     {
