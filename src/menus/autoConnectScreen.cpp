@@ -6,6 +6,8 @@
 #include "epsilonServer.h"
 #include "gameGlobalInfo.h"
 #include "playerInfo.h"
+#include "multiplayer_client.h"
+#include "multiplayer_server_scanner.h"
 
 #include "gui/gui2_label.h"
 #include "gui/gui2_overlay.h"

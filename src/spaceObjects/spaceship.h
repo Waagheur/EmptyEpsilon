@@ -11,6 +11,8 @@
 #include "spaceshipParts/beamWeapon.h"
 #include "spaceshipParts/weaponTube.h"
 #include "spaceshipParts/dock.h"
+#include "tween.h"
+
 
 enum EMainScreenSetting
 {

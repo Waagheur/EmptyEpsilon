@@ -6,6 +6,7 @@
 #include "ai/ai.h"
 #include "ai/aiFactory.h"
 #include "gameGlobalInfo.h"
+#include "random.h"
 
 REGISTER_SHIP_AI(ShipAI, "default");
 

@@ -12,6 +12,9 @@ static inline sp::io::DataBuffer& operator >> (sp::io::DataBuffer& packet, EComm
     cgi = ECommsGmInterception(value);
     return packet;
 }
+#include "multiplayer_client.h"
+#include "soundManager.h"
+#include "random.h"
 #include "config.h"
 
 P<GameGlobalInfo> gameGlobalInfo;

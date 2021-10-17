@@ -5,6 +5,8 @@
 #include "sectorsView.h"
 #include "spaceObjects/playerSpaceship.h"
 #include "gui/gui2_overlay.h"
+#include "engine.h"
+
 
 class GuiMissileTubeControls;
 

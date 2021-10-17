@@ -3,6 +3,7 @@
 #include "explosionEffect.h"
 #include "main.h"
 #include "playerSpaceship.h"
+#include "random.h"
 
 #include "scriptInterface.h"
 
