@@ -236,9 +236,9 @@ void ModelData::render(const glm::mat4& model_matrix)
     modeldata_matrix = glm::scale(modeldata_matrix, glm::vec3{scale});
     modeldata_matrix = glm::translate(modeldata_matrix, mesh_offset);
 
-    model_matrix = glm::rotate(model_matrix, mesh_rotation.x, {1.0f,0.0f,0.0f});
-    model_matrix = glm::rotate(model_matrix, mesh_rotation.y, {0.0f,1.0f,0.0f});
-    model_matrix = glm::rotate(model_matrix, mesh_rotation.z, {0.0f,0.0f,1.0f});
+    modeldata_matrix = glm::rotate(modeldata_matrix, mesh_rotation.x, {1.0f,0.0f,0.0f});
+    modeldata_matrix = glm::rotate(modeldata_matrix, mesh_rotation.y, {0.0f,1.0f,0.0f});
+    modeldata_matrix = glm::rotate(modeldata_matrix, mesh_rotation.z, {0.0f,0.0f,1.0f});
 
     //glColor4f(1.0,1.0,1.0,alpha);
 
