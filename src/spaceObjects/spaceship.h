@@ -12,7 +12,8 @@
 #include "spaceshipParts/weaponTube.h"
 #include "spaceshipParts/dock.h"
 #include "tween.h"
-
+#include "multiplayer_server.h"
+#include "multiplayer_client.h"
 
 enum EMainScreenSetting
 {

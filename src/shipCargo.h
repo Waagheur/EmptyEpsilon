@@ -5,6 +5,7 @@
 #include "shipTemplate.h"
 #include "cargo.h"
 #include "spaceObjects/spaceship.h"
+#include "multiplayer_client.h"
 
 //class ShipCargo;
 class ShipTemplate;

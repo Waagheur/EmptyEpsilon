@@ -79,7 +79,7 @@ public:
 
     virtual void onDraw(sp::RenderTarget& target) override;
     virtual void onUpdate() override;
-    virtual bool onJoystickAxis(const AxisAction& axisAction) override;
+    //Ajout tdelc/tsht
     virtual void applyPreset(int preset);
     virtual void updatePreset(int preset);
 };

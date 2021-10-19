@@ -2,6 +2,7 @@
 #include "planet.h"
 #include "main.h"
 #include "pathPlanner.h"
+#include "random.h"
 
 #include "scriptInterface.h"
 #include "glObjects.h"

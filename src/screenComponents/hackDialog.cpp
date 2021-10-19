@@ -2,6 +2,7 @@
 #include "spaceObjects/playerSpaceship.h"
 #include "spaceObjects/spaceship.h"
 #include "hackDialog.h"
+#include "random.h"
 #include "gui/gui2_panel.h"
 #include "gui/gui2_progressbar.h"
 #include "gui/gui2_button.h"

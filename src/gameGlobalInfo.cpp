@@ -497,7 +497,10 @@ REGISTER_SCRIPT_FUNCTION(getAllObjects);
 
 static int getScenarioVariation(lua_State* L)
 {
-    lua_pushstring(L, gameGlobalInfo->variation.c_str());
+    if (gameGlobalInfo->scenario_settings.find("variation") != gameGlobalInfo->scenario_settings.end())
+        lua_pushstring(L, gameGlobalInfo->scenario_settings["variation"].c_str());
+    else
+        lua_pushstring(L, "None");
     return 1;
 }
 /// getScenarioVariation()
@@ -517,20 +520,20 @@ REGISTER_SCRIPT_FUNCTION(getGameLanguage);
 class ScenarioChanger : public Updatable
 {
 public:
-    ScenarioChanger(string script_name, string variation)
-    : script_name(script_name), variation(variation)
+    ScenarioChanger(string script_name, const std::unordered_map<string, string>& settings)
+    : script_name(script_name), settings(settings)
     {
     }
 
     virtual void update(float delta) override
     {
-        gameGlobalInfo->variation = variation;
+        gameGlobalInfo->scenario_settings = settings;
         gameGlobalInfo->startScenario(script_name);
         destroy();
     }
 private:
     string script_name;
-    string variation;
+    std::unordered_map<string, string> settings;
 };
 
 static int setScenario(lua_State* L)
@@ -541,7 +544,7 @@ static int setScenario(lua_State* L)
     // Calling GameGlobalInfo::startScenario is unsafe at this point,
     // as this will destroy the lua state that this function is running in.
     //So use the ScenarioChanger object which will do the change in the update loop. Which is safe.
-    new ScenarioChanger(script_name, variation);
+    new ScenarioChanger(script_name, {{"variation", variation}});
     return 0;
 }
 /// setScenario(script_name, variation_name)

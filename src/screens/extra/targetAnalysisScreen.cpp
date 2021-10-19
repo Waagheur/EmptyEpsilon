@@ -1,5 +1,6 @@
 #include "targetAnalysisScreen.h"
 
+#include "random.h"
 #include "playerInfo.h"
 #include "shipTemplate.h"
 #include "gameGlobalInfo.h"

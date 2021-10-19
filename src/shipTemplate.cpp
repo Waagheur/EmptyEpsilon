@@ -6,6 +6,7 @@
 #include "multiplayer_server.h"
 
 #include "scriptInterface.h"
+#include "random.h"
 
 /// ShipTemplates are created when EmptyEpsilon is started.
 /// And used to fill the ship starting statistics, and other information.

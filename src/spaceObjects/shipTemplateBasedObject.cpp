@@ -1,6 +1,8 @@
 #include "shipTemplateBasedObject.h"
 #include "spaceship.h"
 #include "gameGlobalInfo.h"
+#include "random.h"
+#include "soundManager.h"
 
 #include "scriptInterface.h"
 
