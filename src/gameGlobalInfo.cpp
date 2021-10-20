@@ -36,7 +36,6 @@ GameGlobalInfo::GameGlobalInfo()
     }
 
     global_message_timeout = 0.0;
-    player_warp_jump_drive_setting = PWJ_ShipDefault;
     scanning_complexity = SC_Normal;
     hacking_difficulty = 2;
     hacking_games = HG_All;
@@ -237,22 +236,6 @@ void GameGlobalInfo::destroy()
     MultiplayerObject::destroy();
 }
 
-string playerWarpJumpDriveToString(EPlayerWarpJumpDrive player_warp_jump_drive)
-{
-    switch(player_warp_jump_drive)
-    {
-    case PWJ_ShipDefault:
-        return "Par defaut";
-    case PWJ_WarpDrive:
-        return "Warp-drive";
-    case PWJ_JumpDrive:
-        return "Jump-drive";
-    case PWJ_WarpAndJumpDrive:
-        return "Double";
-    default:
-        return "?";
-    }
-}
 
 std::regex sector_rgx("([a-zA-Z]+)(\\d+)([a-dA-D])");
 std::regex location_rgx("([a-zA-Z]+\\d+[a-dA-D]):(\\d+):(\\d+)");
