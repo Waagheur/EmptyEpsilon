@@ -255,6 +255,9 @@ Keys::Keys() :
 
     spectator_show_callsigns("SPECTATOR_SHOW_CALLSIGNS", "C"),
     open_log("OPEN_LOG")
+
+    debug_show_fps("DEBUG_SHOW_FPS", "F10"),
+    debug_show_timing("DEBUG_SHOW_TIMING", "F11")
 {
 }
 
@@ -432,4 +435,7 @@ void Keys::init()
     //ajouts tdelc
     open_log.setLabel(tr("hotkey_menu", "Various"), tr("hotkey_various", "Open logs"));
 
+    //Debug
+    debug_show_fps.setLabel(tr("hotkey_menu", "Various"), tr("hotkey_debug", "Show FPS"));
+    debug_show_timing.setLabel(tr("hotkey_menu", "Various"), tr("hotkey_debug", "Show debug timing"));
 }

@@ -173,6 +173,10 @@ public:
     //Various
     sp::io::Keybinding spectator_show_callsigns;
     sp::io::Keybinding open_log; //ajout tdelc
+
+    //Debug
+    sp::io::Keybinding debug_show_fps;
+    sp::io::Keybinding debug_show_timing;
 };
 extern Keys keys;
 
