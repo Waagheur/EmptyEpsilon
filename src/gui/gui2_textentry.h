@@ -43,6 +43,7 @@ public:
     GuiTextEntry* setText(string text);
     GuiTextEntry* setTextSize(float size);
     GuiTextEntry* setTextFont(sp::Font* font);
+    GuiTextEntry* setMultiline(bool enabled=true);
     GuiTextEntry* callback(func_t func);
     GuiTextEntry* enterCallback(func_t func);
     GuiTextEntry* validator(Validator func);

@@ -13,9 +13,10 @@ GuiTextEntry::GuiTextEntry(GuiContainer* owner, string id, string text)
 void GuiTextEntry::onDraw(sp::RenderTarget& renderer)
 {
     if (focus)
-        renderer.drawStretched(rect, "gui/widget/TextEntryBackground.focused.png", selectColor(colorConfig.text_entry.background));
+        renderer.drawStretchedHV(rect, text_size, "gui/widget/TextEntryBackground.focused.png", selectColor(colorConfig.text_entry.background));
     else
-        renderer.drawStretched(rect, "gui/widget/TextEntryBackground.png", selectColor(colorConfig.text_entry.background));
+        renderer.drawStretchedHV(rect, text_size, "gui/widget/TextEntryBackground.png", selectColor(colorConfig.text_entry.background));
+    
     glm::u8vec4 textColor = (valid || !validator_func) ? selectColor(colorConfig.text_entry.forground) : colorConfig.text_entry_invalid;
     if (blink_timer.isExpired())
         typing_indicator = !typing_indicator;
@@ -353,6 +354,12 @@ GuiTextEntry* GuiTextEntry::setTextSize(float size)
 GuiTextEntry* GuiTextEntry::setTextFont(sp::Font* font)
 {
     this->text_font = font;
+    return this;
+}
+
+GuiTextEntry* GuiTextEntry::setMultiline(bool enabled)
+{
+    multiline = enabled;
     return this;
 }
 
