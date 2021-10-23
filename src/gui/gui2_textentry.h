@@ -12,12 +12,18 @@ public:
 
 protected:
     string text;
+    int selection_start = 0;
+    int selection_end = 0;
+
     float text_size;
     sp::Font* text_font;
-    func_t func;
-    func_t enter_func;
     Validator validator_func;
     bool valid;
+    bool multiline = false;
+    bool readonly = false;
+    func_t func;
+    func_t enter_func;
+
     const float blink_rate = 0.530f;
     sp::SystemTimer blink_timer;
     bool typing_indicator{false};
@@ -26,6 +32,7 @@ public:
 
     virtual void onDraw(sp::RenderTarget& window) override;
     virtual bool onMouseDown(sp::io::Pointer::Button button, glm::vec2 position, sp::io::Pointer::ID id) override;
+    virtual void onMouseDrag(glm::vec2 position, sp::io::Pointer::ID id) override;
     virtual void onTextInput(const string& text) override;
     virtual void onTextInput(sp::TextInputEvent e) override;
     virtual void onFocusGained() override;
@@ -39,6 +46,9 @@ public:
     GuiTextEntry* callback(func_t func);
     GuiTextEntry* enterCallback(func_t func);
     GuiTextEntry* validator(Validator func);
+
+protected:
+    int getTextOffsetForPosition(glm::vec2 position);
 };
 
 #endif//GUI2_TEXTENTRY_H
