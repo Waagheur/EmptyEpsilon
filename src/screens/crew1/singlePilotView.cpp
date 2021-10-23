@@ -270,28 +270,4 @@ void SinglePilotView::onUpdate()
         }
     }
 }
-
-bool SinglePilotView::onJoystickAxis(const AxisAction& axisAction){
-    if(target_spaceship){
-        if (axisAction.category == "HELMS"){
-            if (axisAction.action == "IMPULSE"){
-                target_spaceship->commandImpulse(axisAction.value);  
-                return true;
-            } 
-            if (axisAction.action == "ROTATE"){
-                target_spaceship->commandTurnSpeed(axisAction.value);
-                return true;
-            } 
-            if (axisAction.action == "STRAFE"){
-                target_spaceship->commandCombatManeuverStrafe(axisAction.value);
-                return true;
-            } 
-            if (axisAction.action == "BOOST"){
-                target_spaceship->commandCombatManeuverBoost(axisAction.value);
-                return true;
-            }
-        }
-    }
-    return false;
-}
    

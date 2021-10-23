@@ -254,7 +254,7 @@ Keys::Keys() :
     gm_clipboardcopy("GM_CLIPBOARD_COPY", "F5"),
 
     spectator_show_callsigns("SPECTATOR_SHOW_CALLSIGNS", "C"),
-    open_log("OPEN_LOG")
+    open_log("OPEN_LOG"),
 
     debug_show_fps("DEBUG_SHOW_FPS", "F10"),
     debug_show_timing("DEBUG_SHOW_TIMING", "F11")

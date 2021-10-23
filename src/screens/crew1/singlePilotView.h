@@ -54,7 +54,6 @@ public:
     virtual void onDraw(sp::RenderTarget& renderer) override;
     virtual void onUpdate() override;
     void setTargetSpaceship(P<PlayerSpaceship> targetSpaceship);
-    virtual bool onJoystickAxis(const AxisAction& axisAction) override;
 };
 
 #endif//SINGLE_PILOT_VIEW_H
