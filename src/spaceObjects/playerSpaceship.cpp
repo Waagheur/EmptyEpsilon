@@ -10,6 +10,8 @@
 
 #include "scriptInterface.h"
 
+#include <SDL_assert.h>
+
 // PlayerSpaceship are ships controlled by a player crew.
 REGISTER_SCRIPT_SUBCLASS(PlayerSpaceship, SpaceShip)
 {
@@ -2769,7 +2771,7 @@ string PlayerSpaceship::getExportLine()
         auto system = static_cast<ESystem>(sys_index);
         if (hasSystem(system))
         {
-            assert(sys_index < default_system_power_factors.size());
+            SDL_assert(sys_index < default_system_power_factors.size());
             auto default_factor = default_system_power_factors[sys_index];
             auto current_factor = getSystemPowerFactor(system);
             auto difference = std::fabs(current_factor - default_factor) > std::numeric_limits<float>::epsilon();

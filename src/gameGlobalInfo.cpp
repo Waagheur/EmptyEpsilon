@@ -16,6 +16,7 @@ static inline sp::io::DataBuffer& operator >> (sp::io::DataBuffer& packet, EComm
 #include "soundManager.h"
 #include "random.h"
 #include "config.h"
+#include <SDL_assert.h>
 
 P<GameGlobalInfo> gameGlobalInfo;
 
@@ -23,7 +24,7 @@ REGISTER_MULTIPLAYER_CLASS(GameGlobalInfo, "GameGlobalInfo")
 GameGlobalInfo::GameGlobalInfo()
 : MultiplayerObject("GameGlobalInfo")
 {
-    assert(!gameGlobalInfo);
+    SDL_assert(!gameGlobalInfo);
 
     callsign_counter = 0;
     victory_faction = -1;
@@ -94,7 +95,7 @@ GameGlobalInfo::~GameGlobalInfo()
 
 P<PlayerSpaceship> GameGlobalInfo::getPlayerShip(int index)
 {
-    assert(index >= 0 && index < max_player_ships);
+    SDL_assert(index >= 0 && index < max_player_ships);
     if (game_server)
         return game_server->getObjectById(playerShipId[index]);
     return game_client->getObjectById(playerShipId[index]);
@@ -102,8 +103,8 @@ P<PlayerSpaceship> GameGlobalInfo::getPlayerShip(int index)
 
 void GameGlobalInfo::setPlayerShip(int index, P<PlayerSpaceship> ship)
 {
-    assert(index >= 0 && index < max_player_ships);
-    assert(game_server);
+    SDL_assert(index >= 0 && index < max_player_ships);
+    SDL_assert(game_server);
 
     if (ship)
         playerShipId[index] = ship->getMultiplayerId();

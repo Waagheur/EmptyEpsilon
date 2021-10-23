@@ -4,6 +4,8 @@
 #include "spaceObjects/spaceObject.h"
 #include "multiplayer_server.h"
 
+#include <SDL_assert.h>
+
 
 BeamWeapon::BeamWeapon()
 {
@@ -27,7 +29,7 @@ BeamWeapon::BeamWeapon()
 
 void BeamWeapon::setParent(SpaceShip* parent)
 {
-    assert(!this->parent);
+    SDL_assert(!this->parent);
     this->parent = parent;
 
     parent->registerMemberReplication(&arc);
