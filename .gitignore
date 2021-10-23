@@ -35,6 +35,9 @@ thumbs.db
 *.swp
 
 options.ini
+keybindings.json
+
+
 .vscode
 *.html
 *.log
