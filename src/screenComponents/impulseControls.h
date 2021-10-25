@@ -15,6 +15,7 @@ private:
     GuiKeyValueDisplay* label;
     GuiSlider* slider;
     GuiPowerDamageIndicator* pdi;
+    bool set_active = false;
 public:
     GuiImpulseControls(GuiContainer* owner, string id, P<PlayerSpaceship> targetSpaceship);
 
