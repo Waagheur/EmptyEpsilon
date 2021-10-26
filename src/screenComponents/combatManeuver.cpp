@@ -40,18 +40,20 @@ void GuiCombatManeuver::onUpdate()
 {
     setVisible(my_spaceship && my_spaceship->getCanCombatManeuver()); //FIXME c'est pas target spaceship ?
 
-    float strafe = keys.helms_combat_right.getValue() + keys.helms_combat_left.getValue();
-    float boost = keys.helms_combat_boost.getValue();
-    if (strafe != 0.0f)
+    float strafe = keys.helms_combat_right.getValue() - keys.helms_combat_left.getValue();
+    float boost = std::max(0.0f, keys.helms_combat_boost.getValue());
+    if (strafe != 0.0f || hotkey_strafe_active)
     {
         setStrafeValue(strafe);
         my_spaceship->commandCombatManeuverStrafe(strafe);
     }
-    if (boost > 0.0f)
+    hotkey_strafe_active = strafe != 0.0f;
+    if (boost > 0.0f || hotkey_boost_active)
     {
         setBoostValue(boost);
         my_spaceship->commandCombatManeuverBoost(boost);
     }
+    hotkey_boost_active = boost > 0.0f;
     // if (key.hotkey == "COMBAT_STOP") //FIXME
     // {
     //     setBoostValue(0.0f);
@@ -83,9 +85,11 @@ void GuiCombatManeuver::onDraw(sp::RenderTarget& target)
 void GuiCombatManeuver::setBoostValue(float value)
 {
     slider->setValue(glm::vec2(slider->getValue().x, value));
+    my_spaceship->commandCombatManeuverBoost(value);
 }
 
 void GuiCombatManeuver::setStrafeValue(float value)
 {
     slider->setValue(glm::vec2(value, slider->getValue().y));
+    my_spaceship->commandCombatManeuverStrafe(value);
 }

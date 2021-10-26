@@ -16,6 +16,8 @@ private:
     GuiProgressbar* charge_bar;
     GuiPowerDamageIndicator* strafe_pdi;
     GuiPowerDamageIndicator* boost_pdi;
+    bool hotkey_strafe_active = false;
+    bool hotkey_boost_active = false;
 public:
     GuiCombatManeuver(GuiContainer* owner, string id, P<PlayerSpaceship> targetSpaceship);
     
