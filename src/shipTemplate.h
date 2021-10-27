@@ -181,7 +181,7 @@ public:
     void hidden() { visible = false; }
     void setModel(string model_name);
     void setDefaultAI(string default_ai_name);
-    void setDockClasses(std::vector<string> classes);
+    void setDockClasses(const std::vector<string>& classes);
     void setSharesEnergyWithDocked(bool enabled);
     void setRepairDocked(bool enabled);
     void setReactor(bool enabled);
@@ -222,7 +222,7 @@ public:
 
     void setTubeDirection(int index, float direction);
     void setHull(float amount) { hull = amount; }
-    void setShields(std::vector<float> values);
+    void setShields(const std::vector<float>& values);
     void setShieldRechargeRate(float amount) { shield_recharge_rate = amount;}
     void setSpeed(float impulse, float turn, float acceleration, std::optional<float> reverse_speed, std::optional<float> reverse_acceleration);
     void setCombatManeuver(float boost, float strafe);
