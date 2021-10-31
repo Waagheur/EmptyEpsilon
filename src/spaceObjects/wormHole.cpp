@@ -103,7 +103,7 @@ void WormHole::drawOnRadar(sp::RenderTarget& renderer, glm::vec2 position, float
     if (getRadarSignatureGravity() < 0.15f)
         return;
 
-    renderer.drawRotatedSpriteBlendAdd("wormHole" + string(radar_visual) + ".png", position, getRotation() - rotation, getRadius() * scale * 3.0f);
+    renderer.drawRotatedSpriteBlendAdd("wormHole" + string(radar_visual) + ".png", position, getRadius() * scale * 3.0f, getRotation() - rotation);
 }
 
 // Draw a line toward the target position
