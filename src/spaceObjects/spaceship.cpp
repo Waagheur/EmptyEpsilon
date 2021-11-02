@@ -194,19 +194,19 @@ REGISTER_SCRIPT_SUBCLASS_NO_CREATE(SpaceShip, ShipTemplateBasedObject)
 }
 
 std::array<float, SYS_COUNT> SpaceShip::default_system_power_factors{
-    /*SYS_Reactor*/     -25.0,
-    /*SYS_BeamWeapons*/   3.0,
-    /*SYS_MissileSystem*/ 1.0,
-    /*SYS_Maneuver*/      2.0,
-    /*SYS_Impulse*/       4.0,
-    /*SYS_Warp*/          5.0,
-    /*SYS_JumpDrive*/     5.0,
-    /*SYS_FrontShield*/   5.0,
-    /*SYS_RearShield*/    5.0,
-    /*SYS_Dock*/          1.0,
-    /*SYS_Drone*/         3.0,
-    /*SYS_Hangar*/        1.0,
-    /*SYS_Cloaking*/     30.0
+    /*SYS_Reactor*/     -25.f,
+    /*SYS_BeamWeapons*/   3.f,
+    /*SYS_MissileSystem*/ 1.f,
+    /*SYS_Maneuver*/      2.f,
+    /*SYS_Impulse*/       4.f,
+    /*SYS_Warp*/          5.f,
+    /*SYS_JumpDrive*/     5.f,
+    /*SYS_FrontShield*/   5.f,
+    /*SYS_RearShield*/    5.f,
+    /*SYS_Dock*/          1.f,
+    /*SYS_Drone*/         3.f,
+    /*SYS_Hangar*/        1.f,
+    /*SYS_Cloaking*/     30.f
 };
 
 SpaceShip::SpaceShip(string multiplayerClassName, float multiplayer_significant_range)
@@ -218,30 +218,30 @@ SpaceShip::SpaceShip(string multiplayerClassName, float multiplayer_significant_
     impulse_request = 0;
     current_impulse = 0;
     has_warp_drive = true;
-    warp_request = 0.0;
-    current_warp = 0.0;
-    warp_speed_per_warp_level = 1000.0;
+    warp_request = 0;
+    current_warp = 0;
+    warp_speed_per_warp_level = 1000.f;
     has_jump_drive = true;
     has_reactor = true;
     has_cloaking = false;
-    jump_drive_min_distance = 5000.0;
-    jump_drive_max_distance = 50000.0;
+    jump_drive_min_distance = 5000.f;
+    jump_drive_max_distance = 50000.f;
     jump_drive_charge = jump_drive_max_distance;
-    jump_drive_charge_time = 90.0;
-    jump_drive_energy_per_km_charge = 4.0f;
-    jump_distance = 0.0;
-    jump_delay = 0.0;
-    wormhole_alpha = 0.0;
+    jump_drive_charge_time = 90.f;
+    jump_drive_energy_per_km_charge = 4.f;
+    jump_distance = 0.f;
+    jump_delay = 0.f;
+    wormhole_alpha = 0.f;
     weapon_tube_count = 0;
     beam_weapons_count = 0;
-    turn_speed = 10.0;
-    impulse_max_speed = 600.0;
-    impulse_max_reverse_speed = 600.0;
-    combat_maneuver_charge = 1.0;
-    combat_maneuver_boost_request = 0.0;
-    combat_maneuver_boost_active = 0.0;
-    combat_maneuver_strafe_request = 0.0;
-    combat_maneuver_strafe_active = 0.0;
+    turn_speed = 10.f;
+    impulse_max_speed = 600.f;
+    impulse_max_reverse_speed = 600.f;
+    combat_maneuver_charge = 1.f;
+    combat_maneuver_boost_request = 0.f;
+    combat_maneuver_boost_active = 0.f;
+    combat_maneuver_strafe_request = 0.f;
+    combat_maneuver_strafe_active = 0.f;
     combat_maneuver_boost_speed = 0.0f;
     combat_maneuver_strafe_speed = 0.0f;
     target_id = -1;
@@ -251,8 +251,8 @@ SpaceShip::SpaceShip(string multiplayerClassName, float multiplayer_significant_
     shield_frequency = irandom(0, max_frequency);
     docking_state = DS_NotDocking;
     landing_state = LS_NotLanding;
-    impulse_acceleration = 20.0;
-    impulse_reverse_acceleration = 20.0;
+    impulse_acceleration = 20.f;
+    impulse_reverse_acceleration = 20.f;
     energy_level = 1000;
     max_energy_level = 1000;
     turnSpeed = 0.0f;
@@ -260,23 +260,23 @@ SpaceShip::SpaceShip(string multiplayerClassName, float multiplayer_significant_
     max_passagers_count = 20;
     base_carrier_id = -1;
 
-    registerMemberReplication(&target_rotation, 1.5);
-    registerMemberReplication(&turnSpeed, 0.1);
-    registerMemberReplication(&impulse_request, 0.1);
-    registerMemberReplication(&current_impulse, 0.5);
+    registerMemberReplication(&target_rotation, 1.5f);
+    registerMemberReplication(&turnSpeed, 0.1f);
+    registerMemberReplication(&impulse_request, 0.1f);
+    registerMemberReplication(&current_impulse, 0.5f);
     registerMemberReplication(&has_warp_drive);
-    registerMemberReplication(&warp_request, 0.1);
-    registerMemberReplication(&current_warp, 0.1);
+    registerMemberReplication(&warp_request, 0.1f);
+    registerMemberReplication(&current_warp, 0.1f);
     registerMemberReplication(&has_jump_drive);
-    registerMemberReplication(&jump_drive_charge, 0.5);
-    registerMemberReplication(&jump_delay, 0.5);
+    registerMemberReplication(&jump_drive_charge, 0.5f);
+    registerMemberReplication(&jump_delay, 0.5f);
     registerMemberReplication(&jump_drive_min_distance);
     registerMemberReplication(&jump_drive_max_distance);
     registerMemberReplication(&jump_drive_charge_time);
     registerMemberReplication(&jump_drive_energy_per_km_charge);
     registerMemberReplication(&has_reactor);
     registerMemberReplication(&has_cloaking);
-    registerMemberReplication(&wormhole_alpha, 0.5);
+    registerMemberReplication(&wormhole_alpha, 0.5f);
     registerMemberReplication(&weapon_tube_count);
     registerMemberReplication(&beam_weapons_count);
     registerMemberReplication(&target_id);
@@ -291,11 +291,11 @@ SpaceShip::SpaceShip(string multiplayerClassName, float multiplayer_significant_
     registerMemberReplication(&shield_frequency);
     registerMemberReplication(&docking_state);
     registerMemberReplication(&beam_frequency);
-    registerMemberReplication(&combat_maneuver_charge, 0.5);
+    registerMemberReplication(&combat_maneuver_charge, 0.5f);
     registerMemberReplication(&combat_maneuver_boost_request);
-    registerMemberReplication(&combat_maneuver_boost_active, 0.2);
+    registerMemberReplication(&combat_maneuver_boost_active, 0.2f);
     registerMemberReplication(&combat_maneuver_strafe_request);
-    registerMemberReplication(&combat_maneuver_strafe_active, 0.2);
+    registerMemberReplication(&combat_maneuver_strafe_active, 0.2f);
     registerMemberReplication(&combat_maneuver_boost_speed);
     registerMemberReplication(&combat_maneuver_strafe_speed);
     registerMemberReplication(&radar_trace);
@@ -325,23 +325,23 @@ SpaceShip::SpaceShip(string multiplayerClassName, float multiplayer_significant_
 
         if (n == SYS_Cloaking)
         {
-            systems[n].power_level = 0.0;
-            systems[n].power_request = 0.0;
+            systems[n].power_level = 0.f;
+            systems[n].power_request = 0.f;
         }
 
-        registerMemberReplication(&systems[n].health, 0.1);
-        registerMemberReplication(&systems[n].health_max, 0.1);
-        registerMemberReplication(&systems[n].power_level, 0.1);
+        registerMemberReplication(&systems[n].health, 0.1f);
+        registerMemberReplication(&systems[n].health_max, 0.1f);
+        registerMemberReplication(&systems[n].power_level, 0.1f);
         registerMemberReplication(&systems[n].power_rate_per_second, .5f);
-        registerMemberReplication(&systems[n].power_request, 0.1);
-        registerMemberReplication(&systems[n].coolant_level, 0.1);
+        registerMemberReplication(&systems[n].power_request, 0.1f);
+        registerMemberReplication(&systems[n].coolant_level, 0.1f);
         registerMemberReplication(&systems[n].coolant_rate_per_second, .5f);
-        registerMemberReplication(&systems[n].coolant_request, 0.1);
-        registerMemberReplication(&systems[n].repair_level, 0.1);
-        registerMemberReplication(&systems[n].repair_request, 0.1);
-        registerMemberReplication(&systems[n].heat_level, 0.1);
+        registerMemberReplication(&systems[n].coolant_request, 0.1f);
+        registerMemberReplication(&systems[n].repair_level, 0.1f);
+        registerMemberReplication(&systems[n].repair_request, 0.1f);
+        registerMemberReplication(&systems[n].heat_level, 0.1f);
         registerMemberReplication(&systems[n].heat_rate_per_second, .5f);
-        registerMemberReplication(&systems[n].hacked_level, 0.1);
+        registerMemberReplication(&systems[n].hacked_level, 0.1f);
         registerMemberReplication(&systems[n].power_factor);
     }
 
@@ -387,7 +387,7 @@ SpaceShip::SpaceShip(string multiplayerClassName, float multiplayer_significant_
 
     // Ships can have dynamic signatures. Initialize a default baseline value
     // from which clients derive the dynamic signature on update.
-    setRadarSignatureInfo(0.05, 0.2, 0.2);
+    setRadarSignatureInfo(0.05f, 0.2f, 0.2f);
 
     if (game_server)
         setCallSign(gameGlobalInfo->getNextShipCallsign());
@@ -702,9 +702,9 @@ void SpaceShip::drawOnRadar(sp::RenderTarget& renderer, glm::vec2 position, floa
     {
         // ... and the ship being drawn is either not our ship or has been
         // scanned ...
-        float scale_radius = 1.0;
-        if (getRadius() > 1000)
-            scale_radius = getRadius() * 2.0 / 1000.0;
+        float scale_radius = 1.f;
+        if (getRadius() > 1000.f)
+            scale_radius = getRadius() * 2.f / 1000.f;
 
         if (!my_spaceship || getScannedStateFor(my_spaceship) >= SS_SimpleScan)
         {
@@ -736,7 +736,7 @@ void SpaceShip::drawOnRadar(sp::RenderTarget& renderer, glm::vec2 position, floa
         object_sprite = radar_trace;
         sprite_scale = std::max(sprite_min,std::min(sprite_max,scale * getRadius() * 2));
         if (long_range)
-            sprite_scale = sprite_scale * 0.7;
+            sprite_scale = sprite_scale * 0.7f;
     }
 
     if(my_spaceship == this)
@@ -787,9 +787,9 @@ void SpaceShip::update(float delta)
             else
                 target_rotation = vec2ToAngle(getPosition() - docking_target->getPosition());
             if (fabs(angleDifference(target_rotation, getRotation())) < 10.0f)
-                impulse_request = -1.0;
+                impulse_request = -1.f;
             else
-                impulse_request = 0.0;
+                impulse_request = 0.f;
         }
 
         if (landing_state == LS_Landing)
@@ -825,12 +825,12 @@ void SpaceShip::update(float delta)
                     }
                 }
             }
-            impulse_request = 0.0;
+            impulse_request = 0.f;
         }
         if ((docking_state == DS_Docked) || (docking_state == DS_Docking))
-            warp_request = 0.0;
+            warp_request = 0;
         if (landing_state == LS_Landing)
-            warp_request = 0.0;
+            warp_request = 0;
     }
 
     float rotationDiff;
@@ -863,7 +863,7 @@ void SpaceShip::update(float delta)
         if (WarpJammer::isWarpJammed(getPosition()))
         {
             jump_delay = 0;
-            warp_request = 0.0f;
+            warp_request = 0;
         }
     }
     if (has_jump_drive && jump_delay > 0)
@@ -873,26 +873,26 @@ void SpaceShip::update(float delta)
             if (cap_speed > 0)
                 current_impulse -= delta * (impulse_reverse_acceleration / cap_speed);
             if (current_impulse < 0.0f)
-                current_impulse = 0.0;
+                current_impulse = 0.f;
         }
         if (current_impulse < 0.0f)
         {
             if (cap_speed > 0)
                 current_impulse += delta * (impulse_acceleration / cap_speed);
             if (current_impulse > 0.0f)
-                current_impulse = 0.0;
+                current_impulse = 0.f;
         }
         if (current_warp > 0.0f)
         {
             current_warp -= delta;
             if (current_warp < 0.0f)
-                current_warp = 0.0;
+                current_warp = 0.f;
         }
         jump_delay -= delta * getSystemEffectiveness(SYS_JumpDrive);
         if (jump_delay <= 0.0f)
         {
             executeJump(jump_distance);
-            jump_delay = 0.0;
+            jump_delay = 0.f;
         }
     }else if (has_warp_drive && (warp_request > 0 || current_warp > 0))
     {
@@ -944,7 +944,7 @@ void SpaceShip::update(float delta)
                     jump_drive_charge = 0.0f;
             }
         }
-        current_warp = 0.0;
+        current_warp = 0.f;
         if (impulse_request > 1.0f)
             impulse_request = 1.0f;
         if (impulse_request < -1.0f)
@@ -1057,7 +1057,7 @@ void SpaceShip::update(float delta)
     if (has_jump_drive && jump_delay > 0.0f)
         model_info.warp_scale = (10.0f - jump_delay) / 10.0f;
     else
-        model_info.warp_scale = 0.0;
+        model_info.warp_scale = 0.f;
 
     for(int n = 0; n < oxygen_zones; n++)
         addOxygenPoints(getOxygenRechargeRate(n) * delta, n);
@@ -1065,9 +1065,9 @@ void SpaceShip::update(float delta)
     if (has_cloaking)
     {
         setTransparency(getCloakingDegree());
-        float factor_heat_cloaking = 0.1 * getTransparency() * delta;
+        float factor_heat_cloaking = 0.1f * getTransparency() * delta;
 
-        addHeat(SYS_Cloaking , 0.1 * getSystemEffectiveness(SYS_Cloaking) * factor_heat_cloaking);
+        addHeat(SYS_Cloaking , 0.1f * getSystemEffectiveness(SYS_Cloaking) * factor_heat_cloaking);
 
         for(int n = 0; n < 2; n++)
         {
@@ -1084,10 +1084,10 @@ float SpaceShip::getCloakingDegree()
 
 float SpaceShip::getOxygenRechargeRate(int index)
 {
-    float rate = (oxygen_rate[index] / 100.0 * oxygen_max[index]) / 100.0;
+    float rate = (oxygen_rate[index] / 100.f * oxygen_max[index]) / 100.f;
     // Diminution de l'oxygene si Hull trop base
-    if (hull_strength / hull_max < 0.9)
-        rate -= (0.9 - hull_strength / hull_max) * 2.0f;
+    if (hull_strength / hull_max < 0.9f)
+        rate -= (0.9 - hull_strength / hull_max) * 2.f;
 
     // Modifs selon Reacteur
     if (getSystemEffectiveness(SYS_Reactor) < 0.8f)
@@ -1225,7 +1225,7 @@ void SpaceShip::initializeJump(float distance)
     if (jump_delay <= 0.0f)
     {
         jump_distance = distance;
-        jump_delay = 100 * distance / (1000 * 1000);
+        jump_delay = 100.f * distance / (1000.f * 1000.f);
         jump_drive_charge -= distance;
     }
 }
@@ -1242,7 +1242,7 @@ void SpaceShip::requestDock(P<SpaceObject> target)
     docking_state = DS_Docking;
     docking_target = target;
 //    dock_target_id = target->getMultiplayerId();
-    warp_request = 0.0;
+    warp_request = 0;
 }
 
 void SpaceShip::requestLanding(P<SpaceObject> target)
@@ -1261,7 +1261,7 @@ void SpaceShip::requestLanding(P<SpaceObject> target)
 
     landing_state = LS_Landing;
     landing_target = target;
-    warp_request = 0.0;
+    warp_request = 0;
 }
 
 void SpaceShip::requestUndock()
@@ -1280,8 +1280,8 @@ void SpaceShip::abortDock()
     if (docking_state == DS_Docking)
     {
         docking_state = DS_NotDocking;
-        impulse_request = 0.0;
-        warp_request = 0.0;
+        impulse_request = 0.f;
+        warp_request = 0;
         target_rotation = getRotation();
     }
 }
@@ -1445,7 +1445,7 @@ void SpaceShip::hackFinished(P<SpaceObject> source, string target)
 
 float SpaceShip::getShieldDamageFactor(DamageInfo& info, int shield_index)
 {
-    float frequency_damage_factor = 1.0;
+    float frequency_damage_factor = 1.f;
     if (info.type == DT_Energy && gameGlobalInfo->use_beam_shield_frequencies)
     {
         frequency_damage_factor = frequencyVsFrequencyDamageFactor(info.frequency, shield_frequency);
@@ -1540,7 +1540,7 @@ void SpaceShip::destroyedByDamage(DamageInfo& info)
     ExplosionEffect* e = new ExplosionEffect();
     e->setSize(getRadius() * 1.5f);
     e->setPosition(getPosition());
-    e->setRadarSignatureInfo(0.0, 0.2, 0.2);
+    e->setRadarSignatureInfo(0.f, 0.2f, 0.2f);
 
     if (info.instigator)
     {
@@ -2039,12 +2039,12 @@ string getLocaleMissileWeaponName(const EMissileWeapons& missile)
 float frequencyVsFrequencyDamageFactor(int beam_frequency, int shield_frequency)
 {
     if (beam_frequency < 0 || shield_frequency < 0)
-        return 1.0;
+        return 1.f;
 
-    float diff = abs(beam_frequency - shield_frequency);
+    float diff = static_cast<float>(abs(beam_frequency - shield_frequency));
     float f1 = sinf(Tween<float>::linear(diff, 0, SpaceShip::max_frequency, 0, float(M_PI) * (1.2f + shield_frequency * 0.05f)) + float(M_PI) / 2.0f);
-    f1 = f1 * Tween<float>::easeInCubic(diff, 0, SpaceShip::max_frequency, 1.0, 0.1);
-    f1 = Tween<float>::linear(f1, 1.0, -1.0, 0.5, 1.5);
+    f1 = f1 * Tween<float>::easeInCubic(diff, 0, SpaceShip::max_frequency, 1.f, 0.1f);
+    f1 = Tween<float>::linear(f1, 1.f, -1.f, 0.5f, 1.5f);
     return f1;
 }
 
