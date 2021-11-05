@@ -1,5 +1,7 @@
 #include "scenarioInfo.h"
 #include "resources.h"
+#include "preferenceManager.h"
+#include <i18n.h>
 #include <unordered_set>
 
 ScenarioInfo::ScenarioInfo(string filename)
@@ -13,6 +15,8 @@ ScenarioInfo::ScenarioInfo(string filename)
         LOG(ERROR) << "Scenario not found: " << filename;
         return;
     }
+    if (!stream) return;
+    auto locale = i18n::Catalogue::create("locale/" + filename.replace(".lua", "." + PreferencesManager::get("language", "en") + ".po"));
 
     string key;
     string value;
@@ -33,7 +37,7 @@ ScenarioInfo::ScenarioInfo(string filename)
                 key = "";
                 continue;
             }
-            addKeyValue(key, value);
+            addKeyValue(key, locale->tr(value));
             key = line.substr(0, line.find(":")).strip();
             value = line.substr(line.find(":") + 1).strip();
         }
