@@ -4,6 +4,8 @@
 #include <i18n.h>
 #include <unordered_set>
 
+static std::unique_ptr<i18n::Catalogue> locale;
+
 ScenarioInfo::ScenarioInfo(string filename)
 {
     this->filename = filename;
@@ -16,7 +18,7 @@ ScenarioInfo::ScenarioInfo(string filename)
         return;
     }
     if (!stream) return;
-    auto locale = i18n::Catalogue::create("locale/" + filename.replace(".lua", "." + PreferencesManager::get("language", "en") + ".po"));
+    locale = i18n::Catalogue::create("locale/" + filename.replace(".lua", "." + PreferencesManager::get("language", "en") + ".po"));
 
     string key;
     string value;
@@ -37,7 +39,7 @@ ScenarioInfo::ScenarioInfo(string filename)
                 key = "";
                 continue;
             }
-            addKeyValue(key, locale->tr(value));
+            addKeyValue(key, value);
             key = line.substr(0, line.find(":")).strip();
             value = line.substr(line.find(":") + 1).strip();
         }
@@ -48,6 +50,7 @@ ScenarioInfo::ScenarioInfo(string filename)
         LOG(WARNING) << "No scenario category for: " << filename;
         categories.push_back("Unknown");
     }
+    locale.reset();
 }
 
 bool ScenarioInfo::hasCategory(const string& category)
@@ -70,11 +73,11 @@ void ScenarioInfo::addKeyValue(string key, string value)
     }
     if (key.lower() == "name")
     {
-        name = value;
+        name = locale->tr(value);
     }
     else if (key.lower() == "description")
     {
-        description = value;
+        description = locale->tr(value);
     }
     else if (key.lower() == "author")
     {
@@ -86,24 +89,26 @@ void ScenarioInfo::addKeyValue(string key, string value)
     }
     else if (key.lower() == "variation" && additional != "")
     {
-        if (!addSettingOption("variation", additional, value))
+        if (!addSettingOption("variation", additional, locale->tr(value)))
         {
             Setting setting;
             setting.key = "variation";
+            setting.key_localized = "variation";
             setting.description = "Select a scenario variation";
-            setting.options.emplace_back("None", "");
+            setting.options.push_back({"None", "None", ""});
             settings.push_back(setting);
-            addSettingOption("variation", additional, value);
+            addSettingOption("variation", additional, locale->tr(value));
         }
     }
     else if (key.lower() == "setting" && additional != "")
     {
         Setting setting;
         setting.key = additional;
-        setting.description = value;
+        setting.key_localized = locale->tr("setting", additional);
+        setting.description = locale->tr(value);
         settings.push_back(setting);
     }
-    else if (additional == "" || !addSettingOption(key, additional, value))
+    else if (additional == "" || !addSettingOption(key, additional, locale->tr(value)))
     {
         LOG(WARNING) << "Unknown scenario meta data: " << key << ": " << value;
     }
@@ -144,7 +149,7 @@ bool ScenarioInfo::addSettingOption(string key, string option, string descriptio
     {
         if (setting.key == key)
         {
-            setting.options.emplace_back(option, description);
+            setting.options.push_back({option, locale->tr(key, option), description});
             if (tag == "default")
                 setting.default_option = option;
             return true;
