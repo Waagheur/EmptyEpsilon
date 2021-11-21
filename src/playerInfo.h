@@ -57,6 +57,8 @@ public:
 
     PlayerInfo();
 
+    void reset();
+
     bool isOnlyMainScreen();
 
     void commandSetCrewPosition(ECrewPosition position, bool active);
