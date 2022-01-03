@@ -331,6 +331,7 @@ public:
     string getSectorNameLevel(int level);
     bool openCommsTo(P<PlayerSpaceship> target);
     bool sendCommsMessage(P<PlayerSpaceship> target, string message);
+    bool sendCommsMessageNoLog(P<PlayerSpaceship> target, string message);
 
     ScriptSimpleCallback on_destroyed;
 
