@@ -37,7 +37,7 @@ private:
     GuiCommsOverlay* onscreen_comms;
     std::unique_ptr<ImpulseSound> impulse_sound;
 public:
-    ScreenMainScreen();
+    ScreenMainScreen(RenderLayer* render_layer);
 
     virtual void destroy() override;
 
