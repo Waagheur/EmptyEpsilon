@@ -339,7 +339,7 @@ void GameMasterScreen::update(float delta)
     if (keys.escape.getDown())
     {
         destroy();
-        returnToShipSelection();
+        returnToShipSelection(getRenderLayer());
     }
     if (keys.pause.getDown())
     {
