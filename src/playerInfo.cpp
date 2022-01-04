@@ -47,12 +47,12 @@ PlayerInfo::PlayerInfo()
 {
     ship_id = -1;
     client_id = -1;
-    main_screen_control = false;
+    main_screen_control = 0;
     registerMemberReplication(&client_id);
 
     for(int n=0; n<max_crew_positions; n++)
     {
-        crew_position[n] = false;
+        crew_position[n] = 0;
         registerMemberReplication(&crew_position[n]);
     }
     registerMemberReplication(&ship_id);
@@ -66,26 +66,26 @@ PlayerInfo::PlayerInfo()
 void PlayerInfo::reset()
 {
     ship_id = -1;
-    main_screen_control = false;
+    main_screen_control = 0;
 
     for(int n=0; n<max_crew_positions; n++)
-        crew_position[n] = false;
+        crew_position[n] = 0;
 }
 
-bool PlayerInfo::isOnlyMainScreen()
+bool PlayerInfo::isOnlyMainScreen(int monitor_index)
 {
-    if (!main_screen)
+    if (main_screen & (1 << monitor_index))
         return false;
     for(int n=0; n<max_crew_positions; n++)
-        if (crew_position[n])
+        if (crew_position[n] & (1 << monitor_index))
             return false;
     return true;
 }
 
-void PlayerInfo::commandSetCrewPosition(ECrewPosition position, bool active)
+void PlayerInfo::commandSetCrewPosition(int monitor_index, ECrewPosition position, bool active)
 {
     sp::io::DataBuffer packet;
-    packet << CMD_UPDATE_CREW_POSITION << int32_t(position) << active;
+    packet << CMD_UPDATE_CREW_POSITION << uint32_t(monitor_index) << int32_t(position) << active;
     sendClientCommand(packet);
 
     crew_position[position] = active;
@@ -98,19 +98,19 @@ void PlayerInfo::commandSetShipId(int32_t id)
     sendClientCommand(packet);
 }
 
-void PlayerInfo::commandSetMainScreen(bool enabled)
+void PlayerInfo::commandSetMainScreen(int monitor_index, bool enabled)
 {
     sp::io::DataBuffer packet;
-    packet << CMD_UPDATE_MAIN_SCREEN << enabled;
+    packet << CMD_UPDATE_MAIN_SCREEN << uint32_t(monitor_index) << enabled;
     sendClientCommand(packet);
 
     main_screen = enabled;
 }
 
-void PlayerInfo::commandSetMainScreenControl(bool control)
+void PlayerInfo::commandSetMainScreenControl(int monitor_index, bool control)
 {
     sp::io::DataBuffer packet;
-    packet << CMD_UPDATE_MAIN_SCREEN_CONTROL << control;
+    packet << CMD_UPDATE_MAIN_SCREEN_CONTROL << uint32_t(monitor_index) << control;
     sendClientCommand(packet);
 
     main_screen_control = control;
@@ -129,25 +129,37 @@ void PlayerInfo::onReceiveClientCommand(int32_t client_id, sp::io::DataBuffer& p
 {
     if (client_id != this->client_id) return;
     int16_t command;
+    uint32_t monitor_index;
+    bool active;
     packet >> command;
     switch(command)
     {
     case CMD_UPDATE_CREW_POSITION:
         {
             int32_t position;
-            bool active;
-            packet >> position >> active;
-            crew_position[position] = active;
+            packet >> monitor_index >> position >> active;
+            if (active)
+                crew_position[position] |= (1 << monitor_index);
+            else
+                crew_position[position] &=~(1 << monitor_index);
         }
         break;
     case CMD_UPDATE_SHIP_ID:
         packet >> ship_id;
         break;
     case CMD_UPDATE_MAIN_SCREEN:
-        packet >> main_screen;
+        packet >> monitor_index >> active;
+        if (active)
+            main_screen |= (1 << monitor_index);
+        else
+            main_screen &=~(1 << monitor_index);
         break;
     case CMD_UPDATE_MAIN_SCREEN_CONTROL:
-        packet >> main_screen_control;
+        packet >> monitor_index >> active;
+        if (active)
+            main_screen_control |= (1 << monitor_index);
+        else
+            main_screen_control &=~(1 << monitor_index);
         break;
     case CMD_UPDATE_NAME:
         packet >> name;
@@ -155,75 +167,75 @@ void PlayerInfo::onReceiveClientCommand(int32_t client_id, sp::io::DataBuffer& p
     }
 }
 
-void PlayerInfo::spawnUI()
+void PlayerInfo::spawnUI(int monitor_index, RenderLayer* render_layer)
 {
-    if (my_player_info->isOnlyMainScreen())
+    if (my_player_info->isOnlyMainScreen(monitor_index))
     {
         new ScreenMainScreen();
     }
-    else {
-
-        CrewStationScreen* screen = new CrewStationScreen{ main_screen };
+    else
+    {
+        CrewStationScreen* screen = new CrewStationScreen{ bool(main_screen & (1 << monitor_index)) };
         auto container = screen->getTabContainer();
 
         //Crew 6/5
-        if (crew_position[helmsOfficer])
+        if (crew_position[helmsOfficer] & (1 << monitor_index))
             screen->addStationTab(new HelmsScreen(container), helmsOfficer, getCrewPositionName(helmsOfficer), getCrewPositionIcon(helmsOfficer));
-        if (crew_position[weaponsOfficer])
+        if (crew_position[weaponsOfficer] & (1 << monitor_index))
             screen->addStationTab(new WeaponsScreen(container), weaponsOfficer, getCrewPositionName(weaponsOfficer), getCrewPositionIcon(weaponsOfficer));
-        if (crew_position[engineering])
+        if (crew_position[engineering] & (1 << monitor_index))
             screen->addStationTab(new EngineeringScreen(container), engineering, getCrewPositionName(engineering), getCrewPositionIcon(engineering));
-        if (crew_position[scienceOfficer])
+        if (crew_position[scienceOfficer] & (1 << monitor_index))
             screen->addStationTab(new ScienceScreen(container), scienceOfficer, getCrewPositionName(scienceOfficer), getCrewPositionIcon(scienceOfficer));
-        if (crew_position[relayOfficer])
+        if (crew_position[relayOfficer] & (1 << monitor_index))
             screen->addStationTab(new RelayScreen(container, true), relayOfficer, getCrewPositionName(relayOfficer), getCrewPositionIcon(relayOfficer));
 
         //Crew 4/3
-        if (crew_position[tacticalOfficer])
+        if (crew_position[tacticalOfficer] & (1 << monitor_index))
             screen->addStationTab(new TacticalScreen(container), tacticalOfficer, getCrewPositionName(tacticalOfficer), getCrewPositionIcon(tacticalOfficer));
-        if (crew_position[engineeringAdvanced])
+        if (crew_position[engineeringAdvanced] & (1 << monitor_index))
             screen->addStationTab(new EngineeringAdvancedScreen(container), engineeringAdvanced, getCrewPositionName(engineeringAdvanced), getCrewPositionIcon(engineeringAdvanced));
-        if (crew_position[operationsOfficer])
+        if (crew_position[operationsOfficer] & (1 << monitor_index))
             screen->addStationTab(new OperationScreen(container), operationsOfficer, getCrewPositionName(operationsOfficer), getCrewPositionIcon(operationsOfficer));
 
         //Crew 1
-        if (crew_position[singlePilot])
+        if (crew_position[singlePilot] & (1 << monitor_index))
             screen->addStationTab(new SinglePilotScreen(container), singlePilot, getCrewPositionName(singlePilot), getCrewPositionIcon(singlePilot));
 
         //Extra
-        if (crew_position[damageControl])
+        if (crew_position[damageControl] & (1 << monitor_index))
             screen->addStationTab(new DamageControlScreen(container), damageControl, getCrewPositionName(damageControl), getCrewPositionIcon(damageControl));
-        if (crew_position[powerManagement])
+        if (crew_position[powerManagement] & (1 << monitor_index))
             screen->addStationTab(new PowerManagementScreen(container), powerManagement, getCrewPositionName(powerManagement), getCrewPositionIcon(powerManagement));
-        if (crew_position[databaseView])
+        if (crew_position[databaseView] & (1 << monitor_index))
             screen->addStationTab(new DatabaseScreen(container), databaseView, getCrewPositionName(databaseView), getCrewPositionIcon(databaseView));
-        if (crew_position[tacticalRadar])
+        if (crew_position[tacticalRadar] & (1 << monitor_index))
             screen->addStationTab(new RadarScreen(container,"tactical"), tacticalRadar, getCrewPositionName(tacticalRadar), getCrewPositionIcon(tacticalRadar));
-        if (crew_position[scienceRadar])
+        if (crew_position[scienceRadar] & (1 << monitor_index))
             screen->addStationTab(new RadarScreen(container,"science"), scienceRadar, getCrewPositionName(scienceRadar), getCrewPositionIcon(scienceRadar));
-        if (crew_position[relayRadar])
+        if (crew_position[relayRadar] & (1 << monitor_index))
             screen->addStationTab(new RadarScreen(container,"relay"), relayRadar, getCrewPositionName(relayRadar), getCrewPositionIcon(relayRadar));
         if (crew_position[altRelay])
             screen->addStationTab(new RelayScreen(container, false), altRelay, getCrewPositionName(altRelay), getCrewPositionIcon(altRelay));
-        if (crew_position[commsOnly])
+        if (crew_position[commsOnly] & (1 << monitor_index))
             screen->addStationTab(new CommsScreen(container), commsOnly, getCrewPositionName(commsOnly), getCrewPositionIcon(commsOnly));
-        if (crew_position[shipLog])
+        if (crew_position[shipLog] & (1 << monitor_index))
             screen->addStationTab(new ShipLogScreen(container,"generic"), shipLog, getCrewPositionName(shipLog), getCrewPositionIcon(shipLog));
-        if (crew_position[internLogView])
+        if (crew_position[internLogView] & (1 << monitor_index))
             screen->addStationTab(new ShipLogScreen(container,"intern"), internLogView, getCrewPositionName(internLogView), getCrewPositionIcon(internLogView));
-        if (crew_position[dronePilot])
+        if (crew_position[dronePilot] & (1 << monitor_index))
             screen->addStationTab(new DroneOperatorScreen(container), dronePilot, getCrewPositionName(dronePilot), getCrewPositionIcon(dronePilot));
-        if (crew_position[droneMaster])
+        if (crew_position[droneMaster] & (1 << monitor_index))
             screen->addStationTab(new DroneMasterScreen(container), droneMaster, getCrewPositionName(droneMaster), getCrewPositionIcon(droneMaster));
-        if (crew_position[dockMaster])
+        if (crew_position[dockMaster] & (1 << monitor_index))
             screen->addStationTab(new DockMasterScreen(container), dockMaster, getCrewPositionName(dockMaster), getCrewPositionIcon(dockMaster));
-        if (crew_position[oxygenView])
+        if (crew_position[oxygenView] & (1 << monitor_index))
             screen->addStationTab(new OxygenScreen(container), oxygenView, getCrewPositionName(oxygenView), getCrewPositionIcon(oxygenView));
-        if (crew_position[targetAnalysisScreen])
+        if (crew_position[targetAnalysisScreen] & (1 << monitor_index))
             screen->addStationTab(new TargetAnalysisScreen(container), targetAnalysisScreen, getCrewPositionName(targetAnalysisScreen), getCrewPositionIcon(targetAnalysisScreen));
         //TODO tsht : verifier que c'est bien present avec le truc en bas
         //Ship log screen, if you have comms, you have ships log. (note this is mostly replaced by the [at the bottom of the screen openable log]
-        //if (crew_position[singlePilot])
+        //if (crew_position[singlePilot] & (1 << monitor_index))
 		//{
         //    screen->addStationTab(new ShipLogScreen(screen,"generic"), max_crew_positions, "log externe", "");
         //    screen->addStationTab(new ShipLogScreen(screen,"intern"), max_crew_positions, "log interne", "");
@@ -231,24 +243,24 @@ void PlayerInfo::spawnUI()
 
         GuiSelfDestructEntry* sde = new GuiSelfDestructEntry(container, "SELF_DESTRUCT_ENTRY");
         for(int n=0; n<max_crew_positions; n++)
-            if (crew_position[n])
+            if (crew_position[n] & (1 << monitor_index))
                 sde->enablePosition(ECrewPosition(n));
-        if (crew_position[tacticalOfficer])
+        if (crew_position[tacticalOfficer] & (1 << monitor_index))
         {
             sde->enablePosition(weaponsOfficer);
             sde->enablePosition(helmsOfficer);
         }
-        if (crew_position[engineeringAdvanced])
+        if (crew_position[engineeringAdvanced] & (1 << monitor_index))
         {
             sde->enablePosition(engineering);
         }
-        if (crew_position[operationsOfficer])
+        if (crew_position[operationsOfficer] & (1 << monitor_index))
         {
             sde->enablePosition(scienceOfficer);
             sde->enablePosition(relayOfficer);
         }
 
-        if (main_screen_control)
+        if (main_screen_control & (1 << monitor_index))
             new GuiMainScreenControls(container);
 
         screen->finishCreation();

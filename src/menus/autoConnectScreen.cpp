@@ -135,7 +135,7 @@ void AutoConnectScreen::update(float delta)
                                     my_player_info->commandSetCrewPosition(crew_position, false);
                             }
                             destroy();
-                            my_player_info->spawnUI();
+                            my_player_info->spawnUI(0, getRenderLayer());
                         }
                     }
                 }
@@ -212,8 +212,8 @@ void AutoConnectScreen::connectToShip(int index)
 
     if (auto_mainscreen != 1 && crew_position != max_crew_positions)    //If we are not the main screen, setup the right crew position.
     {
-        my_player_info->commandSetCrewPosition(crew_position, true);
-        my_player_info->commandSetMainScreenControl(control_main_screen);
+        my_player_info->commandSetCrewPosition(0, crew_position, true);
+        my_player_info->commandSetMainScreenControl(0, control_main_screen);
 
         // Add more screen
         if (PreferencesManager::get("autostationslist") != "")
@@ -224,7 +224,7 @@ void AutoConnectScreen::connectToShip(int index)
                 int crew_position_sup = station.toInt() - 1;
                 if (crew_position_sup < 0) crew_position_sup = 0;
                 if (crew_position_sup > max_crew_positions) crew_position_sup = max_crew_positions;
-                my_player_info->commandSetCrewPosition(ECrewPosition(crew_position_sup), true);
+                my_player_info->commandSetCrewPosition(0, ECrewPosition(crew_position_sup), true);
             }
         }
     }

@@ -25,8 +25,8 @@
 #include "gui/gui2_keyvaluedisplay.h"
 #include "gui/gui2_textentry.h"
 
-GameMasterScreen::GameMasterScreen()
-: click_and_drag_state(CD_None)
+GameMasterScreen::GameMasterScreen(RenderLayer* render_layer)
+: GuiCanvas(render_layer), click_and_drag_state(CD_None)
 {
     my_spaceship = nullptr;
 
