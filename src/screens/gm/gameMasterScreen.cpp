@@ -348,6 +348,11 @@ void GameMasterScreen::update(float delta)
         else
             gameMasterActions->commandSetGameSpeed(0.0f);
     }
+    if (engine->getGameSpeed() == 0.0f) {
+        pause_button->setActive(true);
+    } else {
+        pause_button->setActive(false);
+    }
 
     bool has_object = false;
     bool has_cpu_ship = false;
