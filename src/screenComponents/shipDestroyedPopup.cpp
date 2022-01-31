@@ -39,7 +39,7 @@ void GuiShipDestroyedPopup::onDraw(sp::RenderTarget& target)
         {
             destroy();
             soundManager->stopMusic();
-            returnToShipSelection();
+            returnToShipSelection(this->owner->getRenderLayer());
         }
     }
 }

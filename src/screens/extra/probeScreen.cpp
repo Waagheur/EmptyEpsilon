@@ -28,7 +28,7 @@ void ProbeScreen::update(float delta)
     if (keys.escape.getDown())
     {
         destroy();
-        returnToShipSelection();
+        returnToShipSelection(getRenderLayer());
     }
      if (keys.pause.getDown())
      {
@@ -41,7 +41,7 @@ void ProbeScreen::update(float delta)
     {
         destroy();
         disconnectFromServer();
-        returnToMainMenu();
+        returnToMainMenu(getRenderLayer());
         return;
     }
 
