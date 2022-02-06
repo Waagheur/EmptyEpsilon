@@ -59,6 +59,7 @@ private:
         GuiLabel* coolant_label;
         GuiProgressSlider* repair_bar;
         GuiLabel* repair_label;
+        GuiImage* coolant_max_indicator;
     };
     std::vector<SystemRow> system_rows;
     GuiAutoLayout* system_effects_container;
