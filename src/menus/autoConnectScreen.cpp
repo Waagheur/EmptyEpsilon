@@ -227,6 +227,8 @@ void AutoConnectScreen::connectToShip(int index)
                 my_player_info->commandSetCrewPosition(0, ECrewPosition(crew_position_sup), true);
             }
         }
+    } else {
+        my_player_info->commandSetMainScreen(0, true);
     }
     my_player_info->commandSetShipId(ship->getMultiplayerId());
 }
