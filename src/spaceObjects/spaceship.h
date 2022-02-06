@@ -110,7 +110,7 @@ public:
     constexpr static float warp_decharge_time = 2.0f;
 //    constexpr static float jump_drive_charge_time = 90.0;   /*<Total charge time for the jump drive after a max range jump */
     constexpr static float dock_move_time = 15.0f; // It takes this amount of time to move cargo between two docks
-//    constexpr static float jump_drive_energy_per_km_charge = 4.0f;
+//    constexpr static float jump_drive_energy_per_km_charge = 2.0f; //TODO tsht check this why disabled
     constexpr static float jump_drive_heat_per_jump = 0.35f;
     constexpr static float heat_per_combat_maneuver_boost = 0.2f;
     constexpr static float heat_per_combat_maneuver_strafe = 0.2f;

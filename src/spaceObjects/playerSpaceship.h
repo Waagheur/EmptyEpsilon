@@ -46,7 +46,7 @@ public:
     // Repair effectiveness
     constexpr static float system_repair_effect_per_second = 0.005;
     constexpr static float default_energy_shield_use_per_second = 1.5f;
-    constexpr static float default_energy_warp_per_second = 1.0f;
+    constexpr static float default_energy_warp_per_second = 1.7f;
     // Total coolant
     float max_coolant_per_system = 10.0f;
     float max_coolant;
