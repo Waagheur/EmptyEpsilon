@@ -79,7 +79,8 @@ enum EScannedState
 */
 enum class ERadarLayer
 {
-    Background,
+    BackgroundZone,
+    BackgroundObjects,
     Default
 };
 
