@@ -142,6 +142,7 @@ bool isValidSectorName(string sectorName);
 glm::vec2 getPositionFromSring(string sectorName, float correction_x = 0.0, float correction_y = 0.0);
 string getStringFromPosition(glm::vec2 position,float correction_x = 0.0, float correction_y = 0.0);
 bool isValidPositionString(string sectorName);
+glm::vec2 sectorToXY(string sectorName);
 
 REGISTER_MULTIPLAYER_ENUM(EScanningComplexity);
 REGISTER_MULTIPLAYER_ENUM(EHackingGames);
