@@ -114,7 +114,7 @@ P<SpaceObject> GuiDockingButton::findDockingTarget()
         }
         if (dock_object
             && dock_object != target_spaceship
-            && dock_object->canBeDockedBy(target_spaceship)
+            && dock_object->canBeDockedBy(target_spaceship) != DockStyle::None
             && glm::length(dock_object->getPosition() - target_spaceship->getPosition()) < 1000.0f + dock_object->getRadius())
             break;
         dock_object = NULL;

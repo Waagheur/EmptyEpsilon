@@ -250,6 +250,7 @@ public:
 
     EDockingState docking_state;
     ELandingState landing_state;
+    DockStyle docked_style;
     P<SpaceObject> docking_target; //Server only
     P<SpaceObject> landing_target; // Server only
     glm::vec2 docking_offset{0, 0}; //Server only
@@ -262,6 +263,7 @@ public:
     SpaceShip(string multiplayerClassName, float multiplayer_significant_range=-1);
     virtual ~SpaceShip();
 
+    virtual void draw3D() override;
     virtual void draw3DTransparent() override;
     /*!
      * Get this ship's radar signature dynamically modified by the state of its
@@ -320,7 +322,7 @@ public:
      * Check if object can dock with this ship.
      * \param object Object that wants to dock.
      */
-    virtual bool canBeDockedBy(P<SpaceObject> obj) override;
+    virtual DockStyle canBeDockedBy(P<SpaceObject> obj) override;
 
     virtual void collide(Collisionable* other, float force) override;
 
@@ -625,6 +627,7 @@ REGISTER_MULTIPLAYER_ENUM(EMainScreenSetting);
 REGISTER_MULTIPLAYER_ENUM(EMainScreenOverlay);
 REGISTER_MULTIPLAYER_ENUM(EDockingState);
 REGISTER_MULTIPLAYER_ENUM(ELandingState)
+REGISTER_MULTIPLAYER_ENUM(DockStyle);
 REGISTER_MULTIPLAYER_ENUM(EScannedState);
 REGISTER_MULTIPLAYER_ENUM(EDockType);
 REGISTER_MULTIPLAYER_ENUM(EDockState);
