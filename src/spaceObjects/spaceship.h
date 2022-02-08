@@ -249,8 +249,8 @@ public:
     int32_t landing_target_id;
 
     EDockingState docking_state;
-    ELandingState landing_state;
-    DockStyle docked_style;
+    ELandingState landing_state; //tsht
+    DockStyle docked_style = DockStyle::None;
     P<SpaceObject> docking_target; //Server only
     P<SpaceObject> landing_target; // Server only
     glm::vec2 docking_offset{0, 0}; //Server only

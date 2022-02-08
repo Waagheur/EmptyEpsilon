@@ -19,7 +19,7 @@ public:
     virtual bool canHideInNebula()  override { return false; }
 
     //Ajout Tdelc
-    virtual bool canBeDockedBy(P<SpaceObject> obj) { return true; }
+    virtual DockStyle canBeDockedBy(P<SpaceObject> obj) { return DockStyle::External; }
     virtual bool canBeLandedOn(P<SpaceObject> obj) override { return false; }
 
     
