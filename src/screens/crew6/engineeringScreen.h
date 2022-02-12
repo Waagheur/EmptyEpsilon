@@ -42,7 +42,7 @@ private:
     class SystemRow
     {
     public:
-        GuiAutoLayout* layout;
+        GuiElement* row;
         GuiToggleButton* button;
         GuiPowerDamageIndicator* state;
         GuiProgressbar* max_health_bar;
