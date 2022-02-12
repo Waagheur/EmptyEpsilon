@@ -349,7 +349,6 @@ set(SOURCES
     src/ai/missileVolleyAI.h
     src/beamTemplate.h
     src/commsScriptInterface.h
-    src/discord.h
     src/epsilonServer.h
     src/factionInfo.h
     src/featureDefs.h
@@ -533,7 +532,10 @@ set(SOURCES
 )
 
 if (WITH_DISCORD)
-  list(APPEND SOURCES src/discord.cpp)
+  list(APPEND SOURCES src/discord.cpp src/discord.h)
+endif()
+if (STEAMSDK)
+  list(APPEND SOURCES src/steamrichpresence.cpp src/steamrichpresence.h)
 endif()
 
 if (WIN32)
