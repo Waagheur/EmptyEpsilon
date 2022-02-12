@@ -120,6 +120,7 @@ int main(int argc, char** argv)
     Logging::setLogFile("EmptyEpsilon.log");
 #endif
     LOG(Info, "Starting...");
+    new Engine();
     string configuration_path = ".";
     if (getenv("HOME"))
         configuration_path = string(getenv("HOME")) + "/.emptyepsilon";
@@ -145,8 +146,6 @@ int main(int argc, char** argv)
         *value++ = '\0';
         PreferencesManager::set(string(argv[n]).strip(), string(value).strip());
     }
-
-    new Engine();
 
     if (PreferencesManager::get("proxy") != "")
     {
@@ -222,7 +221,7 @@ int main(int argc, char** argv)
     if (PreferencesManager::get("username", "") == "")
     {
 #ifdef STEAMSDK
-        PreferencesManager::set("username", SteamFriends()->GetPlayerNickname(SteamUser()->GetSteamID()));
+        PreferencesManager::set("username", SteamFriends()->GetPersonaName());
 #else
         if (getenv("USERNAME"))
             PreferencesManager::set("username", getenv("USERNAME"));
