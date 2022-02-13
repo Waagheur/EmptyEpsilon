@@ -64,8 +64,8 @@ SinglePilotView::SinglePilotView(GuiContainer* owner, P<PlayerSpaceship> targetS
     combat_maneuver = new GuiCombatManeuver(this, "COMBAT_MANEUVER", target_spaceship);
     combat_maneuver->setPosition(-20, -240, sp::Alignment::BottomRight)->setSize(200, 150)->setVisible(target_spaceship && target_spaceship->getCanCombatManeuver());
 
-    GuiAutoLayout* stats = new GuiAutoLayout(this, "STATS", GuiAutoLayout::LayoutVerticalTopToBottom);
-    stats->setPosition(-20, -80, sp::Alignment::BottomRight)->setSize(240, 160);
+    auto stats = new GuiElement(this, "STATS");
+    stats->setPosition(-20, -80, sp::Alignment::BottomRight)->setSize(240, 160)->setAttribute("layout", "vertical");;
     heat_display = new GuiKeyValueDisplay(stats, "HEAT_DISPLAY", 0.45, "Surchauffe", "");
     heat_display->setIcon("gui/icons/status_overheat")->setTextSize(20)->setSize(240, 40);
     hull_display = new GuiKeyValueDisplay(stats, "HULL_DISPLAY", 0.45, "Carlingue", "");

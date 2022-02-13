@@ -8,7 +8,6 @@ class GuiPanel;
 class GuiSlider;
 class GuiButton;
 class GuiLabel;
-class GuiAutoLayout;
 class GuiEntryList;
 class GuiSelector;
 class GuiProgressbar;

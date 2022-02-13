@@ -16,7 +16,6 @@
 #include "screenComponents/hackDialog.h"
 #include "screenComponents/customShipFunctions.h"
 
-#include "gui/gui2_autolayout.h"
 #include "gui/gui2_keyvaluedisplay.h"
 #include "gui/gui2_selector.h"
 #include "gui/gui2_slider.h"
@@ -106,8 +105,8 @@ RelayScreen::RelayScreen(GuiContainer* owner, bool allow_comms)
     info_probe->setSize(GuiElement::GuiSizeMax, 30);
 
     // Controls for the radar view
-    view_controls = new GuiAutoLayout(this, "VIEW_CONTROLS", GuiAutoLayout::LayoutVerticalBottomToTop);
-    view_controls->setPosition(20, -70, sp::Alignment::BottomLeft)->setSize(250, GuiElement::GuiSizeMax);
+    view_controls = new GuiElement(this, "VIEW_CONTROLS");
+    view_controls->setPosition(20, -70, sp::Alignment::BottomLeft)->setSize(250, GuiElement::GuiSizeMax)->setAttribute("layout", "verticalbottom");;
     zoom_slider = new GuiSlider(this, "ZOOM_SLIDER", max_distance, min_distance, 50000.0f, [this](float value) {
         zoom_label->setText(tr("Zoom: {zoom}x").format({{"zoom", string(max_distance / value, 1.0f)}}));
         radar->setDistance(value);
@@ -166,8 +165,8 @@ RelayScreen::RelayScreen(GuiContainer* owner, bool allow_comms)
     center_screen_button->setIcon("gui/icons/lock");;
 
     // Manage waypoints.
-    waypoints_layout = new GuiAutoLayout(view_controls, "WAYPOINTS_LAYOUT", GuiAutoLayout::LayoutHorizontalLeftToRight);
-    waypoints_layout -> setSize(GuiElement::GuiSizeMax, 50);
+    waypoints_layout = new GuiElement(view_controls, "WAYPOINTS_LAYOUT");
+    waypoints_layout -> setSize(GuiElement::GuiSizeMax, 50)->setAttribute("layout", "horizontal");;
 
     (new GuiLabel(waypoints_layout, "", tr("Place Waypoint"), 30))->setAlignment(sp::Alignment::Center)->setSize(150, 50);
     add_waypoint_button = new GuiButton(waypoints_layout, "WAYPOINT_PLACE_BUTTON", "+", [this]() {

@@ -11,7 +11,6 @@
 #include "screenComponents/shipsLogControl.h"
 
 #include "gui/gui2_keyvaluedisplay.h"
-#include "gui/gui2_autolayout.h"
 #include "gui/gui2_togglebutton.h"
 #include "gui/gui2_slider.h"
 #include "gui/gui2_progressbar.h"
@@ -121,7 +120,7 @@ EngineeringScreen::EngineeringScreen(GuiContainer* owner, ECrewPosition crew_pos
             info.coolant_bar->setSize(150, GuiElement::GuiSizeMax);
             if (gameGlobalInfo->use_system_damage)
             {
-                info.repair_bar = new GuiProgressSlider(info.layout, id + "_REPAIR", 0.0, 10.0, 0.0, [this,n](float value){
+                info.repair_bar = new GuiProgressSlider(info.row, id + "_REPAIR", 0.0, 10.0, 0.0, [this,n](float value){
                     if (my_spaceship)
                         my_spaceship->commandSetSystemRepairRequest(ESystem(n), value);
                 });
@@ -178,12 +177,11 @@ EngineeringScreen::EngineeringScreen(GuiContainer* owner, ECrewPosition crew_pos
 
     if (gameGlobalInfo->use_nano_repair_crew)
     {
-//        system_effects_container = new GuiAutoLayout(this, "", GuiAutoLayout::LayoutVerticalTopToBottom);
         system_effects_container = new GuiElement(this, "");
-        system_effects_container->setPosition(-20, -100, sp::Alignment::TopRight)->setSize(270, 340))->setAttribute("layout", "verticalbottom");
+        system_effects_container->setPosition(-20, -100, sp::Alignment::TopRight)->setSize(270, 340)->setAttribute("layout", "vertical");
     } else {
         system_effects_container = new GuiElement(system_config_container, "");
-        system_effects_container->setPosition(0, -400, sp::Alignment::BottomRight)->setSize(270, 400))->setAttribute("layout", "verticalbottom");
+        system_effects_container->setPosition(0, -400, sp::Alignment::BottomRight)->setSize(270, 400)->setAttribute("layout", "vertical");
     }
     
     GuiPanel* box = new GuiPanel(system_config_container, "POWER_COOLANT_BOX");
@@ -236,9 +234,9 @@ EngineeringScreen::EngineeringScreen(GuiContainer* owner, ECrewPosition crew_pos
 
     new ShipsLog(this,"intern");
     // Bottom layout.
-    GuiAutoLayout* layout = new GuiAutoLayout(this, "", GuiAutoLayout::LayoutVerticalBottomToTop);
-    layout->setPosition(-20, -20, sp::Alignment::BottomRight)->setSize(300, GuiElement::GuiSizeMax);
-    std::vector<GuiAutoLayout*> presets_buttons_layouts;
+    auto layout = new GuiElement(this, "");
+    layout->setPosition(-20, -20, sp::Alignment::BottomRight)->setSize(300, GuiElement::GuiSizeMax)->setAttribute("layout", "verticalbottom");;
+    std::vector<GuiElement*> presets_buttons_layouts;
 
     // Presets buttons.
     presets_button = new GuiToggleButton(layout, "PRESET", tr("preset", "presets"), [this](bool value)
@@ -258,8 +256,8 @@ EngineeringScreen::EngineeringScreen(GuiContainer* owner, ECrewPosition crew_pos
     for(int presetId=1; presetId < my_spaceship->max_engineer_presets_number + 1; presetId++)
     {
 
-        GuiAutoLayout* preset_button_layout = new GuiAutoLayout(layout, "", GuiAutoLayout::LayoutHorizontalLeftToRight);
-        preset_button_layout->setSize(300, GuiElement::GuiSizeMax);
+        auto preset_button_layout = new GuiElement(layout, "");
+        preset_button_layout->setSize(300, GuiElement::GuiSizeMax)->setAttribute("layout", "horizontal");;
         GuiButton* preset_button_apply = new GuiButton(preset_button_layout, "", tr("preset", "preset") + " " + std::to_string(presetId), [this, presetId]()
         {
             applyPreset(presetId);

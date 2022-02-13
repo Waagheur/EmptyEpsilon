@@ -8,7 +8,6 @@
 #include "shipCargo.h"
 
 #include "gui/gui2_listbox.h"
-#include "gui/gui2_autolayout.h"
 #include "gui/gui2_element.h"
 #include "gui/gui2_panel.h"
 #include "gui/gui2_label.h"
@@ -32,8 +31,8 @@ DroneMasterScreen::DroneMasterScreen(GuiContainer *owner)
     GuiOverlay *background_crosses = new GuiOverlay(this, "BACKGROUND_CROSSES", glm::u8vec4(255,255,255,255));
     background_crosses->setTextureTiled("gui/background/crosses.png");
 
-    GuiAutoLayout *rootLayout = new GuiAutoLayout(this, "ROOT_LAYOUT", GuiAutoLayout::LayoutHorizontalLeftToRight);
-    rootLayout->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax)->setPosition(0, 0, sp::Alignment::TopLeft);
+    auto rootLayout = new GuiElement(this, "ROOT_LAYOUT");
+    rootLayout->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax)->setPosition(0, 0, sp::Alignment::TopLeft)->setAttribute("layout", "horizontal");;
 
     docks = new GuiListbox(rootLayout, "DOCKS_LIST", [this](int index, string value) {
         selectDock(index);
@@ -51,18 +50,18 @@ DroneMasterScreen::DroneMasterScreen(GuiContainer *owner)
         }
     }
 
-    mainPanel = new GuiAutoLayout(rootLayout, "TOP_PANEL", GuiAutoLayout::LayoutHorizontalRows);
-    mainPanel->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);
+    mainPanel = new GuiElement(rootLayout, "TOP_PANEL");
+    mainPanel->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax)->setAttribute("layout", "horizontal");;
     mainPanel->setPosition(0, 0, sp::Alignment::TopRight);
     mainPanel->setMargins(20, 20, 20, 20);
 
-    topPanel = new GuiAutoLayout(mainPanel, "TOP_PANEL", GuiAutoLayout::LayoutVerticalTopToBottom);
-    topPanel->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax / 2.0);
+    topPanel = new GuiElement(mainPanel, "TOP_PANEL");
+    topPanel->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax / 2.0)->setAttribute("layout", "vertical");;
     topPanel->setPosition(0, 0, sp::Alignment::TopRight);
 //    mainPanel->setMargins(20, 20, 20, 20);
 
-    bottomPanel = new GuiAutoLayout(mainPanel, "BOTTOM_PANEL", GuiAutoLayout::LayoutVerticalTopToBottom);
-    bottomPanel->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax / 2.0);
+    bottomPanel = new GuiElement(mainPanel, "BOTTOM_PANEL");
+    bottomPanel->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax / 2.0)->setAttribute("layout", "vertical");;
     bottomPanel->setPosition(0, 500, sp::Alignment::TopRight);
 
     // Dock actions
@@ -72,8 +71,8 @@ DroneMasterScreen::DroneMasterScreen(GuiContainer *owner)
         ->setPosition(0, 0, sp::Alignment::BottomCenter)
         ->setSize(GuiElement::GuiSizeMax, 50);
 
-    action_move = new GuiAutoLayout(topPanel, "ACTION_MOVE", GuiAutoLayout::LayoutVerticalColumns);
-    action_move->setSize(GuiElement::GuiSizeMax, 50)->setPosition(0, 50, sp::Alignment::TopCenter);
+    action_move = new GuiElement(topPanel, "ACTION_MOVE");
+    action_move->setSize(GuiElement::GuiSizeMax, 50)->setPosition(0, 50, sp::Alignment::TopCenter)->setAttribute("layout", "vertical");;
     (new GuiLabel(action_move, "MOVE_DEST_LABEL", "Transfert vers :", 30))->setAlignment(sp::Alignment::CenterRight);
     action_move_selector = new GuiSelector(action_move, "MOVE_DEST_SELECTOR", [this](int _idx, string value) {
         if (my_spaceship)
@@ -102,8 +101,8 @@ DroneMasterScreen::DroneMasterScreen(GuiContainer *owner)
         ->setPosition(0, 0, sp::Alignment::BottomCenter)
         ->setSize(GuiElement::GuiSizeMax, 50);
 
-    action_launch = new GuiAutoLayout(topPanel, "ACTION_MOVE", GuiAutoLayout::LayoutVerticalColumns);
-    action_launch->setSize(GuiElement::GuiSizeMax, 50)->setPosition(0, 50, sp::Alignment::TopCenter);
+    action_launch = new GuiElement(topPanel, "ACTION_MOVE");
+    action_launch->setSize(GuiElement::GuiSizeMax, 50)->setPosition(0, 50, sp::Alignment::TopCenter)->setAttribute("layout", "vertical");;
 
     (new GuiLabel(action_launch, "SPACE", " ", 30));
     (new GuiLabel(action_launch, "ACTION_LAUNCH_LABEL", "Lancer dans l'espace :", 30))->setAlignment(sp::Alignment::CenterRight)->setMargins(20,20,20,20);
@@ -121,8 +120,8 @@ DroneMasterScreen::DroneMasterScreen(GuiContainer *owner)
     action_launch_button->setSize(COLUMN_WIDTH, 50);
     (new GuiPowerDamageIndicator(action_launch_button, "DOCKS_DPI", SYS_Hangar, sp::Alignment::BottomCenter, my_spaceship))->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);
 
-    action_energy = new GuiAutoLayout(topPanel, "ACTION_MOVE", GuiAutoLayout::LayoutVerticalColumns);
-    action_energy->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax)->setPosition(0, 50, sp::Alignment::TopCenter);
+    action_energy = new GuiElement(topPanel, "ACTION_MOVE");
+    action_energy->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax)->setPosition(0, 50, sp::Alignment::TopCenter)->setAttribute("layout", "vertical");;
 
     (new GuiLabel(action_energy, "SPACE", " ", 30));
     (new GuiLabel(action_energy, "ACTION_LAUNCH_LABEL", "Controle de l'energie :", 30))->setAlignment(sp::Alignment::TopRight)->setMargins(10, 10, 10, 10);
@@ -143,16 +142,15 @@ DroneMasterScreen::DroneMasterScreen(GuiContainer *owner)
     energy_bar = new GuiProgressbar(energy_slider, "ENERGY_BAR", 0.0, 10.0, 0.0);
     energy_bar->setColor(glm::u8vec4(192, 192, 32, 128))->setText("Energie")->setDrawBackground(false)->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax)->setMargins(10, 0, 10, 0);
 
-    action_weapons = new GuiAutoLayout(topPanel, "ACTION_WEAPONS", GuiAutoLayout::LayoutVerticalColumns);
-//    action_weapons = new GuiAutoLayout(topPanel, "ACTION_WEAPONS", GuiAutoLayout::LayoutVerticalTopToBottom);
-    action_weapons->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax)->setPosition(0, 50, sp::Alignment::TopCenter);
+    action_weapons = new GuiElement(topPanel, "ACTION_WEAPONS");
+    action_weapons->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax)->setPosition(0, 50, sp::Alignment::TopCenter)->setAttribute("layout", "vertical");;
     (new GuiLabel(action_weapons, "ACTION_WEAPONS_LABEL", "Transfert missiles :", 30))->setAlignment(sp::Alignment::CenterRight)->setMargins(10, 10, 10, 10);
 
-    table_weapons = new GuiAutoLayout(action_weapons, "TABLE_WEAPONS", GuiAutoLayout::LayoutVerticalTopToBottom);
-    table_weapons->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);
+    table_weapons = new GuiElement(action_weapons, "TABLE_WEAPONS");
+    table_weapons->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax)->setAttribute("layout", "vertical");;
 
-    weapons_layout_label = new GuiAutoLayout(table_weapons, "WEAPONS_LAYOUT_LABEL", GuiAutoLayout::LayoutVerticalColumns);
-    weapons_layout_label -> setSize(GuiElement::GuiSizeMax, 40);
+    weapons_layout_label = new GuiElement(table_weapons, "WEAPONS_LAYOUT_LABEL");
+    weapons_layout_label -> setSize(GuiElement::GuiSizeMax, 40)->setAttribute("layout", "vertical");;
     (new GuiLabel(weapons_layout_label, "", "Missile", 20));
     (new GuiLabel(weapons_layout_label, "", "Station", 20));
     (new GuiLabel(weapons_layout_label, "", "Astronef", 20));
@@ -163,8 +161,8 @@ DroneMasterScreen::DroneMasterScreen(GuiContainer *owner)
     for(; n<MW_Count; n++)
     {
 //        weapons_layout[n] = new GuiElement(table_weapons, "WEAPONS_LAYOUT");
-        weapons_layout.push_back(new GuiAutoLayout(table_weapons, "WEAPONS_LAYOUT", GuiAutoLayout::LayoutVerticalColumns));
-        weapons_layout[n]->setSize(GuiElement::GuiSizeMax, 40);
+        weapons_layout.push_back(new GuiElement(table_weapons, "WEAPONS_LAYOUT"));
+        weapons_layout[n]->setSize(GuiElement::GuiSizeMax, 40)->setAttribute("layout", "vertical");;
 
         (new GuiLabel(weapons_layout[n], "", getMissileWeaponName(EMissileWeapons(n)), 20))->setSize(75, 30);
 
@@ -238,8 +236,8 @@ DroneMasterScreen::DroneMasterScreen(GuiContainer *owner)
     for (auto &kv : my_spaceship->custom_weapon_storage )
     {
         
-        weapons_layout.push_back(new GuiAutoLayout(table_weapons, "WEAPONS_LAYOUT", GuiAutoLayout::LayoutVerticalColumns));
-        weapons_layout[n]->setSize(GuiElement::GuiSizeMax, 40);
+        weapons_layout.push_back(new GuiElement(table_weapons, "WEAPONS_LAYOUT"));
+        weapons_layout[n]->setSize(GuiElement::GuiSizeMax, 40)->setAttribute("layout", "vertical");;
 
         (new GuiLabel(weapons_layout[n], "", getMissileWeaponName(kv.first), 20))->setSize(75, 30);
 
@@ -319,25 +317,25 @@ DroneMasterScreen::DroneMasterScreen(GuiContainer *owner)
         ->setPosition(0, 0, sp::Alignment::TopCenter)
         ->setSize(GuiElement::GuiSizeMax, 50);
 
-    dronePanel = new GuiAutoLayout(bottomPanel, "DRONE_PANEL", GuiAutoLayout::LayoutVerticalColumns);
-    dronePanel->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax)->setPosition(0, 50, sp::Alignment::TopRight);
+    dronePanel = new GuiElement(bottomPanel, "DRONE_PANEL");
+    dronePanel->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax)->setPosition(0, 50, sp::Alignment::TopRight)->setAttribute("layout", "vertical");;
 
-    dronePanel_col1 = new GuiAutoLayout(dronePanel, "DRONE_COL1", GuiAutoLayout::LayoutVerticalTopToBottom);
+    dronePanel_col1 = new GuiElement(dronePanel, "DRONE_COL1");
 //    dronePanel_col1->setSize(COLUMN_WIDTH / 1.75, 1000)->setPosition(0, 100, sp::Alignment::TopLeft);
-    dronePanel_col1->setSize(COLUMN_WIDTH / 2, 1000)->setPosition(0, 100, sp::Alignment::TopLeft)->setMargins(10, 10, 10, 10);
+    dronePanel_col1->setSize(COLUMN_WIDTH / 2, 1000)->setPosition(0, 100, sp::Alignment::TopLeft)->setMargins(10, 10, 10, 10)->setAttribute("layout", "vertical");;
 
-    dronePanel_col2 = new GuiAutoLayout(dronePanel, "DRONE_COL2", GuiAutoLayout::LayoutVerticalTopToBottom);
+    dronePanel_col2 = new GuiElement(dronePanel, "DRONE_COL2");
 //    dronePanel_col2->setSize(COLUMN_WIDTH / 1.75, 1000)->setPosition(0, 100, sp::Alignment::TopCenter);
-    dronePanel_col2->setSize(COLUMN_WIDTH / 2, 1000)->setPosition(0, 100, sp::Alignment::TopCenter)->setMargins(10, 10, 10, 10);
+    dronePanel_col2->setSize(COLUMN_WIDTH / 2, 1000)->setPosition(0, 100, sp::Alignment::TopCenter)->setMargins(10, 10, 10, 10)->setAttribute("layout", "vertical");;
 
     dronePanel_col3 = new GuiElement(dronePanel, "DRONE_COL3");
     dronePanel_col3->setSize(GuiElement::GuiSizeMax, 1000)->setPosition(0, 100, sp::Alignment::TopRight)->setMargins(10, 10, 10, 10);
 
-    shipCargoInfo = new GuiAutoLayout(dronePanel_col1, "CARGO_INFO", GuiAutoLayout::LayoutVerticalTopToBottom);
-    shipCargoInfo->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);
+    shipCargoInfo = new GuiElement(dronePanel_col1, "CARGO_INFO");
+    shipCargoInfo->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax)->setAttribute("layout", "vertical");;
 
-    cargoInfo = new GuiAutoLayout(dronePanel_col2, "SHIP_CARGO_INFO", GuiAutoLayout::LayoutVerticalTopToBottom);
-    cargoInfo->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);
+    cargoInfo = new GuiElement(dronePanel_col2, "SHIP_CARGO_INFO");
+    cargoInfo->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax)->setAttribute("layout", "vertical");;
 
     model = new GuiRotatingModelView(dronePanel_col3, "MODEL_VIEW", nullptr);
     model->setPosition(0, 0, sp::Alignment::TopLeft)->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax)->setMargins(0, -100, 0, 0);

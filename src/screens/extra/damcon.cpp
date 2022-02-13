@@ -7,7 +7,6 @@
 #include "screenComponents/customShipFunctions.h"
 
 #include "gui/gui2_keyvaluedisplay.h"
-#include "gui/gui2_autolayout.h"
 #include "gui/gui2_label.h"
 #include "gui/gui2_selector.h"
 #include "gameGlobalInfo.h"

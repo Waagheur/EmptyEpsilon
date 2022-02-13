@@ -49,12 +49,12 @@ private:
     GuiButton* hack_target_button;
     GuiToggleButton* link_to_science_button;
     GuiToggleButton* link_to_3D_port_button;
-    GuiAutoLayout* waypoints_layout;
+    GuiElement* waypoints_layout;
     GuiButton* add_waypoint_button;
     GuiButton* delete_waypoint_button;
     GuiButton* launch_probe_button;
     GuiProgressbar* progress_probe;
-    GuiAutoLayout* view_controls;
+    GuiElement* view_controls;
     bool position_text_custom;
     GuiTextEntry* position_text;
     GuiElement* position_entry;

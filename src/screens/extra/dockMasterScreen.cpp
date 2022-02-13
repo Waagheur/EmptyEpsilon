@@ -7,7 +7,6 @@
 #include "screenComponents/customShipFunctions.h"
 
 #include "gui/gui2_listbox.h"
-#include "gui/gui2_autolayout.h"
 #include "gui/gui2_element.h"
 #include "gui/gui2_panel.h"
 #include "gui/gui2_label.h"
@@ -31,8 +30,8 @@ DockMasterScreen::DockMasterScreen(GuiContainer *owner)
     GuiOverlay *background_crosses = new GuiOverlay(this, "BACKGROUND_CROSSES", glm::u8vec4(255,255,255,255));
     background_crosses->setTextureTiled("gui/background/crosses.png");
 
-    GuiAutoLayout *rootLayout = new GuiAutoLayout(this, "ROOT_LAYOUT", GuiAutoLayout::LayoutHorizontalLeftToRight);
-    rootLayout->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax)->setPosition(0, 0, sp::Alignment::TopLeft);
+    auto rootLayout = new GuiElement(this, "ROOT_LAYOUT");
+    rootLayout->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax)->setPosition(0, 0, sp::Alignment::TopLeft)->setAttribute("layout", "horizaontal");;
 
     docks = new GuiListbox(rootLayout, "DOCKS_LIST", [this](int index_dock, string value) {
         selectDock(index_dock);
@@ -55,13 +54,13 @@ DockMasterScreen::DockMasterScreen(GuiContainer *owner)
     for (int n = 0; n < 3; n++)
         bays->addEntry("Baie-"+string(n+1), "Vide");
 
-    mainPanel = new GuiAutoLayout(rootLayout, "TOP_PANEL", GuiAutoLayout::LayoutHorizontalRows);
-    mainPanel->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);
+    mainPanel = new GuiElement(rootLayout, "TOP_PANEL");
+    mainPanel->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax)->setAttribute("layout", "horizontal");;
     mainPanel->setPosition(0, 0, sp::Alignment::TopCenter);
     mainPanel->setMargins(20, 20, 20, 20);
 
-    topPanel = new GuiAutoLayout(mainPanel, "TOP_PANEL", GuiAutoLayout::LayoutVerticalTopToBottom);
-    topPanel->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax / 2.0);
+    topPanel = new GuiElement(mainPanel, "TOP_PANEL");
+    topPanel->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax / 2.0)->setAttribute("layout", "vertical");;
     topPanel->setPosition(0, 0, sp::Alignment::TopRight);
 //    mainPanel->setMargins(20, 20, 20, 20);
 
@@ -72,8 +71,8 @@ DockMasterScreen::DockMasterScreen(GuiContainer *owner)
         ->setPosition(0, 0, sp::Alignment::BottomCenter)
         ->setSize(GuiElement::GuiSizeMax, 50);
 
-    layout_move = new GuiAutoLayout(topPanel, "ACTION_MOVE", GuiAutoLayout::LayoutVerticalColumns);
-    layout_move->setSize(GuiElement::GuiSizeMax, 50)->setPosition(0, 50, sp::Alignment::TopCenter);
+    layout_move = new GuiElement(topPanel, "ACTION_MOVE");
+    layout_move->setSize(GuiElement::GuiSizeMax, 50)->setPosition(0, 50, sp::Alignment::TopCenter)->setAttribute("layout", "vertical");;
 
     action_move_button = new GuiButton(layout_move, "MOVE_BUTTON", "Transferer", [this]() {
         if (my_spaceship)

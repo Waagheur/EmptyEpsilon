@@ -20,7 +20,6 @@
 #include "screenComponents/signalQualityIndicator.h"
 
 #include "gui/gui2_listbox.h"
-#include "gui/gui2_autolayout.h"
 #include "gui/gui2_element.h"
 #include "gui/gui2_panel.h"
 #include "gui/gui2_label.h"
@@ -57,16 +56,16 @@ TargetAnalysisScreen::TargetAnalysisScreen(GuiContainer *owner)
     model->setSize(500, 500);
     model->setPosition(0, 0, sp::Alignment::Center);
 
-    GuiAutoLayout* left_col = new GuiAutoLayout(analysis_overlay, "LEFT_LAYOUT", GuiAutoLayout::LayoutVerticalTopToBottom);
-    left_col->setPosition(25, 50, sp::Alignment::TopLeft)->setSize(400, GuiElement::GuiSizeMax);
+    auto left_col = new GuiElement(analysis_overlay, "LEFT_LAYOUT");
+    left_col->setPosition(25, 50, sp::Alignment::TopLeft)->setSize(400, GuiElement::GuiSizeMax)->setAttribute("layout", "vertical");;
     left_col->setMargins(20, 20, 20, 20);
     
-    GuiAutoLayout* center_col = new GuiAutoLayout(analysis_overlay, "CENTER_LAYOUT", GuiAutoLayout::LayoutVerticalTopToBottom);
-    center_col->setPosition(0, 50, sp::Alignment::TopCenter)->setSize(400, GuiElement::GuiSizeMax);
+    auto center_col = new GuiElement(analysis_overlay, "CENTER_LAYOUT");
+    center_col->setPosition(0, 50, sp::Alignment::TopCenter)->setSize(400, GuiElement::GuiSizeMax)->setAttribute("layout", "vertical");;
     center_col->setMargins(20, 20, 20, 20);
 
-    GuiAutoLayout* right_col = new GuiAutoLayout(analysis_overlay, "RIGHT_LAYOUT", GuiAutoLayout::LayoutVerticalTopToBottom);
-    right_col->setPosition(-25, 50, sp::Alignment::TopRight)->setSize(400, GuiElement::GuiSizeMax);
+    auto right_col = new GuiElement(analysis_overlay, "RIGHT_LAYOUT");
+    right_col->setPosition(-25, 50, sp::Alignment::TopRight)->setSize(400, GuiElement::GuiSizeMax)->setAttribute("layout", "vertical");;
     right_col->setMargins(20, 20, 20, 20);
     
     (new GuiLabel(left_col, "TITLE", "Basic Informations", 30))

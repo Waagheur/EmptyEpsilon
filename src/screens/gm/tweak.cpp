@@ -7,7 +7,6 @@
 #include "gameGlobalInfo.h"
 
 #include "gui/gui2_listbox.h"
-#include "gui/gui2_autolayout.h"
 #include "gui/gui2_keyvaluedisplay.h"
 #include "gui/gui2_label.h"
 #include "gui/gui2_textentry.h"
@@ -292,10 +291,10 @@ void GuiObjectTweakBase::open(P<SpaceObject> target)
 GuiTemplateTweak::GuiTemplateTweak(GuiContainer* owner)
 : GuiTweakPage(owner)
 {
-    GuiAutoLayout* left_col = new GuiAutoLayout(this, "LEFT_LAYOUT", GuiAutoLayout::LayoutVerticalTopToBottom);
-    left_col->setPosition(50, 25, sp::Alignment::TopLeft)->setSize(300, GuiElement::GuiSizeMax);
-    GuiAutoLayout* right_col = new GuiAutoLayout(this, "RIGHT_LAYOUT", GuiAutoLayout::LayoutVerticalTopToBottom);
-    right_col->setPosition(-25, 25, sp::Alignment::TopRight)->setSize(300, GuiElement::GuiSizeMax);
+    auto left_col = new GuiElement(this, "LEFT_LAYOUT");
+    left_col->setPosition(50, 25, sp::Alignment::TopLeft)->setSize(300, GuiElement::GuiSizeMax)->setAttribute("layout", "vertical");;
+    auto right_col = new GuiElement(this, "RIGHT_LAYOUT");
+    right_col->setPosition(-25, 25, sp::Alignment::TopRight)->setSize(300, GuiElement::GuiSizeMax)->setAttribute("layout", "vertical");;
 
     (new GuiLabel(left_col, "", tr("Heading:"), 30))->setSize(GuiElement::GuiSizeMax, 50);
     heading_slider = new GuiSlider(left_col, "", 0.0, 359.9, 0.0, [this](float value) {
@@ -426,11 +425,11 @@ GuiTemplateTweak::GuiTemplateTweak(GuiContainer* owner)
 GuiShipTweakShields::GuiShipTweakShields(GuiContainer* owner)
 : GuiTweakPage(owner)
 {
-    GuiAutoLayout* left_col = new GuiAutoLayout(this, "LEFT_LAYOUT", GuiAutoLayout::LayoutVerticalTopToBottom);
-    left_col->setPosition(50, 25, sp::Alignment::TopLeft)->setSize(300, GuiElement::GuiSizeMax);
+    auto left_col = new GuiElement(this, "LEFT_LAYOUT");
+    left_col->setPosition(50, 25, sp::Alignment::TopLeft)->setSize(300, GuiElement::GuiSizeMax)->setAttribute("layout", "vertical");;
 
-    GuiAutoLayout* right_col = new GuiAutoLayout(this, "RIGHT_LAYOUT", GuiAutoLayout::LayoutVerticalTopToBottom);
-    right_col->setPosition(-25, 25, sp::Alignment::TopRight)->setSize(300, GuiElement::GuiSizeMax);
+    auto right_col = new GuiElement(this, "RIGHT_LAYOUT");
+    right_col->setPosition(-25, 25, sp::Alignment::TopRight)->setSize(300, GuiElement::GuiSizeMax)->setAttribute("layout", "vertical");;
 
     for(int n=0; n<max_shield_count; n++)
     {
@@ -500,10 +499,10 @@ void GuiShipTweakShields::open(P<SpaceObject> target)
 GuiShipTweak::GuiShipTweak(GuiContainer* owner)
 : GuiTweakPage(owner)
 {
-    GuiAutoLayout* left_col = new GuiAutoLayout(this, "LEFT_LAYOUT", GuiAutoLayout::LayoutVerticalTopToBottom);
-    left_col->setPosition(50, 25, sp::Alignment::TopLeft)->setSize(300, GuiElement::GuiSizeMax);
-    GuiAutoLayout* right_col = new GuiAutoLayout(this, "RIGHT_LAYOUT", GuiAutoLayout::LayoutVerticalTopToBottom);
-    right_col->setPosition(-25, 25, sp::Alignment::TopRight)->setSize(300, GuiElement::GuiSizeMax);
+    auto left_col = new GuiElement(this, "LEFT_LAYOUT");
+    left_col->setPosition(50, 25, sp::Alignment::TopLeft)->setSize(300, GuiElement::GuiSizeMax)->setAttribute("layout", "vertical");;
+    auto right_col = new GuiElement(this, "RIGHT_LAYOUT");
+    right_col->setPosition(-25, 25, sp::Alignment::TopRight)->setSize(300, GuiElement::GuiSizeMax)->setAttribute("layout", "vertical");;
 
     // Left column
     (new GuiLabel(left_col, "",  tr("Impulse speed:"), 30))->setSize(GuiElement::GuiSizeMax, 45);
@@ -1713,16 +1712,16 @@ GuiShipTweakDock::GuiShipTweakDock(GuiContainer* owner)
 : GuiTweakPage(owner)
 {
     // Add two columns, hangar and flying.
-    GuiAutoLayout* dock_col = new GuiAutoLayout(this, "DOCK_LAYOUT", GuiAutoLayout::LayoutVerticalTopToBottom);
-    dock_col->setPosition(50, 30, sp::Alignment::TopLeft)->setSize(80, GuiElement::GuiSizeMax);
-    GuiAutoLayout* type_col = new GuiAutoLayout(this, "DOCK_TYPE_LAYOUT", GuiAutoLayout::LayoutVerticalTopToBottom);
-    type_col->setPosition(130, 30, sp::Alignment::TopLeft)->setSize(170, GuiElement::GuiSizeMax);
-    GuiAutoLayout* content_col = new GuiAutoLayout(this, "DOCK_TYPE_LAYOUT", GuiAutoLayout::LayoutVerticalTopToBottom);
-    content_col->setPosition(300, 30, sp::Alignment::TopLeft)->setSize(150, GuiElement::GuiSizeMax);
+    auto dock_col = new GuiElement(this, "DOCK_LAYOUT");
+    dock_col->setPosition(50, 30, sp::Alignment::TopLeft)->setSize(80, GuiElement::GuiSizeMax)->setAttribute("layout", "vertical");;
+    auto type_col = new GuiElement(this, "DOCK_TYPE_LAYOUT");
+    type_col->setPosition(130, 30, sp::Alignment::TopLeft)->setSize(170, GuiElement::GuiSizeMax)->setAttribute("layout", "vertical");;
+    auto content_col = new GuiElement(this, "DOCK_TYPE_LAYOUT");
+    content_col->setPosition(300, 30, sp::Alignment::TopLeft)->setSize(150, GuiElement::GuiSizeMax)->setAttribute("layout", "vertical");;
 
 
-    GuiAutoLayout* envol_col = new GuiAutoLayout(this, "RIGHT_LAYOUT", GuiAutoLayout::LayoutVerticalTopToBottom);
-    envol_col->setPosition(-25, 25, sp::Alignment::TopRight)->setSize(300, GuiElement::GuiSizeMax);
+    auto envol_col = new GuiElement(this, "RIGHT_LAYOUT");
+    envol_col->setPosition(-25, 25, sp::Alignment::TopRight)->setSize(300, GuiElement::GuiSizeMax)->setAttribute("layout", "vertical");;
 
     (new GuiLabel(dock_col, "", "Dock :", 30))->setSize(GuiElement::GuiSizeMax, 40);
     (new GuiLabel(envol_col, "", "Recall :", 30))->setSize(GuiElement::GuiSizeMax, 40);
@@ -1857,14 +1856,14 @@ void GuiShipTweakDock::onDraw(sp::RenderTarget& renderer)
 GuiShipTweakOxygen::GuiShipTweakOxygen(GuiContainer* owner)
 : GuiTweakPage(owner)
 {
-    GuiAutoLayout* left_col = new GuiAutoLayout(this, "LEFT_LAYOUT", GuiAutoLayout::LayoutVerticalTopToBottom);
-    left_col->setPosition(50, 25, sp::Alignment::TopLeft)->setSize(200, GuiElement::GuiSizeMax);
+    auto left_col = new GuiElement(this, "LEFT_LAYOUT");
+    left_col->setPosition(50, 25, sp::Alignment::TopLeft)->setSize(200, GuiElement::GuiSizeMax)->setAttribute("layout", "vertical");;
 
-    GuiAutoLayout* center_col = new GuiAutoLayout(this, "CENTER_LAYOUT", GuiAutoLayout::LayoutVerticalTopToBottom);
-    center_col->setPosition(0, 25, sp::Alignment::TopCenter)->setSize(200, GuiElement::GuiSizeMax);
+    auto center_col = new GuiElement(this, "CENTER_LAYOUT");
+    center_col->setPosition(0, 25, sp::Alignment::TopCenter)->setSize(200, GuiElement::GuiSizeMax)->setAttribute("layout", "vertical");;
 
-    GuiAutoLayout* right_col = new GuiAutoLayout(this, "RIGHT_LAYOUT", GuiAutoLayout::LayoutVerticalTopToBottom);
-    right_col->setPosition(-25, 25, sp::Alignment::TopRight)->setSize(200, GuiElement::GuiSizeMax);
+    auto right_col = new GuiElement(this, "RIGHT_LAYOUT");
+    right_col->setPosition(-25, 25, sp::Alignment::TopRight)->setSize(200, GuiElement::GuiSizeMax)->setAttribute("layout", "vertical");;
 
     (new GuiLabel(left_col, "", "Oxygen Max zone", 30))->setSize(GuiElement::GuiSizeMax, 50);
     (new GuiLabel(center_col, "", "Oxygen zone", 30))->setSize(GuiElement::GuiSizeMax, 50);
@@ -1969,10 +1968,10 @@ GuiShipTweakMessages::GuiShipTweakMessages(GuiContainer* owner)
     }))->setPosition(0, 100, sp::Alignment::TopCenter)->setSize(300, 50);
 
     // Add two columns.
-    auto left_col = new GuiAutoLayout(this, "LEFT_LAYOUT");
+    auto left_col = new GuiElement(this, "LEFT_LAYOUT");
     left_col->setPosition(50, 150, sp::Alignment::TopLeft)->setSize(300, GuiElement::GuiSizeMax)->setAttribute("layout", "vertical");
 
-    auto right_col = new GuiAutoLayout(this, "RIGHT_LAYOUT");
+    auto right_col = new GuiElement(this, "RIGHT_LAYOUT");
     right_col->setPosition(-25, 150, sp::Alignment::TopRight)->setSize(300, GuiElement::GuiSizeMax)->setAttribute("layout", "vertical");
 
     // Left column
@@ -2165,11 +2164,11 @@ void GuiShipTweakPlanet::open(P<SpaceObject> target)
 GuiShipTweakInfos::GuiShipTweakInfos(GuiContainer* owner)
 : GuiTweakPage(owner)
 {
-    GuiAutoLayout* left_col = new GuiAutoLayout(this, "LEFT_LAYOUT", GuiAutoLayout::LayoutVerticalTopToBottom);
-    left_col->setPosition(50, 25, sp::Alignment::TopLeft)->setSize(200, GuiElement::GuiSizeMax);
+    auto left_col = new GuiElement(this, "LEFT_LAYOUT");
+    left_col->setPosition(50, 25, sp::Alignment::TopLeft)->setSize(200, GuiElement::GuiSizeMax)->setAttribute("layout", "vertical");;
 
-    GuiAutoLayout* right_col = new GuiAutoLayout(this, "RIGHT_LAYOUT", GuiAutoLayout::LayoutVerticalTopToBottom);
-    right_col->setPosition(-25, 25, sp::Alignment::TopRight)->setSize(200, GuiElement::GuiSizeMax);
+    auto right_col = new GuiElement(this, "RIGHT_LAYOUT");
+    right_col->setPosition(-25, 25, sp::Alignment::TopRight)->setSize(200, GuiElement::GuiSizeMax)->setAttribute("layout", "vertical");;
 
     (new GuiLabel(left_col, "", "Label", 30))->setSize(GuiElement::GuiSizeMax, 45);
     (new GuiLabel(right_col, "", "Valeur", 30))->setSize(GuiElement::GuiSizeMax, 45);
@@ -2236,12 +2235,12 @@ string GuiShipTweakSystemPowerFactors::powerFactorToText(float power)
 GuiShipTweakSystemPowerFactors::GuiShipTweakSystemPowerFactors(GuiContainer* owner)
     : GuiTweakPage(owner)
 {
-    GuiAutoLayout* left_col = new GuiAutoLayout(this, "LEFT_LAYOUT", GuiAutoLayout::LayoutVerticalTopToBottom);
-    left_col->setPosition(50, 25, sp::Alignment::TopLeft)->setSize(200, GuiElement::GuiSizeMax);
-    GuiAutoLayout* center_col = new GuiAutoLayout(this, "CENTER_LAYOUT", GuiAutoLayout::LayoutVerticalTopToBottom);
-    center_col->setPosition(10, 25, sp::Alignment::TopCenter)->setSize(200, GuiElement::GuiSizeMax);
-    GuiAutoLayout* right_col = new GuiAutoLayout(this, "RIGHT_LAYOUT", GuiAutoLayout::LayoutVerticalTopToBottom);
-    right_col->setPosition(-25, 25, sp::Alignment::TopRight)->setSize(200, GuiElement::GuiSizeMax);
+    auto left_col = new GuiElement(this, "LEFT_LAYOUT");
+    left_col->setPosition(50, 25, sp::Alignment::TopLeft)->setSize(200, GuiElement::GuiSizeMax)->setAttribute("layout", "vertical");;
+    auto center_col = new GuiElement(this, "CENTER_LAYOUT");
+    center_col->setPosition(10, 25, sp::Alignment::TopCenter)->setSize(200, GuiElement::GuiSizeMax)->setAttribute("layout", "vertical");;
+    auto right_col = new GuiElement(this, "RIGHT_LAYOUT");
+    right_col->setPosition(-25, 25, sp::Alignment::TopRight)->setSize(200, GuiElement::GuiSizeMax)->setAttribute("layout", "vertical");;
 
     // Header
     (new GuiLabel(left_col, "", "", 20))->setSize(GuiElement::GuiSizeMax, 30);

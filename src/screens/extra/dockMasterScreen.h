@@ -8,7 +8,7 @@ class GuiPanel;
 class GuiSlider;
 class GuiButton;
 class GuiLabel;
-class GuiAutoLayout;
+class GuiElement;
 class GuiEntryList;
 class GuiSelector;
 class GuiProgressbar;
@@ -31,24 +31,24 @@ class DockMasterScreen : public GuiOverlay
     GuiLabel *dockTitle;
     GuiLabel *droneTitle;
 
-    GuiAutoLayout *mainPanel;
-    GuiAutoLayout *topPanel;
-    GuiAutoLayout *bottomPanel;
-    GuiAutoLayout *dronePanel;
+    GuiElement *mainPanel;
+    GuiElement *topPanel;
+    GuiElement *bottomPanel;
+    GuiElement *dronePanel;
 
-    GuiAutoLayout* layout_move;
+    GuiElement* layout_move;
 
-    GuiAutoLayout* layout_actions;
+    GuiElement* layout_actions;
     GuiListbox* actions;
 
-    GuiAutoLayout* cargoInfo;
-    GuiAutoLayout* shipCargoInfo;
+    GuiElement* cargoInfo;
+    GuiElement* shipCargoInfo;
     std::vector<GuiKeyValueDisplay*> cargoInfoItems;
     std::vector<GuiKeyValueDisplay*> shipCargoInfoItems;
     GuiRotatingModelView* model;
 
-    GuiAutoLayout* dronePanel_col1;
-    GuiAutoLayout* dronePanel_col2;
+    GuiElement* dronePanel_col1;
+    GuiElement* dronePanel_col2;
     GuiElement* dronePanel_col3;
 
     GuiButton* action_launch_button;

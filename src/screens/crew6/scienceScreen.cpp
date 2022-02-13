@@ -20,7 +20,6 @@
 #include "screenComponents/shipsLogControl.h"
 #include "screenComponents/noRadarPopup.h"
 
-#include "gui/gui2_autolayout.h"
 #include "gui/gui2_keyvaluedisplay.h"
 #include "gui/gui2_togglebutton.h"
 #include "gui/gui2_selector.h"

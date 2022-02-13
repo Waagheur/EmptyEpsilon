@@ -91,8 +91,8 @@ GuiMissileTubeControls::GuiMissileTubeControls(GuiContainer* owner, string id, P
     for(auto& kv : CustomMissileWeaponRegistry::getCustomMissileWeapons())
     {
         TypeRow tr;
-        tr.layout = new GuiAutoLayout(this, id + "_ROW_" + string(kv.first), LayoutHorizontalLeftToRight);
-        tr.layout->setSize(GuiElement::GuiSizeMax, 40);
+        tr.layout = new GuiElement(this, id + "_ROW_" + string(kv.first));
+        tr.layout->setSize(GuiElement::GuiSizeMax, 40)->setAttribute("layout", "horizontal");;
         const string& str = kv.first;
         tr.button = new GuiToggleButton(tr.layout, id + "_MW_" + kv.first, kv.first, [this, str](bool value) {
             if (value)

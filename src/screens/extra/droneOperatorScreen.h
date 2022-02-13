@@ -6,14 +6,12 @@
 
 #include "gui/gui2_overlay.h"
 
-#include "gui/gui2_autolayout.h"
 #include "gui/gui2_panel.h"
 #include "gui/gui2_label.h"
 #include "gui/gui2_listbox.h"
 #include <set>
 
 class GuiKeyValueDisplay;
-class GuiAutoLayout;
 class GuiButton;
 class GuiToggleButton;
 class GuiSlider;
@@ -36,7 +34,7 @@ private:
 
     SinglePilotScreen* single_pilot_screen;
     GuiOverlay* background_crosses;
-    GuiAutoLayout* droneSelection;
+    GuiElement* droneSelection;
     GuiLabel* connection_label;
     GuiButton* disconnect_button;
     GuiLabel* no_drones_label;

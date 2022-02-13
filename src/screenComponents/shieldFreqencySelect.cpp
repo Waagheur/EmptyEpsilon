@@ -8,7 +8,6 @@
 #include "gui/gui2_keyvaluedisplay.h"
 #include "gui/gui2_selector.h"
 #include "gui/gui2_progressbar.h"
-#include "gui/gui2_autolayout.h"
 
 GuiShieldFrequencySelect::GuiShieldFrequencySelect(GuiContainer* owner, string id, P<PlayerSpaceship> target)
 : GuiElement(owner, id), target_spaceship(target)

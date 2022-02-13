@@ -9,7 +9,6 @@
 #include "spaceObjects/scanProbe.h"
 
 #include "gui/gui2_overlay.h"
-#include "gui/gui2_autolayout.h"
 #include "gui/gui2_panel.h"
 #include "gui/gui2_label.h"
 #include "gui/gui2_listbox.h"
@@ -26,8 +25,8 @@ DroneOperatorScreen::DroneOperatorScreen(GuiContainer *owner)
     (new AlertLevelOverlay(this));
 
     // Draw a container for drone selection UI
-    droneSelection = new GuiAutoLayout(this, "", GuiAutoLayout::ELayoutMode::LayoutHorizontalRows);
-    droneSelection->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);
+    droneSelection = new GuiElement(this, "");
+    droneSelection->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax)->setAttribute("layout", "horizontal");;
 
     // Drone list
     drone_list = new GuiListbox(droneSelection, "PLAYER_SHIP_LIST", [this](int index, string value) {
