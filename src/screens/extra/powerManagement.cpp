@@ -21,17 +21,17 @@ PowerManagementScreen::PowerManagementScreen(GuiContainer* owner)
     energy_display->setIcon("gui/icons/energy")->setTextSize(20)->setPosition(20, 20, sp::Alignment::TopLeft)->setSize(285, 40);
     coolant_display = new GuiKeyValueDisplay(this, "COOLANT_DISPLAY", 0.45, "Refroidissement", "");
     coolant_display->setIcon("gui/icons/coolant")->setTextSize(20)->setPosition(315, 20, sp::Alignment::TopLeft)->setSize(280, 40);
-//    GuiAutoLayout* layout = new GuiAutoLayout(this, "", GuiAutoLayout::LayoutHorizontalLeftToRight);
-    GuiAutoLayout* layout = new GuiAutoLayout(this, "", GuiAutoLayout::LayoutVerticalColumns);
-    layout->setPosition(20, 60, sp::Alignment::TopLeft)->setSize(GuiElement::GuiSizeMax, 400);
+    GuiElement* layout = new GuiElement(this, "");
+    //layout->setPosition(20, 60, sp::Alignment::TopLeft)->setSize(GuiElement::GuiSizeMax, 400)->setAttribute("layout", "horizontal");
+    layout->setPosition(20, 60, sp::Alignment::TopLeft)->setSize(GuiElement::GuiSizeMax, 400)->setAttribute("layout", "vertical");
     for(int n=0; n<SYS_COUNT; n++)
     {
         if (n == 5)
         {
             //Start the 2nd row after 4 elements.
-//            layout = new GuiAutoLayout(this, "", GuiAutoLayout::LayoutHorizontalLeftToRight);
-            layout = new GuiAutoLayout(this, "", GuiAutoLayout::LayoutVerticalColumns);
-            layout->setPosition(20, 450, sp::Alignment::TopLeft)->setSize(GuiElement::GuiSizeMax, 400);
+            layout = new GuiElement(this, "");
+            //layout->setPosition(20, 450, sp::Alignment::TopLeft)->setSize(GuiElement::GuiSizeMax, 400)->setAttribute("layout", "horizontal");;
+            layout->setPosition(20, 450, sp::Alignment::TopLeft)->setSize(GuiElement::GuiSizeMax, 400)->setAttribute("layout", "vertical");;
         }
         GuiPanel* box = new GuiPanel(layout, "");
         systems[n].box = box;

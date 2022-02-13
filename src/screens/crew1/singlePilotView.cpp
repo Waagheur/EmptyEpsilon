@@ -91,8 +91,8 @@ SinglePilotView::SinglePilotView(GuiContainer* owner, P<PlayerSpaceship> targetS
     radar->enableTargetProjections(tube_controls);
 
     // Engine layout in top left corner of left panel.
-    GuiAutoLayout* engine_layout = new GuiAutoLayout(this, "ENGINE_LAYOUT", GuiAutoLayout::LayoutHorizontalLeftToRight);
-    engine_layout->setPosition(20, 120, sp::Alignment::TopLeft)->setSize(GuiElement::GuiSizeMax, 250);
+    auto engine_layout = new GuiElement(this, "ENGINE_LAYOUT");
+    engine_layout->setPosition(20, 120, sp::Alignment::TopLeft)->setSize(GuiElement::GuiSizeMax, 250)->setAttribute("layout", "horizontal");
 
     impulse_controls = new GuiImpulseControls(engine_layout, "IMPULSE", target_spaceship);
     impulse_controls->setSize(100, GuiElement::GuiSizeMax);
