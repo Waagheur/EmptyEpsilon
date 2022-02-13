@@ -114,7 +114,8 @@ void GuiMissileTubeControls::setTargetSpaceship(P<PlayerSpaceship> targetSpacesh
     pdi->setTargetSpaceship(target_spaceship);
 }
 
-void GuiMissileTubeControls::onDraw(sp::RenderTarget& renderer){
+void GuiMissileTubeControls::onUpdate()
+{
     if (!target_spaceship)
         return;
     for (int n = 0; n < MW_Count; n++)
@@ -189,41 +190,33 @@ void GuiMissileTubeControls::onDraw(sp::RenderTarget& renderer){
     for(int n=target_spaceship->weapon_tube_count; n<max_weapon_tubes; n++)
         rows[n].layout->hide();
 
-    GuiElement::onDraw(renderer);
-}
+    if (keys.weapons_select_homing.getDown())
+        selectMissileWeapon(MW_Homing);
+    if (keys.weapons_select_nuke.getDown())
+        selectMissileWeapon(MW_Nuke);
+    if (keys.weapons_select_mine.getDown())
+        selectMissileWeapon(MW_Mine);
+    if (keys.weapons_select_emp.getDown())
+        selectMissileWeapon(MW_EMP);
+    if (keys.weapons_select_hvli.getDown())
+        selectMissileWeapon(MW_HVLI);
 
-void GuiMissileTubeControls::onUpdate()
-{
-    if (target_spaceship)
+    for(int n=0; n<my_spaceship->weapon_tube_count; n++)
     {
-        if (keys.weapons_select_homing.getDown())
-            selectMissileWeapon(MW_Homing);
-        if (keys.weapons_select_nuke.getDown())
-            selectMissileWeapon(MW_Nuke);
-        if (keys.weapons_select_mine.getDown())
-            selectMissileWeapon(MW_Mine);
-        if (keys.weapons_select_emp.getDown())
-            selectMissileWeapon(MW_EMP);
-        if (keys.weapons_select_hvli.getDown())
-            selectMissileWeapon(MW_HVLI);
-
-        for(int n=0; n<target_spaceship->weapon_tube_count; n++)
+        if (keys.weapons_load_tube[n].getDown())
+            my_spaceship->commandLoadTube(n, load_type);
+        if (keys.weapons_unload_tube[n].getDown())
+            my_spaceship->commandUnloadTube(n);
+        if (keys.weapons_fire_tube[n].getDown())
         {
-            if (keys.weapons_load_tube[n].getDown())
-                target_spaceship->commandLoadTube(n, load_type);
-            if (keys.weapons_unload_tube[n].getDown())
-                target_spaceship->commandUnloadTube(n);
-            if (keys.weapons_fire_tube[n].getDown())
+            float target_angle = missile_target_angle;
+            if (!manual_aim)
             {
-                float target_angle = missile_target_angle;
-                if (!manual_aim)
-                {
-                    target_angle = target_spaceship->weapon_tube[n].calculateFiringSolution(target_spaceship->getTarget());
-                    if (target_angle == std::numeric_limits<float>::infinity())
-                        target_angle = target_spaceship->getRotation() + target_spaceship->weapon_tube[n].getDirection();
-                }
-                target_spaceship->commandFireTube(n, target_angle);
+                target_angle = my_spaceship->weapon_tube[n].calculateFiringSolution(my_spaceship->getTarget());
+                if (target_angle == std::numeric_limits<float>::infinity())
+                    target_angle = my_spaceship->getRotation() + my_spaceship->weapon_tube[n].getDirection();
             }
+            my_spaceship->commandFireTube(n, target_angle);
         }
     }
 }
