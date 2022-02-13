@@ -20,10 +20,10 @@ GuiTextEntry::~GuiTextEntry()
 
 void GuiTextEntry::onDraw(sp::RenderTarget& renderer)
 {
-    
     //glm::u8vec4 textColor = (valid || !validator_func) ? selectColor(colorConfig.text_entry.forground) : colorConfig.text_entry_invalid;
-    auto back = back_style->get(getState());
-    auto front = front_style->get(getState());
+
+    const auto& back = back_style->get(getState());
+    const auto& front = front_style->get(getState());
 
     renderer.drawStretchedHV(rect, back.size, back.texture, back.color);
     if (blink_timer.isExpired())
