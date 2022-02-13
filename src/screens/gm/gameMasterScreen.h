@@ -15,7 +15,6 @@ class GuiRadarView;
 class GuiOverlay;
 class GuiSelector;
 class GuiSlider;
-class GuiAutoLayout;
 class GuiKeyValueDisplay;
 class GuiListbox;
 class GuiButton;
@@ -50,11 +49,11 @@ private:
     GuiObjectTweak* jammer_tweak_dialog;
     GuiObjectTweak* asteroid_tweak_dialog;
 
-    GuiAutoLayout* info_layout;
+    GuiElement* info_layout;
     std::vector<GuiKeyValueDisplay*> info_items;
     GuiKeyValueDisplay* info_clock;
     GuiListbox* gm_script_options;
-    GuiAutoLayout* order_layout;
+    GuiElement* order_layout;
     GuiButton* player_comms_hail;
     GuiButton* global_message_button;
 //    GuiToggleButton* pause_button;

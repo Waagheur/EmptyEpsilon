@@ -11,7 +11,7 @@ class GuiLabel;
 class GuiToggleButton;
 class GuiPowerDamageIndicator;
 
-class GuiMissileTubeControls : public GuiAutoLayout
+class GuiMissileTubeControls : public GuiElement
 {
 private:
     struct TubeRow {

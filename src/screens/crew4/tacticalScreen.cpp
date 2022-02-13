@@ -63,8 +63,8 @@ TacticalScreen::TacticalScreen(GuiContainer* owner)
     );
     radar->setAutoRotating(PreferencesManager::get("tactical_radar_lock","0")=="1");
 
-    GuiAutoLayout* stats = new GuiAutoLayout(this, "STATS", GuiAutoLayout::LayoutVerticalTopToBottom);
-    stats->setPosition(20, 100, sp::Alignment::TopLeft)->setSize(240, 160);
+    auto stats = new GuiElement(this, "STATS");
+    stats->setPosition(20, 100, sp::Alignment::TopLeft)->setSize(240, 160)->setAttribute("layout", "vertical");
 
     // Landing and docking buttons on the topleft
     (new GuiDockingButton(this, "DOCKING", my_spaceship))->setPosition(20, 20, sp::Alignment::TopLeft)->setSize(250, 50);

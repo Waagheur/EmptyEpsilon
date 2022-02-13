@@ -30,8 +30,9 @@ EngineeringScreen::EngineeringScreen(GuiContainer* owner, ECrewPosition crew_pos
     // Render the alert level color overlay.
     (new AlertLevelOverlay(this));
 
-    GuiAutoLayout* stats = new GuiAutoLayout(this, "ENGINEER_STATS", GuiAutoLayout::LayoutVerticalTopToBottom);
-    stats->setPosition(20, 100, sp::Alignment::TopLeft)->setSize(240, 200);
+
+    auto stats = new GuiElement(this, "ENGINEER_STATS");
+    stats->setPosition(20, 100, sp::Alignment::TopLeft)->setSize(240, 200)->setAttribute("layout", "vertical");
 
     energy_display = new GuiKeyValueDisplay(stats, "ENERGY_DISPLAY", 0.45, tr("Energy"), "");
     energy_display->setIcon("gui/icons/energy")->setTextSize(20)->setSize(240, 40);
@@ -55,8 +56,8 @@ EngineeringScreen::EngineeringScreen(GuiContainer* owner, ECrewPosition crew_pos
 
     GuiElement* system_config_container = new GuiElement(this, "");
     system_config_container->setPosition(0, -50, sp::Alignment::BottomCenter)->setSize(750 + 300, GuiElement::GuiSizeMax);
-    GuiAutoLayout* system_row_layouts = new GuiAutoLayout(system_config_container, "SYSTEM_ROWS", GuiAutoLayout::LayoutVerticalBottomToTop);
-    system_row_layouts->setPosition(0, 0, sp::Alignment::BottomLeft);
+    GuiElement* system_row_layouts = new GuiElement(system_config_container, "SYSTEM_ROWS");
+    system_row_layouts->setPosition(0, 0, sp::Alignment::BottomLeft)->setAttribute("layout", "verticalbottom");
     system_row_layouts->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);
     for(int n=0; n<SYS_COUNT; n++)
     {
@@ -134,7 +135,6 @@ EngineeringScreen::EngineeringScreen(GuiContainer* owner, ECrewPosition crew_pos
         info.coolant_max_indicator->setAngle(90);
         info.coolant_max_indicator->setColor({255,255,255,0});
 
-
         info.row->moveToBack();
         system_rows.push_back(info);
     }
@@ -179,11 +179,11 @@ EngineeringScreen::EngineeringScreen(GuiContainer* owner, ECrewPosition crew_pos
     if (gameGlobalInfo->use_nano_repair_crew)
     {
 //        system_effects_container = new GuiAutoLayout(this, "", GuiAutoLayout::LayoutVerticalTopToBottom);
-        system_effects_container = new GuiAutoLayout(this, "", GuiAutoLayout::LayoutVerticalBottomToTop);
-        system_effects_container->setPosition(-20, -100, sp::Alignment::TopRight)->setSize(270, 340);
+        system_effects_container = new GuiElement(this, "");
+        system_effects_container->setPosition(-20, -100, sp::Alignment::TopRight)->setSize(270, 340))->setAttribute("layout", "verticalbottom");
     } else {
-        system_effects_container = new GuiAutoLayout(system_config_container, "", GuiAutoLayout::LayoutVerticalBottomToTop);
-        system_effects_container->setPosition(0, -400, sp::Alignment::BottomRight)->setSize(270, 400);
+        system_effects_container = new GuiElement(system_config_container, "");
+        system_effects_container->setPosition(0, -400, sp::Alignment::BottomRight)->setSize(270, 400))->setAttribute("layout", "verticalbottom");
     }
     
     GuiPanel* box = new GuiPanel(system_config_container, "POWER_COOLANT_BOX");

@@ -19,8 +19,8 @@ DamageControlScreen::DamageControlScreen(GuiContainer *owner)
     {
         (new GuiShipInternalView(this, "SHIP_INTERNAL_VIEW", 48.0f * 1.5f))->setShip(my_spaceship)->setPosition(300, 0, sp::Alignment::TopLeft)->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);
     } else {
-        GuiAutoLayout *row = new GuiAutoLayout(this, "AUTO_REPAIR_LAYOUT", GuiAutoLayout::LayoutVerticalColumns);
-        row->setPosition(300, 0, sp::Alignment::CenterLeft)->setSize(GuiElement::GuiSizeMax, 40);
+        auto row = new GuiElement(this, "AUTO_REPAIR_LAYOUT");
+        row->setPosition(300, 0, sp::Alignment::CenterLeft)->setSize(GuiElement::GuiSizeMax, 40)->setAttribute("layout", "vertical");
         (new GuiLabel(row, "AUTO_REPAIR_LABEL", "Auto Repair", 30));
         autoRepairSelector = new GuiSelector(row, "AUTO_REPAIR_LABEL", [this](int _idx, string value) {
             if (my_spaceship)
@@ -28,8 +28,8 @@ DamageControlScreen::DamageControlScreen(GuiContainer *owner)
         });
         autoRepairSelector->setSize(800, 30);
     }
-    GuiAutoLayout *system_health_layout = new GuiAutoLayout(this, "DAMCON_LAYOUT", GuiAutoLayout::LayoutVerticalTopToBottom);
-    system_health_layout->setPosition(0, 0, sp::Alignment::CenterLeft)->setSize(300, 600);
+    auto system_health_layout = new GuiElement(this, "DAMCON_LAYOUT");
+    system_health_layout->setPosition(0, 0, sp::Alignment::CenterLeft)->setSize(300, 600)->setAttribute("layout", "vertical");
 
     hull_display = new GuiKeyValueDisplay(system_health_layout, "HULL", 0.8, tr("damagecontrol", "Hull"), "0%");
     hull_display->setSize(GuiElement::GuiSizeMax, 40);

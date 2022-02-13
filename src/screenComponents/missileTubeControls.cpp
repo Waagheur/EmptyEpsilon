@@ -9,9 +9,10 @@
 #include "gui/gui2_togglebutton.h"
 
 GuiMissileTubeControls::GuiMissileTubeControls(GuiContainer* owner, string id, P<PlayerSpaceship> targetSpaceship)
-: GuiAutoLayout(owner, id, LayoutVerticalBottomToTop), load_type(MW_None), manual_aim(false), missile_target_angle(0) , target_spaceship(targetSpaceship)
+: GuiElement(owner, id), load_type(MW_None), manual_aim(false), missile_target_angle(0) , target_spaceship(targetSpaceship)
 {
     setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);
+    setAttribute("layout", "verticalbottom");
 
     rows.resize(max_weapon_tubes);
     load_type_rows.resize(MW_Count);
@@ -188,7 +189,7 @@ void GuiMissileTubeControls::onDraw(sp::RenderTarget& renderer){
     for(int n=target_spaceship->weapon_tube_count; n<max_weapon_tubes; n++)
         rows[n].layout->hide();
 
-    GuiAutoLayout::onDraw(renderer);
+    GuiElement::onDraw(renderer);
 }
 
 void GuiMissileTubeControls::onUpdate()

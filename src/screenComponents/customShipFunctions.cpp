@@ -5,8 +5,9 @@
 #include "gui/gui2_label.h"
 
 GuiCustomShipFunctions::GuiCustomShipFunctions(GuiContainer* owner, ECrewPosition position, string id, P<PlayerSpaceship> targetSpaceship)
-: GuiAutoLayout(owner, id, GuiAutoLayout::LayoutVerticalTopToBottom), position(position), target_spaceship(targetSpaceship)
+: GuiElement(owner, id), position(position), target_spaceship(targetSpaceship)
 {
+    setAttribute("layout", "vertical");
 }
 
 void GuiCustomShipFunctions::setTargetSpaceship(P<PlayerSpaceship> targetSpaceship){

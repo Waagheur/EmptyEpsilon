@@ -87,8 +87,8 @@ RelayScreen::RelayScreen(GuiContainer* owner, bool allow_comms)
     if (my_spaceship)
         radar->setViewPosition(my_spaceship->getPosition());
 
-    GuiAutoLayout* sidebar = new GuiAutoLayout(this, "SIDE_BAR", GuiAutoLayout::LayoutVerticalTopToBottom);
-    sidebar->setPosition(-20, 150, sp::Alignment::TopRight)->setSize(250, GuiElement::GuiSizeMax);
+    auto sidebar = new GuiElement(this, "SIDE_BAR");
+    sidebar->setPosition(-20, 150, sp::Alignment::TopRight)->setSize(250, GuiElement::GuiSizeMax)->setAttribute("layout", "vertical");
 
     info_distance = new GuiKeyValueDisplay(sidebar, "DISTANCE", 0.4, "Distance", "");
     info_distance->setSize(GuiElement::GuiSizeMax, 30);
@@ -185,8 +185,8 @@ RelayScreen::RelayScreen(GuiContainer* owner, bool allow_comms)
     delete_waypoint_button->setSize(50, 50);
 
     // Option buttons for comms, waypoints, and probes.
-    option_buttons = new GuiAutoLayout(this, "BUTTONS", GuiAutoLayout::LayoutVerticalTopToBottom);
-    option_buttons->setPosition(20, 50, sp::Alignment::TopLeft)->setSize(250, GuiElement::GuiSizeMax);
+    option_buttons = new GuiElement(this, "BUTTONS");
+    option_buttons->setPosition(20, 50, sp::Alignment::TopLeft)->setSize(250, GuiElement::GuiSizeMax)->setAttribute("layout", "vertical");
 
     // Open comms button.
     if (allow_comms == true)
@@ -248,8 +248,8 @@ RelayScreen::RelayScreen(GuiContainer* owner, bool allow_comms)
     info_clock->setSize(GuiElement::GuiSizeMax, 40);
 
     // Bottom layout.
-    GuiAutoLayout* layout = new GuiAutoLayout(this, "", GuiAutoLayout::LayoutVerticalBottomToTop);
-    layout->setPosition(-20, -70, sp::Alignment::BottomRight)->setSize(250, GuiElement::GuiSizeMax);
+    auto layout = new GuiElement(this, "");
+    layout->setPosition(-20, -70, sp::Alignment::BottomRight)->setSize(250, GuiElement::GuiSizeMax)->setAttribute("layout", "verticalbottom");
     // Alert level buttons.
     alert_level_button = new GuiToggleButton(layout, "", tr("Alert level"), [this](bool value)
     {

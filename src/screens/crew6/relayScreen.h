@@ -6,7 +6,6 @@
 
 class GuiRadarView;
 class GuiKeyValueDisplay;
-class GuiAutoLayout;
 class GuiButton;
 class GuiToggleButton;
 class GuiSlider;
@@ -46,8 +45,7 @@ private:
     GuiSelector* probe_selector;
     //GuiKeyValueDisplay* info_reputation;
     GuiKeyValueDisplay* info_clock;
-    GuiAutoLayout* option_buttons;
-//    GuiButton* comm_icon;
+    GuiElement* option_buttons;
     GuiButton* hack_target_button;
     GuiToggleButton* link_to_science_button;
     GuiToggleButton* link_to_3D_port_button;
