@@ -251,6 +251,7 @@ GuiElement* GuiElement::setFocus(bool focus)
 bool GuiElement::isFocus() const
 {
     return focus;
+}
 
 GuiElement::State GuiElement::getState() const
 {

@@ -78,7 +78,6 @@ void GuiCustomShipFunctions::createEntries()
             e.element->destroy();
     }
     entries.clear();
-    std::sort(target_spaceship->custom_functions.begin(), target_spaceship->custom_functions.end());
     for(PlayerSpaceship::CustomShipFunction& csf : target_spaceship->custom_functions)
     {
         entries.emplace_back();
