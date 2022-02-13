@@ -10,7 +10,7 @@ class GuiCustomShipFunctions : public GuiElement
 public:
     GuiCustomShipFunctions(GuiContainer* owner, ECrewPosition position, string id, P<PlayerSpaceship> targetSpaceship);
 
-    virtual void onDraw(sp::RenderTarget& target) override;
+    virtual void onUpdate() override;
 
     bool hasEntries();
 
