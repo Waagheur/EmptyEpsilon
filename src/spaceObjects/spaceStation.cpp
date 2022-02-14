@@ -41,7 +41,8 @@ void SpaceStation::drawOnRadar(sp::RenderTarget& renderer, glm::vec2 position, f
     }
     else
     {
-        color = factionInfo[getFactionId()]->gm_color;
+        if (factionInfo[getFactionId()])
+            color = factionInfo[getFactionId()]->getGMColor();
         object_sprite = radar_trace;
         //sprite_scale = scale * getRadius() * 1.5 / objectSprite.getTextureRect().width;
         sprite_scale = scale * getRadius() * 2.0f / 32;

@@ -792,7 +792,8 @@ void SpaceShip::drawOnRadar(sp::RenderTarget& renderer, glm::vec2 position, floa
     }
     else
     {
-        color = factionInfo[getFactionId()]->gm_color;
+        if (factionInfo[getFactionId()])
+            color = factionInfo[getFactionId()]->getGMColor();
         object_sprite = radar_trace;
         sprite_scale = std::max(sprite_min,std::min(sprite_max,scale * getRadius() * 2));
         if (long_range)
