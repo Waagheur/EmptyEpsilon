@@ -633,13 +633,13 @@ bool SpaceObject::isEnemy(P<SpaceObject> obj)
 {
     if (obj)
     {
-        if (personality_id == 1)
+        if (personality_id == 1) //TODO verifier les personalites avec le commit Allow factions to be adjusted on the fly
             return false;
         if (personality_id == 2)
             return faction_id != obj->faction_id;
         if (personality_id == 3)
             return callsign != obj->callsign;
-        return factionInfo[faction_id]->states[obj->faction_id] == FVF_Enemy;
+        return FactionInfo::getState(faction_id, obj->faction_id) == FVF_Enemy;
     } else {
         return false;
     }
@@ -655,7 +655,7 @@ bool SpaceObject::isFriendly(P<SpaceObject> obj)
             return faction_id == obj->faction_id;
         if (personality_id == 3)
             return callsign == obj->callsign;
-        return factionInfo[faction_id]->states[obj->faction_id] == FVF_Friendly;
+        return FactionInfo::getState(faction_id, obj->faction_id) == FVF_Friendly;
     } else {
         return false;
     }
