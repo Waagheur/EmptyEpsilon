@@ -59,6 +59,10 @@ FactionInfo::FactionInfo()
     }
 }
 
+FactionInfo::~FactionInfo()
+{
+}
+
 void FactionInfo::update(float delta)
 {
     if (index != 255)
