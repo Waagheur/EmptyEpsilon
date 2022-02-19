@@ -65,6 +65,7 @@ void GuiShipInternalView::onDraw(sp::RenderTarget& target)
     {
         room_container->destroy();
         room_container = nullptr;
+        crew_list.clear();
     }else{
         if (!gameGlobalInfo->use_nano_repair_crew)
         {
