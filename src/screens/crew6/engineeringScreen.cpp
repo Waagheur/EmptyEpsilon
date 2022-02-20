@@ -415,9 +415,9 @@ void EngineeringScreen::onDraw(sp::RenderTarget& renderer)
                 repair_display->setValue(toNearbyIntString(my_spaceship->max_repair));
         }
         
-        float total_coolant_request = 0.0f;
-        for(int n=0; n<SYS_COUNT; n++)
-            total_coolant_request += my_spaceship->systems[n].coolant_request;
+        // float total_coolant_request = 0.0f;
+        // for(int n=0; n<SYS_COUNT; n++)
+        //     total_coolant_request += my_spaceship->systems[n].coolant_request;
         for(int n=0; n<SYS_COUNT; n++)
         {
             SystemRow info = system_rows[n];
@@ -463,8 +463,8 @@ void EngineeringScreen::onDraw(sp::RenderTarget& renderer)
             info.power_bar->setValue(system.power_level);
             info.coolant_bar->setValue(system.coolant_level);
             info.coolant_bar->setRange(0.0, my_spaceship->max_coolant_per_system);
-            if (total_coolant_request > 0.0f && system.coolant_request > 0.0f) {
-                float f = std::min(system.coolant_request / total_coolant_request, system.coolant_request / 10.f);
+            if (system.coolant_request > 0.0f) {
+                float f = system.coolant_request / 10.f;
                 info.coolant_max_indicator->setPosition(-20 + info.coolant_bar->getSize().x * f, 5);
                 info.coolant_max_indicator->setColor({255,255,255,255});
             } 
