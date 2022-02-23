@@ -820,12 +820,9 @@ void PlayerSpaceship::update(float delta)
             }
         }
 
-        // Tdelc : suppression de ce code, je l'ai rajoute en commentaire pour faciliter les merge et 
-        // au cas ou on veille le rajouter sous option
-        
         // If reactor health is worse than -90% and overheating, it explodes,
         // destroying the ship and damaging a 0.5U radius.
-        /* if (systems[SYS_Reactor].health < -0.9 && systems[SYS_Reactor].heat_level == 1.0f)
+        if (can_be_destroyed && systems[SYS_Reactor].health < -0.9f && systems[SYS_Reactor].heat_level == 1.0f) //TODO verifier si on veut mettre ça sou soptions
         {
             ExplosionEffect* e = new ExplosionEffect();
             e->setSize(1000.0f);
@@ -838,7 +835,7 @@ void PlayerSpaceship::update(float delta)
             destroy();
             return;
         }
-        */
+        
         if (energy_level < 0.0f)
             energy_level = 0.0f;
 
