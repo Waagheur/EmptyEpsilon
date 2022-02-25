@@ -205,88 +205,94 @@ function randomWaveDistance(enemy_group_count)
     return random(35000, 40000 + enemy_group_count * 3000)
 end
 
--- Get number_of_systems random systems. Warning : systems may or may not be activated on the ship
-function luaRandomSystems(number_of_systems)
-    --local pship = getPlayerShip(-1)
-    rand_table = {}
-    for _, system in ipairs(SYSTEMS) do
-        table.insert(rand_table, system)
-    end
-    table.shuffle(rand_table)
-    return_table = {}
-    for count = 1,number_of_systems do
-        table.insert(return_table, rand_table[count])
-    end
-    return return_table
+--- Initializes main GM Menu
+function gmButtons()
+    clearGMFunctions()
+    addGMFunction(_("buttonGM", "+Named Waves"),namedWaves)
+    addGMFunction(_("buttonGM", "Random wave"),function()
+        addWave(
+            enemyList,
+            random(0,10),
+            randomWaveAngle(math.random(20),math.random(20)),
+            randomWaveDistance(math.random(20))
+        )
+    end)
+    
+    -- Let the GM spawn random reinforcements. Their distance from the
+    -- players' spawn point is about half that of enemy waves.
+    addGMFunction(_("buttonGM", "Random friendly"), function()
+        local friendlyShip = {"Phobos T3", "MU52 Hornet", "Piranha F12"}
+        local friendlyShipIndex = math.random(#friendlyShip)
+        
+        if addWavesToGMPosition then
+            onGMClick(function(x,y) 
+                onGMClick(nil)
+                local a = angleRotation(0, 0, x, y)
+                local d = distance(0, 0, x, y)
+                table.insert(friendlyList, setCirclePos(CpuShip():setTemplate(friendlyShip[friendlyShipIndex]):setRotation(a):setFaction("Human Navy"):orderRoaming():setScanned(true), 0, 0, a + random(-5, 5), d + random(-100, 100)))
+            end)
+        else
+            local a = randomWaveAngle(math.random(20), math.random(20))
+            local d = random(15000, 20000 + math.random(20) * 1500)
+            table.insert(friendlyList, setCirclePos(CpuShip():setTemplate(friendlyShip[friendlyShipIndex]):setRotation(a):setFaction("Human Navy"):orderRoaming():setScanned(true), 0, 0, a + random(-5, 5), d + random(-100, 100)))
+        end
+    end)
+        
+    addGMPositionToggle()
+    
+    -- End scenario with Human Navy (players) victorious.
+    addGMFunction(_("buttonGM", "Win"),gmVictoryYesNo)
 end
 
---You should only have to modify what is between "Begin balance modification" and "end balance modification"
-onNewShip(
-    function(ship)
-        ship:onTakingDamage(
-            function(self,instigator, typeOfDamage, freq, systemHit, shieldsDamage, hullDamage, hitShield)
-                string.format("")	--serious proton needs a global context
-                print(string.format("%s is hit", ship:getCallSign()))
-                if instigator ~= nil then --mandatory to check there is an instigator, else it can be asteroid etc.
-                    if typeOfDamage == "emp" and hullDamage > 0 then --means damage is an EMP missile, and some damage passed through shields
-                        -- BEGIN BALANCE MODIFICATION HERE
-                        -- BEGIN BALANCE MODIFICATION HERE
-                        -- BEGIN BALANCE MODIFICATION HERE
-                        local num_of_sys_hit = 3 --edit here to change number of affected systems
-                        -- END BALANCE MODIFICATION
-                        -- END BALANCE MODIFICATION
-                        -- END BALANCE MODIFICATION
+--- Shows Yes/No question dialogue GM submenu with question if Human Navy should win. 
+function gmVictoryYesNo()
+    clearGMFunctions()
+    addGMFunction(_("buttonGM", "Victory?"), function() string.format("") end)
+    addGMFunction(_("buttonGM", "Yes"), function() 
+        victory("Human Navy")
+        clearGMFunctions()
+        addGMFunction(_("buttonGM", "Players have won"), function() string.format("") end)
+        addGMFunction(_("buttonGM", "Scenario ended"), function() string.format("") end)
+    end)
+    addGMFunction(_("buttonGM", "No"), gmButtons)
+end
 
-                        list_of_systems = luaRandomSystems(num_of_sys_hit) --means we get the random systems (which may NOT be activated on ship)
-                        --print(string.format("Degats: type %s freq %i sys %s shi %f dam %f hit %i",typeOfDamage,freq,systemHit,shieldsDamage,hullDamage,hitShield))
-                        for count = 1, num_of_sys_hit do
-                            print(string.format("%s hit for %f damage ", list_of_systems[count], hullDamage))
+--- Generate GM Toggle button for changing wave positioning variant. 
+function addGMPositionToggle()
+    local name = _("buttonGM", "Position: ")
 
-                            -- BEGIN BALANCE MODIFICATION HERE
-                            -- BEGIN BALANCE MODIFICATION HERE
-                            -- BEGIN BALANCE MODIFICATION HERE
-                            
-                            --inflicts energy loss
-                            local current_energy = ship:getEnergy()
-                            ship:setEnergy((current_energy - hullDamage) *10 ) --set the multiplier as it's total energy - damage
-                            
-                            --inflicts heat (between 0 and 1)
-                            local current_heat = ship:getSystemHeat(list_of_systems[count])
-                            ship:setSystemHeat(list_of_systems[count], (current_heat + hullDamage)/100) --set this as for now it's 1 damage = 1%
-                            
-                            --inflicts hack (between 0 and 1)
-                            local current_hack = ship:getSystemHackedLevel(list_of_systems[count])
-                            ship:setSystemHackedLevel(list_of_systems[count], (current_hack + hullDamage)/100) --set this as for now it's 1 damage = 1%
-
-                            --inflicts damage on system (overrides system harness set by ratio or minimal damage needed to hit) (between 0 and 1)
-                            local current_health = ship:getSystemHealth(list_of_systems[count])
-                            ship:setSystemHealth(list_of_systems[count], (current_health + hullDamage)/100) --set this as for now it's 1 damage = 1%
-
-                            -- END BALANCE MODIFICATION
-                            -- END BALANCE MODIFICATION
-                            -- END BALANCE MODIFICATION
-
-                        end --for
-                    elseif typeOfDamage ~= "emp" then
-                            print "Not emp damage"
-                    elseif hullDamage <= 0 then
-                            print "No damage went through shields"
-                    end --if damage and type
-                end --if instigator
-            end
-        )
+    if(addWavesToGMPosition) then
+        name = name.._("buttonGM", "GM")
+    else
+        name = name.._("buttonGM", "Random")
     end
 )
 
-function popWarpJammer(toto)
-    nb_warpjam = tonumber(toto:getInfosValue(1))
-    print "test"
-    if(nb_warpjam and nb_warpjam > 0) then
-        local posx,posy = toto:getPosition()
-        warpJammer = WarpJammer():setFaction(toto:getFaction()):setRange(10000):setPosition(posx-500, posy)
-        toto:addInfos(11,"Nb Warpjam", nb_warpjam - 1)
-        toto:removeCustom(popWarpJammerButton)
-        toto:addCustomButton("Relay",popWarpJammerButton,string.format("Deployer antiwarp (%i)", tonumber(toto:getInfosValue(11))),toto.popWarpJammer)
+    addGMFunction(name, function()
+        string.format("")   -- Provides global context for SeriousProton
+        addWavesToGMPosition = not addWavesToGMPosition
+        gmButtons()
+    end)
+end
+
+--- Shows "Named waves" GM submenu (that allows spawning more waves).
+function namedWaves()
+    local wave_names = {
+        [0] = _("buttonGM", "Strikeship"),
+        [1] = _("buttonGM", "Fighter"),
+        [2] = _("buttonGM", "Gunship"),
+        [4] = _("buttonGM", "Dreadnought"),
+        [5] = _("buttonGM", "Missile Cruiser"),
+        [6] = _("buttonGM", "Cruiser"),
+        [9] = _("buttonGM", "Adv. striker"),
+    }
+    clearGMFunctions()
+    addGMFunction(_("buttonGM", "-From Named Waves"),gmButtons)
+    for index, name in pairs(wave_names) do
+        addGMFunction(name,function()
+            string.format("")
+            addWave(enemyList,index,randomWaveAngle(math.random(20), math.random(20)), randomWaveDistance(math.random(5)))
+        end)
     end
     
 end
