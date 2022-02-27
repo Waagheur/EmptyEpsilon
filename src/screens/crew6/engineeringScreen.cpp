@@ -169,7 +169,8 @@ EngineeringScreen::EngineeringScreen(GuiContainer* owner, ECrewPosition crew_pos
         if (new_max_total < total_requested) { // Drain systems
             for(int n=0; n<SYS_COUNT; n++)
                 my_spaceship->commandSetSystemCoolantRequest((ESystem)n, my_spaceship->systems[n].coolant_request * new_max_total / total_requested);
-        } else { // Put coolant into systems
+        } else 
+        { // Put coolant into systems
             int system_count = 0;
             for(int n=0; n<SYS_COUNT; n++)
                 if (my_spaceship->hasSystem((ESystem)n))
@@ -440,6 +441,7 @@ void EngineeringScreen::onDraw(sp::RenderTarget& renderer)
         // float total_coolant_request = 0.0f;
         // for(int n=0; n<SYS_COUNT; n++)
         //     total_coolant_request += my_spaceship->systems[n].coolant_request;
+        float total_coolant_used = 0.0f;
         for(int n=0; n<SYS_COUNT; n++)
         {
             SystemRow info = system_rows[n];
@@ -452,15 +454,15 @@ void EngineeringScreen::onDraw(sp::RenderTarget& renderer)
             else
                 info.damage_bar->setValue(health)->setColor(glm::u8vec4(64, 128 * health, 64 * health, 192));
             info.damage_label->setText(toNearbyIntString(health * 100) + "%");
-            info.heat_label->setText(toNearbyIntString(my_spaceship->systems[n].heat_level * 100) + "%");
-            info.heat_label->setVisible(my_spaceship->systems[n].heat_level > 0.0);
-            info.power_label->setText(toNearbyIntString(my_spaceship->systems[n].power_level * 100) + "%");
-            info.coolant_label->setText(string(my_spaceship->systems[n].coolant_level, 1));
-            info.coolant_label->setVisible(my_spaceship->systems[n].coolant_level > 0.0);
+            info.heat_label->setText(toNearbyIntString(system.heat_level * 100) + "%");
+            info.heat_label->setVisible(system.heat_level > 0.f);
+            info.power_label->setText(toNearbyIntString(system.power_level * 100) + "%");
+            info.coolant_label->setText(string(system.coolant_level, 1));
+            info.coolant_label->setVisible(system.coolant_level > 0.f);
             if (gameGlobalInfo->use_nano_repair_crew and gameGlobalInfo->use_system_damage)
             {
-                info.repair_label->setText(string(my_spaceship->systems[n].repair_level, 1));
-                info.repair_label->setVisible(my_spaceship->systems[n].repair_level > 0.0);
+                info.repair_label->setText(string(system.repair_level, 1));
+                info.repair_label->setVisible(system.repair_level > 0.f);
             }
             float health_max = system.health_max;
             if (health_max < 1.0f)
@@ -497,14 +499,15 @@ void EngineeringScreen::onDraw(sp::RenderTarget& renderer)
             if (gameGlobalInfo->use_nano_repair_crew && gameGlobalInfo->use_system_damage)
             {
                 info.repair_bar->setRange(0.0, my_spaceship->max_repair_per_system);
-                ///info.repair_bar->setValue(my_spaceship->systems[n].repair_level);
-                info.repair_bar->setValue(std::min(my_spaceship->systems[n].repair_level, my_spaceship->max_repair_per_system));
+                ///info.repair_bar->setValue(system.repair_level);
+                info.repair_bar->setValue(std::min(system.repair_level, my_spaceship->max_repair_per_system));
 
-                if(my_spaceship->systems[n].repair_level > my_spaceship->max_repair_per_system)
+                if(system.repair_level > my_spaceship->max_repair_per_system)
                         my_spaceship->commandSetSystemRepairRequest(ESystem(n), my_spaceship->max_repair_per_system);
-                else if(my_spaceship->systems[n].repair_level > my_spaceship->max_repair)
+                else if(system.repair_level > my_spaceship->max_repair)
                         my_spaceship->commandSetSystemRepairRequest(ESystem(n), my_spaceship->max_repair);
             }
+            total_coolant_used += system.coolant_level;
         }
         coolant_remaining_bar->setRange(0, my_spaceship->max_coolant);
         coolant_remaining_bar->setValue(my_spaceship->max_coolant - total_coolant_used);
@@ -629,7 +632,7 @@ void EngineeringScreen::onDraw(sp::RenderTarget& renderer)
                 addSystemEffect("Controle des drones", string(my_spaceship->getDronesControlRange() / 1000.0f,1) + "U");
                 addSystemEffect("Auspex Courte Portee", string(my_spaceship->getShortRangeRadarRange() / 1000.0f,1) + "U");
                 addSystemEffect("Auspex Longue Portee", string( my_spaceship->getLongRangeRadarRange() / 1000.0f,1) + "U");
-                if(my_spaceship->getSystemEffectiveness(SYS_Drones) >= 0.1)
+                if(my_spaceship->getSystemEffectiveness(SYS_Drones) >= 0.1f)
                 {
                     addSystemEffect("Facteur de puissance", " x" + string(std::sqrt(my_spaceship->getSystemEffectiveness(SYS_Drones)) ,1));
                 }
@@ -643,7 +646,7 @@ void EngineeringScreen::onDraw(sp::RenderTarget& renderer)
             case SYS_Hangar:
             {
                 
-                if(my_spaceship->getSystemEffectiveness(SYS_Hangar) >= 0.3)
+                if(my_spaceship->getSystemEffectiveness(SYS_Hangar) >= 0.3f)
                 {
                     addSystemEffect("Operationnel","");
                 }

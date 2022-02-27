@@ -24,7 +24,7 @@ public:
     GuiOverlay* setAlpha(int alpha);
     GuiOverlay* setTextureTiled(string texture);
     GuiOverlay* setTextureNone();
-    virtual bool onMouseDown(sp::io::Pointer::Button button, glm::vec2 position, int id);
+    virtual bool onMouseDown(sp::io::Pointer::Button button, glm::vec2 position, sp::io::Pointer::ID id) override;
 
 };
 

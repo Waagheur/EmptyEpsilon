@@ -24,6 +24,7 @@ require("shiptemplates/40k/Cuirasses.lua")
 require("shiptemplates/40k/Capitaux.lua")
 require("shiptemplates/40k/Autres.lua")
 require("shiptemplates/40k/Jouables.lua")
+require("shiptemplates/satellites.lua") --TODO mettre en 40k
 ---[[Until these are ready, they are disabled
 ---require("shipTemplates_Drones.lua")
 ---require("shipTemplates_StarFighters.lua")

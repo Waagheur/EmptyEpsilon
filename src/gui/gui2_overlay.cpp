@@ -50,7 +50,7 @@ GuiOverlay* GuiOverlay::setTextureNone()
     return this;
 }
 
-bool GuiOverlay::onMouseDown(sp::io::Pointer::Button button, glm::vec2 position, int id)
+bool GuiOverlay::onMouseDown(sp::io::Pointer::Button button, glm::vec2 position, sp::io::Pointer::ID id)
 {
     return blocking;
 }

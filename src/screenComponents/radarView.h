@@ -42,28 +42,28 @@ private:
         GhostDot(glm::vec2 pos) : position(pos), end_of_life(engine->getElapsedTime() + total_lifetime) {}
     };
     std::vector<GhostDot> ghost_dots;
-    float next_ghost_dot_update;
+    float next_ghost_dot_update{0};
 
-    GuiMissileTubeControls* missile_tube_controls;
+    GuiMissileTubeControls* missile_tube_controls{nullptr};
 
-    bool auto_rotate_on_my_ship;
+    bool auto_rotate_on_my_ship{false};
     bool auto_distance = false;
-    bool auto_center_on_my_ship;
-    bool long_range;
-    bool show_ghost_dots;
-    bool show_waypoints;
-    bool show_target_projection;
-    bool show_missile_tubes;
-    bool show_callsigns;
-    bool show_heading_indicators;
-    bool show_game_master_data;
-    float range_indicator_step_size;
-    uint8_t background_alpha;
-    ERadarStyle style;
-    EFogOfWarStyle fog_style;
-    bpfunc_t mouse_down_func;
-    pfunc_t mouse_drag_func;
-    pfunc_t mouse_up_func;
+    bool auto_center_on_my_ship{true};
+    bool long_range{false};
+    bool show_ghost_dots{false};
+    bool show_waypoints{false};
+    bool show_target_projection{false};
+    bool show_missile_tubes{false};
+    bool show_callsigns{false};
+    bool show_heading_indicators{false};
+    bool show_game_master_data{false};
+    float range_indicator_step_size{0};
+    uint8_t background_alpha{255};
+    ERadarStyle style{Circular};
+    EFogOfWarStyle fog_style{NoFogOfWar};
+    bpfunc_t mouse_down_func{nullptr};
+    pfunc_t mouse_drag_func{nullptr};
+    pfunc_t mouse_up_func{nullptr};
     P<PlayerSpaceship> target_spaceship;
 
 public:
@@ -72,7 +72,7 @@ public:
 
     virtual void onDraw(sp::RenderTarget& target) override;
 
-    virtual GuiRadarView* setDistance(float distance) { SectorsView::setDistance(distance); return this; }
+    //virtual SectorsView* setDistance(float distance) override { SectorsView::setDistance(distance); return this; }
     GuiRadarView* setRangeIndicatorStepSize(float step) { range_indicator_step_size = step; return this; }
     GuiRadarView* longRange() { long_range = true; return this; }
     GuiRadarView* shortRange() { long_range = false; return this; }
@@ -99,10 +99,10 @@ public:
     bool getAutoRotating() { return auto_rotate_on_my_ship; }
     GuiRadarView* setAutoRotating(bool value) { this->auto_rotate_on_my_ship = value; return this; }
    
-    virtual GuiRadarView* setCallbacks(bpfunc_t mouse_down_func, pfunc_t mouse_drag_func, pfunc_t mouse_up_func) { SectorsView::setCallbacks(mouse_down_func, mouse_drag_func, mouse_up_func); return this; }
-    virtual GuiRadarView* setViewPosition(glm::vec2 view_position) { SectorsView::setViewPosition(view_position); return this; }
+    //virtual SectorsView* setCallbacks(bpfunc_t mouse_down_func, pfunc_t mouse_drag_func, pfunc_t mouse_up_func) override { SectorsView::setCallbacks(mouse_down_func, mouse_drag_func, mouse_up_func); return this; }
+    //virtual SectorsView* setViewPosition(glm::vec2 view_position) override { SectorsView::setViewPosition(view_position); return this; }
 
-    virtual bool onMouseDown(sp::io::Pointer::Button button, glm::vec2 position, sp::io::Pointer::ID id);
+    virtual bool onMouseDown(sp::io::Pointer::Button button, glm::vec2 position, sp::io::Pointer::ID id) override;
     void setTargetSpaceship(P<PlayerSpaceship> targetSpaceship){target_spaceship = targetSpaceship;}
 
 private:

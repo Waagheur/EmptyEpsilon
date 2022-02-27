@@ -31,3 +31,4 @@ void HVLI::hitObject(P<SpaceObject> object)
     setRadarSignatureInfo(0.0, 0.0, 0.1);
 }
 
+    

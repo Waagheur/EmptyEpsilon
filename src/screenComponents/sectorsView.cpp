@@ -10,7 +10,7 @@
 
 SectorsView::SectorsView(GuiContainer *owner, string id, float distance, TargetsContainer* targets) :
 
-GuiElement(owner, id), distance(distance), targets(targets),  mouse_down_func(nullptr), mouse_drag_func(nullptr), mouse_up_func(nullptr),
+GuiElement(owner, id), distance(distance), targets(targets),
 view_position(glm::vec2(0.0f,0.0f)), view_rotation(0)
 {
     // initialize grid colors for different zoom magnitudes
@@ -141,7 +141,7 @@ void SectorsView::drawTargets(sp::RenderTarget& renderer)
     
 }
 
-bool SectorsView::onMouseDown(sp::io::Pointer::Button button, glm::vec2 position, int id)
+bool SectorsView::onMouseDown(sp::io::Pointer::Button button, glm::vec2 position, sp::io::Pointer::ID id)
 {
     if (!mouse_down_func && !mouse_drag_func && !mouse_up_func)
         return false;
@@ -150,13 +150,13 @@ bool SectorsView::onMouseDown(sp::io::Pointer::Button button, glm::vec2 position
     return true;
 }
 
-void SectorsView::onMouseDrag(glm::vec2 position, int id)
+void SectorsView::onMouseDrag(glm::vec2 position, sp::io::Pointer::ID id)
 {
     if (mouse_drag_func)
         mouse_drag_func(screenToWorld(position));
 }
 
-void SectorsView::onMouseUp(glm::vec2 position, int id)
+void SectorsView::onMouseUp(glm::vec2 position, sp::io::Pointer::ID id)
 {
     if (mouse_up_func)
         mouse_up_func(screenToWorld(position));
