@@ -4,6 +4,7 @@
 #include "explosionEffect.h"
 #include "EDamageType.h"
 #include "shipTemplate.h"
+#include "preferenceManager.h"
 
 #include <glm/ext/matrix_transform.hpp>
 
@@ -822,6 +823,13 @@ void SpaceObject::addOxygenPoints(float amount,int index)
     	oxygen_points[index] = 0.0;
     if (oxygen_points[index] > oxygen_max[index])
     	oxygen_points[index] = oxygen_max[index];
+}
+void SpaceObject::setCommsScript(string script_name)
+{
+    this->comms_script_name = script_name;
+    if (script_name != "")
+        i18n::load("locale/" + script_name.replace(".lua", "." + PreferencesManager::get("language", "en") + ".po"));
+    this->comms_script_callback.clear();
 }
 
 string SpaceObject::getSectorName()

@@ -331,7 +331,7 @@ public:
     bool takeOxygenPoints(float amount, int index = 0);
     void removeOxygenPoints(float amount, int index = 0);
     void addOxygenPoints(float amount, int index = 0);
-    void setCommsScript(string script_name) { this->comms_script_name = script_name; this->comms_script_callback.clear(); }
+    void setCommsScript(string script_name);
     void setCommsFunction(ScriptSimpleCallback callback) { this->comms_script_name = ""; this->comms_script_callback = callback; }
     bool areEnemiesInRange(float range);
     PVector<SpaceObject> getObjectsInRange(float range);
