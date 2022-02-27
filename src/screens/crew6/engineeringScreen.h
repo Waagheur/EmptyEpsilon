@@ -37,6 +37,7 @@ private:
     GuiSlider* repair_slider;
     GuiToggleButton* presets_button;
     std::vector<GuiButton*> presets_buttons;
+    GuiProgressbar* coolant_remaining_bar;
 
     class SystemRow
     {
