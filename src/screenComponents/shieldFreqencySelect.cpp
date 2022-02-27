@@ -44,7 +44,7 @@ void GuiShieldFrequencySelect::onDraw(sp::RenderTarget& renderer)
 
 void GuiShieldFrequencySelect::onUpdate()
 {
-    if (target_spaceship)
+    if (target_spaceship && isVisible())
     {
         if (keys.weapons_shield_calibration_increase.getDown())
         {

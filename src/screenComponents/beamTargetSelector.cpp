@@ -64,7 +64,7 @@ void GuiBeamTargetSelector::onDraw(sp::RenderTarget& renderer)
 
 void GuiBeamTargetSelector::onUpdate()
 {
-    if (target_spaceship && gameGlobalInfo->use_system_damage)
+    if (target_spaceship && gameGlobalInfo->use_system_damage && isVisible())
     {
         if (keys.weapons_beam_subsystem_target_next.getDown())
         {

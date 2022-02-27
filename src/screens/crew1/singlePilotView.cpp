@@ -189,16 +189,13 @@ void SinglePilotView::onDraw(sp::RenderTarget& renderer)
 void SinglePilotView::onUpdate()
 {
     if (isVisible()){
-        if (target_spaceship)
+        if (target_spaceship && isVisible())
         {
             auto angle = (keys.helms_turn_right.getValue() - keys.helms_turn_left.getValue()) * 5.0f;
             if (angle != 0.0f)
             {
                 my_spaceship->commandTargetRotation(my_spaceship->getRotation() + angle);
             }
-        }
-        if (target_spaceship)
-        {
             if (keys.weapons_enemy_next_target.getDown())
             {
                 bool current_found = false;

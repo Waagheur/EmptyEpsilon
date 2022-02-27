@@ -76,7 +76,7 @@ void GuiJumpControls::onDraw(sp::RenderTarget& target)
 
 void GuiJumpControls::onUpdate()
 {
-    if (target_spaceship)
+    if (target_spaceship && isVisible())
     {
         auto adjust = keys.helms_increase_jump_distance.getValue() - keys.helms_decrease_jump_distance.getValue();
         slider->setValue(slider->getValue() + 1000.0f * adjust);

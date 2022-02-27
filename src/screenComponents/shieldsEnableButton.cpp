@@ -63,7 +63,7 @@ void GuiShieldsEnableButton::onDraw(sp::RenderTarget& target)
 
 void GuiShieldsEnableButton::onUpdate()
 {
-    if (target_spaceship)
+    if (target_spaceship && isVisible())
     {
         if (keys.weapons_toggle_shields.getDown())
             target_spaceship->commandSetShields(!target_spaceship->shields_active);

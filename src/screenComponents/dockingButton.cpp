@@ -34,7 +34,7 @@ void GuiDockingButton::onUpdate()
 {
     setVisible(target_spaceship && target_spaceship->getCanDock());
 
-    if (target_spaceship)
+    if (target_spaceship && isVisible())
     {
         if (keys.helms_dock_action.getDown())
         {

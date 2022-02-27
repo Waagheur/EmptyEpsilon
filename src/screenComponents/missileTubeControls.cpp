@@ -116,7 +116,7 @@ void GuiMissileTubeControls::setTargetSpaceship(P<PlayerSpaceship> targetSpacesh
 
 void GuiMissileTubeControls::onUpdate()
 {
-    if (!target_spaceship)
+    if (!target_spaceship || !isVisible())
         return;
     for (int n = 0; n < MW_Count; n++)
     {

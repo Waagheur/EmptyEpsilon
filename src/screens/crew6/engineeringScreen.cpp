@@ -641,7 +641,7 @@ void EngineeringScreen::onDraw(sp::RenderTarget& renderer)
 
 void EngineeringScreen::onUpdate()
 {
-    if (my_spaceship)
+    if (my_spaceship && isVisible())
     {
         if (keys.engineering_select_reactor.getDown()) selectSystem(SYS_Reactor);
         //if (key.hotkey == "SELECT_CLOAKING") selectSystem(SYS_Cloaking);
