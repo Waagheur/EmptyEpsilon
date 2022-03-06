@@ -24,8 +24,8 @@ class RepairCrew : public MultiplayerObject, public Updatable
 //    static constexpr float repair_per_second = 0.007;
     static constexpr float repair_per_second = 0.002;
 public:
-    glm::vec2 position;
-    glm::ivec2 target_position;
+    glm::vec2 position{0,0};
+    glm::ivec2 target_position{0,0};
     ERepairCrewAction action;
     ERepairCrewDirection direction;
     float action_delay;
