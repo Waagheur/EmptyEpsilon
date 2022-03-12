@@ -140,7 +140,8 @@ void GameMasterActions::onReceiveClientCommand(int32_t client_id, sp::io::DataBu
             {
                 if (n == index)
                 {
-                    callback.call<void>();
+                    auto cb = callback.callback;
+                    cb.call<void>();
                     break;
                 }
                 n++;
