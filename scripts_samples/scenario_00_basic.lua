@@ -251,8 +251,8 @@ function gmVictoryYesNo()
     addGMFunction(_("buttonGM", "Yes"), function() 
         victory("Human Navy")
         clearGMFunctions()
-        addGMFunction(_("buttonGM", "Players have won"), function() string.format("") end)
-        addGMFunction(_("buttonGM", "Scenario ended"), function() string.format("") end)
+        addGMMessage(_([[Players have won.
+Scenario ended.]]))
     end)
     addGMFunction(_("buttonGM", "No"), gmButtons)
 end
