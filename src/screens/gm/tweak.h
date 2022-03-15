@@ -346,7 +346,7 @@ private:
     GuiListbox* list_envol_box;
 public:
     GuiShipTweakDock(GuiContainer* owner);
-    virtual void open(P<SpaceObject> target);
+    virtual void open(P<SpaceObject> target) override;
 
     virtual void onDraw(sp::RenderTarget& renderer) override;
 
@@ -390,7 +390,7 @@ private:
 public:
     GuiShipTweakMessages(GuiContainer* owner);
 
-    virtual void open(P<SpaceObject> target);
+    virtual void open(P<SpaceObject> target) override;
 
     virtual void onDraw(sp::RenderTarget& target) override;
 };
@@ -404,7 +404,7 @@ private:
 public:
     GuiShipTweakPlanet(GuiContainer* owner);
 
-    virtual void open(P<SpaceObject> target);
+    virtual void open(P<SpaceObject> target) override;
 
     virtual void onDraw(sp::RenderTarget& renderer) override;
 };

@@ -45,9 +45,9 @@ public:
     float getSize();
     void setModel(int model_number);
 
-    virtual bool canBeTargetedBy(P<SpaceObject> other) { return false; };
-    virtual bool canBeSelectedBy(P<SpaceObject> other) { return false; };
-    virtual bool canBeScannedBy(P<SpaceObject> other) { return false; };
+    virtual bool canBeTargetedBy(P<SpaceObject> other) override { return false; };
+    virtual bool canBeSelectedBy(P<SpaceObject> other) override { return false; };
+    virtual bool canBeScannedBy(P<SpaceObject> other) override { return false; };
 
     virtual string getExportLine() override { return "VisualAsteroid():setPosition(" + string(getPosition().x, 0) + ", " + string(getPosition().y, 0) + ")" + ":setSize(" + string(getSize(),0) + ")"; }
 
