@@ -374,6 +374,8 @@ GuiTextEntry* GuiTextEntry::setText(string text)
         Validator v = validator_func;
         valid = v(text);
     }
+    selection_start = std::min(selection_start, int(text.length()));
+    selection_end = std::min(selection_end, int(text.length()));
     return this;
 }
 
