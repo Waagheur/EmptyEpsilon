@@ -49,7 +49,7 @@ private:
 public:
     GuiCommsOverlay(GuiContainer* owner);
 
-    virtual void onDraw(sp::RenderTarget& target) override;
+    virtual void onUpdate() override;
     void minimize(bool minimize=true);
     void clearElements();
 };
