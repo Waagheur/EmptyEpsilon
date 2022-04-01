@@ -783,7 +783,9 @@ static int onNewPlayerShip(lua_State* L)
     convert<ScriptSimpleCallback>::param(L, idx, gameGlobalInfo->on_new_player_ship);
     return 0;
 }
-/// Register a callback function that is called when a new player ship is created.
+/// void onNewPlayerShip(ScriptSimpleCallback callback)
+/// Register a callback function that is called when a new player ship is created (on the ship selection screen or with the constructor in a lua script).
+/// This callback function is called with the newly created ship as the only parameter.
 REGISTER_SCRIPT_FUNCTION(onNewPlayerShip);
 
 static int onNewShip(lua_State* L)
@@ -792,7 +794,10 @@ static int onNewShip(lua_State* L)
     convert<ScriptSimpleCallback>::param(L, idx, gameGlobalInfo->on_new_ship);
     return 0;
 }
-/// Register a callback function that is called when a new ship is created.
+
+/// void onNewPlayerShip(ScriptSimpleCallback callback)
+/// Register a callback function that is called when a new ship is created (on the ship selection screen or with the constructor in a lua script).
+/// This callback function is called with the newly created ship as the only parameter.
 REGISTER_SCRIPT_FUNCTION(onNewShip);
 
 
