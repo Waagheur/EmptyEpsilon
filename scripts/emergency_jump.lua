@@ -7,9 +7,7 @@ function activateEmergencyJump(runtime, pcship, callback)
     pcship.internalCallback = callback
     local toinsert = {timer = timer_max, ship = pcship}
     table.insert(jumps, toinsert)
-    print "this is my init"
 end
-
 
 function updateEmergencyJump(delta)
     for i=#jumps, 1, -1 do
