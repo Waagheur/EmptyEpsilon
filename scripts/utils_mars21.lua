@@ -12,6 +12,7 @@
 -- @tparam number d The spawned wave's distance from the players' spawn point.
 
 require("emergency_jump.lua")
+require("normal_jump.lua")
 
 function addWave(enemyList,type,l,e,f,a,d)
 		leader = setCirclePos(CpuShip():setTemplate(l):setFaction(f):setRotation(a + 180):orderRoaming(), 0, 0, a + random(-1, 1), d + random(-100, 100))
@@ -238,6 +239,23 @@ function doOnNewPlayerShip(pc)
 			end
 		end
 		pc:addCustomButton("Helms","emergencyJumpButton", "Saut d'urgence", pc.emergencyJump)
+		pc.normalJump = function()
+			
+			if((pc:getWaypointCount() >=1) and (pc:getSystemHealth("jumpdrive") > 0.5) and (pc:getEnergy()/pc:getMaxEnergy() > 0.8))
+			then
+				activateNormalJump(300, pc, pc.normalJump)
+			elseif (pc:getWaypointCount() < 1) then
+				pc:addToShipLog("Vous devez choisir une destination (marqueur Auspex LP)", "yellow")
+			elseif (pc:getSystemHealth("jumpdrive") <= 0.5) then
+				pc:addToShipLog("Moteur warp trop endommage pour effectuer un saut", "yellow")
+			elseif (pc:getEnergy()/pc:getMaxEnergy() <= 0.8) then
+				pc:addToShipLog("Energie insuffisante pour effectuer un saut", "yellow")
+			end
+		end
+		pc.cancelNormalJump = function()
+			cancelNormalJump(pc)
+		end
+		pc:addCustomButton("Helms","normalJumpButton","Saut warp", pc.normalJump)
 	end
 	
 		
@@ -246,6 +264,7 @@ function doOnNewPlayerShip(pc)
 end
 
 function doInit()
+	--math.randomseed(os.time())
 	list_info_value_warpjam = {}
 	
 
@@ -307,6 +326,7 @@ end
 function doUpdateUtils(delta)
 	doUpdateShips(delta)
 	updateEmergencyJump(delta)
+	updateNormalJump(delta)
 end
 
 -- Attention a ne pas trop surcharger cette methode
