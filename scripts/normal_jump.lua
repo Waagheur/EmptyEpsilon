@@ -8,7 +8,8 @@ function activateNormalJump(runtime, pcship, callback)
 
     -- consomme directement 80% de l'energie
     pcship:setEnergy(pcship:getEnergy() - 0.8*pcship:getMaxEnergy());
-    local target_x, target_y = pcship:getWaypoint(1)
+    local target_x, target_y = pcship:getWaypoint(pcship:getWaypointCount())
+    pcship:addToShipLog(string.format("Saut programmé vers le secteur : %s", getSectorName(target_x, target_y)), "white")
     local toinsert = {timer = timer_max, ship = pcship, coord_x = target_x, coord_y = target_y }
     table.insert(jumps, toinsert)
 end
@@ -31,6 +32,13 @@ function updateNormalJump(delta)
         if obj.timer < 0 then
             obj.timer = 0
         end
+
+        if(obj.ship:getSystemHealth("jumpdrive") <= 0.5)
+        then
+            obj.ship:addToShipLog("Moteur warp trop endommage pour effectuer un saut d'urgence", "red")
+            cancelNormalJump(obj.ship)
+        end
+
         if(obj.timer > 0) then
             obj.ship:addCustomButton("Helms","normalJumpButton", string.format("Saut dans %.1f (Annuler)", obj.timer), obj.ship.cancelNormalJump)
             -- Desactivation des systemes pendant la preparation du saut

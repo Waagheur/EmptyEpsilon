@@ -204,16 +204,21 @@ function doOnNewPlayerShip(pc)
 	end
 	
 	pc:addInfos(11,"Nb Warpjam", "0")
-		pc:setMaxCoolant(10)
+	if pc:hasJumpDrive() then
+		pc:addInfos(13,"Warp jump", "0")
+	end
+	pc:setMaxCoolant(10)
 	pc:setCanDock(true)
 	pc:setRepairCrewCount(3)
 --	pc:setFaction("Imperium")
-	
 	
 	if (pc:getClass() ~= "Chasseur" ) 
 	then
 		pc:setMaxScanProbeCount(16)
 		pc:setScanProbeCount(16)
+		if pc:hasJumpDrive() then
+			pc:addInfos(13,"Warp jump", "1")
+		end
 	end 
 	
 	if (pc:getClass() ~= "Experimental" and pc:getClass() ~= "Croiseur Marchand") 
@@ -241,9 +246,11 @@ function doOnNewPlayerShip(pc)
 		pc:addCustomButton("Helms","emergencyJumpButton", "Saut d'urgence", pc.emergencyJump)
 		pc.normalJump = function()
 			
-			if((pc:getWaypointCount() >=1) and (pc:getSystemHealth("jumpdrive") > 0.5) and (pc:getEnergy()/pc:getMaxEnergy() > 0.8))
+			if((tonumber(pc:getInfosValue(13)) >= 1) and (pc:getWaypointCount() >=1) and (pc:getSystemHealth("jumpdrive") > 0.5) and (pc:getEnergy()/pc:getMaxEnergy() > 0.8))
 			then
 				activateNormalJump(300, pc, pc.normalJump)
+			elseif (tonumber(pc:getInfosValue(13)) < 1) then
+				pc:addToShipLog("Vous ne pouvez pas calculer le saut", "yellow")
 			elseif (pc:getWaypointCount() < 1) then
 				pc:addToShipLog("Vous devez choisir une destination (marqueur Auspex LP)", "yellow")
 			elseif (pc:getSystemHealth("jumpdrive") <= 0.5) then
