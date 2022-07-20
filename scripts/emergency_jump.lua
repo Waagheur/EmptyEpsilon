@@ -19,6 +19,7 @@ function updateEmergencyJump(delta)
         if(obj.timer > 0) then
             obj.ship:addCustomButton("Helms","emergencyJumpButton", string.format("Saut d'urgence dans %.1f", obj.timer), nil)
         else 
+            obj.ship:cancelNormalJump()
             obj.ship:setPosition(-82713, -5198984)
             obj.ship:setMaxRepair(obj.ship:getMaxRepair() - 0.70 - random(0,0.1))
             if(obj.ship:getMaxRepair() < 0) then 
