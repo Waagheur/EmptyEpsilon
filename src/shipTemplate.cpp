@@ -482,7 +482,7 @@ string getSystemName(ESystem system)
     switch(system)
     {
     case SYS_Reactor: return "Reacteur";
-    case SYS_Cloaking: return "Boldgen Occulteur alpha";
+    case SYS_Cloaking: return "Occulteur";
     case SYS_BeamWeapons: return "Faisceau laser";
     case SYS_MissileSystem: return "Systeme de missiles";
     case SYS_Maneuver: return "Manoeuvres";
@@ -515,6 +515,7 @@ string getLocaleSystemName(ESystem system)
     case SYS_Docks: return "Gestion du Cargo";
     case SYS_Drones: return "Drones et radar";
     case SYS_Hangar: return "Pont d'envol";
+    case SYS_Cloaking: return "Occulteur";
     default:
         return "UNKNOWN";
     }

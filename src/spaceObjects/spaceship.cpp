@@ -196,6 +196,10 @@ std::array<float, SYS_COUNT> SpaceShip::default_system_power_factors{
     /*SYS_JumpDrive*/     5.0,
     /*SYS_FrontShield*/   5.0,
     /*SYS_RearShield*/    5.0,
+    /*SYS_Dock*/          1.0,
+    /*SYS_Drone*/         3.0,
+    /*SYS_Hangar*/        1.0,
+    /*SYS_Cloaking*/     30.0
 };
 
 SpaceShip::SpaceShip(string multiplayerClassName, float multiplayer_significant_range)
@@ -1147,8 +1151,8 @@ void SpaceShip::executeJump(float distance)
 
     distance = (distance * f) + (distance * (1.0 - f) * random(0.5, 1.5));
     auto target_position = getPosition() + vec2FromAngle(getRotation()) * distance;
-    if (WarpJammer::isWarpJammed(target_position))
-        target_position = WarpJammer::getFirstNoneJammedPosition(getPosition(), target_position);
+    //if (WarpJammer::isWarpJammed(target_position))
+    target_position = WarpJammer::getFirstNoneJammedPosition(getPosition(), target_position);
 
 //    P<ElectricExplosionEffect> e1 = new ElectricExplosionEffect();
 //    e1->setSize((distance / 10.0) * random(0.8, 1.2));

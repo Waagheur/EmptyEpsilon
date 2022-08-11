@@ -18,6 +18,39 @@ REGISTER_SCRIPT_SUBCLASS(WarpJammer, SpaceObject)
     REGISTER_SCRIPT_CLASS_FUNCTION(WarpJammer, onDestruction);
 }
 
+
+static int isWarpJammed(lua_State* L)
+{
+    float x = luaL_checknumber(L, 1);
+    float y = luaL_checknumber(L, 2);
+    
+    lua_pushboolean(L, WarpJammer::isWarpJammed(glm::vec2(x,y)));
+    return 1;
+}
+/// Tests if position is warp jammed by any WarpJammer
+/// Arguments are x and y position
+REGISTER_SCRIPT_FUNCTION(isWarpJammed);
+
+static int getFirstNoneJammedPosition(lua_State* L)
+{
+    float x_src = luaL_checknumber(L, 1);
+    float y_src = luaL_checknumber(L, 2);
+
+    float x_dest = luaL_checknumber(L, 3);
+    float y_dest = luaL_checknumber(L, 4);
+
+    glm::vec2 start{x_src, y_src};
+    glm::vec2 end{x_dest, y_dest};
+
+    glm::vec2 ret = WarpJammer::getFirstNoneJammedPosition(start, end);
+
+    lua_pushnumber(L, ret.x);
+    lua_pushnumber(L, ret.y);
+
+    return 2;
+}
+REGISTER_SCRIPT_FUNCTION(getFirstNoneJammedPosition);
+
 REGISTER_MULTIPLAYER_CLASS(WarpJammer, "WarpJammer");
 
 PVector<WarpJammer> WarpJammer::jammer_list;
