@@ -263,6 +263,7 @@ function doOnNewPlayerShip(pc)
 			cancelNormalJump(pc)
 		end
 		pc:addCustomButton("Helms","normalJumpButton","Saut warp", pc.normalJump)
+		
 	end
 	
 		

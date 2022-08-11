@@ -35,7 +35,7 @@ function updateNormalJump(delta)
 
         if(obj.ship:getSystemHealth("jumpdrive") <= 0.5)
         then
-            obj.ship:addToShipLog("Moteur warp trop endommage pour effectuer un saut d'urgence", "red")
+            obj.ship:addToShipLog("Moteur warp trop endommage pour effectuer un saut", "red")
             cancelNormalJump(obj.ship)
         end
 
@@ -56,22 +56,38 @@ function updateNormalJump(delta)
                 obj.ship:setSystemHeat(list_of_systems[count], obj.ship:getSystemHeat(list_of_systems[count]) + 0.5)
             end
             
-            local random_x = math.random(-20000,20000)
-            local random_y = math.random(-20000,20000)
-
-            print(string.format("rx : %.1f ry : %.1f",random_x,random_y))
-
-            -- if WarpJammer::isWarpJammed
-            obj.ship:setPosition(obj.coord_x + random_x, obj.coord_y + random_y)
             
-            --if(obj.ship:getMaxRepair() < 0) then 
-            --    obj.ship:setMaxRepair(0)
-            --end
-            --for _, system in ipairs(SYSTEMS) do
-            --    obj.ship:setSystemHealthMax(system, obj.ship:getSystemHealthMax(system) - 0.04 - random(0,0.02))
-            --    obj.ship:setSystemHealth(system, obj.ship:getSystemHealth(system) - 0.20 - random(0,0.1))
-            --end
-            --obj.ship:addToShipLog("Degats sur les systemes de reparation", "red")
+            pos_x,pos_y = obj.ship:getPosition()
+            if(isWarpJammed(pos_x, pos_y))
+            then
+                obj.ship:setPosition(-82713, -5198984)
+                obj.ship:setMaxRepair(obj.ship:getMaxRepair() - 0.70 - random(0,0.1))
+                if(obj.ship:getMaxRepair() < 0) then 
+                    obj.ship:setMaxRepair(0)
+                end
+                for _, system in ipairs(SYSTEMS) do
+                    obj.ship:setSystemHealthMax(system, obj.ship:getSystemHealthMax(system) - 0.04 - random(0,0.02))
+                    obj.ship:setSystemHealth(system, obj.ship:getSystemHealth(system) - 0.20 - random(0,0.1))
+                end
+                obj.ship:addToShipLog("Echec du saut warp", "red")
+                obj.ship:addToShipLog("Degats sur les systemes de reparation", "red")
+            else
+                not_jammed_x, not_jammed_y = getFirstNoneJammedPosition(pos_x, pos_y, obj.coord_x, obj.coord_y)
+                
+                if((math.abs(not_jammed_x - obj.coord_x) > 10) and (math.abs(not_jammed_y - obj.coord_y) > 10))
+                then
+                    obj.ship:addToShipLog("Sortie anormale du warp", "red")
+                else
+                    obj.ship:addToShipLog("Sortie du warp", "white")
+                end
+
+
+                local random_x = math.random(-20000,20000)
+                local random_y = math.random(-20000,20000)
+
+                obj.ship:setPosition(not_jammed_x + random_x, not_jammed_y + random_y)
+            end
+            
             table.remove(jumps, i)
             obj.ship:addCustomButton("Helms","normalJumpButton", "Saut warp", obj.ship.internalCallback)
         end
