@@ -158,9 +158,9 @@ void SinglePilotView::onDraw(sp::RenderTarget& renderer)
         heat_display->setValue(string(totalHeat, 2));
         hull_display->setValue(string(int(100 * target_spaceship->hull_strength / target_spaceship->hull_max)) + "%");
         energy_display->setValue(string(int(target_spaceship->energy_level)));
-        heading_display->setValue(string(fmodf(target_spaceship->getRotation() + 360.0f + 360.0f - 270.0f, 360.0f), 1));
+        heading_display->setValue(string(target_spaceship->getHeading(), 1));
         float velocity = glm::length(target_spaceship->getVelocity()) / 1000 * 60;
-        velocity_display->setValue(string(velocity, 1) + DISTANCE_UNIT_1K + "/min");
+        velocity_display->setValue(tr("{value} {unit}/min").format({{"value", string(velocity, 1)}, {"unit", DISTANCE_UNIT_1K}}));
 
         lock_aim->setVisible(target_spaceship->getWeaponTubeCount() > 0);
 
