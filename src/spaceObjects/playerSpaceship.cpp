@@ -2178,7 +2178,7 @@ void PlayerSpaceship::onReceiveClientCommand(int32_t client_id, sp::io::DataBuff
         break;
     case CMD_HACKING_FINISHED:
         {
-            uint32_t id;
+            int32_t id;
             string target_system;
             string target_faction;
             packet >> id >> target_system >> target_faction;
