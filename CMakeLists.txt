@@ -215,6 +215,7 @@ set(SOURCES
 	  src/screens/extra/droneMasterScreen.cpp
 	  src/screens/extra/targetAnalysisScreen.cpp
 	  src/screenComponents/aimLock.cpp
+    src/screenComponents/alertLevelButton.cpp
 	  src/screenComponents/alertOverlay.cpp
 	  src/screenComponents/helpOverlay.cpp
 	  src/screenComponents/missileTubeControls.cpp
@@ -430,6 +431,7 @@ set(SOURCES
     src/scenarioInfo.h
     src/scienceDatabase.h
     src/screenComponents/aimLock.h
+    src/screenComponents/alertLevelButton.h
     src/screenComponents/alertOverlay.h
     src/screenComponents/beamFrequencySelector.h
     src/screenComponents/beamTargetSelector.h

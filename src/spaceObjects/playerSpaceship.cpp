@@ -1841,6 +1841,7 @@ void PlayerSpaceship::onReceiveClientCommand(int32_t client_id, sp::io::DataBuff
                 comms_state = CS_Inactive;
             }
         }
+        break;
     case CMD_SEND_TEXT_COMM:
         if (comms_state == CS_ChannelOpen && comms_target)
         {

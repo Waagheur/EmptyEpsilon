@@ -107,16 +107,16 @@ void GuiScanningDialog::onUpdate()
             {
                 if (keys.science_move_left_scan[n].getDown())
                 {
-                    float new_value = sliders[n]->getValue()-0.05;
-                    if (new_value <= 0.0)
-                        new_value = 0.0;
+                    float new_value = sliders[n]->getValue()-0.05f;
+                    if (new_value <= 0.f)
+                        new_value = 0.f;
                     sliders[n]->setValue(new_value);
                 }
                 if (keys.science_move_right_scan[n].getDown())
                 {
-                    float new_value = sliders[n]->getValue()+0.05;
-                    if (new_value >= 1.0)
-                        new_value = 1.0;
+                    float new_value = sliders[n]->getValue()+0.05f;
+                    if (new_value >= 1.f)
+                        new_value = 1.f;
                     sliders[n]->setValue(new_value);
                 }
             }

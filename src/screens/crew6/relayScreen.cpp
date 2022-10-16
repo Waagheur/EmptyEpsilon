@@ -15,6 +15,7 @@
 #include "screenComponents/hackingDialog.h"
 #include "screenComponents/hackDialog.h"
 #include "screenComponents/customShipFunctions.h"
+#include "screenComponents/alertLevelButton.h"
 
 #include "gui/gui2_keyvaluedisplay.h"
 #include "gui/gui2_selector.h"
@@ -246,33 +247,7 @@ RelayScreen::RelayScreen(GuiContainer* owner, bool allow_comms)
     info_clock = new GuiKeyValueDisplay(option_buttons, "INFO_CLOCK", 0.4f, tr("Clock") + ":", "");
     info_clock->setSize(GuiElement::GuiSizeMax, 40);
 
-    // Bottom layout.
-    auto layout = new GuiElement(this, "");
-    layout->setPosition(-20, -70, sp::Alignment::BottomRight)->setSize(250, GuiElement::GuiSizeMax)->setAttribute("layout", "verticalbottom");
-    // Alert level buttons.
-    alert_level_button = new GuiToggleButton(layout, "", tr("Alert level"), [this](bool value)
-    {
-        for(GuiButton* button : alert_level_buttons)
-            button->setVisible(value);
-    });
-
-    alert_level_button->setValue(false);
-    alert_level_button->setSize(GuiElement::GuiSizeMax, 50);
-
-    for(int level=AL_Normal; level < AL_MAX; level++)
-    {
-        GuiButton* alert_button = new GuiButton(layout, "", alertLevelToLocaleString(EAlertLevel(level)), [this, level]()
-        {
-            if (my_spaceship)
-                my_spaceship->commandSetAlertLevel(EAlertLevel(level));
-            for(GuiButton* button : alert_level_buttons)
-                button->setVisible(false);
-            alert_level_button->setValue(false);
-        });
-        alert_button->setVisible(false);
-        alert_button->setSize(GuiElement::GuiSizeMax, 50);
-        alert_level_buttons.push_back(alert_button);
-    }
+    (new GuiAlertLevelSelect(this, ""))->setPosition(-20, -70, sp::Alignment::BottomRight)->setSize(300, GuiElement::GuiSizeMax)->setAttribute("layout", "verticalbottom");
 
     (new GuiCustomShipFunctions(this, relayOfficer, "", my_spaceship))->setPosition(-20, 350, sp::Alignment::TopRight)->setSize(250, GuiElement::GuiSizeMax);
 
@@ -651,26 +626,26 @@ void RelayScreen::onUpdate()
         //     zoom_slider->setValue(view_distance);
         //     zoom_label->setText("Zoom: " + string(max_distance / view_distance, 1.0f) + "x");
         // }
-        if (keys.relay_alert_normal.getDown())
-        {
-            my_spaceship->commandSetAlertLevel(AL_Normal);
-            for(GuiButton* button : alert_level_buttons)
-                button->setVisible(false);
-            alert_level_button->setValue(false);
-        }
-        if (keys.relay_alert_yellow.getDown())
-        {
-            my_spaceship->commandSetAlertLevel(AL_YellowAlert);
-            for(GuiButton* button : alert_level_buttons)
-                button->setVisible(false);
-            alert_level_button->setValue(false);
-        }
-        if (keys.relay_alert_red.getDown())
-        {
-            my_spaceship->commandSetAlertLevel(AL_RedAlert);
-            for(GuiButton* button : alert_level_buttons)
-                button->setVisible(false);
-            alert_level_button->setValue(false);
-        }
+        // if (keys.relay_alert_normal.getDown())
+        // {
+        //     my_spaceship->commandSetAlertLevel(AL_Normal);
+        //     for(GuiButton* button : alert_level_buttons)
+        //         button->setVisible(false);
+        //     alert_level_button->setValue(false);
+        // }
+        // if (keys.relay_alert_yellow.getDown())
+        // {
+        //     my_spaceship->commandSetAlertLevel(AL_YellowAlert);
+        //     for(GuiButton* button : alert_level_buttons)
+        //         button->setVisible(false);
+        //     alert_level_button->setValue(false);
+        // }
+        // if (keys.relay_alert_red.getDown())
+        // {
+        //     my_spaceship->commandSetAlertLevel(AL_RedAlert);
+        //     for(GuiButton* button : alert_level_buttons)
+        //         button->setVisible(false);
+        //     alert_level_button->setValue(false);
+        // }
     }
 }

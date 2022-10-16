@@ -41,21 +41,21 @@ void GuiSignalQualityIndicator::onDraw(sp::RenderTarget& renderer)
         {   
             f = sin(float(n) * freq[0] + phase[0]);
             f = (1.0f - noise[0]) * f + noise[0] * random(-1.0, 1.0);
-            r.emplace_back(rect.position.x + 4.0 + n * 4, rect.position.y + rect.size.y / 2.0f + f * amp);
+            r.emplace_back(rect.position.x + 4.f + n * 4, rect.position.y + rect.size.y / 2.0f + f * amp);
         }   
 
         if(show_green)
         {
             f = sin(float(n) * freq[1] + phase[1]);
             f = (1.0f - noise[1]) * f + noise[1] * random(-1.0, 1.0);
-            g.emplace_back(rect.position.x + 4.0 + n * 4, rect.position.y + rect.size.y / 2.0f + f * amp);
+            g.emplace_back(rect.position.x + 4.f + n * 4, rect.position.y + rect.size.y / 2.0f + f * amp);
         }   
 
         if(show_blue)
         {
             f = sin(float(n) * freq[2] + phase[2]);
             f = (1.0f - noise[2]) * f + noise[2] * random(-1.0, 1.0);
-            b.emplace_back(rect.position.x + 4.0 + n * 4, rect.position.y + rect.size.y / 2.0f + f * amp);
+            b.emplace_back(rect.position.x + 4.f + n * 4, rect.position.y + rect.size.y / 2.0f + f * amp);
         }
     }
     if(show_red)

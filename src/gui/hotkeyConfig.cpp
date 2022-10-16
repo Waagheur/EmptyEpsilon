@@ -302,6 +302,10 @@ Keys::Keys() :
 
 
     //relay
+    relay_alert_level_none("RELAY_ALERT_NONE"),
+    relay_alert_level_yellow("RELAY_ALERT_YELLOW"),
+    relay_alert_level_red("RELAY_ALERT_RED"),
+    //ajouts tdelc
     relay_next_enemy("RELAY_NEXT_ENEMY"),
     relay_next("RELAY_NEXT"),
     relay_link_science("RELAY_LINK_SCIENCE"),
@@ -309,12 +313,7 @@ Keys::Keys() :
     relay_add_waypoint("RELAY_ADD_WAYPOINT"),
     relay_delete_waypoint("RELAY_DELAY_WAYPOINT"),
     relay_launch_probe("RELAY_LAUNCH_PROBE"),
-    relay_alert_normal("RELAY_ALERT_NORMAL"),
-    relay_alert_yellow("RELAY_ALERT_YELLOW"),
-    relay_alert_red("RELAY_ALERT_RED"),
     relay_open_comm("RELAY_OPEN_COMM"),
-    
-
 
     gm_delete("GM_DELETE", "Delete"),
     gm_clipboardcopy("GM_CLIPBOARD_COPY", "F5"),
@@ -478,8 +477,13 @@ void Keys::init()
         engineering_apply_preset[n].setLabel(tr("hotkey_menu", "Engineering"), tr("hotkey_Engineering", "Apply preset {number}").format({{"number", string(n+1)}}));
         engineering_update_preset[n].setLabel(tr("hotkey_menu", "Engineering"), tr("hotkey_Engineering", "Update preset {number}").format({{"number", string(n+1)}}));
     }
+    //fin d'ajouts
 
     //relay
+    relay_alert_level_none.setLabel(tr("hotkey_menu", "Relay"), tr("hotkey_Engineering", "Alert level: Normal"));
+    relay_alert_level_yellow.setLabel(tr("hotkey_menu", "Relay"), tr("hotkey_Engineering", "Alert level: Yellow"));
+    relay_alert_level_red.setLabel(tr("hotkey_menu", "Relay"), tr("hotkey_Engineering", "Alert level: Red"));
+    //ajouts tdelc
     relay_next_enemy.setLabel(tr("hotkey_menu", "Relay"), tr("hotkey_Relay","Next enemy"));
     relay_next.setLabel(tr("hotkey_menu", "Relay"), tr("hotkey_Relay","Next relay"));
     relay_link_science.setLabel(tr("hotkey_menu", "Relay"), tr("hotkey_Relay","Link to science"));
@@ -487,9 +491,6 @@ void Keys::init()
     relay_add_waypoint.setLabel(tr("hotkey_menu", "Relay"), tr("hotkey_Relay","Add waypoint"));
     relay_delete_waypoint.setLabel(tr("hotkey_menu", "Relay"), tr("hotkey_Relay","Delete waypoint"));
     relay_launch_probe.setLabel(tr("hotkey_menu", "Relay"), tr("hotkey_Relay","Launch probe"));
-    relay_alert_normal.setLabel(tr("hotkey_menu", "Relay"), tr("hotkey_Relay","Normal alert level"));
-    relay_alert_yellow.setLabel(tr("hotkey_menu", "Relay"), tr("hotkey_Relay","Yellow alert"));
-    relay_alert_red.setLabel(tr("hotkey_menu", "Relay"), tr("hotkey_Relay","Red alert"));
     relay_open_comm.setLabel(tr("hotkey_menu", "Relay"), tr("hotkey_Relay","Open communication"));
     //fin d'ajouts
 

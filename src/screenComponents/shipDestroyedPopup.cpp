@@ -35,7 +35,7 @@ void GuiShipDestroyedPopup::onDraw(sp::RenderTarget& target)
     }else{
         if (show_timeout.isExpired())
             ship_destroyed_overlay->show();
-        if (show_timeout.getTimeElapsed() > 10.0)
+        if (show_timeout.getTimeElapsed() > 10.f)
         {
             destroy();
             soundManager->stopMusic();

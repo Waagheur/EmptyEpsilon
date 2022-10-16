@@ -78,9 +78,9 @@ void GuiCombatManeuver::onDraw(sp::RenderTarget& target)
             charge_bar->setValue(target_spaceship->combat_maneuver_charge)->show();
             slider->show();
         }
-        if (target_spaceship->combat_maneuver_boost_speed <= 0.0)
+        if (target_spaceship->combat_maneuver_boost_speed <= 0.f)
             setBoostValue(0.0f);
-        if (target_spaceship->combat_maneuver_strafe_speed <= 0.0)
+        if (target_spaceship->combat_maneuver_strafe_speed <= 0.f)
             setStrafeValue(0.0f);
     }
 }

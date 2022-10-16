@@ -153,7 +153,11 @@ public:
     std::array<sp::io::Keybinding, 9> engineering_update_preset;
     //fin d'ajouts
 
-    //relay
+    //Relay
+    sp::io::Keybinding relay_alert_level_none;
+    sp::io::Keybinding relay_alert_level_yellow;
+    sp::io::Keybinding relay_alert_level_red;
+    //ajouts tdelc
     sp::io::Keybinding relay_next_enemy;
     sp::io::Keybinding relay_next;
     sp::io::Keybinding relay_link_science;
@@ -161,11 +165,10 @@ public:
     sp::io::Keybinding relay_add_waypoint;
     sp::io::Keybinding relay_delete_waypoint;
     sp::io::Keybinding relay_launch_probe;
-    sp::io::Keybinding relay_alert_normal;
-    sp::io::Keybinding relay_alert_yellow;
-    sp::io::Keybinding relay_alert_red;
-    sp::io::Keybinding relay_open_comm; 
+    sp::io::Keybinding relay_open_comm;
     //fin d'ajouts
+
+    
 
     // Cinematic View
     struct CinematicKeys {
