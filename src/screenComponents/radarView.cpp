@@ -745,7 +745,7 @@ void GuiRadarView::drawHeadingIndicators(sp::RenderTarget& renderer)
     {
         renderer.drawRotatedText(
             radar_screen_center + vec2FromAngle(float(n) - 90 - getViewRotation()) * (boundingRadius - 50), n-getViewRotation(),
-            string(n), 15.0f, main_font, {255, 255, 255, 255});
+            string(n), 15.0f, sp::RenderTarget::getDefaultFont(), {255, 255, 255, 255});
     }
 }
 

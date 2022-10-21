@@ -7,6 +7,7 @@
 #include "spaceObjects/planet.h"
 #include "scriptInterface.h"
 #include "gameGlobalInfo.h"
+#include "main.h" //bold_font
 
 #include "screenComponents/radarView.h"
 #include "screenComponents/openCommsButton.h"

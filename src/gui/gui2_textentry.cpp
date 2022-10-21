@@ -6,7 +6,7 @@
 GuiTextEntry::GuiTextEntry(GuiContainer* owner, string id, string text)
 : GuiElement(owner, id), text(text), text_size(30), func(nullptr), enter_func(nullptr), validator_func(nullptr), valid(true)
 {
-    text_font = main_font;
+    text_font = sp::RenderTarget::getDefaultFont();
     blink_timer.repeat(blink_rate);
     front_style = theme->getStyle("textentry.front");
     back_style = theme->getStyle("textentry.back");
