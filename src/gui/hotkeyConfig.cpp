@@ -489,9 +489,9 @@ void Keys::init()
     //fin d'ajouts
 
     //relay
-    relay_alert_level_none.setLabel(tr("hotkey_menu", "Relay"), tr("hotkey_Engineering", "Alert level: Normal"));
-    relay_alert_level_yellow.setLabel(tr("hotkey_menu", "Relay"), tr("hotkey_Engineering", "Alert level: Yellow"));
-    relay_alert_level_red.setLabel(tr("hotkey_menu", "Relay"), tr("hotkey_Engineering", "Alert level: Red"));
+    relay_alert_level_none.setLabel(tr("hotkey_menu", "Relay"), tr("hotkey_Relay", "Alert level: Normal"));
+    relay_alert_level_yellow.setLabel(tr("hotkey_menu", "Relay"), tr("hotkey_Relay", "Alert level: Yellow"));
+    relay_alert_level_red.setLabel(tr("hotkey_menu", "Relay"), tr("hotkey_Relay", "Alert level: Red"));
     //ajouts tdelc
     relay_next_enemy.setLabel(tr("hotkey_menu", "Relay"), tr("hotkey_Relay","Next enemy"));
     relay_next.setLabel(tr("hotkey_menu", "Relay"), tr("hotkey_Relay","Next relay"));
