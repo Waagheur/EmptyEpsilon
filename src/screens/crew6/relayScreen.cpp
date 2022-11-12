@@ -439,7 +439,7 @@ void RelayScreen::onDraw(sp::RenderTarget& renderer)
         hack_target_button->setVisible(my_spaceship->getCanHack());
 
         //info_reputation->setValue(string(my_spaceship->getReputationPoints(), 0)); //tsht : TODO voir si on peut reajouter
-        info_clock->setValue(string(gameGlobalInfo->elapsed_time, 0));
+        info_clock->setValue(gameGlobalInfo->getMissionTime());
         launch_probe_button->setText(tr("Launch Probe") + " (" + string(my_spaceship->scan_probe_stock) + "/" + string(my_spaceship->max_scan_probes) + ")");
     }
 

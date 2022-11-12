@@ -264,6 +264,16 @@ void GameGlobalInfo::destroy()
 std::regex sector_rgx("([a-zA-Z]+)(\\d+)([a-dA-D])");
 std::regex location_rgx("([a-zA-Z]+\\d+[a-dA-D]):(\\d+):(\\d+)");
 
+string GameGlobalInfo::getMissionTime() {
+    unsigned int seconds = gameGlobalInfo->elapsed_time;
+    unsigned int minutes = (seconds / 60) % 60;
+    unsigned int hours = (seconds / 60 / 60) % 24;
+    seconds = seconds % 60;
+    char buf[9];
+    std::snprintf(buf, 9, "%02d:%02d:%02d", hours, minutes, seconds);
+    return string(buf);
+}
+
 bool isValidSectorName(string sectorName)
 {
     return std::regex_match(sectorName, sector_rgx);

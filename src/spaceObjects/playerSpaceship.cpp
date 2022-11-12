@@ -1214,7 +1214,7 @@ void PlayerSpaceship::addToSpecificShipLog(string message, glm::u8vec4 color, st
         if (ships_log_generic.size() > 100)
             ships_log_generic.erase(ships_log_generic.begin());
         // Timestamp a log entry, color it, and add it to the end of the log.
-        ships_log_generic.emplace_back(string(gameGlobalInfo->elapsed_time, 1) + string(": "), message, color, station);
+        ships_log_generic.emplace_back(gameGlobalInfo->getMissionTime() + string(": "), message, color, station);
         timer_log_generic = 6;
     }
     else if (station == "intern")
@@ -1222,7 +1222,7 @@ void PlayerSpaceship::addToSpecificShipLog(string message, glm::u8vec4 color, st
         if (ships_log_intern.size() > 100)
             ships_log_intern.erase(ships_log_intern.begin());
         // Timestamp a log entry, color it, and add it to the end of the log.
-        ships_log_intern.emplace_back(string(gameGlobalInfo->elapsed_time, 1) + string(": "), message, color, station);
+        ships_log_intern.emplace_back(gameGlobalInfo->getMissionTime() + string(": "), message, color, station);
         timer_log_intern = 6;
     }
     else if (station == "docks")
@@ -1230,7 +1230,7 @@ void PlayerSpaceship::addToSpecificShipLog(string message, glm::u8vec4 color, st
         if (ships_log_docks.size() > 100)
             ships_log_docks.erase(ships_log_docks.begin());
         // Timestamp a log entry, color it, and add it to the end of the log.
-        ships_log_docks.emplace_back(string(gameGlobalInfo->elapsed_time, 1) + string(": "), message, color, station);
+        ships_log_docks.emplace_back(gameGlobalInfo->getMissionTime() + string(": "), message, color, station);
         timer_log_docks = 6;
     }
     else if (station == "science")
@@ -1238,7 +1238,7 @@ void PlayerSpaceship::addToSpecificShipLog(string message, glm::u8vec4 color, st
         if (ships_log_science.size() > 100)
             ships_log_science.erase(ships_log_science.begin());
         // Timestamp a log entry, color it, and add it to the end of the log.
-        ships_log_science.emplace_back(string(gameGlobalInfo->elapsed_time, 1) + string(": "), message, color, station);
+        ships_log_science.emplace_back(gameGlobalInfo->getMissionTime() + string(": "), message, color, station);
         timer_log_science = 6;
     }
 }

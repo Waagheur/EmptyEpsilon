@@ -104,7 +104,7 @@ void OperationScreen::onDraw(sp::RenderTarget& target)
     if (science->radar_view->isVisible())
     {
        // info_reputation->setValue(string(my_spaceship->getReputationPoints(), 0))->show();
-        info_clock->setValue(string(gameGlobalInfo->elapsed_time, 0))->show();
+        info_clock->setValue(gameGlobalInfo->getMissionTime())->show();
     }
     else
     {
