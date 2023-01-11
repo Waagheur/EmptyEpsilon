@@ -23,6 +23,7 @@ protected:
     bool valid;
     bool multiline = false;
     bool readonly = false;
+    bool hide_password = false;
     const GuiThemeStyle* front_style;
     const GuiThemeStyle* back_style;
     func_t func;
@@ -51,6 +52,7 @@ public:
     GuiTextEntry* setTextSize(float size);
     GuiTextEntry* setTextFont(sp::Font* font);
     GuiTextEntry* setMultiline(bool enabled=true);
+    GuiTextEntry* setHidePassword(bool enabled=true);
     GuiTextEntry* callback(func_t func);
     GuiTextEntry* enterCallback(func_t func);
     GuiTextEntry* validator(Validator func);
