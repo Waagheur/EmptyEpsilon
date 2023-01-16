@@ -46,7 +46,7 @@ void GuiSelector::onDraw(sp::RenderTarget& renderer)
         renderer.drawText(rect, entries[selection_index].name, sp::Alignment::Center, text_size, main_font, color);
 
     if (selection_index < 0)
-        drawText(window, rect, label, ACenter, text_size, main_font, color);
+        drawText(window, rect, label, sp::Alignment::Center, text_size, main_font, color);
 
     if (!focus)
         popup->hide();

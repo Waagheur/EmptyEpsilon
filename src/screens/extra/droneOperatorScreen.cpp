@@ -45,26 +45,26 @@ DroneOperatorScreen::DroneOperatorScreen(GuiContainer *owner)
             single_pilot_screen->setTargetSpaceship(selected_drone);
         }
     });
-    drone_list->setPosition(0, -100, ABottomCenter)->setSize(500, 1000);
+    drone_list->setPosition(0, -100, sp::Alignment::BottomCenter)->setSize(500, 1000);
 
     // single pilot UI
     single_pilot_screen = new SinglePilotScreen(this, selected_drone);
-    single_pilot_screen->setPosition(0, 0, ATopLeft)->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);
+    single_pilot_screen->setPosition(0, 0, sp::Alignment::TopLeft)->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);
 
     connection_label = new GuiLabel(this, "CONNECTION_LABEL", "0%", 30);
-    connection_label->setPosition(0, -50, ABottomCenter)->setSize(460, 50);
+    connection_label->setPosition(0, -50, sp::Alignment::BottomCenter)->setSize(460, 50);
 
     disconnect_button = new GuiButton(this, "DISCONNECT_BUTTON", "Se deconnecter", [this]() {disconnected();});
-    disconnect_button->setPosition(0, 0, ABottomCenter)->setSize(400, 50);
+    disconnect_button->setPosition(0, 0, sp::Alignment::BottomCenter)->setSize(400, 50);
     disconnect_button->moveToFront();
     // label for when there are no drones
     no_drones_label = new GuiLabel(this, "SHIP_SELECTION_NO_SHIPS_LABEL", "Aucun drone actif dans la zone de portee de radar", 30);
-    no_drones_label->setPosition(0, 100, ATopCenter)->setSize(460, 50);
+    no_drones_label->setPosition(0, 100, sp::Alignment::TopCenter)->setSize(460, 50);
     // Prep the alert overlay.
-    (new GuiPowerDamageIndicator(this, "DOCKS_DPI", SYS_Drones, ATopCenter, my_spaceship))->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);
+    (new GuiPowerDamageIndicator(this, "DOCKS_DPI", SYS_Drones, sp::Alignment::TopCenter, my_spaceship))->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);
 
     custom_functions = new GuiCustomShipFunctions(this, dronePilot, "", my_spaceship);
-    custom_functions->setPosition(-20, 120, ATopRight)->setSize(250, GuiElement::GuiSizeMax);
+    custom_functions->setPosition(-20, 120, sp::Alignment::TopRight)->setSize(250, GuiElement::GuiSizeMax);
 
     for(auto &drone_template : my_spaceship->ship_template->drones)
     {

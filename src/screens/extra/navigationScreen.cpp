@@ -25,7 +25,7 @@ NavigationScreen::NavigationScreen(GuiContainer *owner)
 {
     targets.setAllowWaypointSelection();
     radar = new NavigationView(this, "NAVIGATION_RADAR", min_distance, &targets);
-    radar->setPosition(0, 0, ATopLeft)->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);
+    radar->setPosition(0, 0, sp::Alignment::TopLeft)->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);
     radar->setCallbacks(
         [this](glm::vec2 position) { //down
             if (mode == TargetSelection && targets.getWaypointIndex() > -1 && my_spaceship)
@@ -74,12 +74,12 @@ NavigationScreen::NavigationScreen(GuiContainer *owner)
 
     // Controls for the radar view
     view_controls = new GuiAutoLayout(this, "VIEW_CONTROLS", GuiAutoLayout::LayoutVerticalBottomToTop);
-    view_controls->setPosition(20, -70, ABottomLeft)->setSize(250, GuiElement::GuiSizeMax);
+    view_controls->setPosition(20, -70, sp::Alignment::BottomLeft)->setSize(250, GuiElement::GuiSizeMax);
     zoom_slider = new GuiSlider(view_controls, "ZOOM_SLIDER", max_distance, min_distance, radar->getDistance(), [this](float value) {
         zoom_label->setText("Zoom: " + string(max_distance / value, 1.0f) + "x");
         radar->setDistance(value);
     });
-    zoom_slider->setPosition(20, -70, ABottomLeft)->setSize(GuiElement::GuiSizeMax, 50);
+    zoom_slider->setPosition(20, -70, sp::Alignment::BottomLeft)->setSize(GuiElement::GuiSizeMax, 50);
     zoom_slider->setVisible(false);
     zoom_label = new GuiLabel(zoom_slider, "", "Zoom: " + string(max_distance / radar->getDistance(), 1.0f) + "x", 30);
     zoom_label->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);
@@ -101,7 +101,7 @@ NavigationScreen::NavigationScreen(GuiContainer *owner)
     position_text->setText(getStringFromPosition(radar->getViewPosition()));
     // Option buttons for comms, waypoints, and probes.
     option_buttons = new GuiAutoLayout(this, "BUTTONS", GuiAutoLayout::LayoutVerticalTopToBottom);
-    option_buttons->setPosition(20, 50, ATopLeft)->setSize(250, GuiElement::GuiSizeMax);
+    option_buttons->setPosition(20, 50, sp::Alignment::TopLeft)->setSize(250, GuiElement::GuiSizeMax);
 
     // Manage waypoints.
     (new GuiButton(option_buttons, "WAYPOINT_PLACE_BUTTON", "Place Waypoint", [this]() {
@@ -118,7 +118,7 @@ NavigationScreen::NavigationScreen(GuiContainer *owner)
     });
     delete_waypoint_button->setSize(GuiElement::GuiSizeMax, 50);
 
-    (new GuiCustomShipFunctions(this, navigation, "", my_spaceship))->setPosition(-20, 240, ATopRight)->setSize(250, GuiElement::GuiSizeMax);
+    (new GuiCustomShipFunctions(this, navigation, "", my_spaceship))->setPosition(-20, 240, sp::Alignment::TopRight)->setSize(250, GuiElement::GuiSizeMax);
 }
  void NavigationScreen::onDraw(sf::RenderTarget &window)
 {

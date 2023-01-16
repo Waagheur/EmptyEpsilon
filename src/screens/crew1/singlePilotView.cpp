@@ -62,10 +62,10 @@ SinglePilotView::SinglePilotView(GuiContainer* owner, P<PlayerSpaceship> targetS
     
     // Ship stats and combat maneuver at bottom right corner of left panel.
     combat_maneuver = new GuiCombatManeuver(this, "COMBAT_MANEUVER", target_spaceship);
-    combat_maneuver->setPosition(-20, -240, ABottomRight)->setSize(200, 150)->setVisible(target_spaceship && target_spaceship->getCanCombatManeuver());
+    combat_maneuver->setPosition(-20, -240, sp::Alignment::BottomRight)->setSize(200, 150)->setVisible(target_spaceship && target_spaceship->getCanCombatManeuver());
 
     GuiAutoLayout* stats = new GuiAutoLayout(this, "STATS", GuiAutoLayout::LayoutVerticalTopToBottom);
-    stats->setPosition(-20, -80, ABottomRight)->setSize(240, 160);
+    stats->setPosition(-20, -80, sp::Alignment::BottomRight)->setSize(240, 160);
     heat_display = new GuiKeyValueDisplay(stats, "HEAT_DISPLAY", 0.45, "Surchauffe", "");
     heat_display->setIcon("gui/icons/status_overheat")->setTextSize(20)->setSize(240, 40);
     hull_display = new GuiKeyValueDisplay(stats, "HULL_DISPLAY", 0.45, "Carlingue", "");
@@ -87,7 +87,7 @@ SinglePilotView::SinglePilotView(GuiContainer* owner, P<PlayerSpaceship> targetS
 
     // Weapon tube controls.
     tube_controls = new GuiMissileTubeControls(this, "MISSILE_TUBES", target_spaceship);
-    tube_controls->setPosition(20, -20, ABottomLeft);
+    tube_controls->setPosition(20, -20, sp::Alignment::BottomLeft);
     radar->enableTargetProjections(tube_controls);
 
     // Engine layout in top left corner of left panel.
@@ -120,13 +120,13 @@ SinglePilotView::SinglePilotView(GuiContainer* owner, P<PlayerSpaceship> targetS
             target_spaceship->lock_fire = value;
     });
     lock_fire->setIcon("gui/icons/lock");
-    //lock_fire->setPosition(-70, -10, ABottomCenter)->setSize(200, 50);
+    //lock_fire->setPosition(-70, -10, sp::Alignment::BottomCenter)->setSize(200, 50);
     lock_fire->setPosition(-20, 150, sp::Alignment::TopRight)->setSize(150, 50);
     lock_fire->setValue(false);
 
     // Missile lock button near top right of left panel.
     lock_aim = new AimLockButton(this, "LOCK_AIM", tube_controls, missile_aim, target_spaceship);
-    //lock_aim->setPosition(130, -10, ABottomCenter)->setSize(200, 50);
+    //lock_aim->setPosition(130, -10, sp::Alignment::BottomCenter)->setSize(200, 50);
     lock_aim->setPosition(-20, 200, sp::Alignment::TopRight)->setSize(150, 50);
 
     custom_ship_functions = new GuiCustomShipFunctions(this, singlePilot, "", target_spaceship);

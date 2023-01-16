@@ -32,13 +32,13 @@ DockMasterScreen::DockMasterScreen(GuiContainer *owner)
     background_crosses->setTextureTiled("gui/background/crosses.png");
 
     GuiAutoLayout *rootLayout = new GuiAutoLayout(this, "ROOT_LAYOUT", GuiAutoLayout::LayoutHorizontalLeftToRight);
-    rootLayout->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax)->setPosition(0, 0, ATopLeft);
+    rootLayout->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax)->setPosition(0, 0, sp::Alignment::TopLeft);
 
     docks = new GuiListbox(rootLayout, "DOCKS_LIST", [this](int index_dock, string value) {
         selectDock(index_dock);
     });
     docks->setMargins(20, 20, 20, 20)->setSize(COLUMN_WIDTH / 2, GuiElement::GuiSizeMax);
-    docks->setPosition(0, 0, ATopLeft);
+    docks->setPosition(0, 0, sp::Alignment::TopLeft);
 
     // the index in the button list is assumed to equal the index of the dock
     for (int n = 0; n < 10; n++)
@@ -49,7 +49,7 @@ DockMasterScreen::DockMasterScreen(GuiContainer *owner)
             selectBay(index_bay);
     });
     bays->setMargins(20, 20, 20, 20)->setSize(COLUMN_WIDTH / 2, GuiElement::GuiSizeMax);
-    bays->setPosition(0, 0, ATopRight);
+    bays->setPosition(0, 0, sp::Alignment::TopRight);
 
     // the index in the button list is assumed to equal the index of the dock
     for (int n = 0; n < 3; n++)
@@ -57,23 +57,23 @@ DockMasterScreen::DockMasterScreen(GuiContainer *owner)
 
     mainPanel = new GuiAutoLayout(rootLayout, "TOP_PANEL", GuiAutoLayout::LayoutHorizontalRows);
     mainPanel->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);
-    mainPanel->setPosition(0, 0, ATopCenter);
+    mainPanel->setPosition(0, 0, sp::Alignment::TopCenter);
     mainPanel->setMargins(20, 20, 20, 20);
 
     topPanel = new GuiAutoLayout(mainPanel, "TOP_PANEL", GuiAutoLayout::LayoutVerticalTopToBottom);
     topPanel->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax / 2.0);
-    topPanel->setPosition(0, 0, ATopRight);
+    topPanel->setPosition(0, 0, sp::Alignment::TopRight);
 //    mainPanel->setMargins(20, 20, 20, 20);
 
     // Dock actions
     (new GuiLabel(topPanel, "TITLE", "Transfert des Vaisseaux", 30))
         ->addBackground()
-        ->setAlignment(ACenter)
-        ->setPosition(0, 0, ABottomCenter)
+        ->setAlignment(sp::Alignment::Center)
+        ->setPosition(0, 0, sp::Alignment::BottomCenter)
         ->setSize(GuiElement::GuiSizeMax, 50);
 
     layout_move = new GuiAutoLayout(topPanel, "ACTION_MOVE", GuiAutoLayout::LayoutVerticalColumns);
-    layout_move->setSize(GuiElement::GuiSizeMax, 50)->setPosition(0, 50, ATopCenter);
+    layout_move->setSize(GuiElement::GuiSizeMax, 50)->setPosition(0, 50, sp::Alignment::TopCenter);
 
     action_move_button = new GuiButton(layout_move, "MOVE_BUTTON", "Transferer", [this]() {
         if (my_spaceship)
@@ -103,18 +103,18 @@ DockMasterScreen::DockMasterScreen(GuiContainer *owner)
             }
     });
     action_empty_button->setSize(COLUMN_WIDTH, 40);
-    (new GuiPowerDamageIndicator(action_move_button, "DOCKS_DPI", SYS_Docks, ATopCenter, my_spaceship))->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);
+    (new GuiPowerDamageIndicator(action_move_button, "DOCKS_DPI", SYS_Docks, sp::Alignment::TopCenter, my_spaceship))->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);
 
     droneTitle = new GuiLabel(topPanel, "DRONE_TITLE", "Astronef x", 30);
     droneTitle->addBackground()
-        ->setAlignment(ACenter)
-        ->setPosition(0, 0, ATopCenter)
+        ->setAlignment(sp::Alignment::Center)
+        ->setPosition(0, 0, sp::Alignment::TopCenter)
         ->setSize(GuiElement::GuiSizeMax, 50);
 
     model = new GuiRotatingModelView(topPanel, "MODEL_VIEW", nullptr);
-    model->setPosition(0, 0, ATopLeft)->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax)->setMargins(0, -100, 0, 0);
+    model->setPosition(0, 0, sp::Alignment::TopLeft)->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax)->setMargins(0, -100, 0, 0);
 
-    (new GuiCustomShipFunctions(this, dockMaster, "CUSTOM_FUNCTIONS", my_spaceship))->setPosition(20, 550, ATopLeft)->setSize(360, GuiElement::GuiSizeMax);
+    (new GuiCustomShipFunctions(this, dockMaster, "CUSTOM_FUNCTIONS", my_spaceship))->setPosition(20, 550, sp::Alignment::TopLeft)->setSize(360, GuiElement::GuiSizeMax);
 
     selectDock(0);
     model->moveToBack();

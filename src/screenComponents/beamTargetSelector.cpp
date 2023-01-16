@@ -14,7 +14,7 @@ GuiBeamTargetSelector::GuiBeamTargetSelector(GuiContainer* owner, string id, P<P
         if (target_spaceship)
             target_spaceship->commandSetBeamSystemTarget(ESystem(std::stoi(value)));
     });
-    selector->setPosition(0, 0, ABottomLeft)->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);
+    selector->setPosition(0, 0, sp::Alignment::BottomLeft)->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);
 
     selector->addEntry(tr("target","Hull"), "-1");
 

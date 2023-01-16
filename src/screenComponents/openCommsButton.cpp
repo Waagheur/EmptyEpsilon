@@ -14,7 +14,7 @@ GuiOpenCommsButton::GuiOpenCommsButton(GuiContainer* owner, string id, string na
 }), targets(targets)
 {
     icon_name = "gui/icons/station-relay";
-    icon_alignment = ACenterLeft;
+    icon_alignment = sp::Alignment::CenterLeft;
 }
 
 void GuiOpenCommsButton::onDraw(sp::RenderTarget& renderer)

@@ -46,32 +46,32 @@ TargetAnalysisScreen::TargetAnalysisScreen(GuiContainer *owner)
     background_crosses->setTextureTiled("gui/background/crosses.png");
     
     indicator_overlay = new GuiOverlay(this, "", sf::Color(0, 0, 0, 128));
-    (new GuiPanel(indicator_overlay, "PAUSE_BOX"))->setPosition(0, 0, ACenter)->setSize(600, 100);
+    (new GuiPanel(indicator_overlay, "PAUSE_BOX"))->setPosition(0, 0, sp::Alignment::Center)->setSize(600, 100);
     indicator_label = new GuiLabel(indicator_overlay, "PAUSE_LABEL", "Power cut", 70);
-    indicator_label->setPosition(0, 0, ACenter)->setSize(500, 100);
+    indicator_label->setPosition(0, 0, sp::Alignment::Center)->setSize(500, 100);
     
     analysis_overlay = new GuiOverlay(this, "", sf::Color(0, 0, 0, 128));
     
     model = new GuiRotatingModelView(analysis_overlay, "MODEL_VIEW", nullptr);
     model->setSize(500, 500);
-    model->setPosition(0, 0, ACenter);
+    model->setPosition(0, 0, sp::Alignment::Center);
 
     GuiAutoLayout* left_col = new GuiAutoLayout(analysis_overlay, "LEFT_LAYOUT", GuiAutoLayout::LayoutVerticalTopToBottom);
-    left_col->setPosition(25, 50, ATopLeft)->setSize(400, GuiElement::GuiSizeMax);
+    left_col->setPosition(25, 50, sp::Alignment::TopLeft)->setSize(400, GuiElement::GuiSizeMax);
     left_col->setMargins(20, 20, 20, 20);
     
     GuiAutoLayout* center_col = new GuiAutoLayout(analysis_overlay, "CENTER_LAYOUT", GuiAutoLayout::LayoutVerticalTopToBottom);
-    center_col->setPosition(0, 50, ATopCenter)->setSize(400, GuiElement::GuiSizeMax);
+    center_col->setPosition(0, 50, sp::Alignment::TopCenter)->setSize(400, GuiElement::GuiSizeMax);
     center_col->setMargins(20, 20, 20, 20);
 
     GuiAutoLayout* right_col = new GuiAutoLayout(analysis_overlay, "RIGHT_LAYOUT", GuiAutoLayout::LayoutVerticalTopToBottom);
-    right_col->setPosition(-25, 50, ATopRight)->setSize(400, GuiElement::GuiSizeMax);
+    right_col->setPosition(-25, 50, sp::Alignment::TopRight)->setSize(400, GuiElement::GuiSizeMax);
     right_col->setMargins(20, 20, 20, 20);
     
     (new GuiLabel(left_col, "TITLE", "Basic Informations", 30))
         ->addBackground()
-        ->setAlignment(ACenter)
-        ->setPosition(0, 0, ABottomCenter)
+        ->setAlignment(sp::Alignment::Center)
+        ->setPosition(0, 0, sp::Alignment::BottomCenter)
         ->setSize(GuiElement::GuiSizeMax, 50);
     
     info_callsign = new GuiKeyValueDisplay(left_col, "SCIENCE_CALLSIGN", 0.4, tr("Callsign"), "");
@@ -93,8 +93,8 @@ TargetAnalysisScreen::TargetAnalysisScreen(GuiContainer *owner)
 
     (new GuiLabel(left_col, "TITLE", "Description", 30))
         ->addBackground()
-        ->setAlignment(ACenter)
-        ->setPosition(0, 0, ABottomCenter)
+        ->setAlignment(sp::Alignment::Center)
+        ->setPosition(0, 0, sp::Alignment::BottomCenter)
         ->setSize(GuiElement::GuiSizeMax, 50);
         
     info_description = new GuiScrollText(left_col, "SCIENCE_DESC", "");
@@ -102,8 +102,8 @@ TargetAnalysisScreen::TargetAnalysisScreen(GuiContainer *owner)
 
     (new GuiLabel(left_col, "TITLE", "Additionnal Informations", 30))
         ->addBackground()
-        ->setAlignment(ACenter)
-        ->setPosition(0, 0, ABottomCenter)
+        ->setAlignment(sp::Alignment::Center)
+        ->setPosition(0, 0, sp::Alignment::BottomCenter)
         ->setSize(GuiElement::GuiSizeMax, 50);
 
     for(int n = 0; n < 10; n++)
@@ -115,8 +115,8 @@ TargetAnalysisScreen::TargetAnalysisScreen(GuiContainer *owner)
     
     (new GuiLabel(center_col, "TITLE", "Template Informations", 30))
         ->addBackground()
-        ->setAlignment(ACenter)
-        ->setPosition(0, 0, ABottomCenter)
+        ->setAlignment(sp::Alignment::Center)
+        ->setPosition(0, 0, sp::Alignment::BottomCenter)
         ->setSize(GuiElement::GuiSizeMax, 50);
 
     for(int n = 0; n < 30; n++)
@@ -128,8 +128,8 @@ TargetAnalysisScreen::TargetAnalysisScreen(GuiContainer *owner)
 
     (new GuiLabel(center_col, "TITLE", "Systems", 30))
         ->addBackground()
-        ->setAlignment(ACenter)
-        ->setPosition(0, 0, ABottomCenter)
+        ->setAlignment(sp::Alignment::Center)
+        ->setPosition(0, 0, sp::Alignment::BottomCenter)
         ->setSize(GuiElement::GuiSizeMax, 50);
 
     for(int n = 0; n < SYS_COUNT; n++)
@@ -142,8 +142,8 @@ TargetAnalysisScreen::TargetAnalysisScreen(GuiContainer *owner)
     // Advanced scan data.
     (new GuiLabel(right_col, "TITLE", "Frequencies", 30))
         ->addBackground()
-        ->setAlignment(ACenter)
-        ->setPosition(0, 0, ABottomCenter)
+        ->setAlignment(sp::Alignment::Center)
+        ->setPosition(0, 0, sp::Alignment::BottomCenter)
         ->setSize(GuiElement::GuiSizeMax, 50);
 
     // Frequency
@@ -160,8 +160,8 @@ TargetAnalysisScreen::TargetAnalysisScreen(GuiContainer *owner)
 
     (new GuiLabel(right_col, "TITLE", "Signatures", 30))
         ->addBackground()
-        ->setAlignment(ACenter)
-        ->setPosition(0, 0, ABottomCenter)
+        ->setAlignment(sp::Alignment::Center)
+        ->setPosition(0, 0, sp::Alignment::BottomCenter)
         ->setSize(GuiElement::GuiSizeMax, 50);
 
     info_electrical_signal_band = new GuiSignalQualityIndicator(right_col, "ELECTRICAL_SIGNAL");

@@ -31,7 +31,7 @@ ScreenMainScreen::ScreenMainScreen()
     viewport->setPosition(0, 0, sp::Alignment::TopLeft)->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);
 
     //TODO : voir pourquoi c'est commente
-    //(new GuiRadarView(viewport, "VIEWPORT_RADAR", my_spaceship->getShortRangeRadarRange(), nullptr, my_spaceship))->setStyle(GuiRadarView::CircularMasked)->setSize(200, 200)->setPosition(-20, 20, ATopRight);
+    //(new GuiRadarView(viewport, "VIEWPORT_RADAR", my_spaceship->getShortRangeRadarRange(), nullptr, my_spaceship))->setStyle(GuiRadarView::CircularMasked)->setSize(200, 200)->setPosition(-20, 20, sp::Alignment::TopRight);
     
     tactical_radar = new GuiRadarView(this, "TACTICAL", nullptr, my_spaceship);
     tactical_radar->setPosition(0, 0, sp::Alignment::TopLeft)->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);
@@ -58,9 +58,9 @@ ScreenMainScreen::ScreenMainScreen()
     onscreen_comms->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax)->setVisible(false);
 
     dock_comms = new GuiPanel(this,"DOCK_BOX");
-    dock_comms->setSize(800, 100)->setPosition(0, 250, ATopCenter);
+    dock_comms->setSize(800, 100)->setPosition(0, 250, sp::Alignment::TopCenter);
     label_dock = new GuiLabel(dock_comms, "DOCK_LABEL", "PROCEDURE DE DOCK", 40);
-    label_dock->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax)->setPosition(0, 0, ACenter);
+    label_dock->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax)->setPosition(0, 0, sp::Alignment::Center);
     dock_comms -> hide();
 
     new GuiShipDestroyedPopup(this);

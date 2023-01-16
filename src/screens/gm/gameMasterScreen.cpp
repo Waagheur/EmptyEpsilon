@@ -52,7 +52,7 @@ GameMasterScreen::GameMasterScreen()
                                  gameMasterActions->commandSetGameSpeed(value);
     });
 
-    pause_button->setPosition(20, 20, ATopLeft)->setSize(250, 50);
+    pause_button->setPosition(20, 20, sp::Alignment::TopLeft)->setSize(250, 50);
     pause_button->addSnapValue(0.0, 0.5);
     pause_button->addSnapValue(1.0, 0.5);
     pause_button->addSnapValue(2.0, 0.5);
@@ -85,7 +85,7 @@ GameMasterScreen::GameMasterScreen()
     personality_selector->addEntry("Pacifique","Pacifique");
     personality_selector->addEntry("Hostile","Hostile");
     personality_selector->addEntry("Solo","Solo");
-    personality_selector->setPosition(20, 120, ATopLeft)->setSize(250, 50);
+    personality_selector->setPosition(20, 120, sp::Alignment::TopLeft)->setSize(250, 50);
 
     global_message_button = new GuiButton(this, "GLOBAL_MESSAGE_BUTTON", tr("button", "Global message"), [this]() {
         global_message_entry->show();
@@ -105,7 +105,7 @@ GameMasterScreen::GameMasterScreen()
 
     position_text_custom = false;
     position_text = new GuiTextEntry(this, "SECTOR_NAME_TEXT", "");
-    position_text->setPosition(620, -20, ABottomLeft)->setSize(250, 50);
+    position_text->setPosition(620, -20, sp::Alignment::BottomLeft)->setSize(250, 50);
     position_text->callback([this](string text){
         position_text_custom = true;
     });
@@ -141,7 +141,7 @@ GameMasterScreen::GameMasterScreen()
     //create_button = new GuiButton(this, "CREATE_OBJECT_BUTTON", "Creer...", [this]() {
     //    object_creation_screen->show();
     //});
-    //create_button->setPosition(20, -70, ABottomLeft)->setSize(250, 50);
+    //create_button->setPosition(20, -70, sp::Alignment::BottomLeft)->setSize(250, 50);
 
     copy_scenario_button = new GuiButton(this, "COPY_SCENARIO_BUTTON", tr("button", "Copy scenario"), [this]() {
         Clipboard::setClipboard(getScriptExport(false));
@@ -156,7 +156,7 @@ GameMasterScreen::GameMasterScreen()
     create_button = new GuiButton(this, "CREATE_OBJECT_BUTTON", tr("button", "Create..."), [this]() {
         object_creation_view->show();
     });
-    create_button->setPosition(20, -70, ABottomLeft)->setSize(250, 50);
+    create_button->setPosition(20, -70, sp::Alignment::BottomLeft)->setSize(250, 50);
       
     cancel_action_button = new GuiButton(this, "CANCEL_CREATE_BUTTON", tr("button", "Cancel"), [this]() {
         gameGlobalInfo->on_gm_click = nullptr;

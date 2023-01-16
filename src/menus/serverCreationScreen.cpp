@@ -133,10 +133,10 @@ ServerCreationScreen::ServerCreationScreen()
     row->setSize(GuiElement::GuiSizeMax, 50);
     (new GuiToggleButton(row, "MAIN_GLOBAL_RANGE_TOGGLE", "Global radar", [](bool value) {
         gameGlobalInfo->allow_main_screen_global_range_radar = value == 1;
-    }))->setValue(gameGlobalInfo->allow_main_screen_global_range_radar)->setSize(275, GuiElement::GuiSizeMax)->setPosition(0, 0, ACenterLeft);
+    }))->setValue(gameGlobalInfo->allow_main_screen_global_range_radar)->setSize(275, GuiElement::GuiSizeMax)->setPosition(0, 0, sp::Alignment::CenterLeft);
     (new GuiToggleButton(row, "MAIN_SHIP_STATE", "Ship State", [](bool value) {
         gameGlobalInfo->allow_main_screen_ship_state = value == 1;
-    }))->setValue(gameGlobalInfo->allow_main_screen_ship_state)->setSize(275, GuiElement::GuiSizeMax)->setPosition(0, 0, ACenterRight);
+    }))->setValue(gameGlobalInfo->allow_main_screen_ship_state)->setSize(275, GuiElement::GuiSizeMax)->setPosition(0, 0, sp::Alignment::CenterRight);
 
     // Game rules section.
     (new GuiLabel(left_panel, "GAME_RULES_LABEL", tr("Game rules"), 30))->addBackground()->setSize(GuiElement::GuiSizeMax, 50);
@@ -181,10 +181,10 @@ ServerCreationScreen::ServerCreationScreen()
     row->setSize(GuiElement::GuiSizeMax, 50);
     (new GuiToggleButton(row, "REPAIR_CREW_TOGGLE", "simulate repair crew", [](bool value) {
         gameGlobalInfo->use_repair_crew = value == 1;
-    }))->setValue(gameGlobalInfo->use_repair_crew)->setSize(275, GuiElement::GuiSizeMax)->setPosition(0, 0, ACenterLeft);
+    }))->setValue(gameGlobalInfo->use_repair_crew)->setSize(275, GuiElement::GuiSizeMax)->setPosition(0, 0, sp::Alignment::CenterLeft);
     (new GuiToggleButton(row, "INTERCEPT_COMMS_TOGGLE", "intercept all comms to gm", [](bool value) {
         gameGlobalInfo->intercept_all_comms_to_gm = ECommsGmInterception(value * 2);
-    }))->setValue((int)gameGlobalInfo->intercept_all_comms_to_gm / 2)->setSize(275, GuiElement::GuiSizeMax)->setPosition(0, 0, ACenterLeft);
+    }))->setValue((int)gameGlobalInfo->intercept_all_comms_to_gm / 2)->setSize(275, GuiElement::GuiSizeMax)->setPosition(0, 0, sp::Alignment::CenterLeft);
 
     // Right column contents.
     // Scenario section.

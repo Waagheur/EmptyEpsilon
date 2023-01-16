@@ -18,7 +18,7 @@ ProbeScreen::ProbeScreen()
 
     viewport = new GuiViewport3D(this, "VIEWPROBE");
     viewport->showSpacedust();
-    viewport->setPosition(0, 0, ATopLeft)->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax)->hide();
+    viewport->setPosition(0, 0, sp::Alignment::TopLeft)->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax)->hide();
 }
 
 void ProbeScreen::update(float delta)

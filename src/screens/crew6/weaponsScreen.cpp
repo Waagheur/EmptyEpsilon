@@ -74,7 +74,7 @@ WeaponsScreen::WeaponsScreen(GuiContainer* owner)
             GuiElement* beam_info_box = new GuiElement(this, "BEAM_INFO_BOX");
             beam_info_box->setPosition(-20, -120, sp::Alignment::BottomRight)->setSize(280, 150);
             (new GuiLabel(beam_info_box, "BEAM_INFO_LABEL", "Info Laser", 30))->addBackground()->setSize(GuiElement::GuiSizeMax, 50);
-            (new GuiPowerDamageIndicator(beam_info_box, "", SYS_BeamWeapons, ACenterLeft, my_spaceship))->setSize(GuiElement::GuiSizeMax, 50);
+            (new GuiPowerDamageIndicator(beam_info_box, "", SYS_BeamWeapons, sp::Alignment::CenterLeft, my_spaceship))->setSize(GuiElement::GuiSizeMax, 50);
             (new GuiBeamFrequencySelector(beam_info_box, "BEAM_FREQUENCY_SELECTOR"))->setPosition(0, 0, sp::Alignment::BottomRight)->setSize(GuiElement::GuiSizeMax, 50);
             (new GuiBeamTargetSelector(beam_info_box, "BEAM_TARGET_SELECTOR", my_spaceship))->setPosition(0, -50, sp::Alignment::BottomRight)->setSize(GuiElement::GuiSizeMax, 50);
 

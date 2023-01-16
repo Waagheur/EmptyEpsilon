@@ -18,31 +18,31 @@ OxygenScreen::OxygenScreen(GuiContainer *owner)
     background_crosses->setTextureTiled("gui/background/crosses.png");
 
     oxygen_view = new GuiAutoLayout(this, "OXYGEN_LAYOUT", GuiAutoLayout::LayoutHorizontalRows);
-    oxygen_view->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax)->setPosition(0, 0, ACenter);
+    oxygen_view->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax)->setPosition(0, 0, sp::Alignment::Center);
 
-    (new GuiLabel(oxygen_view, "OXYGEN_LABEL", "Gestion de l'oxygene", 100))->setPosition(0, 200, ACenter);
+    (new GuiLabel(oxygen_view, "OXYGEN_LABEL", "Gestion de l'oxygene", 100))->setPosition(0, 200, sp::Alignment::Center);
 
     oxygen_label_intern = new GuiLabel(oxygen_view, "Ship_LABEL_INTERN", "Interne", 50);
-    oxygen_label_intern->setPosition(0, 200, ACenter);
+    oxygen_label_intern->setPosition(0, 200, sp::Alignment::Center);
     oxygen_label_intern->setVisible(false);
 
     for(int n=0; n<max_oxygen_zones; n++)
     {
         oxygen_intern[n] = new GuiAutoLayout(oxygen_view, "OXYGEN_INTERN",GuiAutoLayout::LayoutHorizontalRows);
 
-        (new GuiLabel(oxygen_intern[n], "OXYGEN_ZONE_LABEL_INTERN", "Zone " + string(n+1), 30))->setAlignment(ACenter)->setMargins(10, 10, 10, 10);
+        (new GuiLabel(oxygen_intern[n], "OXYGEN_ZONE_LABEL_INTERN", "Zone " + string(n+1), 30))->setAlignment(sp::Alignment::Center)->setMargins(10, 10, 10, 10);
 
         oxygen_bar_intern[n] = new GuiProgressbar(oxygen_intern[n], "ENERGY_BAR_INTERN", 0.0, 1.0, 0.0);
         oxygen_bar_intern[n]->setColor(sf::Color(192, 192, 32, 128))->setText("Oxygene")->setDrawBackground(true)->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax)->setMargins(10, 0, 10, 0);
 
         oxygen_value_intern[n] = new GuiKeyValueDisplay(oxygen_intern[n], "OXY_VALUE_INTERN" + string(n), 0.8, "Zone " + string(n+1), "0%");
-        oxygen_value_intern[n]->setSize(GuiElement::GuiSizeMax, 40)->setPosition(0, 400, ACenter);
+        oxygen_value_intern[n]->setSize(GuiElement::GuiSizeMax, 40)->setPosition(0, 400, sp::Alignment::Center);
 
         oxygen_intern[n]->setVisible(false);
     }
 
     oxygen_label_extern = new GuiLabel(oxygen_view, "Ship_LABEL", "Externe", 50);
-    oxygen_label_extern->setPosition(0, 200, ACenter);
+    oxygen_label_extern->setPosition(0, 200, sp::Alignment::Center);
     oxygen_label_extern->setVisible(false);
 
     // Choix dock
@@ -50,13 +50,13 @@ OxygenScreen::OxygenScreen(GuiContainer *owner)
     {
         oxygen_extern[n] = new GuiAutoLayout(oxygen_view, "OXYGEN_EXTERN",GuiAutoLayout::LayoutHorizontalRows);
 
-        (new GuiLabel(oxygen_extern[n], "OXYGEN_ZONE_LABEL_EXTERN", "Zone " + string(n+1), 30))->setAlignment(ACenter)->setMargins(10, 10, 10, 10);
+        (new GuiLabel(oxygen_extern[n], "OXYGEN_ZONE_LABEL_EXTERN", "Zone " + string(n+1), 30))->setAlignment(sp::Alignment::Center)->setMargins(10, 10, 10, 10);
 
         oxygen_bar_extern[n] = new GuiProgressbar(oxygen_extern[n], "ENERGY_BAR_EXTERN", 0.0, 1.0, 0.0);
         oxygen_bar_extern[n]->setColor(sf::Color(192, 192, 32, 128))->setText("Oxygene")->setDrawBackground(true)->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax)->setMargins(10, 0, 10, 0);
 
         oxygen_value_extern[n] = new GuiKeyValueDisplay(oxygen_extern[n], "OXY_VALUE_EXTERN" + string(n), 0.8, "Zone " + string(n+1), "0%");
-        oxygen_value_extern[n]->setSize(GuiElement::GuiSizeMax, 40)->setPosition(0, 400, ACenter);
+        oxygen_value_extern[n]->setSize(GuiElement::GuiSizeMax, 40)->setPosition(0, 400, sp::Alignment::Center);
 
         oxygen_extern[n]->setVisible(false);
     }

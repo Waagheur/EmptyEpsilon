@@ -33,7 +33,7 @@ AutoConnectScreen::AutoConnectScreen(ECrewPosition crew_position, int auto_mains
     (new GuiLabel(this, "POSITION", position_name, 50))->setPosition(0, 400, sp::Alignment::TopCenter)->setSize(0, 30);
 
     filter_label = new GuiLabel(this, "FILTER", "", 20);
-    filter_label->setPosition(0, 30, ATopCenter)->setSize(0, 10);
+    filter_label->setPosition(0, 30, sp::Alignment::TopCenter)->setSize(0, 10);
 
     for(string filter : ship_filter.split(";"))
     {

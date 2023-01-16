@@ -67,8 +67,8 @@ TacticalScreen::TacticalScreen(GuiContainer* owner)
     stats->setPosition(20, 100, sp::Alignment::TopLeft)->setSize(240, 160);
 
     // Landing and docking buttons on the topleft
-    (new GuiDockingButton(this, "DOCKING", my_spaceship))->setPosition(20, 20, ATopLeft)->setSize(250, 50);
-    (new GuiLandingButton(this, "LANDING", my_spaceship))->setPosition(20, 60, ATopLeft)->setSize(250, 50);
+    (new GuiDockingButton(this, "DOCKING", my_spaceship))->setPosition(20, 20, sp::Alignment::TopLeft)->setSize(250, 50);
+    (new GuiLandingButton(this, "LANDING", my_spaceship))->setPosition(20, 60, sp::Alignment::TopLeft)->setSize(250, 50);
 
     // Ship statistics in the top left corner.
     energy_display = new GuiKeyValueDisplay(stats, "ENERGY_DISPLAY", 0.45, tr("Energy"), "");
@@ -91,10 +91,10 @@ TacticalScreen::TacticalScreen(GuiContainer* owner)
     if (gameGlobalInfo->use_beam_shield_frequencies || gameGlobalInfo->use_system_damage)
     {
         GuiElement* beam_info_box = new GuiElement(this, "BEAM_INFO_BOX");
-        beam_info_box->setPosition(0, -20, ABottomCenter)->setSize(500, 50);
+        beam_info_box->setPosition(0, -20, sp::Alignment::BottomCenter)->setSize(500, 50);
         (new GuiLabel(beam_info_box, "BEAM_INFO_LABEL", tr("Beams"), 30))->addBackground()->setPosition(0, 0, sp::Alignment::BottomLeft)->setSize(80, 50);
         (new GuiBeamFrequencySelector(beam_info_box, "BEAM_FREQUENCY_SELECTOR"))->setPosition(80, 0, sp::Alignment::BottomLeft)->setSize(132, 50);
-        (new GuiPowerDamageIndicator(beam_info_box, "", SYS_BeamWeapons, ACenterLeft, my_spaceship))->setPosition(0, 0, sp::Alignment::BottomLeft)->setSize(212, 50);
+        (new GuiPowerDamageIndicator(beam_info_box, "", SYS_BeamWeapons, sp::Alignment::CenterLeft, my_spaceship))->setPosition(0, 0, sp::Alignment::BottomLeft)->setSize(212, 50);
         (new GuiBeamTargetSelector(beam_info_box, "BEAM_TARGET_SELECTOR", my_spaceship))->setPosition(0, 0, sp::Alignment::BottomRight)->setSize(288, 50);
     }
 
@@ -102,7 +102,7 @@ TacticalScreen::TacticalScreen(GuiContainer* owner)
     missile_aim = new AimLock(this, "MISSILE_AIM", radar, -90, 360 - 90, 0, [this](float value){
         tube_controls->setMissileTargetAngle(value);
     });
-    missile_aim->hide()->setPosition(0, 0, ACenter)->setSize(GuiElement::GuiSizeMatchHeight, 800);
+    missile_aim->hide()->setPosition(0, 0, sp::Alignment::Center)->setSize(GuiElement::GuiSizeMatchHeight, 800);
     lock_aim = new AimLockButton(this, "LOCK_AIM", tube_controls, missile_aim, my_spaceship);
     lock_aim->setPosition(250, 20, sp::Alignment::TopCenter)->setSize(110, 50);
 

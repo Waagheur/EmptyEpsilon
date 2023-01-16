@@ -46,7 +46,7 @@ EngineeringScreen::EngineeringScreen(GuiContainer* owner, ECrewPosition crew_pos
     if (gameGlobalInfo->use_nano_repair_crew && gameGlobalInfo->use_system_damage)
     {
         repair_display = new GuiKeyValueDisplay(stats, "REPAIR_DISPLAY", 0.45, tr("total","Repair"), "");
-        //repair_display->setIcon("gui/icons/system_health")->setTextSize(20)->setPosition(20, 300, ATopLeft)->setSize(240, 40);
+        //repair_display->setIcon("gui/icons/system_health")->setTextSize(20)->setPosition(20, 300, sp::Alignment::TopLeft)->setSize(240, 40);
         repair_display->setIcon("gui/icons/system_health")->setTextSize(20)->setSize(240, 40);
     }
     
@@ -72,8 +72,8 @@ EngineeringScreen::EngineeringScreen(GuiContainer* owner, ECrewPosition crew_pos
 
         if (my_spaceship)
         {
-            info.state = new GuiPowerDamageIndicator(info.button, id + "_INDICATOR", ESystem(n), ACenterLeft, my_spaceship);
-            info.state ->setPosition(0, 0, ABottomLeft)->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);
+            info.state = new GuiPowerDamageIndicator(info.button, id + "_INDICATOR", ESystem(n), sp::Alignment::CenterLeft, my_spaceship);
+            info.state ->setPosition(0, 0, sp::Alignment::BottomLeft)->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);
         }
 
         info.damage_bar = new GuiProgressbar(info.layout, id + "_DAMAGE", 0.0, 1.0, 0.0);
@@ -207,21 +207,21 @@ EngineeringScreen::EngineeringScreen(GuiContainer* owner, ECrewPosition crew_pos
         
     if (gameGlobalInfo->use_nano_repair_crew)
     {
-        box->setPosition(0, 20, ATopCenter)->setSize(450, 220);
-        power_label->setHorizontal()->setPosition(20, 20, ATopLeft)->setSize(400, 20);
-        power_slider->setRange(0.0, 3.0)->setPosition(20, 40, ATopLeft)->setSize(400, 40);
-        coolant_label->setHorizontal()->setPosition(20, 80, ATopLeft)->setSize(400, 20);
-        coolant_slider->setRange(0.0, 10.0)->setPosition(20, 100, ATopLeft)->setSize(400, 40);
+        box->setPosition(0, 20, sp::Alignment::TopCenter)->setSize(450, 220);
+        power_label->setHorizontal()->setPosition(20, 20, sp::Alignment::TopLeft)->setSize(400, 20);
+        power_slider->setRange(0.0, 3.0)->setPosition(20, 40, sp::Alignment::TopLeft)->setSize(400, 40);
+        coolant_label->setHorizontal()->setPosition(20, 80, sp::Alignment::TopLeft)->setSize(400, 20);
+        coolant_slider->setRange(0.0, 10.0)->setPosition(20, 100, sp::Alignment::TopLeft)->setSize(400, 40);
         
         if (gameGlobalInfo->use_system_damage)
         {
             repair_label = new GuiLabel(box, "COOLANT_LABEL", tr("slider", "Repair"), 20);
-            repair_label->setAlignment(ACenterLeft)->setPosition(20, 140, ATopLeft)->setSize(400, 20);
+            repair_label->setAlignment(sp::Alignment::CenterLeft)->setPosition(20, 140, sp::Alignment::TopLeft)->setSize(400, 20);
             repair_slider = new GuiSlider(box, "REPAIR_SLIDER", 0.0, 10.0, 0.0, [this](float value) {
             if (my_spaceship && selected_system != SYS_None)
                 my_spaceship->commandSetSystemRepairRequest(selected_system, value);
             });
-            repair_slider->setPosition(20, 160, ATopLeft)->setSize(400, 40);
+            repair_slider->setPosition(20, 160, sp::Alignment::TopLeft)->setSize(400, 40);
             repair_slider->disable();
         }
     }
@@ -231,7 +231,7 @@ EngineeringScreen::EngineeringScreen(GuiContainer* owner, ECrewPosition crew_pos
     new ShipsLog(this,"intern");
     // Bottom layout.
     GuiAutoLayout* layout = new GuiAutoLayout(this, "", GuiAutoLayout::LayoutVerticalBottomToTop);
-    layout->setPosition(-20, -20, ABottomRight)->setSize(300, GuiElement::GuiSizeMax);
+    layout->setPosition(-20, -20, sp::Alignment::BottomRight)->setSize(300, GuiElement::GuiSizeMax);
     std::vector<GuiAutoLayout*> presets_buttons_layouts;
 
     // Presets buttons.

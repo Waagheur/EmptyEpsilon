@@ -82,7 +82,7 @@ OperationScreen::OperationScreen(GuiContainer* owner)
 
     // Reputation display.
     //info_reputation = new GuiKeyValueDisplay(this, "INFO_REPUTATION", 0.7, tr("Reputation") + ":", "");
-    //info_reputation->setPosition(20, 20, ATopLeft)->setSize(175, 30);
+    //info_reputation->setPosition(20, 20, sp::Alignment::TopLeft)->setSize(175, 30);
 
     // Scenario clock display.
     info_clock = new GuiKeyValueDisplay(this, "INFO_CLOCK", 0.7, tr("Clock") + ":", "");

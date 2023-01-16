@@ -87,7 +87,7 @@ GuiCommsOverlay::GuiCommsOverlay(GuiContainer* owner)
     // Panel for chat communications with GMs and other player ships.
      // Panel de titre
     chat_comms_title = new GuiPanel(this, "HACK_TITLE_BOX");
-    chat_comms_title ->setSize(600, 50)->setPosition(0, -720, ABottomCenter)->hide();
+    chat_comms_title ->setSize(600, 50)->setPosition(0, -720, sp::Alignment::BottomCenter)->hide();
 
     chat_label = new GuiLabel(chat_comms_title, "", "", 30);
     chat_label->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);
@@ -97,13 +97,13 @@ GuiCommsOverlay::GuiCommsOverlay(GuiContainer* owner)
         if (my_spaceship)
             my_spaceship->commandCloseTextComm();
     });
-    chat_comms_close_button->setTextSize(20)->setPosition(-10, 10, ATopRight)->setSize(60, 30);
+    chat_comms_close_button->setTextSize(20)->setPosition(-10, 10, sp::Alignment::TopRight)->setSize(60, 30);
 
     chat_minimize_button = new GuiToggleButton(chat_comms_title, "", "-", [this](bool value)
     {
         minimize(value);
     });
-    chat_minimize_button->setPosition(-70, 10, ATopRight)->setSize(60, 30);
+    chat_minimize_button->setPosition(-70, 10, sp::Alignment::TopRight)->setSize(60, 30);
 
     minimized = false;
 
