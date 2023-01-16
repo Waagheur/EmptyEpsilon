@@ -119,7 +119,7 @@ float DroneOperatorScreen::getConnectionQuality(P<PlayerSpaceship> ship)
     float droneStateFactor = 1.0f;
     return rangeFactor * droneStateFactor;
 }
-void DroneOperatorScreen::onDraw(sf::RenderTarget &window)
+void DroneOperatorScreen::onDraw(sp::RenderTarget& renderer)
 {
     if (my_spaceship)
     {

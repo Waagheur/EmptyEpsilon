@@ -73,7 +73,9 @@ void ShipsLog::onDraw(sp::RenderTarget& renderer)
         )
             background = "gui/widget/ButtonBackground.hover.png";
 
-        drawStretchedHV(window, sf::FloatRect(rect.left, rect.top, rect.width, rect.height), 50.0f, background);
+        renderer.drawStretchedHV(sp::Rect(rect.position.x, rect.position.y, rect.size.x, rect.size.y), 50.0f, background);
+
+
         const std::vector<PlayerSpaceship::ShipLogEntry>& logs = my_spaceship->getShipsLog(station);
         if (log_text->getEntryCount() > 0 && logs.size() == 0)
             log_text->clearEntries();

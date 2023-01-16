@@ -378,7 +378,7 @@ void DroneMasterScreen::selectDock(int index)
     action_weapons->setVisible(dockData.dock_type == Dock_Weapons);
 }
 
-void DroneMasterScreen::onDraw(sf::RenderTarget &window)
+void DroneMasterScreen::onDraw(sp::RenderTarget& renderer)
 {
     GuiOverlay::onDraw(window);
     if (my_spaceship)

@@ -27,7 +27,7 @@ void GuiBeamTargetSelector::setTargetSpaceship(P<PlayerSpaceship> targetSpaceshi
     pdi->setTargetSpaceship(target_spaceship);
 }
 
-void GuiBeamTargetSelector::onDraw(sf::RenderTarget& window)
+void GuiBeamTargetSelector::onDraw(sp::RenderTarget& renderer)
 {
 //    if (target_spaceship)
 //        selector->setSelectionIndex(selector->indexByValue(target_spaceship->beam_system_target));

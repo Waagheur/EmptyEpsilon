@@ -120,7 +120,7 @@ NavigationScreen::NavigationScreen(GuiContainer *owner)
 
     (new GuiCustomShipFunctions(this, navigation, "", my_spaceship))->setPosition(-20, 240, sp::Alignment::TopRight)->setSize(250, GuiElement::GuiSizeMax);
 }
- void NavigationScreen::onDraw(sf::RenderTarget &window)
+ void NavigationScreen::onDraw(sp::RenderTarget& renderer)
 {
     ///Handle mouse wheel
     float mouse_wheel_delta = InputHandler::getMouseWheelDelta();

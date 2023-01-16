@@ -74,7 +74,7 @@ private:
 public:
     GuiObjectTweakBase(GuiContainer* owner);
 
-    virtual void onDraw(sf::RenderTarget& window) override;
+    virtual void onDraw(sp::RenderTarget& renderer) override;
     virtual void open(P<SpaceObject> target) override;
 };
 
@@ -97,7 +97,7 @@ private:
 
 public:
     GuiTemplateTweak(GuiContainer* owner);
-    virtual void onDraw(sf::RenderTarget& window) override;
+    virtual void onDraw(sp::RenderTarget& renderer) override;
     virtual void open(P<SpaceObject> target) override;
 };
 
@@ -112,7 +112,7 @@ private:
 public:
     GuiShipTweakShields(GuiContainer* owner);
 
-    virtual void onDraw(sf::RenderTarget& window) override;
+    virtual void onDraw(sp::RenderTarget& renderer) override;
 
     virtual void open(P<SpaceObject> target) override;
 };
@@ -333,7 +333,7 @@ public:
 
     virtual void open(P<SpaceObject> target) override;
 
-    virtual void onDraw(sf::RenderTarget& window) override;
+    virtual void onDraw(sp::RenderTarget& renderer) override;
 };
 
 class GuiShipTweakDock : public GuiTweakPage
@@ -348,7 +348,7 @@ public:
     GuiShipTweakDock(GuiContainer* owner);
     virtual void open(P<SpaceObject> target);
 
-    virtual void onDraw(sf::RenderTarget& window) override;
+    virtual void onDraw(sp::RenderTarget& renderer) override;
 
 };
 
@@ -369,7 +369,7 @@ public:
 
     virtual void open(P<SpaceObject> target) override;
 
-    virtual void onDraw(sf::RenderTarget& window) override;
+    virtual void onDraw(sp::RenderTarget& renderer) override;
 };
 
 class GuiShipTweakMessages : public GuiTweakPage
@@ -406,7 +406,7 @@ public:
 
     virtual void open(P<SpaceObject> target);
 
-    virtual void onDraw(sf::RenderTarget& window) override;
+    virtual void onDraw(sp::RenderTarget& renderer) override;
 };
 
 class GuiShipTweakInfos : public GuiTweakPage
@@ -434,7 +434,7 @@ private:
 public:
     GuiAsteroidTweak(GuiContainer* owner);
 
-    virtual void onDraw(sf::RenderTarget& window) override;
+    virtual void onDraw(sp::RenderTarget& renderer) override;
 
     virtual void open(P<SpaceObject> target) override;
 };

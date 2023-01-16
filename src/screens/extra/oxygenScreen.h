@@ -28,7 +28,7 @@ private:
 public:
     OxygenScreen(GuiContainer* owner);
 
-    void onDraw(sf::RenderTarget& window) override;
+    void onDraw(sp::RenderTarget& renderer) override;
     string timeCount(float numSec);
 };
 

@@ -137,7 +137,7 @@ void DockMasterScreen::selectBay(int index_bay)
     layout_move->setVisible(true);
 }
 
-void DockMasterScreen::onDraw(sf::RenderTarget &window)
+void DockMasterScreen::onDraw(sp::RenderTarget& renderer)
 {
     GuiOverlay::onDraw(window);
     for (int n = 0; n < 10; n++)

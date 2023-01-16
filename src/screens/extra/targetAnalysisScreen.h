@@ -59,7 +59,7 @@ class TargetAnalysisScreen : public GuiOverlay
 
   public:
     TargetAnalysisScreen(GuiContainer *owner);
-    void onDraw(sf::RenderTarget &window) override;
+    void onDraw(sp::RenderTarget &renderer) override;
     P<ScienceDatabase> findDatabaseEntry(string name);
 };
 #endif //TARGET_ANALYSIS_SCREEN_H

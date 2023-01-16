@@ -31,7 +31,7 @@ void GuiLandingButton::click()
     }
 }
 
-void GuiLandingButton::onDraw(sf::RenderTarget& window)
+void GuiLandingButton::onDraw(sp::RenderTarget& renderer)
 {
     if (landing_spaceship)
     {
@@ -77,7 +77,7 @@ void GuiLandingButton::onDraw(sf::RenderTarget& window)
 
         setVisible(landing_spaceship->hasSystem(SYS_Impulse));
     }
-    GuiButton::onDraw(window);
+    GuiButton::onDraw(renderer);
 }
 
 void GuiLandingButton::onHotkey(const HotkeyResult& key)

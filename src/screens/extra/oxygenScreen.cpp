@@ -62,7 +62,7 @@ OxygenScreen::OxygenScreen(GuiContainer *owner)
     }
 }
 
-void OxygenScreen::onDraw(sf::RenderTarget &window)
+void OxygenScreen::onDraw(sp::RenderTarget& renderer)
 {
     GuiOverlay::onDraw(window);
 

@@ -13,7 +13,7 @@ private:
 public:
     GuiLandingButton(GuiContainer* owner, string id, P<PlayerSpaceship> targetSpaceship);
 
-    virtual void onDraw(sf::RenderTarget& window) override;
+    virtual void onDraw(sp::RenderTarget& renderer) override;
     virtual void onHotkey(const HotkeyResult& key) override;
     void setTargetSpaceship(P<PlayerSpaceship> targetSpaceship){landing_spaceship = targetSpaceship;}
 

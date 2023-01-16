@@ -65,7 +65,7 @@ class DockMasterScreen : public GuiOverlay
   public:
     DockMasterScreen(GuiContainer *owner);
 
-    void onDraw(sf::RenderTarget &window) override;
+    void onDraw(sp::RenderTarget &renderer) override;
   private:
     void selectDock(int index_dock);
     void selectBay(int index_bay);

@@ -180,7 +180,7 @@ TargetAnalysisScreen::TargetAnalysisScreen(GuiContainer *owner)
     info_biological_signal_label->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);
 }
 
-void TargetAnalysisScreen::onDraw(sf::RenderTarget &window)
+void TargetAnalysisScreen::onDraw(sp::RenderTarget& renderer)
 {
     info_callsign->setValue("-");
     info_distance->setValue("-");

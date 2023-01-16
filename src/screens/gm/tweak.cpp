@@ -258,7 +258,7 @@ GuiObjectTweakBase::GuiObjectTweakBase(GuiContainer* owner)
 
 }
 
-void GuiObjectTweakBase::onDraw(sf::RenderTarget& window)
+void GuiObjectTweakBase::onDraw(sp::RenderTarget& renderer)
 {
     if(!target)
         return;
@@ -395,7 +395,7 @@ GuiTemplateTweak::GuiTemplateTweak(GuiContainer* owner)
     });
     system_damage_hull_threshold_slider->addOverlay()->setSize(GuiElement::GuiSizeMax, 40);
 }
- void GuiTemplateTweak::onDraw(sf::RenderTarget& window)
+ void GuiTemplateTweak::onDraw(sp::RenderTarget& renderer)
 {
     if(target)
     {
@@ -469,7 +469,7 @@ GuiShipTweakShields::GuiShipTweakShields(GuiContainer* owner)
     shield_recharge_slider->addOverlay()->setSize(GuiElement::GuiSizeMax, 40);
 }
 
-void GuiShipTweakShields::onDraw(sf::RenderTarget& window)
+void GuiShipTweakShields::onDraw(sp::RenderTarget& renderer)
 {
     if(!target)
         return;
@@ -632,7 +632,7 @@ GuiShipTweak::GuiShipTweak(GuiContainer* owner)
     warp_speed_slider->addOverlay()->setSize(GuiElement::GuiSizeMax, 35);
 
 }
- void GuiShipTweak::onDraw(sf::RenderTarget& window)
+ void GuiShipTweak::onDraw(sp::RenderTarget& renderer)
 {
     if(!target)
         return;
@@ -1101,7 +1101,7 @@ void GuiShipTweakBeamweapons::onDraw(sp::RenderTarget& renderer)
 {
     if(!target)
         return;
-    target->drawOnRadar(window, sf::Vector2f(rect.left - 150.0f + rect.width / 2.0f, rect.top + rect.height * 0.66), 300.0f / 5000.0f, 0, false);
+    target->drawOnRadar(renderer, glm::vec2f(rect.position.x - 150.0f + rect.size.x / 2.0f, rect.position.y + rect.size.y * 0.66), 300.0f / 5000.0f, 0, false);
 
     arc_slider->setValue(target->beam_weapons[beam_index].getArc());
     direction_slider->setValue(angleDifference(0.0f, target->beam_weapons[beam_index].getDirection()));
@@ -1288,7 +1288,7 @@ GuiShipTweakCrew::GuiShipTweakCrew(GuiContainer* owner)
 
 }
 
-void GuiShipTweakCrew::onDraw(sf::RenderTarget& window)
+void GuiShipTweakCrew::onDraw(sp::RenderTarget& renderer)
 {
     if(!target)
         return;
@@ -1804,7 +1804,7 @@ void GuiShipTweakDock::open(P<SpaceObject> target)
     }
 }
 
-void GuiShipTweakDock::onDraw(sf::RenderTarget& window)
+void GuiShipTweakDock::onDraw(sp::RenderTarget& renderer)
 {
     if(!target)
         return;
@@ -1928,7 +1928,7 @@ GuiShipTweakOxygen::GuiShipTweakOxygen(GuiContainer* owner)
     max_passagers_slider->addOverlay()->setSize(GuiElement::GuiSizeMax, 40);
 }
 
-void GuiShipTweakOxygen::onDraw(sf::RenderTarget& window)
+void GuiShipTweakOxygen::onDraw(sp::RenderTarget& renderer)
 {
     if(!target)
         return;
@@ -2213,7 +2213,7 @@ GuiShipTweakInfos::GuiShipTweakInfos(GuiContainer* owner)
 
 }
 
-void GuiShipTweakInfos::onDraw(sf::RenderTarget& window)
+void GuiShipTweakInfos::onDraw(sp::RenderTarget& renderer)
 {
     if(!target)
         return;
@@ -2295,7 +2295,7 @@ void GuiShipTweakSystemPowerFactors::open(P<SpaceObject> target)
     }
 }
 
-void GuiShipTweakSystemPowerFactors::onDraw(sf::RenderTarget& window)
+void GuiShipTweakSystemPowerFactors::onDraw(sp::RenderTarget& renderer)
 {
     if(!target)
         return;

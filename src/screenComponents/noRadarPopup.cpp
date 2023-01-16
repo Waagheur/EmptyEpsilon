@@ -19,7 +19,7 @@ GuiNoRadarPopup::GuiNoRadarPopup(GuiContainer* owner)
 
 }
 
-void GuiNoRadarPopup::onDraw(sf::RenderTarget& window)
+void GuiNoRadarPopup::onDraw(sp::RenderTarget& renderer)
 {
     if (my_spaceship && my_spaceship->getLongRangeRadarRange() <=0)
     {

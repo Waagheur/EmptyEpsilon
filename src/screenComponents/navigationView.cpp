@@ -16,7 +16,7 @@ NavigationView::NavigationView(GuiContainer* owner, string id, float distance, T
 : SectorsView(owner, id, distance, targets) {
 }
 
-void NavigationView::onDraw(sf::RenderTarget& window)
+void NavigationView::onDraw(sp::RenderTarget& renderer)
 {
     //Setup our textures for rendering
     adjustRenderTexture(background_texture);
@@ -33,41 +33,33 @@ void NavigationView::onDraw(sf::RenderTarget& window)
     drawTargets(forground_texture);
      if (my_spaceship)
     {
-        glm::vec2 ship_offset = (my_spaceship->getPosition() - getViewPosition()) / getDistance() * std::min(rect.width, rect.height) / 2.0f;
-        if (ship_offset.x < -rect.width / 2.0f || ship_offset.x > rect.width / 2.0f || ship_offset.y < -rect.height / 2.0f || ship_offset.y > rect.height / 2.0f)
+        auto ship_offset = (target_spaceship->getPosition() - getViewPosition()) / getDistance() * std::min(rect.size.x, rect.size.y) / 2.0f;
+        if (ship_offset.x < -rect.size.x / 2.0f || ship_offset.x > rect.size.x / 2.0f || ship_offset.y < -rect.size.y / 2.0f || ship_offset.y > rect.size.y / 2.0f)
         {
-            glm::vec2 position(rect.left + rect.width / 2.0f, rect.top + rect.height / 2.0);
-            position += ship_offset / glm::length(ship_offset) * std::min(rect.width, rect.height) * 0.4f;
-             sf::Sprite arrow_sprite;
-            textureManager.setTexture(arrow_sprite, "waypoint");
-            arrow_sprite.setPosition(sf::Vector2f(position.x, position.y));
-            arrow_sprite.setRotation(vec2ToAngle(ship_offset) - 90);
-            forground_texture.draw(arrow_sprite);
+            glm::vec2 position(rect.position.x + rect.size.x / 2.0f, rect.position.y + rect.size.y / 2.0);
+            position += ship_offset / glm::length(ship_offset) * std::min(rect.size.x, rect.size.y) * 0.4f;
+
+            renderer.drawRotatedSprite("waypoint.png", position, 32, vec2ToAngle(ship_offset) - 90);
         }
     }
      //Render the final radar
-    drawRenderTexture(background_texture, window);
-    drawRenderTexture(forground_texture, window);
+    drawRenderTexture(background_texture, renderer.getSFMLTarget());
+    drawRenderTexture(forground_texture, renderer.getSFMLTarget());
 }
 
-void NavigationView::drawWaypoints(sf::RenderTarget& window)
+void NavigationView::drawWaypoints(sp::RenderTarget& renderer)
 {
     if (!my_spaceship)
         return;
 
-    sf::Vector2f radar_screen_center(rect.left + rect.width / 2.0f, rect.top + rect.height / 2.0f);
+    glm::vec2 radar_screen_center(rect.position.x + rect.size.x / 2.0f, rect.position.y + rect.size.y / 2.0f);
 
     for(unsigned int n=0; n<my_spaceship->waypoints.size(); n++)
     {
-        sf::Vector2f screen_position = worldToScreen(my_spaceship->waypoints[n]);
+        auto screen_position = worldToScreen(my_spaceship->waypoints[n]);
 
-        sf::Sprite object_sprite;
-        textureManager.setTexture(object_sprite, "waypoint");
-        object_sprite.setColor(colorConfig.ship_waypoint_background);
-        object_sprite.setPosition(screen_position - sf::Vector2f(0, 10));
-        object_sprite.setScale(0.8, 0.8);
-        window.draw(object_sprite);
-        drawText(window, sf::FloatRect(screen_position.x, screen_position.y - 10, 0, 0), string(n + 1), sp::Alignment::Center, 18, bold_font, colorConfig.ship_waypoint_text);
+        renderer.drawSprite("waypoint.png", screen_position - glm::vec2(0, 10), 20, colorConfig.ship_waypoint_background);
+        renderer.drawText(sp::Rect(screen_position.x, screen_position.y - 10, 0, 0), string(n + 1), sp::Alignment::Center, 18, bold_font, colorConfig.ship_waypoint_text);
 
         // if (style != GuiRadarView::Rectangular && sf::length(screen_position - radar_screen_center) > std::min(rect.width, rect.height) * 0.5f)
         // {
@@ -82,9 +74,9 @@ void NavigationView::drawWaypoints(sf::RenderTarget& window)
     }
 }
 
-void NavigationView::drawObjects(sf::RenderTarget& window_normal, sf::RenderTarget& window_alpha)
+void NavigationView::drawObjects(sp::RenderTarget& renderer_normal, sp::RenderTarget& renderer_alpha)
 {
-    glm::vec2 radar_screen_center(rect.left + rect.width / 2.0f, rect.top + rect.height / 2.0f);
+    glm::vec2 radar_screen_center(rect.position.x + rect.size.x / 2.0f, rect.position.y + rect.size.y / 2.0f);
     std::set<SpaceObject*> visible_objects;
     foreach(SpaceObject, obj, space_object_list)
     {
@@ -95,18 +87,18 @@ void NavigationView::drawObjects(sf::RenderTarget& window_normal, sf::RenderTarg
     {
         auto object_position_on_screen = worldToScreen(obj->getPosition());
         float r = obj->getRadius() * getScale();
-        sf::FloatRect object_rect(object_position_on_screen.x - r, object_position_on_screen.y - r, r * 2, r * 2);
-        if (obj != *my_spaceship && rect.intersects(object_rect))
+        sp::Rect object_rect(object_position_on_screen.x - r, object_position_on_screen.y - r, r * 2, r * 2);
+        if (obj != *my_spaceship && rect.overlaps(object_rect))
         {
-            sf::RenderTarget* window = &window_normal;
+            sp::RenderTarget* renderer = &renderer_normal;
             if (!obj->canHideInNebula())
-                window = &window_alpha;
-            obj->drawOnRadar(*window, object_position_on_screen, getScale(), getViewRotation(), true);
+                renderer = &renderer_alpha;
+            obj->drawOnRadar(*renderer, object_position_on_screen, getScale(), getViewRotation(), true);
         }
     }
     if (my_spaceship)
     {
         auto object_position_on_screen = worldToScreen(my_spaceship->getPosition());
-        my_spaceship->drawOnRadar(window_normal, object_position_on_screen, getScale(), getViewRotation(), true);
+        my_spaceship->drawOnRadar(renderer_normal, object_position_on_screen, getScale(), getViewRotation(), true);
     }
 }

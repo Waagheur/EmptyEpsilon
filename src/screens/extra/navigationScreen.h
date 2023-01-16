@@ -44,7 +44,7 @@ private:
 public:
     NavigationScreen(GuiContainer* owner);
 
-    virtual void onDraw(sf::RenderTarget& window);
+    virtual void onDraw(sp::RenderTarget& renderer);
 };
 
 #endif //NAVIGATION_SCREEN_H

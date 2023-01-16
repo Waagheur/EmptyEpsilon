@@ -714,7 +714,9 @@ void GuiRadarView::drawHeadingIndicators(sp::RenderTarget& renderer)
 {
     float boundingRadius = std::min(rect.width, rect.height) / 2.0f; //NOT divided by distance here, attention. Do not use getScale() !
 
-    sf::Vector2f radar_screen_center(rect.left + rect.width / 2.0f, rect.top + rect.height / 2.0f);
+    auto& window = renderer.getSFMLTarget();
+    
+    auto radar_screen_center(rect.position.x + rect.size.x / 2.0f, rect.position.y + rect.size.y / 2.0f);
     // If radar is 600-800px then tigs run every 20 degrees, small tigs every 5.
     // So if radar is 400-600x then the tigs should run every 45 degrees and smalls every 5.
     // If radar is <400px, tigs every 90, smalls every 10.

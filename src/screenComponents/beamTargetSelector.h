@@ -22,7 +22,7 @@ public:
     GuiBeamTargetSelector(GuiContainer* owner, string id, P<PlayerSpaceship> targetSpaceship);
 
     virtual void onHotkey(const HotkeyResult& key) override;
-    virtual void onDraw(sf::RenderTarget& window);
+    virtual void onDraw(sp::RenderTarget& renderer);
     void setTargetSpaceship(P<PlayerSpaceship> targetSpaceship);
 };
 

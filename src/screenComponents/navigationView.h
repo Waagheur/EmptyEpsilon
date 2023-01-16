@@ -12,7 +12,7 @@ class NavigationView : public SectorsView
   public:
     NavigationView(GuiContainer *owner, string id, float distance, TargetsContainer *targets);
     
-    virtual void onDraw(sf::RenderTarget &window);
+    virtual void onDraw(sp::RenderTarget &target);
     
     virtual NavigationView *setDistance(float distance)
     {
@@ -25,7 +25,7 @@ class NavigationView : public SectorsView
         return this;
     }
 private:
-    void drawObjects(sf::RenderTarget& window_normal, sf::RenderTarget& window_alpha);
-    void drawWaypoints(sf::RenderTarget &window);
+    void drawObjects(sp::RenderTarget& window_normal, sp::RenderTarget& window_alpha);
+    void drawWaypoints(sp::RenderTarget &window);
 };
  #endif //NAVIGATION_VIEW_H
