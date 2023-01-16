@@ -41,13 +41,13 @@ class SectorsView : public GuiElement
             this->view_rotation = view_rotation; 
         }
         virtual float getViewRotation() { return view_rotation; }
-        virtual sf::Vector2f worldToScreen(glm::vec2 world_position);
-        virtual glm::vec2 screenToWorld(sf::Vector2f screen_position);
+        virtual glm::vec2 worldToScreen(glm::vec2 world_position);
+        virtual glm::vec2 screenToWorld(glm::vec2 screen_position);
         virtual float getScale() { return std::min(rect.width, rect.height) / 2.0f / distance; };
-        void drawSectorGrid(sf::RenderTarget &window);
-        virtual bool onMouseDown(sf::Vector2f position);
-        virtual void onMouseDrag(sf::Vector2f position);
-        virtual void onMouseUp(sf::Vector2f position);
+        void drawSectorGrid(sp::RenderTarget &window);
+        virtual bool onMouseDown(glm::vec2 position);
+        virtual void onMouseDrag(glm::vec2 position);
+        virtual void onMouseUp(glm::vec2 position);
         virtual SectorsView *setCallbacks(pfunc_t mouse_down_func, pfunc_t mouse_drag_func, pfunc_t mouse_up_func)
         {
             this->mouse_down_func = mouse_down_func;
@@ -57,8 +57,8 @@ class SectorsView : public GuiElement
         }
     protected:
         TargetsContainer * getTargets(){return targets;};
-        void drawTargets(sf::RenderTarget &window);
-        void drawTerrain(sf::RenderTarget &window);
+        void drawTargets(sp::RenderTarget &window);
+        void drawTerrain(sp::RenderTarget &window);
     private:
         int calcGridScaleMagnitude(int scale_magnitude, int position);
 };

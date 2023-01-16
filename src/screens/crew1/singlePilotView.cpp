@@ -39,7 +39,7 @@ SinglePilotView::SinglePilotView(GuiContainer* owner, P<PlayerSpaceship> targetS
 
     // 5U tactical radar with piloting features.
     radar = new GuiRadarView(this, "TACTICAL_RADAR", &targets, (P<SpaceShip>)target_spaceship);
-    radar->setPosition(0, 0, ACenter)->setSize(GuiElement::GuiSizeMatchHeight, 750);
+    radar->setPosition(0, 0, sp::Alignment::Center)->setSize(GuiElement::GuiSizeMatchHeight, 750);
     radar->setRangeIndicatorStepSize(1000.0)->shortRange()->enableGhostDots()->enableWaypoints()->enableCallsigns()->enableHeadingIndicators()->setStyle(GuiRadarView::Circular);
     radar->setCallbacks(
         [this](glm::vec2 position) {
@@ -83,7 +83,7 @@ SinglePilotView::SinglePilotView(GuiContainer* owner, P<PlayerSpaceship> targetS
     missile_aim = new AimLock(this, "MISSILE_AIM", radar, -90, 360 - 90, 0, [this](float value){
         tube_controls->setMissileTargetAngle(value);
     });
-    missile_aim->setPosition(0, 0, ACenter)->setSize(GuiElement::GuiSizeMatchHeight, 700);
+    missile_aim->setPosition(0, 0, sp::Alignment::Center)->setSize(GuiElement::GuiSizeMatchHeight, 700);
 
     // Weapon tube controls.
     tube_controls = new GuiMissileTubeControls(this, "MISSILE_TUBES", target_spaceship);
@@ -92,7 +92,7 @@ SinglePilotView::SinglePilotView(GuiContainer* owner, P<PlayerSpaceship> targetS
 
     // Engine layout in top left corner of left panel.
     GuiAutoLayout* engine_layout = new GuiAutoLayout(this, "ENGINE_LAYOUT", GuiAutoLayout::LayoutHorizontalLeftToRight);
-    engine_layout->setPosition(20, 120, ATopLeft)->setSize(GuiElement::GuiSizeMax, 250);
+    engine_layout->setPosition(20, 120, sp::Alignment::TopLeft)->setSize(GuiElement::GuiSizeMax, 250);
 
     impulse_controls = new GuiImpulseControls(engine_layout, "IMPULSE", target_spaceship);
     impulse_controls->setSize(100, GuiElement::GuiSizeMax);
@@ -103,16 +103,16 @@ SinglePilotView::SinglePilotView(GuiContainer* owner, P<PlayerSpaceship> targetS
 
     // Docking, comms, and shields buttons across top.
     docking_button = new GuiDockingButton(this, "DOCKING", target_spaceship);
-    docking_button->setPosition(20, 20, ATopLeft)->setSize(250, 50);
+    docking_button->setPosition(20, 20, sp::Alignment::TopLeft)->setSize(250, 50);
     landing_button = new GuiLandingButton(this, "LANDING", target_spaceship);
-    landing_button->setPosition(20, 60, ATopLeft)->setSize(250, 50);
+    landing_button->setPosition(20, 60, sp::Alignment::TopLeft)->setSize(250, 50);
     if (target_spaceship == my_spaceship)
     {
-        (new GuiOpenCommsButton(this, "OPEN_COMMS_BUTTON", tr("Open Comms"), &targets))->setPosition(270, 20, ATopLeft)->setSize(250, 50);
+        (new GuiOpenCommsButton(this, "OPEN_COMMS_BUTTON", tr("Open Comms"), &targets))->setPosition(270, 20, sp::Alignment::TopLeft)->setSize(250, 50);
         (new GuiCommsOverlay(this))->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);
     }
     shields_enable_button = new GuiShieldsEnableButton(this, "SHIELDS_ENABLE", target_spaceship);
-    shields_enable_button->setPosition(-20, 80, ATopRight)->setSize(250, 50);
+    shields_enable_button->setPosition(-20, 80, sp::Alignment::TopRight)->setSize(250, 50);
 
 
     lock_fire = new GuiToggleButton(this, "TOOGLE_FIRE", "Feu", [this](bool value){
@@ -121,16 +121,16 @@ SinglePilotView::SinglePilotView(GuiContainer* owner, P<PlayerSpaceship> targetS
     });
     lock_fire->setIcon("gui/icons/lock");
     //lock_fire->setPosition(-70, -10, ABottomCenter)->setSize(200, 50);
-    lock_fire->setPosition(-20, 150, ATopRight)->setSize(150, 50);
+    lock_fire->setPosition(-20, 150, sp::Alignment::TopRight)->setSize(150, 50);
     lock_fire->setValue(false);
 
     // Missile lock button near top right of left panel.
     lock_aim = new AimLockButton(this, "LOCK_AIM", tube_controls, missile_aim, target_spaceship);
     //lock_aim->setPosition(130, -10, ABottomCenter)->setSize(200, 50);
-    lock_aim->setPosition(-20, 200, ATopRight)->setSize(150, 50);
+    lock_aim->setPosition(-20, 200, sp::Alignment::TopRight)->setSize(150, 50);
 
     custom_ship_functions = new GuiCustomShipFunctions(this, singlePilot, "", target_spaceship);
-    custom_ship_functions->setPosition(-20, 120, ATopRight)->setSize(250, GuiElement::GuiSizeMax);
+    custom_ship_functions->setPosition(-20, 120, sp::Alignment::TopRight)->setSize(250, GuiElement::GuiSizeMax);
 }
 
 void SinglePilotView::setTargetSpaceship(P<PlayerSpaceship> targetSpaceship){
@@ -148,7 +148,7 @@ void SinglePilotView::setTargetSpaceship(P<PlayerSpaceship> targetSpaceship){
     custom_ship_functions->setTargetSpaceship(target_spaceship);
 }
 
-void SinglePilotView::onDraw(sf::RenderTarget& window)
+void SinglePilotView::onDraw(sp::RenderTarget& renderer)
 {
     if (target_spaceship)
     {
