@@ -97,6 +97,7 @@ void SectorsView::drawSectorGrid(sp::RenderTarget &renderer)
         renderer.drawLine(worldToScreen(glm::vec2((sector_x_min-1)*sector_size_scaled, y)), worldToScreen(glm::vec2((sector_x_max+1)*sector_size_scaled, y)), color);
     }
 
+    /*
     sf::Color color = sf::Color(64, 64, 128, 255);
     int sub_sector_x_min = floor((view_position.x - (radar_screen_center.x - rect.position.x) / scale) / sub_sector_size) + 1;
     int sub_sector_x_max = floor((view_position.x + (rect.position.x + rect.size.x - radar_screen_center.x) / scale) / sub_sector_size);
@@ -109,10 +110,11 @@ void SectorsView::drawSectorGrid(sp::RenderTarget &renderer)
         for (int sector_y = sub_sector_y_min+1; sector_y <= sub_sector_y_max; sector_y++)
         {
             float y = sector_y * sub_sector_size;
-            renderer.drawLine(worldToScreen(oldpos), worldToScreen(glm::vec2(x,y)), color);
+            renderer.drawPoints(worldToScreen(oldpos), worldToScreen(glm::vec2(x,y)), color);
             oldpos = glm::vec2(x,y);
         }
     }
+    */
 }
 
 void SectorsView::drawTargets(sp::RenderTarget& renderer)
