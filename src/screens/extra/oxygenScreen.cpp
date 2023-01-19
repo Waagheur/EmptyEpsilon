@@ -64,7 +64,7 @@ OxygenScreen::OxygenScreen(GuiContainer *owner)
 
 void OxygenScreen::onDraw(sp::RenderTarget& renderer)
 {
-    GuiOverlay::onDraw(window);
+    GuiOverlay::onDraw(renderer);
 
     if (my_spaceship)
     {

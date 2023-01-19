@@ -366,6 +366,9 @@ void GuiRadarView::drawNebulaBlockedAreas(sp::RenderTarget& renderer)
                 float r = n->getRadius() * getScale();
                 renderer.fillCircle(worldToScreen(n->getPosition()), r, sf::Color::Black);
 
+                float diff_angle = vec2ToAngle(diff);
+                float angle = acosf(n->getRadius() / diff_len) / M_PI * 180.0f;
+                
                 auto pos_a = n->getPosition() - vec2FromAngle(diff_angle + angle) * n->getRadius();
                 auto pos_b = n->getPosition() - vec2FromAngle(diff_angle - angle) * n->getRadius();
                 auto pos_c = scan_center + glm::normalize(pos_a - scan_center) * getDistance() * 3.0f;
@@ -437,7 +440,8 @@ void GuiRadarView::drawRangeIndicators(sp::RenderTarget& renderer)
         renderer.drawCircleOutline(radar_screen_center, s, 2.0, sf::Color(255, 255, 255, 16));
         renderer.drawText(sp::Rect(radar_screen_center.x, radar_screen_center.y - s - 20, 0, 0), string(int(circle_size / 1000.0f + 0.1f)) + DISTANCE_UNIT_1K, sp::Alignment::Center, 20, bold_font, sf::Color(255, 255, 255, 32));
 
-        float s = circle_size * scale;
+    }
+}
 
 void GuiRadarView::drawTargetProjections(sp::RenderTarget& renderer)
 {
@@ -528,7 +532,7 @@ void GuiRadarView::drawTargetProjections(sp::RenderTarget& renderer)
             glm::vec2 n = glm::normalize(rotateVec2(glm::vec2(-obj->getVelocity().y, obj->getVelocity().x), -getViewRotation())) * 10.0f;
             for(int cnt=0; cnt<5; cnt++)
             {
-                auto p = rotateVec2(obj->getVelocity() * (seconds_per_distance_tick * (cnt + 1.0f) * scale), -getViewRotation());
+                auto p = rotateVec2(obj->getVelocity() * (seconds_per_distance_tick * (cnt + 1.0f) * getScale()), -getViewRotation());
                 renderer.drawLine(start + p + n, start + p - n, sf::Color(255, 255, 255, 128 - cnt * 20));
             }
         }
@@ -712,11 +716,11 @@ void GuiRadarView::drawObjectsGM(sp::RenderTarget& renderer)
 
 void GuiRadarView::drawHeadingIndicators(sp::RenderTarget& renderer)
 {
-    float boundingRadius = std::min(rect.width, rect.height) / 2.0f; //NOT divided by distance here, attention. Do not use getScale() !
+    float boundingRadius = std::min(rect.size.x, rect.size.y) / 2.0f; //NOT divided by distance here, attention. Do not use getScale() !
 
     auto& window = renderer.getSFMLTarget();
     
-    auto radar_screen_center(rect.position.x + rect.size.x / 2.0f, rect.position.y + rect.size.y / 2.0f);
+    sf::Vector2f radar_screen_center(rect.position.x + rect.size.x / 2.0f, rect.position.y + rect.size.y / 2.0f);
     // If radar is 600-800px then tigs run every 20 degrees, small tigs every 5.
     // So if radar is 400-600x then the tigs should run every 45 degrees and smalls every 5.
     // If radar is <400px, tigs every 90, smalls every 10.

@@ -41,7 +41,7 @@ void SinglePilotScreen::init(GuiContainer* owner, P<PlayerSpaceship> targetSpace
 
 void SinglePilotScreen::onDraw(sp::RenderTarget& renderer)
 {
-    GuiOverlay::onDraw(window);
+    GuiOverlay::onDraw(renderer);
 }
  
 void SinglePilotScreen::setTargetSpaceship(P<PlayerSpaceship> targetSpaceship)

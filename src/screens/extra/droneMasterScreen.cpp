@@ -380,7 +380,7 @@ void DroneMasterScreen::selectDock(int index)
 
 void DroneMasterScreen::onDraw(sp::RenderTarget& renderer)
 {
-    GuiOverlay::onDraw(window);
+    GuiOverlay::onDraw(renderer);
     if (my_spaceship)
     {
         

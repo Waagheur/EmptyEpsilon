@@ -44,7 +44,7 @@ void SpaceStation::drawOnRadar(sp::RenderTarget& renderer, glm::vec2 position, f
         color = factionInfo[getFactionId()]->gm_color;
         object_sprite = radar_trace;
         //sprite_scale = scale * getRadius() * 1.5 / objectSprite.getTextureRect().width;
-        sprite_scale = scale * getRadius() * 2 / objectSprite.getTextureRect().width;
+        sprite_scale = scale * getRadius() * 2 / 32;
     }
 
     if (!long_range)
@@ -73,7 +73,7 @@ void SpaceStation::drawOnRadar(sp::RenderTarget& renderer, glm::vec2 position, f
         }
     }
 
-     renderer.drawRotatedSprite(object_sprite, position, sprite_scale, getRotation() - rotation, color);
+     renderer.drawRotatedSprite(object_sprite, position, sprite_scale * 32, getRotation() - rotation, color);
 }
 
 void SpaceStation::applyTemplateValues()

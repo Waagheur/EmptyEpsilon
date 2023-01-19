@@ -175,7 +175,7 @@ void GuiShipRoom::onDraw(sp::RenderTarget& renderer)
         f = std::max(0.0f, ship->systems[system].health);
     else
         f = ship->getHull() / ship->getHullMax();
-    renderer.draw9Cut(window, rect, "room_background", sf::Color(255, 255 * f, 255 * f, 255));
+    renderer.draw9Cut(rect, "room_background", sf::Color(255, 255 * f, 255 * f, 255));
 
     if (system != SYS_None && ship && ship->hasSystem(system))
     {
@@ -186,7 +186,7 @@ void GuiShipRoom::onDraw(sp::RenderTarget& renderer)
             icon = "gui/icons/system_reactor.png";
             break;
         case SYS_Cloaking:
-            textureManager.setTexture(sprite, "gui/icons/system_cloaking");
+            icon = "gui/icons/system_cloaking";
             break;
         case SYS_BeamWeapons:
             icon = "gui/icons/system_beam";
@@ -214,13 +214,13 @@ void GuiShipRoom::onDraw(sp::RenderTarget& renderer)
             break;
             break;
         case SYS_Docks:
-            textureManager.setTexture(sprite, "gui/icons/docking");
+            icon = "gui/icons/docking";
             break;
         case SYS_Drones:
-            textureManager.setTexture(sprite, "gui/icons/heading");
+            icon = "gui/icons/heading";
             break;
         case SYS_Hangar:
-            textureManager.setTexture(sprite, "gui/icons/door");
+            icon = "gui/icons/door";
             break;
         default:
             icon = "particle.png";

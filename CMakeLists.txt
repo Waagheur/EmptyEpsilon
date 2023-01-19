@@ -174,7 +174,6 @@ set(SOURCES
 	  src/screens/extra/commsScreen.cpp
 	  src/screens/extra/shipLogScreen.cpp
 	  src/screens/extra/radarScreen.cpp
-	  src/screens/extra/navigationScreen.cpp
 	  src/screens/extra/commsScreen.cpp
 	  src/screens/extra/probeScreen.cpp
 	  src/screens/gm/gameMasterScreen.cpp
@@ -200,7 +199,6 @@ set(SOURCES
 	  src/screenComponents/selfDestructButton.cpp
 	  src/screenComponents/shieldFreqencySelect.cpp
 	  src/screenComponents/sectorsView.cpp
-	  src/screenComponents/navigationView.cpp
 	  src/screenComponents/jumpControls.cpp
 	  src/screenComponents/impulseControls.cpp
 	  src/screenComponents/frequencyCurve.cpp

@@ -3,8 +3,6 @@
 #include "screens/mainScreen.h"
 #include "screens/crewStationScreen.h"
 
-#include "screens/extra/navigationScreen.h"
-
 #include "screens/crew6/helmsScreen.h"
 #include "screens/crew6/weaponsScreen.h"
 #include "screens/crew6/engineeringScreen.h"
@@ -196,8 +194,6 @@ void PlayerInfo::spawnUI()
             screen->addStationTab(new RadarScreen(container,"science"), scienceRadar, getCrewPositionName(scienceRadar), getCrewPositionIcon(scienceRadar));
         if (crew_position[relayRadar])
             screen->addStationTab(new RadarScreen(container,"relay"), relayRadar, getCrewPositionName(relayRadar), getCrewPositionIcon(relayRadar));
-        if (crew_position[navigation])
-            screen->addStationTab(new NavigationScreen(container), navigation, getCrewPositionName(navigation), getCrewPositionIcon(navigation));
         if (crew_position[altRelay])
             screen->addStationTab(new RelayScreen(container, false), altRelay, getCrewPositionName(altRelay), getCrewPositionIcon(altRelay));
         if (crew_position[commsOnly])
@@ -273,7 +269,6 @@ string getCrewPositionName(ECrewPosition position)
     case tacticalRadar: return "Radar Tactique";
     case scienceRadar: return "Radar Science";
     case relayRadar: return "Radar Auspex LP";
-    case navigation: return "Navigation";
     case internLogView: return "Intern Log View";
     case dronePilot: return "Pilote seul";
     case droneMaster: return "Maitre des docks";
@@ -312,7 +307,6 @@ string getCrewPositionIcon(ECrewPosition position)
     case tacticalRadar: return "";
     case scienceRadar: return "";
     case relayRadar: return "";
-    case navigation: return "";
     //ajouts Tdelc Larp
     case targetAnalysisScreen: return "";
     default: return "ErrUnk: " + string(position);
@@ -378,8 +372,6 @@ template<> void convert<ECrewPosition>::param(lua_State* L, int& idx, ECrewPosit
         cp = scienceRadar;
     else if (str == "relayradar" || str == "relayradarview")
         cp = relayRadar;
-    else if (str == "navigation" || str == "navigationview")
-        cp = navigation;
     else if (str == "log" || str == "shiplog")
         cp = shipLog;
     else if (str == "targetanalysis" || str == "analysis" || str == "targetanalysisscreen")

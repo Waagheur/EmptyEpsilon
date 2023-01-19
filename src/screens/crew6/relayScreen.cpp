@@ -251,8 +251,12 @@ RelayScreen::RelayScreen(GuiContainer* owner, bool allow_comms)
     GuiAutoLayout* layout = new GuiAutoLayout(this, "", GuiAutoLayout::LayoutVerticalBottomToTop);
     layout->setPosition(-20, -70, sp::Alignment::BottomRight)->setSize(250, GuiElement::GuiSizeMax);
     // Alert level buttons.
+    alert_level_button = new GuiToggleButton(layout, "", tr("Alert level"), [this](bool value)
+    {
+        for(GuiButton* button : alert_level_buttons)
             button->setVisible(value);
     });
+
     alert_level_button->setValue(false);
     alert_level_button->setSize(GuiElement::GuiSizeMax, 50);
 
@@ -311,7 +315,7 @@ void RelayScreen::onDraw(sp::RenderTarget& renderer)
     // Info Distance
     if (my_spaceship)
     {
-        float ratio_screen = radar->getRect().width / radar->getRect().height;
+        float ratio_screen = radar->getRect().size.x / radar->getRect().size.y;
         float distance_width = radar->getDistance() * 2.0 * ratio_screen / 1000.0f;
         float distance_height = radar->getDistance() * 2.0 / 1000.0f;
         if (distance_width < 100)

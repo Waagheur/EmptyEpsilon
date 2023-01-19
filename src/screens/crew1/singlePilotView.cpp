@@ -29,13 +29,13 @@
 
 #include "gui/gui2_keyvaluedisplay.h"
 #include "gui/gui2_rotationdial.h"
+#include "gui/gui2_image.h"
 
 SinglePilotView::SinglePilotView(GuiContainer* owner, P<PlayerSpaceship> targetSpaceship)
 : GuiElement(owner, "SINGLE_PILOT_VIEW"), target_spaceship(targetSpaceship)
 {
     // Render the radar shadow and background decorations.
-    background_gradient = new GuiOverlay(this, "BACKGROUND_GRADIENT", sf::Color::White);
-    background_gradient->setTextureCenter("gui/background/gradientSingle.png");
+    (new GuiImage(this, "BACKGROUND_GRADIENT", "gui/background/gradientSingle.png"))->setPosition(glm::vec2(0, 0), sp::Alignment::Center)->setSize(1200, 900);
 
     // 5U tactical radar with piloting features.
     radar = new GuiRadarView(this, "TACTICAL_RADAR", &targets, (P<SpaceShip>)target_spaceship);
@@ -183,7 +183,7 @@ void SinglePilotView::onDraw(sp::RenderTarget& renderer)
 
         targets.set(target_spaceship->getTarget());
     }
-    GuiElement::onDraw(window);
+    GuiElement::onDraw(renderer);
 }
 
 void SinglePilotView::onHotkey(const HotkeyResult& key)

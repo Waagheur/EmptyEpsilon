@@ -43,7 +43,7 @@ class SectorsView : public GuiElement
         virtual float getViewRotation() { return view_rotation; }
         virtual glm::vec2 worldToScreen(glm::vec2 world_position);
         virtual glm::vec2 screenToWorld(glm::vec2 screen_position);
-        virtual float getScale() { return std::min(rect.width, rect.height) / 2.0f / distance; };
+        virtual float getScale() { return std::min(rect.size.x, rect.size.y) / 2.0f / distance; };
         void drawSectorGrid(sp::RenderTarget &window);
         virtual bool onMouseDown(glm::vec2 position);
         virtual void onMouseDrag(glm::vec2 position);

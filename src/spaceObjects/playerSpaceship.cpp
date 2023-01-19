@@ -2714,10 +2714,10 @@ void PlayerSpaceship::drawOnGMRadar(sp::RenderTarget& renderer, glm::vec2 positi
     if (long_range)
     {
         // Draw long-range radar radius indicator
-        renderer.drawCircleOutline(position, radar_radius, 3.0, sf::Color(255, 255, 255, 64));
+        renderer.drawCircleOutline(position, getLongRangeRadarRange() * scale, 3.0, sf::Color(255, 255, 255, 64));
 
         // Draw short-range radar radius indicator
-        renderer.drawCircleOutline(position, short_radar_radius, 3.0, sf::Color(255, 255, 255, 64));
+        renderer.drawCircleOutline(position, getShortRangeRadarRange() * scale, 3.0, sf::Color(255, 255, 255, 64));
 
     }
 }

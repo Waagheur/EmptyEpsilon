@@ -206,7 +206,7 @@ void TargetAnalysisScreen::onDraw(sp::RenderTarget& renderer)
     for(int n = 0; n < 10; n++)
         info_other[n]->hide();
 
-    GuiOverlay::onDraw(window);
+    GuiOverlay::onDraw(renderer);
     if (my_spaceship)
     {
         P<SpaceObject> obj;

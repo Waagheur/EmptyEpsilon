@@ -225,13 +225,15 @@ void ScanProbe::drawOnRadar(sp::RenderTarget& renderer, glm::vec2 position, floa
     {
         float distance = glm::length(position - glm::vec2(target_position.x, target_position.y));
         if (distance > 1000.0)
-            renderer.drawLine(position, position + glm::vec2(target_position.x, target_position.y) - glm::vec2(getPosition().x, getPosition().y)*scale, sf::Color(255, 255, 255, 32))
+        {
+                renderer.drawLine(position, position + glm::vec2(target_position.x, target_position.y) - glm::vec2(getPosition().x, getPosition().y)*scale, sf::Color(255, 255, 255, 32));
+        }
     }
 }
 
 void ScanProbe::drawOnGMRadar(sp::RenderTarget& renderer, glm::vec2 position, float scale, float rotation, bool long_range)
 {
-    SpaceObject::drawOnGMRadar(window, position, scale, rotation, long_range);
+    SpaceObject::drawOnGMRadar(renderer, position, scale, rotation, long_range);
     if (long_range)
     {
         P<PlayerSpaceship> player = owner;

@@ -96,26 +96,23 @@ void SectorsView::drawSectorGrid(sp::RenderTarget &renderer)
         sf::Color color = grid_colors[calcGridScaleMagnitude(scale_magnitude, sector_y)];
         renderer.drawLine(worldToScreen(glm::vec2((sector_x_min-1)*sector_size_scaled, y)), worldToScreen(glm::vec2((sector_x_max+1)*sector_size_scaled, y)), color);
     }
-    window.draw(lines_x);
-    window.draw(lines_y);
 
     sf::Color color = sf::Color(64, 64, 128, 255);
     int sub_sector_x_min = floor((view_position.x - (radar_screen_center.x - rect.position.x) / scale) / sub_sector_size) + 1;
     int sub_sector_x_max = floor((view_position.x + (rect.position.x + rect.size.x - radar_screen_center.x) / scale) / sub_sector_size);
     int sub_sector_y_min = floor((view_position.y - (radar_screen_center.y - rect.position.y) / scale) / sub_sector_size) + 1;
     int sub_sector_y_max = floor((view_position.y + (rect.position.y + rect.size.y - radar_screen_center.y) / scale) / sub_sector_size);
-    sf::VertexArray points(sf::Points, (sub_sector_x_max - sub_sector_x_min + 1) * (sub_sector_y_max - sub_sector_y_min + 1));
     for (int sector_x = sub_sector_x_min; sector_x <= sub_sector_x_max; sector_x++)
     {
         float x = sector_x * sub_sector_size;
-        for (int sector_y = sub_sector_y_min; sector_y <= sub_sector_y_max; sector_y++)
+        glm::vec2 oldpos(x, sub_sector_y_min * sub_sector_size);
+        for (int sector_y = sub_sector_y_min+1; sector_y <= sub_sector_y_max; sector_y++)
         {
             float y = sector_y * sub_sector_size;
-            points[(sector_x - sub_sector_x_min) + (sector_y - sub_sector_y_min) * (sub_sector_x_max - sub_sector_x_min + 1)].position = worldToScreen(glm::vec2(x,y));
-            points[(sector_x - sub_sector_x_min) + (sector_y - sub_sector_y_min) * (sub_sector_x_max - sub_sector_x_min + 1)].color = color;
+            renderer.drawLine(worldToScreen(oldpos), worldToScreen(glm::vec2(x,y)), color);
+            oldpos = glm::vec2(x,y);
         }
     }
-    window.draw(points);
 }
 
 void SectorsView::drawTargets(sp::RenderTarget& renderer)

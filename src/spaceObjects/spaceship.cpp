@@ -703,6 +703,7 @@ void SpaceShip::drawOnRadar(sp::RenderTarget& renderer, glm::vec2 position, floa
 
     // Set up the radar sprite for objects.
     string object_sprite = radar_trace;
+    sf::Color color = sf::Color::White;
     float sprite_scale = 0.1;
     float sprite_max = 5.0;
     float sprite_min = 0.75;
@@ -711,7 +712,7 @@ void SpaceShip::drawOnRadar(sp::RenderTarget& renderer, glm::vec2 position, floa
     // Otherwise, draw the ship-specific icon.
     if (my_spaceship && (getScannedStateFor(my_spaceship) == SS_NotScanned || getScannedStateFor(my_spaceship) == SS_FriendOrFoeIdentified))
     {
-        object_sprite = "radar/blip.png"
+        object_sprite = "radar/blip.png";
         color = sf::Color(192, 192, 192);
     }
     else

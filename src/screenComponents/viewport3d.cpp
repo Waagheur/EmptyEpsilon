@@ -223,8 +223,7 @@ void GuiViewport3D::onDraw(sp::RenderTarget& renderer)
 
     glColor4f(1,1,1,1);
 
-    //projection_matrix = glm::perspective(glm::radians(camera_fov), rect.width / rect.height, 1.f, 25000.f);
-    projection_matrix = glm::perspective(glm::radians(camera_fov), rect.size.x / rect.size.y, 1.f, 999999.f);
+    projection_matrix = glm::perspective(glm::radians(camera_fov), rect.size.x / rect.size.y, 1.f, 999999.f); //tdelc sur dernier parametre
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 
@@ -321,8 +320,7 @@ void GuiViewport3D::onDraw(sp::RenderTarget& renderer)
         auto& render_list = render_lists[n];
         std::sort(render_list.begin(), render_list.end(), [](const RenderInfo& a, const RenderInfo& b) { return a.depth > b.depth; });
 
-        //auto projection = glm::perspective(glm::radians(camera_fov), rect.width / rect.height, 1.f, 25000.f * (n + 1));
-        auto projection = glm::perspective(glm::radians(camera_fov), rect.size.x / rect.size.y, 1.f, 999999.f * (n + 1));
+        auto projection = glm::perspective(glm::radians(camera_fov), rect.size.x / rect.size.y, 1.f, 999999.f * (n + 1)); //tdelc sur dernier parametre
         // Update projection matrix in shaders.
         for (auto i = 0; i < ShaderRegistry::Shaders_t(ShaderRegistry::Shaders::Count); ++i)
         {

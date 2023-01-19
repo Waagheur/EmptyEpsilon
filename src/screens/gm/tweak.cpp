@@ -1101,7 +1101,7 @@ void GuiShipTweakBeamweapons::onDraw(sp::RenderTarget& renderer)
 {
     if(!target)
         return;
-    target->drawOnRadar(renderer, glm::vec2f(rect.position.x - 150.0f + rect.size.x / 2.0f, rect.position.y + rect.size.y * 0.66), 300.0f / 5000.0f, 0, false);
+    target->drawOnRadar(renderer, glm::vec2(rect.position.x - 150.0f + rect.size.x / 2.0f, rect.position.y + rect.size.y * 0.66), 300.0f / 5000.0f, 0, false);
 
     arc_slider->setValue(target->beam_weapons[beam_index].getArc());
     direction_slider->setValue(angleDifference(0.0f, target->beam_weapons[beam_index].getDirection()));

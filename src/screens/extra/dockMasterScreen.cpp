@@ -139,7 +139,7 @@ void DockMasterScreen::selectBay(int index_bay)
 
 void DockMasterScreen::onDraw(sp::RenderTarget& renderer)
 {
-    GuiOverlay::onDraw(window);
+    GuiOverlay::onDraw(renderer);
     for (int n = 0; n < 10; n++)
         docks->setEntryName(n, "Vide");
     if (my_spaceship)

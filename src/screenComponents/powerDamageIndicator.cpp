@@ -133,7 +133,7 @@ void GuiPowerDamageIndicator::onDraw(sp::RenderTarget& renderer)
     }
     if (hacked_level > 0.1)
     {
-        drawIcon(window, "gui/icons/hack", colorConfig.overlay_hacked);
+        drawIcon(renderer, "gui/icons/hack", colorConfig.overlay_hacked);
     }
 }
 
