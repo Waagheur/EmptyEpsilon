@@ -28,7 +28,7 @@ end
 
 --[[cuirasse Imperial Emperor]]
 template = ShipTemplate():setName("cuirasse Imperial Emperor"):setClass("Cuirasse", "Alpha"):setModel("Navy_Battleship")
-template:setRadarTrace("radar_battleship.png")
+template:setRadarTrace("battleship.png")
 template:setDescription([[Le cuirasse de classe Emperor est l'un des plus anciens modeles de vaisseaux en service au sein de la Flotte Imperiale.
 A la fois vaisseau de ligne et veritable base de lancement pour des nuees d'appareils d'attaque, le cuirasse Emperor apportent la puissance de feu de ces nombreuses Batteries d'armes et le soutien de ses chasseurs Fury, de ses bombardiers Starhawk ou de ses appareils de debarquement Shark aux flottes imperiales au sein desquelles il est integre]])
 template:setJumpDrive(true)
@@ -102,7 +102,7 @@ template:setCanHack(false)
 
 --[[Cuirassé du Chaos Despoiler]]
 template = ShipTemplate():setName("Cuirasse du Chaos Despoiler"):setClass("Cuirasse", "Alpha"):setModel("Chaos_Heavy_Carrier")
-template:setRadarTrace("radar_battleship.png")
+template:setRadarTrace("battleship.png")
 template:setDescription([[Le cuirasse de classe Despoiler fut cree dans le Segmentum Tempestus.Equipe de nombreux Ponts de lancement ainsi que de Batteries d'armes et de Pieces d'artillerie navale a longue portee, le Despoiler fut concu pour affronter tout type de menace.
 Le developpement du Despoiler se revela un echec, ce dernier ne surclassant pas les autres classes de cuirasses employees dans la Flotte. De plus a l'insu de tous, les plans du Despoiler retrouves par le Mechanicum recelaient un defaut cache dans la conception des Boucliers Warp de ces vaisseaux, les rendant vulnerables aux influences du Chaos.]])
 template:setJumpDrive(true)
@@ -166,7 +166,7 @@ template:setDockClasses("Drone","Vaisseau leger","Fregate","Destroyer","Croiseur
 --[[Arche Mechanicus]]
 --Armement à refaire 
 template = ShipTemplate():setName("Arche Mechanicus"):setClass("Vaisseau-Mere", "Alpha"):setModel("Adeptus_Mechanicus_Battleship")
-template:setRadarTrace("radar_battleship.png")
+template:setRadarTrace("battleship.png")
 template:setDescription([[Les Arches, comme beaucoup d'autre vaisseau du mechanicum, echappent a une reel classification vis-a-vis de leur tonnage meme si elles sont consideres comme des cuirasse. Elle sont dirige par un Explorateur Archimagos Venere. Ces Arche ont pour mission de suivre n'importe quelle piste qui pourrait les amener a des SCS.]])
 template:setJumpDrive(true)
 template:setJumpDrive(5000.0, 6000.0)
@@ -218,7 +218,7 @@ template:setDockClasses("Drone","Vaisseau leger","Fregate","Destroyer","Croiseur
 
 --[[Barge de Bataille]]
 template = ShipTemplate():setName("Barge de Bataille"):setClass("Vaisseau-Mere", "Alpha"):setModel("Eternal_Crusader_Battlebarge")
-template:setRadarTrace("radar_battleship.png")
+template:setRadarTrace("battleship.png")
 template:setDescription([[Les Barges de Bataille sont parmi les plus anciens vaisseaux en activite dans les flottes de l'Imperium. Leur premiere mise en service remonte a l'epoque de la Grande Croisade, concues dans le but de transporter les legions Astartes de l'Empereur parmi les etoiles.]])
 template:setJumpDrive(true)
 template:setJumpDrive(5000.0, 6000.0)

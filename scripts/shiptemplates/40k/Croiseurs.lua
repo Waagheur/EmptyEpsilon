@@ -28,7 +28,7 @@ end
 
 --[[Croiseur Impérial Gothic]]
 template = ShipTemplate():setName("Croiseur Imperial Gothic"):setClass("Croiseur", "Combat"):setModel("Navy_Cruiser")
-template:setRadarTrace("radar_battleship.png")
+template:setRadarTrace("battleship.png")
 template:setDescription([[Les croiseurs de classe Gothic furent un type de vaisseaux tres repandus a travers l'ensemble de l'Imperium.
 La puissance de feu des vaisseaux de ce type permet d'engager et de detruire des vaisseaux ennemis de toutes taille, faisant du croiseur Gothic un adversaire dangereux.
 Toutefois, les premiers engagements de ce type de vaisseaux lors de la Guerre Gothique revelerent les lacunes des croiseurs Gothic, leur puissance de feu ne pouvant que difficilement rivaliser avec la mobilite de leurs adversaires.]])
@@ -160,7 +160,7 @@ variation:setCustomWeaponMultiple("TABORD",1,2)
 
 --[[Croiseur Impérial Lunar IA  ]]
 template = ShipTemplate():setName("Croiseur Lunar"):setClass("Croiseur", "Artillerie"):setModel("Navy_Cruiser")
-template:setRadarTrace("radar_battleship.png")
+template:setRadarTrace("battleship.png")
 template:setDescription([[ Concu pour remplacer l'ancien Croiseur Murder, le croiseur de classe Lunar est un vaisseau de conception simple et robuste pouvant etre produit par pratiquement tous les mondes imperiaux, y compris ceux incapables de produire des cuirasses ou des croiseurs.
 Cette facilite de production a fait du croiseur Lunar l'epine dorsale de l'ensemble de la Flotte Imperiale. La Flotte Obscuras comprend, par exemple, près de 600 vaisseaux de cette classe repartis dans les secteurs du Segmentum Obscurus, dont une vingtaine rien que dans le Secteur Gothique. 1
 De même, près d'un tiers des vaisseaux ayant participe à la Troisième Guerre d'Armageddon sous les ordres de l'Amiral Parol furent des croiseurs Lunar. 3
@@ -228,7 +228,7 @@ template:setTubeDirection(6, -90):weaponTubeDisallowCustomMissile(4,'SEEKMK2')
 
 --[[Croiseur Impérial Lunar + nova / jouable  ]]
 template = ShipTemplate():setName("Croiseur Lunar MK2"):setClass("Croiseur", "Artillerie"):setModel("Navy_Cruiser"):setType("playership")
-template:setRadarTrace("radar_battleship.png")
+template:setRadarTrace("battleship.png")
 template:setDescription([[ Concu pour remplacer l'ancien Croiseur Murder, le croiseur de classe Lunar est un vaisseau de conception simple et robuste pouvant etre produit par pratiquement tous les mondes imperiaux, y compris ceux incapables de produire des cuirasses ou des croiseurs.
 Cette facilite de production a fait du croiseur Lunar l'epine dorsale de l'ensemble de la Flotte Imperiale. La Flotte Obscuras comprend, par exemple, près de 600 vaisseaux de cette classe repartis dans les secteurs du Segmentum Obscurus, dont une vingtaine rien que dans le Secteur Gothique. 1
 De même, près d'un tiers des vaisseaux ayant participe à la Troisième Guerre d'Armageddon sous les ordres de l'Amiral Parol furent des croiseurs Lunar. 3
@@ -324,7 +324,7 @@ template:setCanHack(false)
 
 --[[Croiseur admech lunar admech + nova / jouable  ]]
 template = ShipTemplate():setName("Croiseur Lunar Admech"):setClass("Croiseur", "Explorator"):setModel("Adeptus_Mechanicus_cruiser"):setType("playership")
-template:setRadarTrace("radar_battleship.png")
+template:setRadarTrace("battleship.png")
 template:setDescription([[ Concu pour remplacer l'ancien Croiseur Murder, le croiseur de classe Lunar est un vaisseau de conception simple et robuste pouvant etre produit par pratiquement tous les mondes imperiaux, y compris ceux incapables de produire des cuirasses ou des croiseurs.
 Cette facilite de production a fait du croiseur Lunar l'epine dorsale de l'ensemble de la Flotte Imperiale. La Flotte Obscuras comprend, par exemple, près de 600 vaisseaux de cette classe repartis dans les secteurs du Segmentum Obscurus, dont une vingtaine rien que dans le Secteur Gothique. 1
 De même, près d'un tiers des vaisseaux ayant participe à la Troisième Guerre d'Armageddon sous les ordres de l'Amiral Parol furent des croiseurs Lunar. 3
@@ -430,7 +430,7 @@ template:setCanDock(true)
 
 --[[Croiseur Inquisitoriale]]
 template = ShipTemplate():setName("Croiseur Inquisitorial"):setClass("Croiseur", "Combat"):setModel("Inquisitorial_Cruiser")
-template:setRadarTrace("radar_battleship.png")
+template:setRadarTrace("battleship.png")
 template:setDescription([[Les croiseurs inquisitoires sont des navires de classe Croiseur utilises par l'Inquisition. Ces navires sont specialement construits pour l'Inquisition et utilisent une technologie et des armes disponibles uniquement pour les flottes de Mars elles-memes.
 En consequence, ils sont plus rapides, mieux armes et mieux proteges que les navires de meme classe chez l'Imperium. Bien que quelques modeles standard soient utilises par l'Inquisition, ils sont tout aussi souvent concus a cet effet et optimises pour des roles specifiques.
 Ces navires sont generalement utilises par les inquisiteurs en mission avant d'etre transferes, bien qu'il ne soit pas rare que des inquisiteurs aient des croiseurs permanents attaches a leurs noms. ]])
@@ -497,7 +497,7 @@ template:setCanHack(false)
 
 --[[Croiseur Inquisitoriale PJ ]]
 template = ShipTemplate():setName("Croiseur Inquisitorial MK2"):setClass("Croiseur", "Furtif"):setModel("Inquisitorial_Cruiser"):setType("playership")
-template:setRadarTrace("radar_battleship.png")
+template:setRadarTrace("battleship.png")
 template:setDescription([[Les croiseurs inquisitoires sont des navires de classe Croiseur utilises par l'Inquisition. Ces navires sont specialement construits pour l'Inquisition et utilisent une technologie et des armes disponibles uniquement pour les flottes de Mars elles-memes.
 En consequence, ils sont plus rapides, mieux armes et mieux proteges que les navires de meme classe chez l'Imperium. Bien que quelques modeles standard soient utilises par l'Inquisition, ils sont tout aussi souvent concus a cet effet et optimises pour des roles specifiques.
 Ces navires sont generalement utilises par les inquisiteurs en mission avant d'etre transferes, bien qu'il ne soit pas rare que des inquisiteurs aient des croiseurs permanents attaches a leurs noms. ]])
@@ -584,7 +584,7 @@ template:setDefaultAI('default')
 
 --[[Croiseur Corsair Shadow]]
 template = ShipTemplate():setName("Croiseur Corsaire Shadow"):setClass("Croiseur", "Combat"):setModel("Eldar_Corsair_Cruiser")
-template:setRadarTrace("radar_battleship.png")
+template:setRadarTrace("battleship.png")
 template:setDescription([[Le Croiseur Shadow est un vaisseau de ligne des Flottes Eldars.
 Le modele Shadow est le plus grand des vaisseaux qui composent generalement les flottes des Eldars. Comme beaucoup de vaisseaux Xenos, le Croiseur Shadow est souvent confondu avec d'autres classes de croiseur et de nombreuses attaques sont ainsi attribuees faussement a leurs cousins Eldars. ]])
 template:setHull(1400)
@@ -644,7 +644,7 @@ template:setCanHack(false)
 
 --[[Croiseur du Chaos Carnage]]
 template = ShipTemplate():setName("Croiseur du Chaos Carnage"):setClass("Croiseur", "Combat"):setModel("Chaos_Cruiser")
-template:setRadarTrace("radar_battleship.png")
+template:setRadarTrace("battleship.png")
 template:setDescription([[Le Croiseur Carnage fut developpe par la Flotte Obscura afin d'obtenir un vaisseau pouvant fournir des tirs de soutien a longue portee a d'autres croiseurs tout en restant a l'abris des ripostes.
 Basee sur des nombreux emplacements de Batteries d'armes, la conception du Carnage se retrouva entravee par les difficultes d'approvisionnement en energie pour ces armes. Ces difficultes conduisirent a de profondes dissensions au sein des commandants de la Flotte au sujet de la pertinence de cette classe de navire. ]])
 template:setHull(1700)
@@ -702,7 +702,7 @@ template:setCanHack(false)
 
 --[[Croiseur Marchand Civil]]
 template = ShipTemplate():setName("Croiseur Marchand Civil Graal"):setClass("Croiseur", "Marchand"):setModel("Civilian_Transport_Cruiser")
-template:setRadarTrace("radar_transport.png")
+template:setRadarTrace("transport.png")
 template:setDescription([[Ces transporteurs sont generalement des vaisseaux civils issus de la Flotte Marchande. Malgre leur courage et leur volonte, ces vaisseaux ne sont pas equipes pour lutter contre des vaisseaux de guerre, ne disposant que d'un armement leger contre les attaques de pirates, manquant d'officiers experimentes et n'ayant pas la motorisation permettant de semer leurs adversaires.]])
 template:setHull(1000)
 template:setShields(500, 500)
@@ -742,7 +742,7 @@ template:setDockClasses("Drone","Vaisseau leger")
 --[[Croiseur Marchand Rogue]]
 
 template = ShipTemplate():setName("Croiseur Rogue Repulse"):setClass("Croiseur", "Transport Lourd"):setModel("Rogue_Trader_Cruiser")
-template:setRadarTrace("radar_tug.png")
+template:setRadarTrace("tug.png")
 template:setLocaleName("Croiseur Marchand Rogue")
 template:setClass("Croiseur", "Marchand","Rogue")
 template:setModel("Rogue_Trader_Cruiser")
@@ -796,7 +796,7 @@ template:setDefaultAI('missilevolley')
 
 --[[Croiseur Rogue Repulse]]
 template = ShipTemplate():setName("Croiseur Rogue Repulse MK2"):setClass("Croiseur Marchand", "Experimental"):setModel("Rogue_Trader_Cruiser"):setType("playership")
-template:setRadarTrace("radar_tug.png")
+template:setRadarTrace("tug.png")
 template:setDescription([[Ce croiseur repulse est construit à Kar Duniash. Rapide mais lourdement armée, Cette version concu pour les libres-marchands offre un bon compromis pour celui qui veux faire du commerce tranquillement]])
 template:setHull(1300)
 template:setShields(800, 800)
@@ -913,7 +913,7 @@ template:setShortRangeRadarRange(7500)
 
 --[[Croiseur Marchand Il'porrui]]
 template = ShipTemplate():setName("Croiseur Marchand Il'porrui"):setClass("Croiseur", "Marchand"):setModel("Tau_Merchant_Cruiser")
-template:setRadarTrace("radar_transport.png")
+template:setRadarTrace("transport.png")
 template:setDescription([[Les Il'porruis servent souvent de transport pour des dignitaire de la Caste de l'Eau, desCommandeurs ou des Etheres. Malgre sa fonction, il est suffisamment bien arme pour se defendre contre des ennemis du meme gabarit que lui.
 Les Il'porrui sont devenus communs dans l'Empire Tau et sont meme souvent utilises en dehors lors de missions diplomatiques. Ces navires font egalement d'excellents vaisseaux de commerce et sont de vrai betes de somme au sein de leur jeune empire. ]])
 template:setHull(1200)

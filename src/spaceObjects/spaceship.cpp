@@ -704,9 +704,9 @@ void SpaceShip::drawOnRadar(sp::RenderTarget& renderer, glm::vec2 position, floa
     // Set up the radar sprite for objects.
     string object_sprite = radar_trace;
     glm::u8vec4 color = glm::u8vec4(255,255,255,255);
-    float sprite_scale = 0.1;
-    float sprite_max = 5.0;
-    float sprite_min = 0.75;
+    float sprite_scale = 0.32f;
+    float sprite_max = 480.0f;
+    float sprite_min = 24.0f;
 
     // If the object is a ship that hasn't been scanned, draw the default icon.
     // Otherwise, draw the ship-specific icon.

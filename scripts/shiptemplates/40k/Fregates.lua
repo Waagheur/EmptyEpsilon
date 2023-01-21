@@ -280,7 +280,7 @@ variation:setDocks(3, 0, 0, 0, 3, 1)
 
 --[[Transport Leger Civil]]
 template = ShipTemplate():setName("Transport Leger Civil"):setClass("Fregate", "Transport Leger"):setModel("Civilian_Transport_Ship")
-template:setRadarTrace("radar_tug.png")
+template:setRadarTrace("tug.png")
 template:setDescription([[Ce transport leger civil est fait de bric et de broc, souvent utilise par les marchands au portefeuille leger. Il est trés courant et utilisé par toutes les factions de la galaxie]])
 template:setHull(600)
 template:setShields(100, 100)

@@ -29,7 +29,7 @@ end
 --[[Croiseur leger Dauntless]]
 template = ShipTemplate():setName("Croiseur leger Dauntless"):setClass("Croiseur leger", "Combat"):setModel("Navy_Light_Cruiser"):setType("playership")
 
-template:setRadarTrace("radar_ktlitan_destroyer.png")
+template:setRadarTrace("ktlitan_destroyer.png")
 template:setDescription([[Le croiseur leger de classe Dauntless est le vaisseau emblematique de l'ensemble de la Flotte Imperiale, present dans tous les Segmentae Majoris.
 Le Dauntless est un croiseur alliant la vitesse et la manoeuvrabilite d'une fregate a la puissance de feu superieure d'un croiseur.
 Les vaisseaux de ce type sont reconnus et prises par tous les officiers de la Flotte car ils peuvent aussi bien patrouiller seuls sans soutien logistique pendant une longue duree que proteger les autres vaisseaux de lignes des escorteurs adverses.]])
@@ -123,7 +123,7 @@ template:addDoor(6, 5, true)
 --[[Croiseur leger Imperial Dauntless]]
 template = ShipTemplate():setName("Croiseur leger Dauntless MK1"):setClass("Croiseur leger", "Combat"):setModel("Navy_Light_Cruiser")
 
-template:setRadarTrace("radar_ktlitan_destroyer.png")
+template:setRadarTrace("ktlitan_destroyer.png")
 template:setDescription([[Le croiseur leger de classe Dauntless est le vaisseau emblematique de l'ensemble de la Flotte Imperiale, present dans tous les Segmentae Majoris.
 Le Dauntless est un croiseur alliant la vitesse et la manoeuvrabilite d'une fregate a la puissance de feu superieure d'un croiseur.
 Les vaisseaux de ce type sont reconnus et prises par tous les officiers de la Flotte car ils peuvent aussi bien patrouiller seuls sans soutien logistique pendant une longue duree que proteger les autres vaisseaux de lignes des escorteurs adverses.]])
@@ -181,7 +181,7 @@ template:setDockClasses("Drone","Vaisseau leger")
 
 --[[Croiseur leger Corsaire]]
 template = ShipTemplate():setName("Croiseur leger Corsaire"):setClass("Croiseur leger", "Combat"):setModel("Eldar_Corsair_Light_Cruiser")
-template:setRadarTrace("radar_ktlitan_destroyer.png")
+template:setRadarTrace("ktlitan_destroyer.png")
 template:setDescription([[Le Croiseur leger Corsair est le plus grand des vaisseaux qui composent generalement les flottes des Eldars. Comme beaucoup de vaisseaux Xenos, le Croiseur leger Corsair est souvent confondu avec d'autres classes de croiseur et de nombreuses attaques sont ainsi attribuees faussement a leurs cousins Eldars.
 Certains enregistrements pretent aux Croiseur leger Corsair des similitudes avec les classes Eclipse et Shadow alors que d'autres experts xenologues les considerent comme des amalgames de diverses classes. Les nombreux rapports contradictoires qui concernent le croiseur en font un appareil difficile a classer pour l'Imperium. Certains recits rapportent meme des combats entre vaisseaux Eldars, ce qui ajoute encore plus de confusion aux effort de categorisation imperiale.]])
 template:setHull(700)
@@ -236,7 +236,7 @@ template:setCanHack(false)
 
 --[[Croiseur leger du chaos Hellbringer MkII]]
 template = ShipTemplate():setName("Croiseur leger du chaos Hellbringer Mk2 "):setClass("Croiseur leger", "Combat"):setModel("Chaos_Light_Cruiser")
-template:setRadarTrace("radar_ktlitan_destroyer.png")
+template:setRadarTrace("ktlitan_destroyer.png")
 template:setDescription([[Le Croiseur Hellbringer est un vaisseau de ligne lèger caracterise par sa capacite a atteindre des vitesses importantes, rivalisant avec celles des escorteurs plus petits voire meme des vaisseaux Eldars.
 Cette vitesse exceptionnelle pour un vaisseau de ce tonnage est obtenue grace a des moteurs utilisant des Bobines de Scartix, une Archeo-Technologie uniquement connue du Monde Forge de Sethelan.
 Cette specificite se revela etre le point faible de la strategie imperiale de production de croiseur Hellbringer lorsque l'un d'entre eux, le Dutiful se rebella et bombarda les installations de Sethelan, provoquant la perte des plans des Bobines Scartix.]])

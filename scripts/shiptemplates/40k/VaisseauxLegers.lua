@@ -30,7 +30,7 @@ end
 
 --[[Chasseur]]
 template = ShipTemplate():setName("Chasseur"):setClass("Chasseur","Patrouille"):setModel("dark_fighter_6")
-template:setRadarTrace("radar_adv_striker.png")
+template:setRadarTrace("adv_striker.png")
 template:setDescription([[On trouve ce chasseur de base dans de nombreux coins de la galaxie. Il est facile de trouver des pieces de rechange, non seulement parce qu'ils sont produites en grand nombre, mais aussi parce qu'ils subissent des pertes elevees au combat.]])
 template:setHull(45)
 template:setShields(0)
@@ -110,7 +110,7 @@ variation:setCanHack(false)
 
 --[[Intercepteur]]
 template = ShipTemplate():setName("Intercepteur"):setClass("Chasseur", "Intercepteur"):setModel("WespeScoutGrey")
-template:setRadarTrace("radar_fighter.png")
+template:setRadarTrace("fighter.png")
 template:setDescription([[On trouve cet Intercepteur dans de nombreux coins de la galaxie. Il est facile de trouver des pieces de rechange, non seulement parce qu'ils sont produites en grand nombre, mais aussi parce qu'ils subissent des pertes elevees au combat.]])
 template:setHull(50)
 template:setShields(20)
@@ -185,7 +185,7 @@ variation:setShortRangeRadarRange(7500)
 
 --[[Bombardier du Chaos Doomfire]]
 template = ShipTemplate():setName("Bombardier du Chaos Doomfire"):setClass("Chasseur", "Bombardier"):setModel("AdlerLongRangeScoutRed")
-template:setRadarTrace("radar_cruiser.png")
+template:setRadarTrace("cruiser.png")
 template:setDescription([[Plus lourd et moins rapide que le chasseur Swiftdeath, le bombardier Doomfire n'en est pas moins un appareil d'attaque craint par toutes les classes de vaisseaux, depuis le plus petit escorteur jusqu'au massifs vaisseaux de ligne.]])
 template:setHull(80)
 template:setShields(40)
@@ -278,7 +278,7 @@ variation:setCanHack(false)
 
 --[[Bombardier Corsair]]
 template = ShipTemplate():setName("Bombardier Corsair"):setClass("Chasseur", "Bombardier"):setModel("Eldar_Corsair_Bomber")
-template:setRadarTrace("radar_cruiser.png")
+template:setRadarTrace("cruiser.png")
 template:setDescription([[Chasseur stellaire de classe bombardier. Construit pour des frappes chirurgicales, son objectif principal est de rejoindre la cible, la detruire et de repartir avant d'etre detruit.]])
 template:setHull(70)
 template:setShields(30)
@@ -338,7 +338,7 @@ template:setWeaponStorage("EMP", 10)
 
 --[[Chasseur Lourd]]
 template = ShipTemplate():setName("Chasseur Lourd"):setClass("Chasseur", "Combat"):setModel("small_frigate_3")
-template:setRadarTrace("radar_fighter.png")
+template:setRadarTrace("fighter.png")
 template:setDescription([[Ce chasseur stellaire est l'un des mieux proteges en service actif, ses deux lanceurs peuvent donner un coup de poing. Son objectif est de voler, detruire sa cible et repartir ou etre detruit.]])
 template:setHull(80)
 template:setShields(60)
@@ -437,7 +437,7 @@ variation:addDoor(4,5,true)
 
 --[[Chasseur Lourd Mkx longue portée "inigo federation" ]] 
 template = ShipTemplate():setName("Chasseur Lourd MKX"):setClass("Experimental", "Combat"):setModel("small_frigate_3")
-template:setRadarTrace("radar_fighter.png")
+template:setRadarTrace("fighter.png")
 template:setDescription([[ Chasseur lourd scapula lourdement modifiée par des technologies non impérial ]])
 template:setHull(80)
 template:setShields(200)
@@ -539,7 +539,7 @@ variation:addDoor(4,5,true)
 
 --[[Vaisseau d'abordage]]
 template = ShipTemplate():setName("Vaisseau d'abordage"):setClass("Chasseur", "Abordage"):setModel("LindwurmFighterGrey")
-template:setRadarTrace("radar_fighter.png")
+template:setRadarTrace("fighter.png")
 template:setDescription([[Un vaisseau simple qui a pour principal utilite d'aborder un autre et donner une chance de le capturer ou massacrer son equipage au choix.]])
 template:setHull(65)
 template:setShields(40)
