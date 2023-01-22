@@ -4,7 +4,6 @@
 #include "P.h"
 #include "shipTemplate.h"
 #include "cargo.h"
-#include "SFML/System/NonCopyable.hpp"
 
 class Dock;
 //class Cargo;
