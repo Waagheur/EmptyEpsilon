@@ -666,12 +666,12 @@ void SpaceShip::drawOnRadar(sp::RenderTarget& renderer, glm::vec2 position, floa
             // TODO: Make this color configurable.
             color.a /= 2;
 
-            if (turret_arc < 360.0)
-            {
+            //if (turret_arc < 360.0)
+           // {
                 // Draw the turret bounds. (We're reusing the beam's origin.)
                 auto r0 = vec2FromAngle(getRotation()-rotation + (turret_direction + turret_arc / 2.0f));
                 auto r1 = vec2FromAngle(getRotation()-rotation + (turret_direction - turret_arc / 2.0f));
-            }
+            //}
             glm::vec2 n0{r0.y, -r0.x};
             glm::vec2 n1{-r1.y, r1.x};
             glm::vec2 n2 = (n0 + n1) / (1.0f + glm::dot(n0, n1));
