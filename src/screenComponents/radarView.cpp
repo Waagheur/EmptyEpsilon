@@ -729,7 +729,7 @@ void GuiRadarView::drawHeadingIndicators(sp::RenderTarget& renderer)
     for(unsigned int n = 0; n < 360; n += tig_interval)
     {
         renderer.drawRotatedText(
-            radar_screen_center + vec2FromAngle(float(n) - 90 - view_rotation) * (scale - 50), n-view_rotation,
+            radar_screen_center + vec2FromAngle(float(n) - 90 - getViewRotation()) * (boundingRadius - 50), n-getViewRotation(),
             string(n), 15.0f, main_font, {255, 255, 255, 255});
     }
 }
