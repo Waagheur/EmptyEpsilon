@@ -45,9 +45,9 @@ class SectorsView : public GuiElement
         virtual glm::vec2 screenToWorld(glm::vec2 screen_position);
         virtual float getScale() { return std::min(rect.size.x, rect.size.y) / 2.0f / distance; };
         void drawSectorGrid(sp::RenderTarget &window);
-        virtual bool onMouseDown(glm::vec2 position);
-        virtual void onMouseDrag(glm::vec2 position);
-        virtual void onMouseUp(glm::vec2 position);
+        virtual bool onMouseDown(sp::io::Pointer::Button button, glm::vec2 position, int id);
+        virtual void onMouseDrag(glm::vec2 position, int id);
+        virtual void onMouseUp(glm::vec2 position, int id);
         virtual SectorsView *setCallbacks(pfunc_t mouse_down_func, pfunc_t mouse_drag_func, pfunc_t mouse_up_func)
         {
             this->mouse_down_func = mouse_down_func;

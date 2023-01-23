@@ -141,22 +141,22 @@ void SectorsView::drawTargets(sp::RenderTarget& renderer)
     
 }
 
-bool SectorsView::onMouseDown(glm::vec2 position)
+bool SectorsView::onMouseDown(sp::io::Pointer::Button button, glm::vec2 position, int id)
 {
     if (!mouse_down_func && !mouse_drag_func && !mouse_up_func)
         return false;
     if (mouse_down_func)
-        mouse_down_func(screenToWorld(position));
+        mouse_down_func(button,screenToWorld(position));
     return true;
 }
 
-void SectorsView::onMouseDrag(glm::vec2 position)
+void SectorsView::onMouseDrag(glm::vec2 position, int id)
 {
     if (mouse_drag_func)
         mouse_drag_func(screenToWorld(position));
 }
 
-void SectorsView::onMouseUp(glm::vec2 position)
+void SectorsView::onMouseUp(glm::vec2 position, int id)
 {
     if (mouse_up_func)
         mouse_up_func(screenToWorld(position));
