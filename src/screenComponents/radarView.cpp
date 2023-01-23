@@ -513,7 +513,7 @@ void GuiRadarView::drawMissileTubes(sp::RenderTarget& renderer)
 {
     if (target_spaceship)
     {
-        sf::VertexArray a(sf::Lines, target_spaceship->weapon_tube_count * 2);
+        //sf::VertexArray a(sf::Lines, target_spaceship->weapon_tube_count * 2);
         for(int n=0; n<target_spaceship->weapon_tube_count; n++)
         {
             auto fire_position = target_spaceship->getPosition() + rotateVec2(target_spaceship->ship_template->model_data->getTubePosition2D(n), target_spaceship->getRotation());

@@ -1,5 +1,3 @@
-#include <SFML/OpenGL.hpp>
-
 #include "main.h"
 #include "gameGlobalInfo.h"
 #include "spaceObjects/nebula.h"
@@ -21,7 +19,8 @@ view_position(glm::vec2(0.0f,0.0f)), view_rotation(0)
         // warning : the computation is balanced using implicit castings, bit overflows and black magic.
         // seriously it's worse than those job interview questions
         // if you change this code even the slightest, verify that it still produces a veriaty of different colors
-        sf::Uint8 colorStep = (-128 / SectorsView::grid_scale_size);
+        //sf::Uint8 colorStep = (-128 / SectorsView::grid_scale_size);
+        std::uint8_t colorStep = (-128 / SectorsView::grid_scale_size);
         grid_colors[scale_magnitude] = glm::u8vec4(65 + colorStep * scale_magnitude * 0.5, 65 + colorStep * scale_magnitude * 0.3, 129 + colorStep * scale_magnitude, 128);
     }
     // last color is white

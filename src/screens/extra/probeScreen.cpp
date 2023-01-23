@@ -64,23 +64,23 @@ void ProbeScreen::update(float delta)
     }
 }
 
-void ProbeScreen::onKey(sf::Event::KeyEvent key, int unicode)
+void ProbeScreen::onKey(const SDL_KeyboardEvent& key, int unicode)
 {
-    switch(key.code)
+    switch(key.keysym.sym)
     {
-    case sf::Keyboard::Left:
+    case SDLK_LEFT:
         angle -= 5.0f;
         break;
-    case sf::Keyboard::Right:
+    case SDLK_RIGHT:
         angle += 5.0f;
         break;
      //TODO: This is more generic code and is duplicated.
-    case sf::Keyboard::Escape:
-    case sf::Keyboard::Home:
+    case SDLK_ESCAPE:
+    case SDLK_HOME:
         destroy();
         returnToShipSelection();
         break;
-    case sf::Keyboard::P:
+    case SDLK_p:
         if (game_server)
             engine->setGameSpeed(0.0);
         break;

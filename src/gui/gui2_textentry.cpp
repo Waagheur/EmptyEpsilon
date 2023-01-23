@@ -127,7 +127,7 @@ GuiTextEntry* GuiTextEntry::setTextSize(float size)
     return this;
 }
 
-GuiTextEntry* GuiTextEntry::setTextFont(sf::Font* font)
+GuiTextEntry* GuiTextEntry::setTextFont(sp::Font* font)
 {
     this->text_font = font;
     return this;

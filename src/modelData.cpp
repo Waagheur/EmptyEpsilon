@@ -237,10 +237,11 @@ void ModelData::render(const glm::mat4& model_view)
     model_matrix = glm::scale(model_matrix, {scale, scale, scale});
     model_matrix = glm::translate(model_matrix, mesh_offset);
 
-    glRotatef(mesh_rotation.x, 1.0, 0.0, 0.0);
-    glRotatef(mesh_rotation.y, 0.0, 1.0, 0.0);
-    glRotatef(mesh_rotation.z, 0.0, 0.0, 1.0);
-    glColor4f(1.0,1.0,1.0,alpha);
+    model_matrix = glm::rotate(model_matrix, mesh_rotation.x, {1.0f,0.0f,0.0f});
+    model_matrix = glm::rotate(model_matrix, mesh_rotation.y, {0.0f,1.0f,0.0f});
+    model_matrix = glm::rotate(model_matrix, mesh_rotation.z, {0.0f,0.0f,1.0f});
+
+    //glColor4f(1.0,1.0,1.0,alpha);
 
     ShaderRegistry::ScopedShader shader(shader_id);
     glUniformMatrix4fv(shader.get().get()->getUniformLocation("view"), 1, GL_FALSE, glm::value_ptr(model_view));

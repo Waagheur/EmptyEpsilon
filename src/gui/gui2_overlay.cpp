@@ -50,7 +50,7 @@ GuiOverlay* GuiOverlay::setTextureNone()
     return this;
 }
 
-bool GuiOverlay::onMouseDown(sf::Vector2f position)
+bool GuiOverlay::onMouseDown(glm::vec2 position)
 {
     return blocking;
 }

@@ -24,7 +24,7 @@ public:
     GuiOverlay* setAlpha(int alpha);
     GuiOverlay* setTextureTiled(string texture);
     GuiOverlay* setTextureNone();
-    virtual bool onMouseDown(sf::Vector2f position);
+    virtual bool onMouseDown(glm::vec2 position);
 
 };
 
