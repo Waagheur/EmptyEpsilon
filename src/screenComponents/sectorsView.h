@@ -7,6 +7,7 @@ class TargetsContainer;
 class SectorsView : public GuiElement
 {
     public:
+        typedef std::function<void(sp::io::Pointer::Button button, glm::vec2 position)> bpfunc_t;
         typedef std::function<void(glm::vec2 position)> pfunc_t;
         typedef std::function<void(float position)> ffunc_t;
         static const int grid_scale_size = 5;
@@ -19,7 +20,7 @@ class SectorsView : public GuiElement
         float view_rotation;
 
         TargetsContainer *targets;
-        pfunc_t mouse_down_func;
+        bpfunc_t mouse_down_func;
         pfunc_t mouse_drag_func;
         pfunc_t mouse_up_func;
     public:
@@ -48,7 +49,7 @@ class SectorsView : public GuiElement
         virtual bool onMouseDown(sp::io::Pointer::Button button, glm::vec2 position, int id);
         virtual void onMouseDrag(glm::vec2 position, int id);
         virtual void onMouseUp(glm::vec2 position, int id);
-        virtual SectorsView *setCallbacks(pfunc_t mouse_down_func, pfunc_t mouse_drag_func, pfunc_t mouse_up_func)
+        virtual SectorsView *setCallbacks(bpfunc_t mouse_down_func, pfunc_t mouse_drag_func, pfunc_t mouse_up_func)
         {
             this->mouse_down_func = mouse_down_func;
             this->mouse_drag_func = mouse_drag_func;

@@ -741,5 +741,5 @@ bool GuiRadarView::onMouseDown(sp::io::Pointer::Button button, glm::vec2 positio
         if (glm::length(position - getCenterPoint()) > radius)
             return false;
     }
-    return SectorsView::onMouseDown(sp::io::Pointer::Button button, glm::vec2 position, int id);
+    return SectorsView::onMouseDown(button, position, id);
 }

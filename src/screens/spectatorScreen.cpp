@@ -11,7 +11,7 @@ SpectatorScreen::SpectatorScreen()
     main_radar->setStyle(GuiRadarView::Rectangular)->longRange()->gameMaster()->enableTargetProjections(nullptr)->setAutoCentering(false)->enableCallsigns();
     main_radar->setPosition(0, 0, sp::Alignment::TopLeft)->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);
     main_radar->setCallbacks(
-        [this](sp::io::Pointer::Button button, glm::vec2 position) { this->onMouseDown(position); },
+        [this](sp::io::Pointer::Button button, glm::vec2 position) { this->onMouseDown(button, position); },
         [this](glm::vec2 position) { this->onMouseDrag(position); },
         [this](glm::vec2 position) { this->onMouseUp(position); }
     );
@@ -37,7 +37,7 @@ void SpectatorScreen::update(float delta)
     }
 }
 
-void SpectatorScreen::onMouseDown(glm::vec2 position)
+void SpectatorScreen::onMouseDown(sp::io::Pointer::Button button, glm::vec2 position)
 {
     drag_start_position = position;
     drag_previous_position = position;
