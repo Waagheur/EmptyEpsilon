@@ -132,7 +132,7 @@ void AutoConnectScreen::update(float delta)
                             if (auto_mainscreen == 1)
                             {
                                 for(int n=0; n<max_crew_positions; n++)
-                                    my_player_info->commandSetCrewPosition(crew_position, false);
+                                    my_player_info->commandSetCrewPosition(0, crew_position, false);
                             }
                             destroy();
                             my_player_info->spawnUI(0, getRenderLayer());
