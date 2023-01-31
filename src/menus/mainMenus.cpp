@@ -69,39 +69,39 @@ MainMenu::MainMenu()
     (new GuiOverlay(this, "", glm::u8vec4{255,255,255,255}))->setTextureTiled("gui/background/crosses.png");
 
     (new GuiImage(this, "LOGO", "logo_full.png"))->setPosition(0, title_y, sp::Alignment::TopCenter)->setSize(logo_size_x, logo_size_y);
-    (new GuiLabel(this, "VERSION", tr("Version: {version}").format({{"version", string(VERSION_NUMBER)}}), 20))->setPosition(0, title_y + logo_size, sp::Alignment::TopCenter)->setSize(0, 20);
+    (new GuiLabel(this, "VERSION", tr("Credits", "Version: {version}").format({{"version", string(VERSION_NUMBER)}}), 20))->setPosition(0, title_y + logo_size, sp::Alignment::TopCenter)->setSize(0, 20);
 
-    (new GuiLabel(this, "", tr("Your name:"), 30))->setAlignment(sp::Alignment::CenterLeft)->setPosition({50, -400}, sp::Alignment::BottomLeft)->setSize(300, 50);
+    (new GuiLabel(this, "", tr("mainMenu", "Your name:"), 30))->setAlignment(sp::Alignment::CenterLeft)->setPosition({50, -400}, sp::Alignment::BottomLeft)->setSize(300, 50);
     (new GuiTextEntry(this, "USERNAME", PreferencesManager::get("username")))->callback([](string text) {
         PreferencesManager::set("username", text);
     })->setPosition({50, -350}, sp::Alignment::BottomLeft)->setSize(300, 50);
 
-    (new GuiButton(this, "START_SERVER", tr("Start server"), [this]() {
+    (new GuiButton(this, "START_SERVER", tr("mainMenu", "Start server"), [this]() {
         new ServerSetupScreen();
         destroy();
     }))->setPosition({50, -230}, sp::Alignment::BottomLeft)->setSize(300, 50);
 
-    (new GuiButton(this, "START_CLIENT", tr("Start client"), [this]() {
+    (new GuiButton(this, "START_CLIENT", tr("mainMenu", "Start client"), [this]() {
         new ServerBrowserMenu(ServerBrowserMenu::Local);
         destroy();
     }))->setPosition({50, -170}, sp::Alignment::BottomLeft)->setSize(300, 50);
 
-    (new GuiButton(this, "OPEN_OPTIONS", tr("Options"), [this]() {
+    (new GuiButton(this, "OPEN_OPTIONS", tr("mainMenu", "Options"), [this]() {
         new OptionsMenu();
         destroy();
     }))->setPosition({50, -110}, sp::Alignment::BottomLeft)->setSize(300, 50);
 
-    (new GuiButton(this, "QUIT", tr("Quit"), []() {
+    (new GuiButton(this, "QUIT", tr("mainMenu", "Quit"), []() {
         engine->shutdown();
     }))->setPosition({50, -50}, sp::Alignment::BottomLeft)->setSize(300, 50);
 
-    (new GuiButton(this, "START_TUTORIAL", tr("Tutorials"), [this]() {
+    (new GuiButton(this, "START_TUTORIAL", tr("mainMenu", "Tutorials"), [this]() {
         new TutorialMenu();
         destroy();
     }))->setPosition({370, -50}, sp::Alignment::BottomLeft)->setSize(300, 50);
 
     float y = 25;
-    (new GuiLabel(this, "CREDITS", "Credits", 25))->setAlignment(sp::Alignment::CenterRight)->setPosition(-50, y, sp::Alignment::TopRight)->setSize(0, 25); y += 25;
+    (new GuiLabel(this, "CREDITS", tr("Credits", "Credits"), 25))->setAlignment(sp::Alignment::CenterRight)->setPosition(-50, y, sp::Alignment::TopRight)->setSize(0, 25); y += 25;
     (new GuiLabel(this, "CREDITS1", "Empty Epsilon", 20))->setAlignment(sp::Alignment::CenterRight)->setPosition(-50, y, sp::Alignment::TopRight)->setSize(0, 20); y += 20;
 
     if (PreferencesManager::get("instance_name") != "")
