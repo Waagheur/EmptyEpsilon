@@ -212,10 +212,18 @@ void PlayerInfo::spawnUI(int monitor_index, RenderLayer* render_layer)
             screen->addStationTab(new SinglePilotScreen(container), singlePilot, getCrewPositionName(singlePilot), getCrewPositionIcon(singlePilot));
 
         //Extra
-        if (crew_position[damageControl] & (1 << monitor_index))
-            screen->addStationTab(new DamageControlScreen(container), damageControl, getCrewPositionName(damageControl), getCrewPositionIcon(damageControl));
+        //Postes
+        if (crew_position[dronePilot] & (1 << monitor_index))
+            screen->addStationTab(new DroneOperatorScreen(container), dronePilot, getCrewPositionName(dronePilot), getCrewPositionIcon(dronePilot));
         if (crew_position[powerManagement] & (1 << monitor_index))
             screen->addStationTab(new PowerManagementScreen(container), powerManagement, getCrewPositionName(powerManagement), getCrewPositionIcon(powerManagement));
+        if (crew_position[droneMaster] & (1 << monitor_index))
+            screen->addStationTab(new DroneMasterScreen(container), droneMaster, getCrewPositionName(droneMaster), getCrewPositionIcon(droneMaster));
+        if (crew_position[dockMaster] & (1 << monitor_index))
+            screen->addStationTab(new DockMasterScreen(container), dockMaster, getCrewPositionName(dockMaster), getCrewPositionIcon(dockMaster));
+        //Fenetres
+        if (crew_position[damageControl] & (1 << monitor_index))
+            screen->addStationTab(new DamageControlScreen(container), damageControl, getCrewPositionName(damageControl), getCrewPositionIcon(damageControl));
         if (crew_position[databaseView] & (1 << monitor_index))
             screen->addStationTab(new DatabaseScreen(container), databaseView, getCrewPositionName(databaseView), getCrewPositionIcon(databaseView));
         if (crew_position[tacticalRadar] & (1 << monitor_index))
@@ -224,24 +232,23 @@ void PlayerInfo::spawnUI(int monitor_index, RenderLayer* render_layer)
             screen->addStationTab(new RadarScreen(container,"science"), scienceRadar, getCrewPositionName(scienceRadar), getCrewPositionIcon(scienceRadar));
         if (crew_position[relayRadar] & (1 << monitor_index))
             screen->addStationTab(new RadarScreen(container,"relay"), relayRadar, getCrewPositionName(relayRadar), getCrewPositionIcon(relayRadar));
-        if (crew_position[altRelay])
-            screen->addStationTab(new RelayScreen(container, false), altRelay, getCrewPositionName(altRelay), getCrewPositionIcon(altRelay));
-        if (crew_position[commsOnly] & (1 << monitor_index))
-            screen->addStationTab(new CommsScreen(container), commsOnly, getCrewPositionName(commsOnly), getCrewPositionIcon(commsOnly));
         if (crew_position[shipLog] & (1 << monitor_index))
             screen->addStationTab(new ShipLogScreen(container,"generic"), shipLog, getCrewPositionName(shipLog), getCrewPositionIcon(shipLog));
         if (crew_position[internLogView] & (1 << monitor_index))
             screen->addStationTab(new ShipLogScreen(container,"intern"), internLogView, getCrewPositionName(internLogView), getCrewPositionIcon(internLogView));
-        if (crew_position[dronePilot] & (1 << monitor_index))
-            screen->addStationTab(new DroneOperatorScreen(container), dronePilot, getCrewPositionName(dronePilot), getCrewPositionIcon(dronePilot));
-        if (crew_position[droneMaster] & (1 << monitor_index))
-            screen->addStationTab(new DroneMasterScreen(container), droneMaster, getCrewPositionName(droneMaster), getCrewPositionIcon(droneMaster));
-        if (crew_position[dockMaster] & (1 << monitor_index))
-            screen->addStationTab(new DockMasterScreen(container), dockMaster, getCrewPositionName(dockMaster), getCrewPositionIcon(dockMaster));
         if (crew_position[oxygenView] & (1 << monitor_index))
             screen->addStationTab(new OxygenScreen(container), oxygenView, getCrewPositionName(oxygenView), getCrewPositionIcon(oxygenView));
         if (crew_position[targetAnalysisScreen] & (1 << monitor_index))
             screen->addStationTab(new TargetAnalysisScreen(container), targetAnalysisScreen, getCrewPositionName(targetAnalysisScreen), getCrewPositionIcon(targetAnalysisScreen));
+        
+        //Non utilise
+        if (crew_position[altRelay])
+            screen->addStationTab(new RelayScreen(container, false), altRelay, getCrewPositionName(altRelay), getCrewPositionIcon(altRelay));
+        if (crew_position[commsOnly] & (1 << monitor_index))
+            screen->addStationTab(new CommsScreen(container), commsOnly, getCrewPositionName(commsOnly), getCrewPositionIcon(commsOnly));
+        
+        
+        
         //TODO tsht : verifier que c'est bien present avec le truc en bas
         //Ship log screen, if you have comms, you have ships log. (note this is mostly replaced by the [at the bottom of the screen openable log]
         //if (crew_position[singlePilot] & (1 << monitor_index))

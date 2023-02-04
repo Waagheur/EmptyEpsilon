@@ -464,11 +464,19 @@ CrewPositionSelection::CrewPositionSelection(GuiContainer* owner, string id, int
         create_crew_position_button(layout, n);
 
     auto three = new GuiPanel(container, "");
-    three->setMargins(25, 50, 50, 100)->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);;
-    (new GuiLabel(three, "CREW_POSITION_SELECT_LABEL", tr("Alternative options"), 30))->addBackground()->setSize(GuiElement::GuiSizeMax, 50)->setMargins(15, 0);
+    three->setMargins(25, 50, 25, 100)->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);;
+    (new GuiLabel(three, "CREW_POSITION_SELECT_LABEL", tr("Alternative stations"), 30))->addBackground()->setSize(GuiElement::GuiSizeMax, 50)->setMargins(15, 0);
     layout = new GuiElement(three, "");
     layout->setMargins(25, 50)->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax)->setAttribute("layout", "vertical");
-    for(int n=int(singlePilot) + 1; n<int(max_crew_positions); n++)
+    for(int n=int(singlePilot) + 1; n<int(dockMaster); n++)
+        create_crew_position_button(layout, n);
+
+    auto four = new GuiPanel(container, "");
+    four->setMargins(25, 50, 50, 100)->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);;
+    (new GuiLabel(four, "CREW_POSITION_SELECT_LABEL", tr("Alternative views"), 30))->addBackground()->setSize(GuiElement::GuiSizeMax, 50)->setMargins(15, 0);
+    layout = new GuiElement(four, "");
+    layout->setMargins(25, 50)->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax)->setAttribute("layout", "vertical");
+    for(int n=int(dockMaster) + 1; n<int(max_crew_positions); n++)
         create_crew_position_button(layout, n);
 
     // Main screen controls button

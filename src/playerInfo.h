@@ -18,23 +18,24 @@ enum ECrewPosition
     operationsOfficer, //science+comms
     //1 player crew
     singlePilot,
-    //extras
-    damageControl,
-    powerManagement,
-    databaseView,
-    altRelay,
-    commsOnly,
-    shipLog,
-    internLogView,
+    //extras stations
     dronePilot,
+    powerManagement,
     droneMaster,
     dockMaster,
-    oxygenView,
-    //Ajouts Tdelc
+    //extra windows
+    damageControl,
+    databaseView,
     tacticalRadar,
     scienceRadar,
     relayRadar,
+    shipLog,
+    internLogView,
     targetAnalysisScreen,
+    oxygenView,
+    altRelay,
+    commsOnly,
+    //Ajouts Tdelc
     max_crew_positions
 };
 
