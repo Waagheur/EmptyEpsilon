@@ -221,11 +221,11 @@ void PlayerInfo::spawnUI(int monitor_index, RenderLayer* render_layer)
             screen->addStationTab(new DroneMasterScreen(container), droneMaster, getCrewPositionName(droneMaster), getCrewPositionIcon(droneMaster));
         if (crew_position[dockMaster] & (1 << monitor_index))
             screen->addStationTab(new DockMasterScreen(container), dockMaster, getCrewPositionName(dockMaster), getCrewPositionIcon(dockMaster));
-        //Fenetres
         if (crew_position[damageControl] & (1 << monitor_index))
             screen->addStationTab(new DamageControlScreen(container), damageControl, getCrewPositionName(damageControl), getCrewPositionIcon(damageControl));
         if (crew_position[databaseView] & (1 << monitor_index))
             screen->addStationTab(new DatabaseScreen(container), databaseView, getCrewPositionName(databaseView), getCrewPositionIcon(databaseView));
+        //Fenetres
         if (crew_position[tacticalRadar] & (1 << monitor_index))
             screen->addStationTab(new RadarScreen(container,"tactical"), tacticalRadar, getCrewPositionName(tacticalRadar), getCrewPositionIcon(tacticalRadar));
         if (crew_position[scienceRadar] & (1 << monitor_index))
@@ -236,8 +236,6 @@ void PlayerInfo::spawnUI(int monitor_index, RenderLayer* render_layer)
             screen->addStationTab(new ShipLogScreen(container,"generic"), shipLog, getCrewPositionName(shipLog), getCrewPositionIcon(shipLog));
         if (crew_position[internLogView] & (1 << monitor_index))
             screen->addStationTab(new ShipLogScreen(container,"intern"), internLogView, getCrewPositionName(internLogView), getCrewPositionIcon(internLogView));
-        if (crew_position[oxygenView] & (1 << monitor_index))
-            screen->addStationTab(new OxygenScreen(container), oxygenView, getCrewPositionName(oxygenView), getCrewPositionIcon(oxygenView));
         if (crew_position[targetAnalysisScreen] & (1 << monitor_index))
             screen->addStationTab(new TargetAnalysisScreen(container), targetAnalysisScreen, getCrewPositionName(targetAnalysisScreen), getCrewPositionIcon(targetAnalysisScreen));
         
@@ -246,6 +244,8 @@ void PlayerInfo::spawnUI(int monitor_index, RenderLayer* render_layer)
             screen->addStationTab(new RelayScreen(container, false), altRelay, getCrewPositionName(altRelay), getCrewPositionIcon(altRelay));
         if (crew_position[commsOnly] & (1 << monitor_index))
             screen->addStationTab(new CommsScreen(container), commsOnly, getCrewPositionName(commsOnly), getCrewPositionIcon(commsOnly));
+        if (crew_position[oxygenView] & (1 << monitor_index))
+            screen->addStationTab(new OxygenScreen(container), oxygenView, getCrewPositionName(oxygenView), getCrewPositionIcon(oxygenView));
         
         
         
@@ -309,7 +309,7 @@ string getCrewPositionName(ECrewPosition position)
     case internLogView: return "Intern Log View";
     case dronePilot: return "Pilote seul";
     case droneMaster: return "Maitre des docks";
-    case dockMaster: return "Maitre d'ammarrage";
+    case dockMaster: return tr("station","Maitre d'ammarrage");
     case oxygenView: return "Log Oxygen";
     case targetAnalysisScreen: return tr("station","Target Analysis Screen");
     default: return "ErrUnk: " + string(position);

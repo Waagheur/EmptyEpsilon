@@ -23,20 +23,21 @@ enum ECrewPosition
     powerManagement,
     droneMaster,
     dockMaster,
-    //extra windows
     damageControl,
     databaseView,
+    //extra windows
     tacticalRadar,
     scienceRadar,
     relayRadar,
     shipLog,
     internLogView,
     targetAnalysisScreen,
-    oxygenView,
-    altRelay,
     commsOnly,
-    //Ajouts Tdelc
-    max_crew_positions
+    max_crew_positions,
+    //Non utilise
+    oxygenView,
+    altRelay
+
 };
 
 class PlayerInfo;
