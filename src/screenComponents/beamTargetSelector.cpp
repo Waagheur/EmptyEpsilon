@@ -39,8 +39,7 @@ void GuiBeamTargetSelector::onDraw(sp::RenderTarget& renderer)
     {
         selector->enable();
 
-        int n_selector = 0;
-        for(int n=0; n<SYS_COUNT; n++)
+        for(unsigned int n=0; n<SYS_COUNT; n++)
         {
             if (ship->hasSystem(ESystem(n)))
             {

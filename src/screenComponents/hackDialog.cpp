@@ -143,7 +143,7 @@ void GuiHackDialog::onDraw(sp::RenderTarget& renderer)
         hack_step = 0;
     }
 
-    if (hack_time > 0.0)
+    if (hack_time > 0.f)
     {
         progress->setValue(hack_time);
         hack_message_entry->disable();
@@ -262,7 +262,7 @@ void GuiHackDialog::commandHack()
                 if (!ship)
                     continue;
 
-                if (glm::length(obj->getPosition() - my_spaceship->getPosition()) > 50000.0)
+                if (glm::length(obj->getPosition() - my_spaceship->getPosition()) > 50000.f)
                     continue;
 
                 hack_test = obj -> getCallSign();

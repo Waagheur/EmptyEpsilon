@@ -290,8 +290,8 @@ void TargetAnalysisScreen::onDraw(sp::RenderTarget& renderer)
 
             float rel_velocity = dot(obj->getVelocity(), position_diff / distance) - dot(my_spaceship->getVelocity(), position_diff / distance);
 
-            if (fabs(rel_velocity) < 0.01)
-                rel_velocity = 0.0;
+            if (fabs(rel_velocity) < 0.01f)
+                rel_velocity = 0.f;
 
             info_callsign->setValue(obj->getCallSign());
             info_distance->setValue(string(distance / 1000.0f, 1) + DISTANCE_UNIT_1K);
@@ -320,7 +320,7 @@ void TargetAnalysisScreen::onDraw(sp::RenderTarget& renderer)
                     {
                         info_system[n]->show();
                         float system_health = ship->systems[n].health;
-                        info_system[n]->setValue(string(int(system_health * 100.0f)) + "%")->setColor(glm::u8vec4(255, 127.5 * (system_health + 1), 127.5 * (system_health + 1), 255));
+                        info_system[n]->setValue(string(int(system_health * 100.0f)) + "%")->setColor(glm::u8vec4(255, 127.5f * (system_health + 1), 127.5f * (system_health + 1), 255));
                     }
                 }
             }

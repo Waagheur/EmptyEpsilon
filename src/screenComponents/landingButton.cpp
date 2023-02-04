@@ -28,6 +28,8 @@ void GuiLandingButton::click()
 //        landing_spaceship->commandUndock();
 //        landing_spaceship->commandSetDockTarget(NULL);
 //        break;
+    case LS_Landed:
+        break;
     }
 }
 
@@ -39,14 +41,14 @@ void GuiLandingButton::onDraw(sp::RenderTarget& renderer)
         {
         case LS_NotLanding:
             //setText("Atterrissage demande");
-            if ((my_spaceship->getSystemEffectiveness(SYS_Hangar) > 0.3) 
+            if ((my_spaceship->getSystemEffectiveness(SYS_Hangar) > 0.3f) 
                 && landing_spaceship->canStartLanding() 
                 && findLandingTarget())
             {
                 enable();
                 setText("Se poser : " + findLandingTarget()->callsign);
             }
-            else if((my_spaceship->getSystemEffectiveness(SYS_Hangar) <= 0.3)
+            else if((my_spaceship->getSystemEffectiveness(SYS_Hangar) <= 0.3f)
                 && landing_spaceship->canStartLanding() 
                 && findLandingTarget())
             {
@@ -60,7 +62,7 @@ void GuiLandingButton::onDraw(sp::RenderTarget& renderer)
             }
             break;
         case LS_Landing:
-            if((my_spaceship->getSystemEffectiveness(SYS_Hangar) <= 0.3))
+            if((my_spaceship->getSystemEffectiveness(SYS_Hangar) <= 0.3f))
             {
                 disable();
                 setText("Hangar HS");
@@ -72,6 +74,8 @@ void GuiLandingButton::onDraw(sp::RenderTarget& renderer)
                 setText("Annuler se poser");
                 enable();    
             }
+            break;
+        case LS_Landed:
             break;
         }
 
@@ -97,6 +101,8 @@ void GuiLandingButton::onUpdate()
 //            case DS_Docked:
 //                landing_spaceship->commandUndock();
 //                break;
+            case LS_Landed:
+                break;
             }
         }
         else if (keys.helms_land_request.getDown())

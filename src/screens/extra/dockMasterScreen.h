@@ -26,8 +26,8 @@ class DockMasterScreen : public GuiOverlay
 
     GuiListbox* docks;
     GuiListbox* bays;
-    int index_dock = 0;
-    int index_bay = 0;
+    unsigned int index_dock = 0;
+    unsigned int index_bay = 0;
     GuiLabel *dockTitle;
     GuiLabel *droneTitle;
 
@@ -67,8 +67,8 @@ class DockMasterScreen : public GuiOverlay
 
     void onDraw(sp::RenderTarget &renderer) override;
   private:
-    void selectDock(int index_dock);
-    void selectBay(int index_bay);
+    void selectDock(unsigned int index_dock);
+    void selectBay(unsigned int index_bay);
   private:
     void displayShipDetails(P<SpaceShip> ship);
 };

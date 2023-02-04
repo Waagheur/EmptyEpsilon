@@ -126,7 +126,7 @@ void WormHole::collide(Collisionable* target, float collision_force)
     if (update_delta == 0.0f)
         return;
 
-    if (getRadarSignatureGravity() < 0.15)
+    if (getRadarSignatureGravity() < 0.15f)
         return;
 
     P<SpaceObject> obj = P<Collisionable>(target);

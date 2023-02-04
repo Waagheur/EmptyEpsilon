@@ -132,7 +132,7 @@ void GuiPowerDamageIndicator::onDraw(sp::RenderTarget& renderer)
     {
         drawIcon(renderer, "gui/icons/status_overheat", colorConfig.overlay_overheating);
     }
-    if (hacked_level > 0.1)
+    if (hacked_level > 0.1f)
     {
         drawIcon(renderer, "gui/icons/hack", colorConfig.overlay_hacked);
     }

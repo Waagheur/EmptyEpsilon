@@ -19,15 +19,15 @@ protected:
 
     float text_size;
     sp::Font* text_font;
-    Validator validator_func;
-    bool valid;
+    Validator validator_func {nullptr};
+    bool valid {true};
     bool multiline = false;
     bool readonly = false;
     bool hide_password = false;
     const GuiThemeStyle* front_style;
     const GuiThemeStyle* back_style;
-    func_t func;
-    func_t enter_func;
+    func_t func {nullptr};
+    func_t enter_func {nullptr};
 
     const float blink_rate = 0.530f;
     sp::SystemTimer blink_timer;

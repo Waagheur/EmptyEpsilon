@@ -225,7 +225,7 @@ void ScanProbe::drawOnRadar(sp::RenderTarget& renderer, glm::vec2 position, floa
     if (long_range && !has_arrived)
     {
         float distance = glm::length(position - glm::vec2(target_position.x, target_position.y));
-        if (distance > 1000.0)
+        if (distance > 1000.f)
         {
                 renderer.drawLine(position, position + glm::vec2(target_position.x, target_position.y) - glm::vec2(getPosition().x, getPosition().y)*scale, glm::u8vec4(255, 255, 255, 32));
         }

@@ -9,7 +9,7 @@
 #include "gui/gui2_togglebutton.h"
 
 GuiMissileTubeControls::GuiMissileTubeControls(GuiContainer* owner, string id, P<PlayerSpaceship> targetSpaceship)
-: GuiElement(owner, id), load_type(MW_None), manual_aim(false), missile_target_angle(0) , target_spaceship(targetSpaceship)
+: GuiElement(owner, id), target_spaceship(targetSpaceship)
 {
     setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);
     setAttribute("layout", "verticalbottom");
@@ -99,7 +99,7 @@ GuiMissileTubeControls::GuiMissileTubeControls(GuiContainer* owner, string id, P
                 load_type = str;
             else
                 load_type = MW_None;
-            for(int idx = 0; idx < load_type_rows.size(); idx++)
+            for(unsigned int idx = 0; idx < load_type_rows.size(); idx++)
                 load_type_rows[idx].button->setValue(string(idx) == load_type);
         });
         tr.button->setTextSize(28)->setSize(200, 40);
@@ -124,7 +124,7 @@ void GuiMissileTubeControls::onUpdate()
         load_type_rows[n].layout->setVisible(target_spaceship->weapon_storage_max[n] > 0);
     }
 
-    int n = MW_Count;
+    unsigned int n = MW_Count;
     for(auto& kv : CustomMissileWeaponRegistry::getCustomMissileWeapons())
     {
         assert(n < load_type_rows.size() && "out of bound for custom weapons");

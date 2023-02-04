@@ -89,7 +89,7 @@ public:
     string getSubClass() { return sub_class_name; }
 
     void setHackDiff(int hack_diff) { this->hack_diff = hack_diff; }
-    int getHackDiff() { return hack_diff; }
+    unsigned int getHackDiff() { return hack_diff; }
 
     float getHull() { return hull_strength; }
     float getHullMax() { return hull_max; }

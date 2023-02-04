@@ -425,7 +425,7 @@ void EngineeringScreen::onDraw(sp::RenderTarget& renderer)
         for(int n = 0; n < my_spaceship->oxygen_zones; n++)
             text_oxygen += toNearbyIntString(100.0f * my_spaceship->getOxygenPoints(n) / my_spaceship->getOxygenMax(n)) + "% ";
         oxygen_display->setValue(text_oxygen);
-        if (my_spaceship->getOxygenTotal() < 0.20)
+        if (my_spaceship->getOxygenTotal() < 0.2f)
             oxygen_display->setColor(glm::u8vec4(255,0,0,255));
         else
             oxygen_display->setColor(glm::u8vec4(255,255,255,255));

@@ -194,6 +194,7 @@ void ScreenMainScreen::update(float delta)
             target_analysis->show();
             break;
         }
+        //FIXME : ProbeView
 
         // if (my_spaceship->docking_state != DS_NotDocking)
         // {

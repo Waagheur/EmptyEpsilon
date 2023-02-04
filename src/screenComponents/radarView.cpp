@@ -442,7 +442,7 @@ void GuiRadarView::drawTargetProjections(sp::RenderTarget& renderer)
             }
 
             float angle_diff = angleDifference(missile_target_angle, fire_angle);
-            float turn_radius = ((360.0f / data.turnrate) * speed) / (2.0f * M_PI);
+            float turn_radius = ((360.0f / data.turnrate) * speed) / (2.0f * float(M_PI));
             if (data.turnrate == 0.0f)
                 turn_radius = 0.0f;
 
@@ -453,7 +453,7 @@ void GuiRadarView::drawTargetProjections(sp::RenderTarget& renderer)
             auto turn_center = vec2FromAngle(fire_angle + left_or_right) * turn_radius;
             auto turn_exit = turn_center + vec2FromAngle(missile_target_angle - left_or_right) * turn_radius;
 
-            float turn_distance = fabs(angle_diff) / 360.0f * (turn_radius * 2.0f * M_PI);
+            float turn_distance = fabs(angle_diff) / 360.0f * (turn_radius * 2.0f * float(M_PI));
             float lifetime_after_turn = data.lifetime - turn_distance / speed;
             float length_after_turn = speed * lifetime_after_turn;
 
@@ -660,9 +660,9 @@ void GuiRadarView::drawObjects(sp::RenderTarget& renderer)
         sp::Rect object_rect(object_position_on_screen.x - r, object_position_on_screen.y - r, r * 2, r * 2);
         if (obj != *target_spaceship && rect.overlaps(object_rect))
         {
-            if (obj->getTransparency() < 0.5)
+            if (obj->getTransparency() < 0.5f)
                 obj->drawOnRadar(renderer, object_position_on_screen, getScale(), getViewRotation(), long_range);
-            if (show_callsigns && obj->getCallSign() != "" && obj->getTransparency() < 0.2)
+            if (show_callsigns && obj->getCallSign() != "" && obj->getTransparency() < 0.2f)
                 renderer.drawText(sp::Rect(object_position_on_screen.x, object_position_on_screen.y - 15, 0, 0), obj->getCallSign(), sp::Alignment::Center, 15, bold_font);
         }
     };
@@ -690,7 +690,7 @@ void GuiRadarView::drawObjectsGM(sp::RenderTarget& renderer)
         sp::Rect object_rect(object_position_on_screen.x - r, object_position_on_screen.y - r, r * 2, r * 2);
         if (rect.overlaps(object_rect))
         {
-            if (obj->getTransparency() >= 0.5)
+            if (obj->getTransparency() >= 0.5f)
                 obj->drawOnRadar(renderer, object_position_on_screen, getScale(), getViewRotation(), long_range);
             obj->drawOnGMRadar(renderer, object_position_on_screen, getScale(), getViewRotation(), long_range);
         }

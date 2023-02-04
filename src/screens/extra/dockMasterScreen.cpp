@@ -33,7 +33,7 @@ DockMasterScreen::DockMasterScreen(GuiContainer *owner)
     auto rootLayout = new GuiElement(this, "ROOT_LAYOUT");
     rootLayout->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax)->setPosition(0, 0, sp::Alignment::TopLeft)->setAttribute("layout", "horizaontal");;
 
-    docks = new GuiListbox(rootLayout, "DOCKS_LIST", [this](int index_dock, string value) {
+    docks = new GuiListbox(rootLayout, "DOCKS_LIST", [this](unsigned int index_dock, string value) {
         selectDock(index_dock);
     });
     docks->setMargins(20, 20, 20, 20)->setSize(COLUMN_WIDTH / 2, GuiElement::GuiSizeMax);
@@ -43,7 +43,7 @@ DockMasterScreen::DockMasterScreen(GuiContainer *owner)
     for (int n = 0; n < 10; n++)
         docks->addEntry("dock-"+string(n+1), "Vide");
 
-    bays = new GuiListbox(rootLayout, "DOCKS_LIST", [this](int index_bay, string value) {
+    bays = new GuiListbox(rootLayout, "DOCKS_LIST", [this](unsigned int index_bay, string value) {
         if (index_bay < 3)
             selectBay(index_bay);
     });
@@ -60,7 +60,7 @@ DockMasterScreen::DockMasterScreen(GuiContainer *owner)
     mainPanel->setMargins(20, 20, 20, 20);
 
     topPanel = new GuiElement(mainPanel, "TOP_PANEL");
-    topPanel->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax / 2.0)->setAttribute("layout", "vertical");;
+    topPanel->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax / 2.f)->setAttribute("layout", "vertical");;
     topPanel->setPosition(0, 0, sp::Alignment::TopRight);
 //    mainPanel->setMargins(20, 20, 20, 20);
 
@@ -122,14 +122,14 @@ DockMasterScreen::DockMasterScreen(GuiContainer *owner)
     new ShipsLog(this,"docks");
 }
 
-void DockMasterScreen::selectDock(int index_dock)
+void DockMasterScreen::selectDock(unsigned int index_dock)
 {
     this->index_dock = index_dock;
     docks->setSelectionIndex(index_dock);
     layout_move->setVisible(true);
 }
 
-void DockMasterScreen::selectBay(int index_bay)
+void DockMasterScreen::selectBay(unsigned int index_bay)
 {
     this->index_bay = index_bay;
     bays->setSelectionIndex(index_bay);

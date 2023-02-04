@@ -872,19 +872,19 @@ void PlayerSpaceship::update(float delta)
     // subsystems proportionally to their share of the total generated health.
     if (auto_repair_enabled)
     {
-        float total_damage = 0.0;
+        float total_damage = 0.f;
 
         for(int n = 0; n < SYS_COUNT; n++)
         {
             if (!hasSystem(ESystem(n))) continue;
-            total_damage += (1.0 - systems[n].health);
+            total_damage += (1.f - systems[n].health);
         }
-        if (total_damage > 0.0)
+        if (total_damage > 0.f)
         {
-            for(int n = 0; n < SYS_COUNT; n++)
+            for(unsigned int n = 0; n < SYS_COUNT; n++)
             {
                 if (!hasSystem(ESystem(n))) continue;
-                systems[n].repair_request = max_repair * (1.0 - systems[n].health) / total_damage;
+                systems[n].repair_request = max_repair * (1.f - systems[n].health) / total_damage;
             }
         }
     }
@@ -1015,11 +1015,11 @@ void PlayerSpaceship::update(float delta)
             if (gameGlobalInfo->use_nano_repair_crew)
             {
                 systems[n].health += system_repair_effect_per_second * systems[n].repair_level * delta;
-                if (systems[n].health > 1.0)
-                    systems[n].health = 1.0;
+                if (systems[n].health > 1.f)
+                    systems[n].health = 1.f;
                 systems[n].hacked_level -= system_repair_effect_per_second * systems[n].repair_level * delta;;
-                if (systems[n].hacked_level < 0.0)
-                    systems[n].hacked_level = 0.0;
+                if (systems[n].hacked_level < 0.f)
+                    systems[n].hacked_level = 0.f;
             }
         }
 
@@ -1078,7 +1078,7 @@ void PlayerSpaceship::update(float delta)
 
             for(float n=0; n<=4; n++)
             {
-                if ((current_warp > n-0.1 && current_warp < n+0.1) && warp_indicator != n)
+                if ((current_warp > n-0.1f && current_warp < n+0.1f) && warp_indicator != n)
                 {
                     warp_indicator = n;
                     addToSpecificShipLog("WARP " + string(abs(n)), glm::u8vec4(255,255,255,255),"intern");
@@ -1344,7 +1344,7 @@ float PlayerSpaceship::getNetSystemEnergyUsage()
     {
         
         if (!hasSystem(ESystem(n))) continue;
-        if (systems[n].health < 0.0) continue;
+        if (systems[n].health < 0.f) continue;
 
         const auto& system = systems[n];
         // Factor the subsystem's health into energy generation.
@@ -1878,7 +1878,7 @@ void PlayerSpaceship::onReceiveClientCommand(int32_t client_id, sp::io::DataBuff
             int preset;
             float request;
             packet >> system >> preset >> request;
-            if (system < SYS_COUNT && request >= 0.0 && request <= 3.0 && preset > 0 && preset <= max_engineer_presets_number)
+            if (system < SYS_COUNT && request >= 0.f && request <= 3.f && preset > 0 && preset <= max_engineer_presets_number)
             {
                 power_presets[system][preset] = request;
                 if (system == 0)
@@ -1891,7 +1891,7 @@ void PlayerSpaceship::onReceiveClientCommand(int32_t client_id, sp::io::DataBuff
             ESystem system;
             float request;
             packet >> system >> request;
-            if (system < SYS_COUNT && request >= 0.0 && request <= max_repair_per_system)
+            if (system < SYS_COUNT && request >= 0.f && request <= max_repair_per_system)
                 setSystemRepairRequest(system, request);
         }
         break;
@@ -1901,7 +1901,7 @@ void PlayerSpaceship::onReceiveClientCommand(int32_t client_id, sp::io::DataBuff
             int preset;
             float request;
             packet >> system >> preset >> request;
-            if (system < SYS_COUNT && request >= 0.0 && request <= max_coolant_per_system && preset > 0 && preset <= max_engineer_presets_number)
+            if (system < SYS_COUNT && request >= 0.f && request <= max_coolant_per_system && preset > 0 && preset <= max_engineer_presets_number)
                 coolant_presets[system][preset] = request;
         }
         break;
@@ -2888,15 +2888,15 @@ bool PlayerSpaceship::canBeLandedOn(P<SpaceObject> obj)
 
 float PlayerSpaceship::getLongRangeRadarRange()
 {
-    if(hasSystem(SYS_Drones) && getSystemEffectiveness(SYS_Drones) < 0.1)
-        return long_range_radar_range * std::sqrt(0.1); //backup generator
+    if(hasSystem(SYS_Drones) && getSystemEffectiveness(SYS_Drones) < 0.1f)
+        return long_range_radar_range * std::sqrt(0.1f); //backup generator
     return hasSystem(SYS_Drones) ? long_range_radar_range * std::sqrt(getSystemEffectiveness(SYS_Drones)) : long_range_radar_range;
 }
 
 float PlayerSpaceship::getShortRangeRadarRange()
 {
-    if(hasSystem(SYS_Drones) && getSystemEffectiveness(SYS_Drones) < 0.1)
-        return short_range_radar_range * std::sqrt(0.1); //backup generator
+    if(hasSystem(SYS_Drones) && getSystemEffectiveness(SYS_Drones) < 0.1f)
+        return short_range_radar_range * std::sqrt(0.1f); //backup generator
     return hasSystem(SYS_Drones) ? short_range_radar_range * std::sqrt(getSystemEffectiveness(SYS_Drones)) : short_range_radar_range;
 }
 

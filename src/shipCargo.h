@@ -29,15 +29,15 @@ public:
   ShipCargo(P<ShipTemplate> ship_template);
   ShipCargo(P<SpaceShip> cargo);
 
-  ShipCargo::Entries getEntries();
-  string getCallSign() { return callsign; }
+  ShipCargo::Entries getEntries() override;
+  string getCallSign() override { return callsign; }
   P<ShipTemplate> getTemplate() { return ShipTemplate::getTemplate(template_name); }
-  float getMaxEnergy() { return getTemplate()->energy_storage_amount; }
-  float getMaxHealth() { return getTemplate()->hull * (SYS_COUNT + 1); }
-  float getHealth();
-  void addHealth(float amount);
-  P<ModelData> getModel();
-  bool onLaunch(Dock &source);
+  float getMaxEnergy() override { return getTemplate()->energy_storage_amount; }
+  float getMaxHealth() override { return getTemplate()->hull * (SYS_COUNT + 1); }
+  float getHealth() override ;
+  void addHealth(float amount) override;
+  P<ModelData> getModel() override;
+  bool onLaunch(Dock &source) override;
   P<SpaceShip> getBaseCarrier() //null if not based
   { return (game_server) ? game_server->getObjectById(base_carrier_id) : game_client->getObjectById(base_carrier_id);}
   void setBaseCarrier(P<SpaceShip> iBased) { assert(iBased); base_carrier_id = iBased->getMultiplayerId(); }

@@ -584,7 +584,7 @@ SpaceShip::SpaceShip(string multiplayerClassName, float multiplayer_significant_
 
 
     // Initialize each subsystem to be powered with no coolant or heat.
-    for(int n=0; n<SYS_COUNT; n++)
+    for(unsigned int n=0; n<SYS_COUNT; n++)
     {
         SDL_assert(n < default_system_power_factors.size());
         systems[n].health = 1.0f;
@@ -1149,7 +1149,7 @@ void SpaceShip::update(float delta)
                 landing_state = LS_NotLanding;
             else
                 target_rotation = vec2ToAngle(getPosition() - landing_target->getPosition());
-            if (fabs(angleDifference(target_rotation, getRotation())) < 10.0)
+            if (fabs(angleDifference(target_rotation, getRotation())) < 10.f)
                 impulse_request = -1.0;
             else
                 impulse_request = 0.0;
@@ -1373,16 +1373,16 @@ void SpaceShip::update(float delta)
     }
 
     // Add heat to systems consuming combat maneuver boost.
-    if (combat_maneuver_boost_speed > 0.0)
+    if (combat_maneuver_boost_speed > 0.0f)
         addHeat(SYS_Impulse, fabs(combat_maneuver_boost_active) * delta * heat_per_combat_maneuver_boost);
-    if (combat_maneuver_strafe_speed > 0.0)
+    if (combat_maneuver_strafe_speed > 0.0f)
         addHeat(SYS_Maneuver, fabs(combat_maneuver_strafe_active) * delta * heat_per_combat_maneuver_strafe);
 
     beam_weapons_count = 0;
     for(int n = 0; n < max_beam_weapons; n++)
     {
         beam_weapons[n].update(delta);
-        if (beam_weapons[n].getRange() > 0.0)
+        if (beam_weapons[n].getRange() > 0.0f)
             beam_weapons_count += 1;
     }
 
@@ -1429,7 +1429,7 @@ void SpaceShip::update(float delta)
 
 float SpaceShip::getCloakingDegree()
 {
-    return (std::tanh(getSystemEffectiveness(SYS_Cloaking))-std::tanh(0))/(std::tanh(3)-std::tanh(0));
+    return (std::tanh(getSystemEffectiveness(SYS_Cloaking))-(float)std::tanh(0))/(float)(std::tanh(3)-std::tanh(0));
 }
 
 float SpaceShip::getOxygenRechargeRate(int index)
@@ -1437,7 +1437,7 @@ float SpaceShip::getOxygenRechargeRate(int index)
     float rate = (oxygen_rate[index] / 100.f * oxygen_max[index]) / 100.f;
     // Diminution de l'oxygene si Hull trop base
     if (hull_strength / hull_max < 0.9f)
-        rate -= (0.9 - hull_strength / hull_max) * 2.f;
+        rate -= (0.9f - hull_strength / hull_max) * 2.f;
 
     // Modifs selon Reacteur
     if (getSystemEffectiveness(SYS_Reactor) < 0.8f)
@@ -1544,7 +1544,7 @@ void SpaceShip::collide(Collisionable* other, float force)
         }
     }
 
-    if (landing_state == LS_Landing && fabs(angleDifference(target_rotation, getRotation())) < 10.0)
+    if (landing_state == LS_Landing && fabs(angleDifference(target_rotation, getRotation())) < 10.f)
     {
         P<SpaceShip> land_object = P<Collisionable>(other);
         if (land_object && (land_object == landing_target))
@@ -1627,8 +1627,8 @@ void SpaceShip::requestUndock()
     {
         docked_style = DockStyle::None;
         docking_state = DS_NotDocking;
-        if (getSystemEffectiveness(SYS_Impulse) > 0.1){
-            impulse_request = 0.5;
+        if (getSystemEffectiveness(SYS_Impulse) > 0.1f){
+            impulse_request = 0.5f;
         }
     }
 }
@@ -1674,6 +1674,8 @@ int SpaceShip::scanningComplexity(P<SpaceObject> other)
         if (getScannedStateFor(other) == SS_SimpleScan)
             return 3;
         return 2;
+    case SC_NbItem:
+        assert("Value SC_NbItem not expected");
     }
     return 0;
 }
@@ -1692,6 +1694,8 @@ int SpaceShip::scanningChannelDepth(P<SpaceObject> other)
         return 2;
     case SC_Advanced:
         return 2;
+    case SC_NbItem:
+        assert("Value SC_NbItem not expected");
     }
     return 0;
 }

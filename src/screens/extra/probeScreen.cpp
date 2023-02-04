@@ -46,9 +46,9 @@ void ProbeScreen::update(float delta)
     }
 
     rotatetime -= delta;
-    if (rotatetime <= 0.0)
+    if (rotatetime <= 0.f)
     {
-		rotatetime = 0.0007;
+		rotatetime = 0.0007f;
 		angle += 0.5f;
     }
 
@@ -69,7 +69,7 @@ void ProbeScreen::update(float delta)
 			glm::vec2 position = probe->getPosition() + rotateVec2(glm::vec2(probe->getRadius(), 0), camera_yaw);
  			camera_position.x = position.x;
 			camera_position.y = position.y;
-			camera_position.z = 0.0;
+			camera_position.z = 0.0f;
 		}else{
             background_crosses->show();
             viewport->hide();

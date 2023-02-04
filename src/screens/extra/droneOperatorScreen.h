@@ -44,7 +44,7 @@ private:
 public:
     DroneOperatorScreen(GuiContainer* owner);
 
-    virtual void onDraw(sp::RenderTarget& renderer);
+    virtual void onDraw(sp::RenderTarget& renderer) override;
 private:
     void disconnected();
     bool isOperated(P<PlayerSpaceship> ship);

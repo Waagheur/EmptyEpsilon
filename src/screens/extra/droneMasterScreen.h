@@ -75,7 +75,7 @@ class DroneMasterScreen : public GuiOverlay
 
     void onDraw(sp::RenderTarget &renderer) override;
   private:
-    void selectDock(int index);
+    void selectDock(unsigned int index);
   private:
     void displayDroneDetails(Dock &dockData);
 };

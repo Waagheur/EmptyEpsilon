@@ -29,9 +29,9 @@ private:
         GuiToggleButton* button;
     };
     std::vector<TypeRow> load_type_rows;
-    string load_type;
-    bool manual_aim;
-    float missile_target_angle;
+    string load_type{MW_None};
+    bool manual_aim{false};
+    float missile_target_angle{0};
     GuiPowerDamageIndicator* pdi;
 public:
     GuiMissileTubeControls(GuiContainer* owner, string id, P<PlayerSpaceship> targetSpaceship);

@@ -311,7 +311,7 @@ GuiTemplateTweak::GuiTemplateTweak(GuiContainer* owner)
     (new GuiLabel(left_col, "", "Rotation:", 30))->setSize(GuiElement::GuiSizeMax, 50);
     rotation_slider = new GuiSlider(left_col, "", -100.0, 100.0, 0.0, [this](float value) {
         if(target)
-            target->setRotationSpeed(value/10.0);
+            target->setRotationSpeed(value/10.f);
     });
     rotation_slider->addOverlay()->setSize(GuiElement::GuiSizeMax, 40);
 
@@ -319,7 +319,7 @@ GuiTemplateTweak::GuiTemplateTweak(GuiContainer* owner)
     (new GuiLabel(left_col, "", "Transparence:", 30))->setSize(GuiElement::GuiSizeMax, 50);
     transparency_slider = new GuiSlider(left_col, "", 0.0, 100.0, 0.0, [this](float value) {
        if(target)
-        target->setTransparency(value / 100.0);
+        target->setTransparency(value / 100.f);
     });
     transparency_slider->addOverlay()->setSize(GuiElement::GuiSizeMax, 40);
 
@@ -399,11 +399,11 @@ GuiTemplateTweak::GuiTemplateTweak(GuiContainer* owner)
     if(target)
     {
         heading_slider->setValue(target->getHeading());
-        rotation_slider->setValue(target->getRotationSpeed()*10.0);
+        rotation_slider->setValue(target->getRotationSpeed()*10.f);
         hull_slider->setValue(target->hull_strength);
-        transparency_slider->setValue(target->getTransparency() * 100.0);
-        system_damage_ratio_slider->setValue(target->system_damage_ratio * 100.0);
-        system_damage_hull_threshold_slider->setValue(target->system_damage_hull_threshold * 100.0);
+        transparency_slider->setValue(target->getTransparency() * 100.f);
+        system_damage_ratio_slider->setValue(target->system_damage_ratio * 100.f);
+        system_damage_hull_threshold_slider->setValue(target->system_damage_hull_threshold * 100.f);
 
         short_range_radar_slider->setValue(target->getShortRangeRadarRange());
         long_range_radar_slider->setValue(target->getLongRangeRadarRange());
@@ -598,7 +598,7 @@ GuiShipTweak::GuiShipTweak(GuiContainer* owner)
     (new GuiLabel(right_col, "", tr("Jump charge:"), 30))->setSize(GuiElement::GuiSizeMax, 45);
     jump_drive_charge_slider = new GuiSlider(right_col, "", 0.0, 100.0, 0.0, [this](float value) {
         if(target)
-            target->jump_drive_charge = value / 100.0 * target->jump_drive_max_distance;
+            target->jump_drive_charge = value / 100.f * target->jump_drive_max_distance;
     });
     jump_drive_charge_slider->addOverlay()->setSize(GuiElement::GuiSizeMax, 35);
 
@@ -626,7 +626,7 @@ GuiShipTweak::GuiShipTweak(GuiContainer* owner)
     (new GuiLabel(right_col, "", "Warp, vitesse :", 30))->setSize(GuiElement::GuiSizeMax, 45);
     warp_speed_slider = new GuiSlider(right_col, "", 0.0, 90, 0.0, [this](float value) {
         if(target)
-            target->warp_speed_per_warp_level = value*16.667;
+            target->warp_speed_per_warp_level = value*16.667f;
     });
     warp_speed_slider->addOverlay()->setSize(GuiElement::GuiSizeMax, 35);
 
@@ -635,7 +635,7 @@ GuiShipTweak::GuiShipTweak(GuiContainer* owner)
 {
     if(!target)
         return;
-    jump_drive_charge_slider->setValue(target->jump_drive_charge / target->jump_drive_max_distance * 100.0);
+    jump_drive_charge_slider->setValue(target->jump_drive_charge / target->jump_drive_max_distance * 100.f);
     jump_drive_min_distance_slider->setValue(round(target->jump_drive_min_distance / 1000000)*1000);
     jump_drive_max_distance_slider->setValue(round(target->jump_drive_max_distance / 1000000)*1000);
     jump_delay_slider->setValue(target->jump_delay);
@@ -659,7 +659,7 @@ GuiShipTweak::GuiShipTweak(GuiContainer* owner)
     combat_maneuver_strafe_speed_slider->setValue(target->combat_maneuver_strafe_speed);
     jump_drive_charge_time_slider->setValue(target->jump_drive_charge_time);
     jump_drive_energy_slider->setValue(target->jump_drive_energy_per_km_charge);
-    warp_speed_slider->setValue(target->warp_speed_per_warp_level/16.667);
+    warp_speed_slider->setValue(target->warp_speed_per_warp_level/16.667f);
 
     P<PlayerSpaceship> player = target;
     if (player)
@@ -812,7 +812,7 @@ void GuiShipTweakMissileWeapons::onDraw(sp::RenderTarget& renderer)
 {
     if(!target)
         return;
-    int n = 0;
+    unsigned int n = 0;
     for(auto& kv : CustomMissileWeaponRegistry::getCustomMissileWeapons())
     {
         custom_missile_storage_labels[n]->setVisible((target->custom_weapon_storage_max[kv.first]>0)
@@ -832,7 +832,7 @@ void GuiShipTweakMissileWeapons::onDraw(sp::RenderTarget& renderer)
         n++;
     }
 
-    int wsIdx = 0;
+    unsigned int wsIdx = 0;
     while(n<missile_current_amount_slider.size())
     {
 
@@ -852,14 +852,14 @@ void GuiShipTweakMissileWeapons::open(P<SpaceObject> target)
     this->target = ship;
 
 
-    int n = 0;
+    unsigned int n = 0;
     for(auto& kv : CustomMissileWeaponRegistry::getCustomMissileWeapons())
     {
         missile_storage_amount_slider[n]->setValue(float(ship->custom_weapon_storage_max[kv.first]));
         n++;
     }
 
-    int wsIdx = 0;
+    unsigned int wsIdx = 0;
     while(n<missile_storage_amount_slider.size())
     {
         missile_storage_amount_slider[n]->setValue(float(ship->weapon_storage_max[wsIdx]));

@@ -4,7 +4,7 @@
 
 
 GuiTextEntry::GuiTextEntry(GuiContainer* owner, string id, string text)
-: GuiElement(owner, id), text(text), text_size(30), func(nullptr), enter_func(nullptr), validator_func(nullptr), valid(true)
+: GuiElement(owner, id), text(text), text_size(30)
 {
     text_font = sp::RenderTarget::getDefaultFont();
     blink_timer.repeat(blink_rate);

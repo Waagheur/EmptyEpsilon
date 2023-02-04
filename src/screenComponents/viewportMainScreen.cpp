@@ -61,9 +61,9 @@ void GuiViewportMainScreen::onDraw(sp::RenderTarget& renderer)
         if (my_spaceship->main_screen_setting == MSS_ProbeView && probe)
         {
             //Tsht : tdelc Probe view. FIXME le mettre dans un AUTRE viewport
-            if (rotatetime <= 0.0)
+            if (rotatetime <= 0.f)
             {
-                rotatetime = 0.1;
+                rotatetime = 0.1f;
                 angle += 0.1f;
             }
 
@@ -73,7 +73,7 @@ void GuiViewportMainScreen::onDraw(sp::RenderTarget& renderer)
             glm::vec2 position = probe->getPosition() + rotateVec2(glm::vec2(probe->getRadius(), 0), camera_yaw);
             camera_position.x = position.x;
             camera_position.y = position.y;
-            camera_position.z = 0.0;
+            camera_position.z = 0.f;
         }
         else
         {

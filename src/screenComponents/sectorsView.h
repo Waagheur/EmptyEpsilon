@@ -16,8 +16,9 @@ class SectorsView : public GuiElement
         glm::u8vec4 grid_colors[SectorsView::grid_scale_size];
         const float sub_sectors_count = 8;
         float distance;
-        glm::vec2 view_position;
-        float view_rotation;
+
+        glm::vec2 view_position{glm::vec2(0.0f,0.0f)};
+        float view_rotation{0};
 
         TargetsContainer *targets;
         bpfunc_t mouse_down_func{nullptr};

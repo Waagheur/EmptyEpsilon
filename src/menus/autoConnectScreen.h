@@ -15,8 +15,8 @@ class AutoConnectScreen : public GuiCanvas, public Updatable
     P<ServerScanner> scanner;
     sp::io::network::Address connect_to_address;
     ECrewPosition crew_position;
-    bool control_main_screen;
     int auto_mainscreen;
+    bool control_main_screen;
     std::map<string, string> ship_filters;
 
     GuiLabel* status_label;

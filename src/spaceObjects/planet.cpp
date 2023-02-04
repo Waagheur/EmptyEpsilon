@@ -155,7 +155,7 @@ Planet::Planet()
     addInfos(1,"Revolution",string(irandom(50,5000))+ " J.LO");
     addInfos(2,"Axe de rotation",string(irandom(1,360))+"deg" + string(irandom(1,60))+"'" + string(irandom(1,60))+"''");
     addInfos(3,"Taille",string(irandom(50,500) * 100) + " km");
-    if (random(0.0,1.0) < 0.1)
+    if (random(0.f,1.f) < 0.1f)
     {
         addInfos(4,"Type","Gazeuse");
     }
@@ -165,7 +165,7 @@ Planet::Planet()
     }
     addInfos(5,"Age",string(irandom(5,100)*100)+ " M3 A.LO");
 
-    if (infos_value[4] == "Tellurique" && random(0.0,1.0) < 0.3)
+    if (infos_value[4] == "Tellurique" && random(0.f,1.f) < 0.3f)
     { 
         addInfos(6,"Atmosphere","oui");
     }
@@ -424,19 +424,19 @@ void Planet::drawOnRadar(sp::RenderTarget& renderer, glm::vec2 position, float s
         float size = 1;
         if (collision_size < 0)
         {
-            size = getRadius() * scale * 0.5 * 3.0;
+            size = getRadius() * scale * 0.5f * 3.f;
             
         }
         else
         {
-            size = getRadius() * scale * 3.0;
+            size = getRadius() * scale * 3.f;
         }
         renderer.drawRotatedSprite(planet_icon, position, size, getRotation(), glm::u8vec4(255, 255, 255, 255));
     }
     else if (collision_size > 0)
     {
 //        float size = getRadius() * collision_size * scale / object_sprite.getTextureRect().width * 3.0;
-        float size = getRadius() * scale * 3.0;
+        float size = getRadius() * scale * 3.f;
         renderer.drawRotatedSprite(planet_icon, position, size, getRotation());
     }
 }

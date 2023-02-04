@@ -466,14 +466,14 @@ bool SpaceObject::canBeTargetedBy(P<SpaceObject> other)
 {
     if(hull <= 0)
         return false;
-    if (getTransparency() > 0.5)
+    if (getTransparency() > 0.5f)
         return false;
     return true;
 }
 
 bool SpaceObject::canBeSelectedBy(P<SpaceObject> other)
 {
-    if (getTransparency() > 0.5)
+    if (getTransparency() > 0.5f)
         return false;
     if (getDescriptionFor(other).length() > 0)
         return true;
@@ -486,7 +486,7 @@ bool SpaceObject::canBeSelectedBy(P<SpaceObject> other)
 
 bool SpaceObject::canBeScannedBy(P<SpaceObject> other)
 {
-    if (getTransparency() > 0.5)
+    if (getTransparency() > 0.5f)
         return false;
     if (getScannedStateFor(other) == SS_NotScanned)
         return true;
@@ -819,8 +819,8 @@ void SpaceObject::removeOxygenPoints(float amount,int index)
 void SpaceObject::addOxygenPoints(float amount,int index)
 {
     oxygen_points[index] += amount;
-    if (oxygen_points[index] < 0.0)
-    	oxygen_points[index] = 0.0;
+    if (oxygen_points[index] < 0.f)
+    	oxygen_points[index] = 0.f;
     if (oxygen_points[index] > oxygen_max[index])
     	oxygen_points[index] = oxygen_max[index];
 }

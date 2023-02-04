@@ -119,9 +119,6 @@ Keys::Keys() :
     helms_dock_action("HELMS_DOCK_ACTION", "D"),
     helms_dock_request("HELMS_DOCK_REQUEST"),
     helms_dock_abort("HELMS_DOCK_ABORT"),
-    helms_land_action("HELMS_LAND_ACTION"),
-    helms_land_request("HELMS_LAND_REQUEST"),
-    helms_land_abort("HELMS_LAND_ABORT"),
     helms_undock("HELMS_UNDOCK"),
     helms_increase_jump_distance("HELMS_JUMP_INCREASE", "RBracket"),
     helms_decrease_jump_distance("HELMS_JUMP_DECREASE", "LBracket"),
@@ -129,6 +126,10 @@ Keys::Keys() :
     helms_combat_left("HELMS_COMBAT_LEFT"),
     helms_combat_right("HELMS_COMBAT_RIGHT"),
     helms_combat_boost("HELMS_COMBAT_BOOST"),
+    helms_land_action("HELMS_LAND_ACTION"),
+    helms_land_request("HELMS_LAND_REQUEST"),
+    helms_land_abort("HELMS_LAND_ABORT"),
+
 
     //weapons
     weapons_select_homing("WEAPONS_SELECT_HOMING", "1"),
@@ -223,8 +224,17 @@ Keys::Keys() :
         {"SIENCE_SCAN_PARAM_DECREASE_3"},
         {"SIENCE_SCAN_PARAM_DECREASE_4"},
     }},
+    science_scan_param_set{{
+        {"SIENCE_SCAN_PARAM_SET_1"},
+        {"SIENCE_SCAN_PARAM_SET_2"},
+        {"SIENCE_SCAN_PARAM_SET_3"},
+        {"SIENCE_SCAN_PARAM_SET_4"},
+    }},
     //ajouts Tdelc
     science_abort_scan("SCIENCE_ABORT_SCAN"),
+    science_show_probe("SCIENCE_SHOW_PROBE"),
+    science_show_database("SCIENCE_SHOW_DATABASE"),
+    science_show_radar("SCIENCE_SHOW_RADAR"),
     science_move_left_scan{{
         {"SIENCE_MOVE_LEFT_SCAN_1"},
         {"SIENCE_MOVE_LEFT_SCAN_2"},
@@ -237,18 +247,8 @@ Keys::Keys() :
         {"SIENCE_MOVE_RIGHT_SCAN_3"},
         {"SIENCE_MOVE_RIGHT_SCAN_4"},
     }},
-
-    science_show_probe("SCIENCE_SHOW_PROBE"),
-    science_show_database("SCIENCE_SHOW_DATABASE"),
-    science_show_radar("SCIENCE_SHOW_RADAR"),
     //fin d'ajouts
-
-    science_scan_param_set{{
-        {"SIENCE_SCAN_PARAM_SET_1"},
-        {"SIENCE_SCAN_PARAM_SET_2"},
-        {"SIENCE_SCAN_PARAM_SET_3"},
-        {"SIENCE_SCAN_PARAM_SET_4"},
-    }},
+    
 
     //Engineering
     engineering_select_reactor("ENGINEERING_SELECT_SYSTEM_REACTOR", "1"),

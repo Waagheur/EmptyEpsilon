@@ -56,12 +56,12 @@ DroneMasterScreen::DroneMasterScreen(GuiContainer *owner)
     mainPanel->setMargins(20, 20, 20, 20);
 
     topPanel = new GuiElement(mainPanel, "TOP_PANEL");
-    topPanel->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax / 2.0)->setAttribute("layout", "vertical");;
+    topPanel->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax / 2.f)->setAttribute("layout", "vertical");;
     topPanel->setPosition(0, 0, sp::Alignment::TopRight);
 //    mainPanel->setMargins(20, 20, 20, 20);
 
     bottomPanel = new GuiElement(mainPanel, "BOTTOM_PANEL");
-    bottomPanel->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax / 2.0)->setAttribute("layout", "vertical");;
+    bottomPanel->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax / 2.f)->setAttribute("layout", "vertical");;
     bottomPanel->setPosition(0, 500, sp::Alignment::TopRight);
 
     // Dock actions
@@ -362,7 +362,7 @@ DroneMasterScreen::DroneMasterScreen(GuiContainer *owner)
     new ShipsLog(this,"docks");
 }
 
-void DroneMasterScreen::selectDock(int index)
+void DroneMasterScreen::selectDock(unsigned int index)
 {
     dockTitle->setText(docks->getEntryValue(index));
 
@@ -382,7 +382,7 @@ void DroneMasterScreen::onDraw(sp::RenderTarget& renderer)
     if (my_spaceship)
     {
         
-        if (my_spaceship->getSystemEffectiveness(SYS_Hangar) > 0.3)
+        if (my_spaceship->getSystemEffectiveness(SYS_Hangar) > 0.3f)
         {
             action_launch_button->enable();
             action_launch_button->setText("Decollage");

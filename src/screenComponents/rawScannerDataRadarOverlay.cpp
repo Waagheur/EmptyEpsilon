@@ -24,7 +24,7 @@ void RawScannerDataRadarOverlay::onDraw(sp::RenderTarget& renderer)
     else
         probe = game_client->getObjectById(my_spaceship->linked_science_probe_id);
 
-    if (!probe && my_spaceship->getSystemEffectiveness(SYS_Drones) < 0.1)
+    if (!probe && my_spaceship->getSystemEffectiveness(SYS_Drones) < 0.1f)
         return;
 
     auto view_position = radar->getViewPosition();
@@ -53,7 +53,7 @@ void RawScannerDataRadarOverlay::onDraw(sp::RenderTarget& renderer)
         // Initialize angle, distance, and scale variables.
         float a_0, a_1;
         float dist = glm::length(obj->getPosition() - view_position);
-        float scale = 1.0;
+        float scale = 1.f;
         
         // If the object is more than twice as far away as the maximum radar
         // range, disregard it.
@@ -104,7 +104,7 @@ void RawScannerDataRadarOverlay::onDraw(sp::RenderTarget& renderer)
 
         // Anti-object have more signature range
         float material = info.gravity + info.biological + info.electrical;
-        if (material < 0.0)
+        if (material < 0.f)
         {
             a_0 -= - material * 10;
             a_1 += - material * 10;

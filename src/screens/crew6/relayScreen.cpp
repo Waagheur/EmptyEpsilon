@@ -291,8 +291,8 @@ void RelayScreen::onDraw(sp::RenderTarget& renderer)
     if (my_spaceship)
     {
         float ratio_screen = radar->getRect().size.x / radar->getRect().size.y;
-        float distance_width = radar->getDistance() * 2.0 * ratio_screen / 1000.0f;
-        float distance_height = radar->getDistance() * 2.0 / 1000.0f;
+        float distance_width = radar->getDistance() * 2.f * ratio_screen / 1000.0f;
+        float distance_height = radar->getDistance() * 2.f / 1000.0f;
         if (distance_width < 100)
             info_distance -> setValue(string(distance_width, 1.0f) + " U / " + string(distance_height, 1.0f) + " U");
         else
@@ -400,7 +400,7 @@ void RelayScreen::onDraw(sp::RenderTarget& renderer)
 
             info_probe->show();
             float distance = glm::length(probe->getPosition() - probe->getTarget());
-            if (distance > 1000.0)
+            if (distance > 1000.f)
                 info_probe->setValue(string(int(ceilf(distance / probe->getSpeed()))) + " S");
             else
                 info_probe->hide();

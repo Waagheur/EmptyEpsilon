@@ -9,9 +9,7 @@
 #include "targetsContainer.h"
 
 SectorsView::SectorsView(GuiContainer *owner, string id, float distance, TargetsContainer* targets) :
-
-GuiElement(owner, id), distance(distance), targets(targets),
-view_position(glm::vec2(0.0f,0.0f)), view_rotation(0)
+GuiElement(owner, id), distance(distance), targets(targets)
 {
     // initialize grid colors for different zoom magnitudes
     for (int scale_magnitude = 0; scale_magnitude < SectorsView::grid_scale_size - 1; scale_magnitude++)
