@@ -212,7 +212,7 @@ ShipSelectionScreen::ShipSelectionScreen()
     if (game_server)
     {
         auto extra_settings_panel = new GuiPanel(this, "");
-        extra_settings_panel->setSize(600, 325)->setPosition(0, 0, sp::Alignment::Center)->hide();
+        extra_settings_panel->setSize(600, 900)->setPosition(0, 0, sp::Alignment::Center)->hide();
         auto extra_settings = new GuiElement(extra_settings_panel, "");
         extra_settings->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax)->setMargins(25)->setAttribute("layout", "vertical");
         // Science scan complexity selector.
@@ -254,6 +254,100 @@ ShipSelectionScreen::ShipSelectionScreen()
             extra_settings_panel->hide();
             container->show();
         });
+
+        //Tsht & tdelc
+        row = new GuiElement(extra_settings, "");
+        row->setSize(GuiElement::GuiSizeMax, 50)->setAttribute("layout", "horizontal");
+        (new GuiToggleButton(row, "USE_REPAIR_CREW", tr("Use repair crew"), [](bool value)
+        {
+            PreferencesManager::set("server_config_use_repair_crew", value ? "1" : "");
+            gameGlobalInfo->use_repair_crew = value;
+        }))->setValue(PreferencesManager::get("server_config_use_repair_crew", "0") == "1")->setSize(GuiElement::GuiSizeMax, 50);
+        
+        row = new GuiElement(extra_settings, "");
+        row->setSize(GuiElement::GuiSizeMax, 50)->setAttribute("layout", "horizontal");
+        int intercept_mode = PreferencesManager::get("intercept_all_comms_to_gm", "0").toInt();
+        (new GuiSelector(row, "INTERCEPT_COMM_GM", [](int index, string value)
+        {
+            // 0: Off
+            // 1: Temp
+            // 2: All
+            PreferencesManager::set("intercept_all_comms_to_gm", string(index));
+        }))->setOptions({tr("Intercept comm to GM : Off"), tr("Intercept comm to GM : Temp"), tr("Intercept comm to GM : All")})->setSelectionIndex(intercept_mode)->setSize(GuiElement::GuiSizeMax, 50);
+
+        row = new GuiElement(extra_settings, "");
+        row->setSize(GuiElement::GuiSizeMax, 50)->setAttribute("layout", "horizontal");
+        (new GuiToggleButton(row, "MAIN_SCREEN_GLOBAL_RADAR", tr("Main screen global range radar"), [](bool value)
+        {
+            PreferencesManager::set("allow_main_screen_global_range_radar", value ? "1" : "");
+            gameGlobalInfo->allow_main_screen_global_range_radar = value;
+        }))->setValue(PreferencesManager::get("allow_main_screen_global_range_radar", "1") == "1")->setSize(GuiElement::GuiSizeMax, 50);
+
+        row = new GuiElement(extra_settings, "");
+        row->setSize(GuiElement::GuiSizeMax, 50)->setAttribute("layout", "horizontal");
+        (new GuiToggleButton(row, "MAIN_SCREEN_SHIP_STATE", tr("Main screen ship state"), [](bool value)
+        {
+            PreferencesManager::set("allow_main_screen_ship_state", value ? "1" : "");
+            gameGlobalInfo->allow_main_screen_ship_state = value;
+        }))->setValue(PreferencesManager::get("allow_main_screen_ship_state", "1") == "1")->setSize(GuiElement::GuiSizeMax, 50);
+
+        row = new GuiElement(extra_settings, "");
+        row->setSize(GuiElement::GuiSizeMax, 50)->setAttribute("layout", "horizontal");
+        (new GuiToggleButton(row, "MAIN_SCREEN_TARGET_ANALYSIS", tr("Main screen target analysis"), [](bool value)
+        {
+            PreferencesManager::set("allow_main_screen_target_analysis", value ? "1" : "");
+            gameGlobalInfo->allow_main_screen_target_analysis = value;
+        }))->setValue(PreferencesManager::get("allow_main_screen_target_analysis", "1") == "1")->setSize(GuiElement::GuiSizeMax, 50);
+
+        row = new GuiElement(extra_settings, "");
+        row->setSize(GuiElement::GuiSizeMax, 50)->setAttribute("layout", "horizontal");
+        (new GuiToggleButton(row, "NANO_REPAIR", tr("Use nano repair engineering"), [](bool value)
+        {
+            PreferencesManager::set("use_nano_repair_crew", value ? "1" : "");
+            gameGlobalInfo->use_nano_repair_crew = value;
+        }))->setValue(PreferencesManager::get("use_nano_repair_crew", "1") == "1")->setSize(GuiElement::GuiSizeMax, 50);
+
+        row = new GuiElement(extra_settings, "");
+        row->setSize(GuiElement::GuiSizeMax, 50)->setAttribute("layout", "horizontal");
+        (new GuiToggleButton(row, "LONG_RANGE_FOR_RELAY", tr("Long range for relay"), [](bool value)
+        {
+            PreferencesManager::set("use_long_range_for_relay", value ? "1" : "");
+            gameGlobalInfo->use_long_range_for_relay = value;
+        }))->setValue(PreferencesManager::get("use_long_range_for_relay", "1") == "1")->setSize(GuiElement::GuiSizeMax, 50);
+
+        row = new GuiElement(extra_settings, "");
+        row->setSize(GuiElement::GuiSizeMax, 50)->setAttribute("layout", "horizontal");
+        (new GuiToggleButton(row, "COMPLEX_RADAR_SIGNATURES", tr("Complex radar signatures"), [](bool value)
+        {
+            PreferencesManager::set("use_complex_radar_signatures", value ? "1" : "");
+            gameGlobalInfo->use_complex_radar_signatures = value;
+        }))->setValue(PreferencesManager::get("use_complex_radar_signatures", "0") == "1")->setSize(GuiElement::GuiSizeMax, 50);
+        
+        row = new GuiElement(extra_settings, "");
+        row->setSize(GuiElement::GuiSizeMax, 50)->setAttribute("layout", "horizontal");
+        GuiSlider* hack_efficiency_slider = new GuiSlider(row, "HACK_EFFICIENTY_RATIO", 0.0f, 10.0f, PreferencesManager::get("hack_efficiency_ratio", "1.0").toFloat(), [this](float value)
+        {
+            PreferencesManager::set("hack_efficiency_ratio", value);
+            gameGlobalInfo->hack_efficiency_ratio = value;
+            hack_efficiency_overlay_label->setText(tr("Hack efficiency ratio : {ratio}%").format({{"ratio", PreferencesManager::get("hack_efficiency_ratio", "1.0").toFloat()*100}}));
+
+        });
+        hack_efficiency_slider->setSize(GuiElement::GuiSizeMax, 50);
+        hack_efficiency_overlay_label = new GuiLabel(hack_efficiency_slider, "HACK_EFFICIENTY_RATIO_SLIDER_LABEL", tr("Hack efficiency ratio : {ratio}%").format({{"ratio", PreferencesManager::get("hack_efficiency_ratio", "1.0").toFloat()*100}}), 30);
+        hack_efficiency_overlay_label->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);
+        
+        row = new GuiElement(extra_settings, "");
+        row->setSize(GuiElement::GuiSizeMax, 50)->setAttribute("layout", "horizontal");
+        GuiSlider* ai_missile_slider = new GuiSlider(row, "AI_MISSILE_ATTACK_RANGE", 0, 10000, PreferencesManager::get("ai_missile_attack_range", "4500").toInt(), [this](int value)
+        {
+            PreferencesManager::set("ai_missile_attack_range", value);
+            gameGlobalInfo->ai_missile_attack_range = value;
+            ai_missile_overlay_label->setText(tr("AI missile attach range: {range}U").format({{"range", PreferencesManager::get("ai_missile_attack_range", "4500")}}));
+        });
+        ai_missile_slider->setSize(GuiElement::GuiSizeMax, 50);
+        ai_missile_overlay_label = new GuiLabel(ai_missile_slider, "MUSIC_VOLUME_SLIDER_LABEL", tr("AI missile attach range: {range}U").format({{"range", PreferencesManager::get("ai_missile_attack_range", "4500")}}), 30);
+        ai_missile_overlay_label->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);
+
         close_button->setSize(200, 50)->setPosition(0, -25, sp::Alignment::BottomCenter);
 
         //Additional options

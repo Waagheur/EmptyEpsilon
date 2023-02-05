@@ -32,6 +32,11 @@ private:
     CrewPositionSelection* crew_position_selection;
 
     PasswordDialog* password_dialog;
+
+    GuiLabel* hack_efficiency_overlay_label{nullptr};        
+    GuiLabel* ai_missile_overlay_label{nullptr};
+
+
 public:
     ShipSelectionScreen();
 
