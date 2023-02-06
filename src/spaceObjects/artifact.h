@@ -5,6 +5,8 @@
 
 class Artifact : public SpaceObject, public Updatable
 {
+public:
+    string current_model_data_name;
 private:
     string model_data_name;
     float artifact_spin;
@@ -16,14 +18,11 @@ private:
     float orbit_distance;
     ScriptSimpleCallback on_collision_callback;
     ScriptSimpleCallback on_player_collision_callback;
-
     string radar_trace_icon;
     float radar_trace_scale;
     glm::u8vec4 radar_trace_color;
 public:
     Artifact();
-    
-    string current_model_data_name;
 
     virtual void update(float delta) override;
 
