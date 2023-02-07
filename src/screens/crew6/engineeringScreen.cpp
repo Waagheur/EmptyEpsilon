@@ -142,25 +142,8 @@ EngineeringScreen::EngineeringScreen(GuiContainer* owner, ECrewPosition crew_pos
     GuiElement* icon_layout = new GuiElement(system_row_layouts, "");
     icon_layout->setSize(GuiElement::GuiSizeMax, 48)->setAttribute("layout", "horizontal");
     (new GuiElement(icon_layout, "FILLER"))->setSize(300, GuiElement::GuiSizeMax);
-    if (gameGlobalInfo->use_system_damage){
-        if (gameGlobalInfo->use_nano_repair_crew)
-        {
-            (new GuiKeyValueDisplay(icon_layout, "SYSTEM_HEALTH", 0.9, tr("health"), ""))->setIcon("gui/icons/hull")->setTextSize(30)->setSize(150, GuiElement::GuiSizeMax);
-            (new GuiKeyValueDisplay(icon_layout, "SYSTEM_HEAT", 0.9, tr("heat"), ""))->setIcon("gui/icons/status_overheat")->setTextSize(30)->setSize(150, GuiElement::GuiSizeMax);
-            (new GuiKeyValueDisplay(icon_layout, "SYSTEM_POWER", 0.9, tr("power"), ""))->setIcon("gui/icons/energy")->setTextSize(30)->setSize(150, GuiElement::GuiSizeMax);
-            (new GuiKeyValueDisplay(icon_layout, "SYSTEM_COOLANT", 0.9, tr("coolant"), ""))->setIcon("gui/icons/coolant")->setTextSize(30)->setSize(150, GuiElement::GuiSizeMax);
-            (new GuiKeyValueDisplay(icon_layout, "SYSTEM_REPAIR", 0.9, tr("repair"), ""))->setIcon("gui/icons/system_health")->setTextSize(30)->setSize(150, GuiElement::GuiSizeMax);
-        } else 
-        {
-            (new GuiImage(icon_layout, "SYSTEM_HEALTH_ICON", "gui/icons/hull"))->setSize(150, GuiElement::GuiSizeMax);
-        }
-    }
-    if(!(gameGlobalInfo->use_nano_repair_crew))
-    {
-        (new GuiImage(icon_layout, "HEAT_ICON", "gui/icons/status_overheat"))->setSize(column_width, GuiElement::GuiSizeMax);
-        (new GuiImage(icon_layout, "POWER_ICON", "gui/icons/energy"))->setSize(column_width, GuiElement::GuiSizeMax);
-    }
-    coolant_remaining_bar = new GuiProgressSlider(icon_layout, "", 0, 10.0, 10.0, [](float requested_unused_coolant) //TODO bien vérifier tout ça
+    
+    auto coolant_progress_func = [](float requested_unused_coolant) //TODO bien vérifier tout ça
     {
         float total_requested = 0.0f;
         float new_max_total = my_spaceship->max_coolant - requested_unused_coolant;
@@ -180,9 +163,35 @@ EngineeringScreen::EngineeringScreen(GuiContainer* owner, ECrewPosition crew_pos
                 if (my_spaceship->hasSystem((ESystem)n))
                     my_spaceship->commandSetSystemCoolantRequest((ESystem)n, std::min(my_spaceship->systems[n].coolant_request + add, 10.0f));
         }
-    });
-    coolant_remaining_bar->setColor(glm::u8vec4(32, 128, 128, 128))->setDrawBackground(false)->setSize(column_width, GuiElement::GuiSizeMax);
-    (new GuiImage(coolant_remaining_bar, "COOLANT_ICON", "gui/icons/coolant"))->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);
+    };
+    
+    
+    if (gameGlobalInfo->use_system_damage){
+        if (gameGlobalInfo->use_nano_repair_crew)
+        {
+            (new GuiKeyValueDisplay(icon_layout, "SYSTEM_HEALTH", 0.9, tr("health"), ""))->setIcon("gui/icons/hull")->setTextSize(30)->setSize(150, GuiElement::GuiSizeMax);
+            (new GuiKeyValueDisplay(icon_layout, "SYSTEM_HEAT", 0.9, tr("heat"), ""))->setIcon("gui/icons/status_overheat")->setTextSize(30)->setSize(150, GuiElement::GuiSizeMax);
+            (new GuiKeyValueDisplay(icon_layout, "SYSTEM_POWER", 0.9, tr("power"), ""))->setIcon("gui/icons/energy")->setTextSize(30)->setSize(150, GuiElement::GuiSizeMax);
+            coolant_remaining_bar = new GuiProgressSlider(icon_layout, "", 0, 10.0, 10.0, coolant_progress_func);
+            coolant_remaining_bar->setColor(glm::u8vec4(32, 128, 128, 178))->setDrawBackground(false)->setSize(150, GuiElement::GuiSizeMax);
+            (new GuiKeyValueDisplay(coolant_remaining_bar, "SYSTEM_COOLANT", 0.9, tr("coolant"), ""))->setIcon("gui/icons/coolant")->setTextSize(30)->setSize(150, GuiElement::GuiSizeMax);
+            (new GuiKeyValueDisplay(icon_layout, "SYSTEM_REPAIR", 0.9, tr("repair"), ""))->setIcon("gui/icons/system_health")->setTextSize(30)->setSize(150, GuiElement::GuiSizeMax);
+        } else 
+        {
+            (new GuiImage(icon_layout, "SYSTEM_HEALTH_ICON", "gui/icons/hull"))->setSize(150, GuiElement::GuiSizeMax);
+        }
+    }
+    if(!(gameGlobalInfo->use_nano_repair_crew))
+    {
+        (new GuiImage(icon_layout, "HEAT_ICON", "gui/icons/status_overheat"))->setSize(column_width, GuiElement::GuiSizeMax);
+        (new GuiImage(icon_layout, "POWER_ICON", "gui/icons/energy"))->setSize(column_width, GuiElement::GuiSizeMax);
+        coolant_remaining_bar = new GuiProgressSlider(icon_layout, "", 0, 10.0, 10.0, coolant_progress_func);
+        coolant_remaining_bar->setColor(glm::u8vec4(32, 128, 128, 128))->setDrawBackground(false)->setSize(column_width, GuiElement::GuiSizeMax);
+        (new GuiImage(coolant_remaining_bar, "COOLANT_ICON", "gui/icons/coolant"))->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);
+    }
+    
+    
+    
 
     system_rows[SYS_Reactor].button->setIcon("gui/icons/system_reactor");
     system_rows[SYS_Cloaking].button->setIcon("gui/icons/system_cloaking");
