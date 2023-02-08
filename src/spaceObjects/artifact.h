@@ -5,6 +5,8 @@
 
 class Artifact : public SpaceObject, public Updatable
 {
+public:
+    string current_model_data_name;
 private:
     string model_data_name;
     float artifact_spin;
@@ -16,20 +18,15 @@ private:
     float orbit_distance;
     ScriptSimpleCallback on_collision_callback;
     ScriptSimpleCallback on_player_collision_callback;
-
     string radar_trace_icon;
     float radar_trace_scale;
-    sf::Color radar_trace_color;
+    glm::u8vec4 radar_trace_color;
 public:
     Artifact();
-    
-    string current_model_data_name;
 
     virtual void update(float delta) override;
 
-    virtual void draw3D() override;
-
-    virtual void drawOnRadar(sf::RenderTarget& window, sf::Vector2f position, float scale, float rotation, bool long_range) override;
+    virtual void drawOnRadar(sp::RenderTarget& renderer, glm::vec2 position, float scale, float rotation, bool long_range) override;
 
     virtual void collide(Collisionable* target, float force) override;
 
@@ -43,7 +40,7 @@ public:
 
     void setRadarTraceIcon(string icon);
     void setRadarTraceScale(float scale);
-    void setRadarTraceColor(int r, int g, int b) { radar_trace_color = sf::Color(r, g, b); }
+    void setRadarTraceColor(int r, int g, int b) { radar_trace_color = glm::u8vec4(r, g, b, 255); }
 
     void onPickUp(ScriptSimpleCallback callback);
     // Consistent naming workaround

@@ -9,7 +9,6 @@ class GuiSelfDestructButton;
 class GuiKeyValueDisplay;
 class GuiLabel;
 class GuiSlider;
-class GuiAutoLayout;
 class GuiImage;
 class GuiArrow;
 class GuiToggleButton;
@@ -38,11 +37,13 @@ private:
     GuiSlider* repair_slider;
     GuiToggleButton* presets_button;
     std::vector<GuiButton*> presets_buttons;
+    GuiProgressbar* coolant_remaining_bar;
+    GuiProgressbar* repair_remaining_bar;
 
     class SystemRow
     {
     public:
-        GuiAutoLayout* layout;
+        GuiElement* row;
         GuiToggleButton* button;
         GuiPowerDamageIndicator* state;
         GuiProgressbar* max_health_bar;
@@ -59,9 +60,11 @@ private:
         GuiLabel* coolant_label;
         GuiProgressSlider* repair_bar;
         GuiLabel* repair_label;
+        GuiImage* coolant_max_indicator;
+        GuiImage* repair_max_indicator;
     };
     std::vector<SystemRow> system_rows;
-    GuiAutoLayout* system_effects_container;
+    GuiElement* system_effects_container;
     std::vector<GuiKeyValueDisplay*> system_effects;
     unsigned int system_effects_index;
     ESystem selected_system;
@@ -70,16 +73,16 @@ private:
     float previous_energy_level;
     float average_energy_delta;
 
-    void addSystemEffect(string key, string value, sf::Color color = sf::Color::White);
+    void addSystemEffect(string key, string value, glm::u8vec4 color = glm::u8vec4(255,255,255,255));
     void selectSystem(ESystem system);
 
     string toNearbyIntString(float value);
 public:
     EngineeringScreen(GuiContainer* owner, ECrewPosition crew_position=engineering);
 
-    virtual void onDraw(sf::RenderTarget& window) override;
-    virtual void onHotkey(const HotkeyResult& key) override;
-    virtual bool onJoystickAxis(const AxisAction& axisAction) override;
+    virtual void onDraw(sp::RenderTarget& target) override;
+    virtual void onUpdate() override;
+    //Ajout tdelc/tsht
     virtual void applyPreset(int preset);
     virtual void updatePreset(int preset);
 };

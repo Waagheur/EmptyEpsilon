@@ -51,10 +51,9 @@ private:
 public:
     SinglePilotView(GuiContainer* owner, P<PlayerSpaceship> targetSpaceship);
 
-    virtual void onDraw(sf::RenderTarget& window) override;
-    virtual void onHotkey(const HotkeyResult& key) override;
+    virtual void onDraw(sp::RenderTarget& renderer) override;
+    virtual void onUpdate() override;
     void setTargetSpaceship(P<PlayerSpaceship> targetSpaceship);
-    virtual bool onJoystickAxis(const AxisAction& axisAction) override;
 };
 
 #endif//SINGLE_PILOT_VIEW_H

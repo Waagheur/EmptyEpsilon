@@ -1,30 +1,45 @@
 #include "missileWeapon.h"
 #include "particleEffect.h"
 #include "spaceObjects/explosionEffect.h"
+#include "random.h"
+#include "multiplayer_server.h"
+#include "multiplayer_client.h"
+#include "soundManager.h"
 
 #include "i18n.h"
 
 
-/// Base class for every missile (mines are not missiles)
-/// You cannot create a missile in script with this class, use derived classes
-/// like HomingMissile, HVLI etc.
+/// A MissileWeapon is a self-propelled weapon that can be fired from a WeaponTube at either a target SpaceObject or on a trajectory.
+/// MissileWeapons that can explode detonate with a blast radius at either the end of its lifetime or upon collision with another collisionable SpaceObject.
+/// MissileWeapon-class objects can't be created directly. Use these functions with subclasses derived from MissileWeapon, such as HomingMissile, HVLI, etc.
+/// (While also launchable from WeaponTubes, Mines are not MissileWeapons. See the Mine class.)
 REGISTER_SCRIPT_SUBCLASS_NO_CREATE(MissileWeapon, SpaceObject)
 {
-  /// Get the missile's owner's object.
+  /// Returns this MissileWeapon owner's SpaceObject.
+  /// Example: missile:getOwner()
   REGISTER_SCRIPT_CLASS_FUNCTION(MissileWeapon, getOwner);
-  /// Get the missile's target object.
+  /// Returns this MissileWeapon's target.
+  /// Example: missile:getTarget()
   REGISTER_SCRIPT_CLASS_FUNCTION(MissileWeapon, getTarget);
-  /// Must be an existing target, else does nothing. It does not check if really targetable or not.
+  /// Sets this MissileWeapon's target.
+  /// The target must already exist. If it does not, this has no effect.
+  /// MissileWeapon:setTarget() does NOT check whether the target can be targeted by a player.
+  /// Example: missile:setTarget(enemy)
   REGISTER_SCRIPT_CLASS_FUNCTION(MissileWeapon, setTarget);
-  /// Lifetime is a number in seconds
+  /// Returns this MissileWeapon's lifetime, in seconds.
+  /// Example: missile:getLifetime()
   REGISTER_SCRIPT_CLASS_FUNCTION(MissileWeapon, getLifetime);
-  /// Lifetime is a number in seconds
+  /// Sets this MissileWeapon's lifetime, in seconds.
+  /// A missile that can explode does so at the end of its lifetime if it don't hit another collisionable SpaceObject first.
+  /// Example: missile:setLifetime(5.0)
   REGISTER_SCRIPT_CLASS_FUNCTION(MissileWeapon, setLifetime);
-  /// Set the missile size as for tube size.
-  /// Valid sizes: see EMissileSizes
+  /// Returns this MissileWeapon's size as an EMissileSizes string.
+  /// Example: missile:getMissileSize()
   REGISTER_SCRIPT_CLASS_FUNCTION(MissileWeapon, getMissileSize);
-  /// Get the missile size as for tube size.
-  /// Valid sizes: see EMissileSizes
+  /// Sets this MissileWeapon's size.
+  /// Size modifies a missile's maneuverability, speed, blast radius, lifetime, and damage.
+  /// Smaller missiles are weaker, faster, and more nimble. Larger missiles are more powerful, slower, and have a longer lifetime.
+  /// Example: missile:setMissileSize("large") -- sets this missile to be large
   REGISTER_SCRIPT_CLASS_FUNCTION(MissileWeapon, setMissileSize);
 }
 
@@ -50,17 +65,11 @@ MissileWeapon::MissileWeapon(string multiplayer_name, const MissileWeaponData& d
     launch_sound_played = false;
 }
 
-void MissileWeapon::drawOnRadar(sf::RenderTarget& window, sf::Vector2f position, float scale, float rotation, bool long_range)
+void MissileWeapon::drawOnRadar(sp::RenderTarget& renderer, glm::vec2 position, float scale, float rotation, bool long_range)
 {
     if (long_range) return;
 
-    sf::Sprite object_sprite;
-    textureManager.setTexture(object_sprite, "RadarArrow.png");
-    object_sprite.setRotation(getRotation()-rotation);
-    object_sprite.setPosition(position);
-    object_sprite.setColor(color);
-    object_sprite.setScale(0.25 + 0.25 * category_modifier, 0.25 + 0.25 * category_modifier);
-    window.draw(object_sprite);
+    renderer.drawRotatedSprite("radar/arrow.png", position, 32 * (0.25f + 0.25f * category_modifier), getRotation()-rotation, color);
 }
 
 void MissileWeapon::update(float delta)
@@ -86,7 +95,7 @@ void MissileWeapon::update(float delta)
 
     if (!launch_sound_played)
     {
-        soundManager->playSound(data.fire_sound, getPosition(), 400.0, 60.0, (1.0f + random(-0.2f, 0.2f)) * size_speed_modifier);
+        soundManager->playSound(data.fire_sound, getPosition(), 400.0, 0.6, (1.0f + random(-0.2f, 0.2f)) * size_speed_modifier);
         launch_sound_played = true;
     }
 
@@ -164,7 +173,7 @@ void MissileWeapon::takeDamage(float damage_amount, DamageInfo info)
 
 void MissileWeapon::updateMovement()
 {
-    if (data.turnrate > 0.0)
+    if (data.turnrate > 0.0f)
     {
         if (data.homing_range > 0)
         {
@@ -192,9 +201,9 @@ void MissileWeapon::updateMovement()
 
         float angle_diff = angleDifference(getRotation(), target_angle);
 
-        if (angle_diff > 1.0)
+        if (angle_diff > 1.0f)
             setAngularVelocity(data.turnrate * size_speed_modifier);
-        else if (angle_diff < -1.0)
+        else if (angle_diff < -1.0f)
             setAngularVelocity(data.turnrate * -1.0f * size_speed_modifier);
         else
             setAngularVelocity(angle_diff * data.turnrate * size_speed_modifier);

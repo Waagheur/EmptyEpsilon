@@ -11,7 +11,6 @@ class GuiRadarView;
 class GuiKeyValueDisplay;
 class GuiFrequencyCurve;
 class GuiScrollText;
-class GuiAutoLayout;
 class GuiButton;
 class GuiScanTargetButton;
 class GuiToggleButton;
@@ -19,13 +18,14 @@ class GuiSelector;
 class GuiFrequencyCurve;
 class GuiSlider;
 class GuiLabel;
+class GuiImage;
 class DatabaseViewComponent;
 class GuiCustomShipFunctions;
 
 class ScienceScreen : public GuiOverlay
 {
 public:
-    GuiOverlay* background_gradient;
+    GuiImage* background_gradient;
     GuiOverlay* background_crosses;
 
     GuiElement* radar_view;
@@ -39,7 +39,7 @@ public:
     GuiToggleButton* link_to_analysis_button;
 
     GuiSelector* sidebar_selector;
-    GuiAutoLayout* info_sidebar;
+    GuiElement* info_sidebar;
     GuiCustomShipFunctions* custom_function_sidebar;
     GuiSelector* sidebar_pager;
     GuiScanTargetButton* scan_button;
@@ -68,8 +68,8 @@ public:
 public:
     ScienceScreen(GuiContainer* owner, ECrewPosition crew_position=scienceOfficer);
 
-    virtual void onDraw(sf::RenderTarget& window) override;
-    virtual void onHotkey(const HotkeyResult& key) override;
+    virtual void onDraw(sp::RenderTarget& target) override;
+    virtual void onUpdate() override;
 private:
     //used to judge when to update the UI label and zoom
     float previous_long_range_radar=0;

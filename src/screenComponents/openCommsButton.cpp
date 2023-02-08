@@ -14,10 +14,10 @@ GuiOpenCommsButton::GuiOpenCommsButton(GuiContainer* owner, string id, string na
 }), targets(targets)
 {
     icon_name = "gui/icons/station-relay";
-    icon_alignment = ACenterLeft;
+    icon_alignment = sp::Alignment::CenterLeft;
 }
 
-void GuiOpenCommsButton::onDraw(sf::RenderTarget& window)
+void GuiOpenCommsButton::onDraw(sp::RenderTarget& renderer)
 {
     disable();
     if (gameGlobalInfo->intercept_all_comms_to_gm == CGI_None)
@@ -43,14 +43,14 @@ void GuiOpenCommsButton::onDraw(sf::RenderTarget& window)
         }
     }
 
-    GuiButton::onDraw(window);
+    GuiButton::onDraw(renderer);
 }
 
-void GuiOpenCommsButton::onHotkey(const HotkeyResult& key)
+void GuiOpenCommsButton::onUpdate()
 {
-    if (key.category == "RELAY" && my_spaceship)
+    if (my_spaceship)
     {
-        if (key.hotkey == "OPEN_COMM")
+        if (keys.relay_open_comm.getDown())
         {
 			if (this->targets->get())
 				my_spaceship->commandOpenTextComm(this->targets->get());

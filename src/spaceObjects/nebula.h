@@ -22,19 +22,18 @@ class Nebula : public SpaceObject
 public:
     Nebula();
 
-#if FEATURE_3D_RENDERING
-    virtual void draw3DTransparent();
-#endif
-    virtual void drawOnRadar(sf::RenderTarget& window, sf::Vector2f position, float scale, float rotation, bool long_range);
-    virtual void drawOnGMRadar(sf::RenderTarget& window, sf::Vector2f position, float scale, float rotation, bool long_range);
-    virtual bool canHideInNebula() { return false; }
+    virtual void draw3DTransparent() override;
+    virtual void drawOnRadar(sp::RenderTarget& renderer, glm::vec2 position, float scale, float rotation, bool long_range) override;
+    virtual void drawOnGMRadar(sp::RenderTarget& renderer, glm::vec2 position, float scale, float rotation, bool long_range) override;
+    virtual bool canHideInNebula() override { return false; }
+    virtual ERadarLayer getRadarLayer() const override { return ERadarLayer::BackgroundObjects; }
 
     static bool inNebula(glm::vec2 position);
     static bool blockedByNebula(glm::vec2 start, glm::vec2 end, float radar_short_range);
     static glm::vec2 getFirstBlockedPosition(glm::vec2 start, glm::vec2 end);
     static PVector<Nebula> getNebulas();
 
-    virtual string getExportLine() { return "Nebula():setPosition(" + string(getPosition().x, 0) + ", " + string(getPosition().y, 0) + "):setCallSign(" + getCallSign() + ")"; }
+    virtual string getExportLine() override { return "Nebula():setPosition(" + string(getPosition().x, 0) + ", " + string(getPosition().y, 0) + "):setCallSign(" + getCallSign() + ")"; }
 
 protected:
     glm::mat4 getModelMatrix() const override;

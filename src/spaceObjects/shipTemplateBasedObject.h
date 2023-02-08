@@ -55,10 +55,8 @@ public:
 public:
     ShipTemplateBasedObject(float collision_range, string multiplayer_name, float multiplayer_significant_range=-1);
 
-#if FEATURE_3D_RENDERING
     virtual void draw3DTransparent() override;
-#endif
-    virtual void drawShieldsOnRadar(sf::RenderTarget& window, sf::Vector2f position, float scale, float rotation, float sprite_scale, bool show_levels);
+    virtual void drawShieldsOnRadar(sp::RenderTarget& renderer, glm::vec2 position, float scale, float rotation, float sprite_scale, bool show_levels);
     virtual void update(float delta) override;
 
     virtual std::unordered_map<string, string> getGMInfo() override;
@@ -91,11 +89,11 @@ public:
     string getSubClass() { return sub_class_name; }
 
     void setHackDiff(int hack_diff) { this->hack_diff = hack_diff; }
-    int getHackDiff() { return hack_diff; }
+    unsigned int getHackDiff() { return hack_diff; }
 
     float getHull() { return hull_strength; }
     float getHullMax() { return hull_max; }
-    void setHull(float amount) { if (amount < 0) return; hull_strength = amount; }
+    void setHull(float amount) { if (amount < 0) return; hull_strength = std::min(amount, hull_max); }
     void setHullMax(float amount) { if (amount < 0) return; hull_max = amount; hull_strength = std::max(hull_strength, hull_max); }
 
     void setSystemDamageRatio(float ratio) { system_damage_ratio = ratio ;}
@@ -108,11 +106,11 @@ public:
     float getShieldMax(int index) { if (index < 0 || index >= shield_count) return 0; return shield_max[index]; }
     int getShieldCount() { return shield_count; }
     void setShieldCount(int value) { if (value < 0 || value > max_shield_count) return; shield_count = value; }
-    void setShields(std::vector<float> amounts);
+    void setShields(const std::vector<float>& amounts);
     void setShieldRechargeRate(float amount) {shield_recharge_rate = amount;}
-    void setShieldsMax(std::vector<float> amounts);
+    void setShieldsMax(const std::vector<float>& amounts);
 
-    int getShieldPercentage(int index) { if (index < 0 || index >= shield_count || shield_max[index] <= 0.0) return 0; return int(100 * shield_level[index] / shield_max[index]); }
+    int getShieldPercentage(int index) { if (index < 0 || index >= shield_count || shield_max[index] <= 0.0f) return 0; return int(100 * shield_level[index] / shield_max[index]); }
     ESystem getShieldSystemForShieldIndex(int index);
 
     ///Deprecated old script functions for shields
@@ -132,7 +130,7 @@ public:
     void setLongRangeRadarRange(float range);
     void setShortRangeRadarRange(float range);
 
-    void setRadarTrace(string trace) { radar_trace = trace; }
+    void setRadarTrace(string trace) { radar_trace = "radar/" + trace; }
     void setImpulseSoundFile(string sound) { impulse_sound_file = sound; }
 
     bool getSharesEnergyWithDocked() { return shares_energy_with_docked; }

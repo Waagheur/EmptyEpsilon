@@ -10,6 +10,14 @@
 #include "pathPlanner.h"
 
 #include "scriptInterface.h"
+
+/// A SpaceStation is an immobile ship-like object that repairs, resupplies, and recharges ships that dock with it.
+/// It sets several ShipTemplateBasedObject properties upon creation:
+/// - Its default callsign begins with "DS".
+/// - It restocks scan probes and CpuShip weapons by default.
+/// - It uses the scripts/comms_station.lua comms script by default.
+/// - When destroyed by damage, it awards or deducts a number of reputation points relative to its total shield strength and segments.
+/// - Any non-hostile SpaceShip can dock with it by default.
 REGISTER_SCRIPT_SUBCLASS(SpaceStation, ShipTemplateBasedObject)
 {
 }
@@ -27,33 +35,33 @@ SpaceStation::SpaceStation()
     callsign = "DS" + string(getMultiplayerId());
 }
 
-void SpaceStation::drawOnRadar(sf::RenderTarget& window, sf::Vector2f position, float scale, float rotation, bool long_range)
+void SpaceStation::drawOnRadar(sp::RenderTarget& renderer, glm::vec2 position, float scale, float rotation, bool long_range)
 {
-    sf::Sprite objectSprite;
+    string object_sprite;
+    glm::u8vec4 color = glm::u8vec4(255,255,255,255);
     // If the object is a station that hasn't been scanned, draw the default icon.
     // Otherwise, draw the station-specific icon.
-	float sprite_scale = 0.2;
+	float sprite_scale = 0.2f;
 	if (my_spaceship && (getScannedStateFor(my_spaceship) == SS_NotScanned || getScannedStateFor(my_spaceship) == SS_FriendOrFoeIdentified) && getFactionId() != my_spaceship->getFactionId())
     {
-        objectSprite.setColor(sf::Color(192, 192, 192));
-        textureManager.setTexture(objectSprite, "RadarBlip.png");
+        color = glm::u8vec4(192, 192, 192, 255);
+        object_sprite = "radar/blip.png";
     }
     else
     {
-        objectSprite.setColor(factionInfo[getFactionId()]->gm_color);
-        textureManager.setTexture(objectSprite, radar_trace);
+        if (factionInfo[getFactionId()])
+            color = factionInfo[getFactionId()]->getGMColor();
+        object_sprite = radar_trace;
         //sprite_scale = scale * getRadius() * 1.5 / objectSprite.getTextureRect().width;
-        sprite_scale = scale * getRadius() * 2 / objectSprite.getTextureRect().width;
+        sprite_scale = scale * getRadius() * 2.0f / 32;
     }
-    objectSprite.setPosition(position);
 
     if (!long_range)
     {
-        sprite_scale *= 0.7;
-        drawShieldsOnRadar(window, position, scale, rotation, sprite_scale, true);
+        sprite_scale *= 0.7f;
+        drawShieldsOnRadar(renderer, position, scale, rotation, sprite_scale, true);
     }
     sprite_scale = std::max(0.15f, sprite_scale);
-    objectSprite.setScale(sprite_scale, sprite_scale);
 
     if(my_spaceship)
     {
@@ -61,20 +69,20 @@ void SpaceStation::drawOnRadar(sf::RenderTarget& window, sf::Vector2f position, 
         {
             if(isEnemy(my_spaceship))
             {
-                objectSprite.setColor(sf::Color::Red);
+                color = glm::u8vec4(255,0,0,255);
             }
             else if(isFriendly(my_spaceship))
             {
-                objectSprite.setColor(sf::Color(128,255,128));
+                color = glm::u8vec4(128,255,128, 255);
             }
             else
             {
-                objectSprite.setColor(sf::Color(192,192,192));
+                color = glm::u8vec4(192,192,192, 255);
             }
         }
     }
 
-    window.draw(objectSprite);
+     renderer.drawRotatedSprite(object_sprite, position, sprite_scale * 32, getRotation() - rotation, color);
 }
 
 void SpaceStation::applyTemplateValues()
@@ -96,11 +104,11 @@ void SpaceStation::destroyedByDamage(DamageInfo& info)
         {
             for(int n=0; n<shield_count; n++)
             {
-                points += shield_max[n] * 0.1;
+                points += shield_max[n] * 0.1f;
             }
             points /= shield_count;
         }
-        points += hull_max * 0.1;
+        points += hull_max * 0.1f;
         if (isEnemy(info.instigator))
             info.instigator->addReputationPoints(points);
         else
@@ -108,14 +116,14 @@ void SpaceStation::destroyedByDamage(DamageInfo& info)
     }
 }
 
-bool SpaceStation::canBeDockedBy(P<SpaceObject> obj)
+DockStyle SpaceStation::canBeDockedBy(P<SpaceObject> obj)
 {
     if (isEnemy(obj))
-        return false;
+        return DockStyle::None;
     P<SpaceShip> ship = obj;
     if (!ship)
-        return false;
-    return true;
+        return DockStyle::None;
+    return DockStyle::External;
 }
 
 bool SpaceStation::canBeLandedOn(P<SpaceObject> obj)

@@ -7,64 +7,63 @@
 #include "gui/gui2_element.h"
 #include "gui/gui2_keyvaluedisplay.h"
 #include "gui/gui2_progressbar.h"
-#include "gui/gui2_autolayout.h"
 #include "gui/gui2_label.h"
 #include "gameGlobalInfo.h"
 
 OxygenScreen::OxygenScreen(GuiContainer *owner)
     : GuiOverlay(owner, "OXYGEN_SCREEN", colorConfig.background)
 {
-    GuiOverlay *background_crosses = new GuiOverlay(this, "BACKGROUND_CROSSES", sf::Color::White);
-    background_crosses->setTextureTiled("gui/BackgroundCrosses");
+    GuiOverlay *background_crosses = new GuiOverlay(this, "BACKGROUND_CROSSES", glm::u8vec4(255,255,255,255));
+    background_crosses->setTextureTiled("gui/background/crosses.png");
 
-    oxygen_view = new GuiAutoLayout(this, "OXYGEN_LAYOUT", GuiAutoLayout::LayoutHorizontalRows);
-    oxygen_view->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax)->setPosition(0, 0, ACenter);
+    oxygen_view = new GuiElement(this, "OXYGEN_LAYOUT");
+    oxygen_view->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax)->setPosition(0, 0, sp::Alignment::Center)->setAttribute("layout", "horizontal");;
 
-    (new GuiLabel(oxygen_view, "OXYGEN_LABEL", "Gestion de l'oxygene", 100))->setPosition(0, 200, ACenter);
+    (new GuiLabel(oxygen_view, "OXYGEN_LABEL", "Gestion de l'oxygene", 100))->setPosition(0, 200, sp::Alignment::Center);
 
     oxygen_label_intern = new GuiLabel(oxygen_view, "Ship_LABEL_INTERN", "Interne", 50);
-    oxygen_label_intern->setPosition(0, 200, ACenter);
+    oxygen_label_intern->setPosition(0, 200, sp::Alignment::Center);
     oxygen_label_intern->setVisible(false);
 
     for(int n=0; n<max_oxygen_zones; n++)
     {
-        oxygen_intern[n] = new GuiAutoLayout(oxygen_view, "OXYGEN_INTERN",GuiAutoLayout::LayoutHorizontalRows);
+        oxygen_intern[n] = new GuiElement(oxygen_view, "OXYGEN_INTERN");
 
-        (new GuiLabel(oxygen_intern[n], "OXYGEN_ZONE_LABEL_INTERN", "Zone " + string(n+1), 30))->setAlignment(ACenter)->setMargins(10, 10, 10, 10);
+        (new GuiLabel(oxygen_intern[n], "OXYGEN_ZONE_LABEL_INTERN", "Zone " + string(n+1), 30))->setAlignment(sp::Alignment::Center)->setMargins(10, 10, 10, 10)->setAttribute("layout", "hotizontal");;
 
         oxygen_bar_intern[n] = new GuiProgressbar(oxygen_intern[n], "ENERGY_BAR_INTERN", 0.0, 1.0, 0.0);
-        oxygen_bar_intern[n]->setColor(sf::Color(192, 192, 32, 128))->setText("Oxygene")->setDrawBackground(true)->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax)->setMargins(10, 0, 10, 0);
+        oxygen_bar_intern[n]->setColor(glm::u8vec4(192, 192, 32, 128))->setText("Oxygene")->setDrawBackground(true)->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax)->setMargins(10, 0, 10, 0);
 
         oxygen_value_intern[n] = new GuiKeyValueDisplay(oxygen_intern[n], "OXY_VALUE_INTERN" + string(n), 0.8, "Zone " + string(n+1), "0%");
-        oxygen_value_intern[n]->setSize(GuiElement::GuiSizeMax, 40)->setPosition(0, 400, ACenter);
+        oxygen_value_intern[n]->setSize(GuiElement::GuiSizeMax, 40)->setPosition(0, 400, sp::Alignment::Center);
 
         oxygen_intern[n]->setVisible(false);
     }
 
     oxygen_label_extern = new GuiLabel(oxygen_view, "Ship_LABEL", "Externe", 50);
-    oxygen_label_extern->setPosition(0, 200, ACenter);
+    oxygen_label_extern->setPosition(0, 200, sp::Alignment::Center);
     oxygen_label_extern->setVisible(false);
 
     // Choix dock
     for(int n=0; n<max_oxygen_zones; n++)
     {
-        oxygen_extern[n] = new GuiAutoLayout(oxygen_view, "OXYGEN_EXTERN",GuiAutoLayout::LayoutHorizontalRows);
+        oxygen_extern[n] = new GuiElement(oxygen_view, "OXYGEN_EXTERN");
 
-        (new GuiLabel(oxygen_extern[n], "OXYGEN_ZONE_LABEL_EXTERN", "Zone " + string(n+1), 30))->setAlignment(ACenter)->setMargins(10, 10, 10, 10);
+        (new GuiLabel(oxygen_extern[n], "OXYGEN_ZONE_LABEL_EXTERN", "Zone " + string(n+1), 30))->setAlignment(sp::Alignment::Center)->setMargins(10, 10, 10, 10)->setAttribute("layout", "horizontal");;
 
         oxygen_bar_extern[n] = new GuiProgressbar(oxygen_extern[n], "ENERGY_BAR_EXTERN", 0.0, 1.0, 0.0);
-        oxygen_bar_extern[n]->setColor(sf::Color(192, 192, 32, 128))->setText("Oxygene")->setDrawBackground(true)->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax)->setMargins(10, 0, 10, 0);
+        oxygen_bar_extern[n]->setColor(glm::u8vec4(192, 192, 32, 128))->setText("Oxygene")->setDrawBackground(true)->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax)->setMargins(10, 0, 10, 0);
 
         oxygen_value_extern[n] = new GuiKeyValueDisplay(oxygen_extern[n], "OXY_VALUE_EXTERN" + string(n), 0.8, "Zone " + string(n+1), "0%");
-        oxygen_value_extern[n]->setSize(GuiElement::GuiSizeMax, 40)->setPosition(0, 400, ACenter);
+        oxygen_value_extern[n]->setSize(GuiElement::GuiSizeMax, 40)->setPosition(0, 400, sp::Alignment::Center);
 
         oxygen_extern[n]->setVisible(false);
     }
 }
 
-void OxygenScreen::onDraw(sf::RenderTarget &window)
+void OxygenScreen::onDraw(sp::RenderTarget& renderer)
 {
-    GuiOverlay::onDraw(window);
+    GuiOverlay::onDraw(renderer);
 
     if (my_spaceship)
     {
@@ -84,31 +83,31 @@ void OxygenScreen::onDraw(sf::RenderTarget &window)
             {
                 oxygen_value_intern[n]->setKey("Zone non oxygenee");
                 oxygen_value_intern[n]->setValue("");
-                oxygen_value_intern[n]->setColor(sf::Color::Red);
+                oxygen_value_intern[n]->setColor(glm::u8vec4(255,0,0,255));
             }
             else if (my_spaceship->getOxygenPoints(n) == my_spaceship->getOxygenMax(n))
             {
                 oxygen_value_intern[n]->setKey("Zone oxygenee");
                 oxygen_value_intern[n]->setValue("");
-                oxygen_value_intern[n]->setColor(sf::Color::Green);
+                oxygen_value_intern[n]->setColor(glm::u8vec4(0,255,0,255));
             }
             else if (rate > 0)
             {
                 oxygen_value_intern[n]->setKey("Oxygene en hausse. Temps avant 100 % : ");
                 oxygen_value_intern[n]->setValue(timeCount(time_left));
-                oxygen_value_intern[n]->setColor(sf::Color::Green);
+                oxygen_value_intern[n]->setColor(glm::u8vec4(0,255,0,255));
             }
             else if (rate < 0)
             {
                 oxygen_value_intern[n]->setKey("Oxygene en baisse. Temps avant 0 % : ");
                 oxygen_value_intern[n]->setValue(timeCount(time_left));
-                oxygen_value_intern[n]->setColor(sf::Color::Red);
+                oxygen_value_intern[n]->setColor(glm::u8vec4(255,0,0,255));
             }
             else
             {
                 oxygen_value_intern[n]->setKey("Oxygene stable");
                 oxygen_value_intern[n]->setValue("");
-                oxygen_value_intern[n]->setColor(sf::Color::Green);
+                oxygen_value_intern[n]->setColor(glm::u8vec4(0,255,0,255));
             }
 
             oxygen_intern[n]->setVisible(my_spaceship->getOxygenMax(n)>0);
@@ -139,31 +138,31 @@ void OxygenScreen::onDraw(sf::RenderTarget &window)
                     {
                         oxygen_value_extern[n]->setKey("Zone non oxygenee");
                         oxygen_value_extern[n]->setValue("");
-                        oxygen_value_extern[n]->setColor(sf::Color::Red);
+                        oxygen_value_extern[n]->setColor(glm::u8vec4(255,0,0,255));
                     }
                     else if (ship->getOxygenPoints(n) == ship->getOxygenMax(n))
                     {
                         oxygen_value_extern[n]->setKey("Zone oxygenee");
                         oxygen_value_extern[n]->setValue("");
-                        oxygen_value_extern[n]->setColor(sf::Color::Green);
+                        oxygen_value_extern[n]->setColor(glm::u8vec4(0,255,0,255));
                     }
                     else if (rate > 0)
                     {
                         oxygen_value_extern[n]->setKey("Oxygene en hausse. Temps avant 100 % : ");
                         oxygen_value_extern[n]->setValue(timeCount(time_left));
-                        oxygen_value_extern[n]->setColor(sf::Color::Green);
+                        oxygen_value_extern[n]->setColor(glm::u8vec4(0,255,0,255));
                     }
                     else if (rate < 0)
                     {
                         oxygen_value_extern[n]->setKey("Oxygene en baisse. Temps avant 0 % : ");
                         oxygen_value_extern[n]->setValue(timeCount(time_left));
-                        oxygen_value_extern[n]->setColor(sf::Color::Red);
+                        oxygen_value_extern[n]->setColor(glm::u8vec4(255,0,0,255));
                     }
                     else
                     {
                         oxygen_value_extern[n]->setKey("Oxygene stable");
                         oxygen_value_extern[n]->setValue("");
-                        oxygen_value_extern[n]->setColor(sf::Color::Green);
+                        oxygen_value_extern[n]->setColor(glm::u8vec4(0,255,0,255));
                     }
 
                     oxygen_extern[n]->setVisible(ship->getOxygenMax(n)>0);

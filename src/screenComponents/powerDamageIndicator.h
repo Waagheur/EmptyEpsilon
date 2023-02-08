@@ -8,22 +8,22 @@ class PlayerSpaceship;
 class GuiPowerDamageIndicator : public GuiElement
 {
 public:
-    GuiPowerDamageIndicator(GuiContainer* owner, string name, ESystem system, EGuiAlign icon_align, P<PlayerSpaceship> targetSpaceship);
+    GuiPowerDamageIndicator(GuiContainer* owner, string name, ESystem system, sp::Alignment icon_align, P<PlayerSpaceship> targetSpaceship);
 
-    virtual void onDraw(sf::RenderTarget& window);
+    virtual void onDraw(sp::RenderTarget& window) override;
     void setTargetSpaceship(P<PlayerSpaceship> targetSpaceship){target_spaceship = targetSpaceship;}
 
 private:
     ESystem system;
     float text_size;
-    EGuiAlign icon_align;
+    sp::Alignment icon_align;
     P<PlayerSpaceship> target_spaceship;
 
-    sf::Vector2f icon_position;
-    sf::Vector2f icon_offset;
+    glm::vec2 icon_position;
+    glm::vec2 icon_offset;
     float icon_size;
 
-    void drawIcon(sf::RenderTarget& window, string icon_name, sf::Color color);
+    void drawIcon(sp::RenderTarget& window, string icon_name, glm::u8vec4 color);
 
 };
 

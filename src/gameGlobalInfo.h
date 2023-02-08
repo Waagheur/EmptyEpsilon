@@ -67,7 +67,6 @@ public:
     string banner_string;
 
     std::vector<float> reputation_points;
-    EPlayerWarpJumpDrive player_warp_jump_drive_setting;
     EScanningComplexity scanning_complexity;
     //Hacking difficulty ranges from 0 to 3
     int hacking_difficulty;
@@ -88,7 +87,7 @@ public:
     string gm_control_code;
     float elapsed_time;
     string scenario;
-    string variation = "None";
+    std::unordered_map<string, string> scenario_settings;
 
     //List of script functions that can be called from the GM interface (Server only!)
     std::vector<ScriptSimpleCallback> gm_callback_functions;
@@ -131,19 +130,20 @@ public:
     void reset();
     void startScenario(string filename);
 
-    virtual void update(float delta);
-    virtual void destroy();
+    virtual void update(float delta) override;
+    virtual void destroy() override;
+    string getMissionTime();
 
     string getNextShipCallsign();
 };
 
-string playerWarpJumpDriveToString(EPlayerWarpJumpDrive player_warp_jump_drive);
 string getSectorName(glm::vec2 position, float correction_x = 0.0, float correction_y = 0.0);
 glm::vec2 getSectorPosition(string sectorName, float correction_x = 0.0, float correction_y = 0.0);
 bool isValidSectorName(string sectorName);
 glm::vec2 getPositionFromSring(string sectorName, float correction_x = 0.0, float correction_y = 0.0);
 string getStringFromPosition(glm::vec2 position,float correction_x = 0.0, float correction_y = 0.0);
 bool isValidPositionString(string sectorName);
+glm::vec2 sectorToXY(string sectorName);
 
 REGISTER_MULTIPLAYER_ENUM(EScanningComplexity);
 REGISTER_MULTIPLAYER_ENUM(EHackingGames);

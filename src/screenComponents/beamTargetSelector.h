@@ -21,9 +21,9 @@ private:
 public:
     GuiBeamTargetSelector(GuiContainer* owner, string id, P<PlayerSpaceship> targetSpaceship);
 
-    virtual void onHotkey(const HotkeyResult& key) override;
-    virtual void onDraw(sf::RenderTarget& window);
+    virtual void onDraw(sp::RenderTarget& renderer) override;
     void setTargetSpaceship(P<PlayerSpaceship> targetSpaceship);
+    virtual void onUpdate() override;
 };
 
 #endif//BEAM_TARGET_SELECTOR_H

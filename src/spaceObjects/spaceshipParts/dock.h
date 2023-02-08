@@ -4,7 +4,6 @@
 #include "P.h"
 #include "shipTemplate.h"
 #include "cargo.h"
-#include "SFML/System/NonCopyable.hpp"
 
 class Dock;
 //class Cargo;
@@ -37,7 +36,7 @@ enum EDockState
 };
 string getDockStateName(EDockState state);
 
-class Dock : public sf::NonCopyable
+class Dock : public sp::NonCopyable
 {
   public:
     static Dock* findOpenForDocking(Dock docks[], int size);

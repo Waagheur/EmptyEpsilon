@@ -13,29 +13,42 @@ ProbeScreen::ProbeScreen()
     rotatetime = 0.0007;
     angle = 0.0f;
      // Render the background decorations.
-    background_crosses = new GuiOverlay(this, "BACKGROUND_CROSSES", sf::Color::White);
-    background_crosses->setTextureTiled("gui/BackgroundCrosses");
+    background_crosses = new GuiOverlay(this, "BACKGROUND_CROSSES", glm::u8vec4(255,255,255,255));
+    background_crosses->setTextureTiled("gui/Background/crosses.png");
 
     viewport = new GuiViewport3D(this, "VIEWPROBE");
     viewport->showSpacedust();
-    viewport->setPosition(0, 0, ATopLeft)->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax)->hide();
+    viewport->setPosition(0, 0, sp::Alignment::TopLeft)->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax)->hide();
 }
 
 void ProbeScreen::update(float delta)
 {
+    angle += (keys.helms_turn_right.getValue() - keys.helms_turn_left.getValue()) * 5.0f;
+     //TODO: This is more generic code and is duplicated.
+    if (keys.escape.getDown())
+    {
+        destroy();
+        returnToShipSelection(getRenderLayer());
+    }
+     if (keys.pause.getDown())
+     {
+        if (game_server)
+            engine->setGameSpeed(0.0);
+     }
+    
 
     if (game_client && game_client->getStatus() == GameClient::Disconnected)
     {
         destroy();
         disconnectFromServer();
-        returnToMainMenu();
+        returnToMainMenu(getRenderLayer());
         return;
     }
 
     rotatetime -= delta;
-    if (rotatetime <= 0.0)
+    if (rotatetime <= 0.f)
     {
-		rotatetime = 0.0007;
+		rotatetime = 0.0007f;
 		angle += 0.5f;
     }
 
@@ -56,7 +69,7 @@ void ProbeScreen::update(float delta)
 			glm::vec2 position = probe->getPosition() + rotateVec2(glm::vec2(probe->getRadius(), 0), camera_yaw);
  			camera_position.x = position.x;
 			camera_position.y = position.y;
-			camera_position.z = 0.0;
+			camera_position.z = 0.0f;
 		}else{
             background_crosses->show();
             viewport->hide();
@@ -64,27 +77,3 @@ void ProbeScreen::update(float delta)
     }
 }
 
-void ProbeScreen::onKey(sf::Event::KeyEvent key, int unicode)
-{
-    switch(key.code)
-    {
-    case sf::Keyboard::Left:
-        angle -= 5.0f;
-        break;
-    case sf::Keyboard::Right:
-        angle += 5.0f;
-        break;
-     //TODO: This is more generic code and is duplicated.
-    case sf::Keyboard::Escape:
-    case sf::Keyboard::Home:
-        destroy();
-        returnToShipSelection();
-        break;
-    case sf::Keyboard::P:
-        if (game_server)
-            engine->setGameSpeed(0.0);
-        break;
-    default:
-        break;
-    }
-}

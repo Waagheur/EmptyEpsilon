@@ -22,7 +22,7 @@ GuiShieldsEnableButton::GuiShieldsEnableButton(GuiContainer* owner, string id, P
     bar->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);
     (new GuiLabel(bar, id + "_CALIBRATING_LABEL", tr("shields","Calibrating"), 30))->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);
 
-    pdi = new GuiPowerDamageIndicator(this, id + "_PDI", SYS_FrontShield, ACenterLeft, target_spaceship);
+    pdi = new GuiPowerDamageIndicator(this, id + "_PDI", SYS_FrontShield, sp::Alignment::CenterLeft, target_spaceship);
     pdi->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);
 }
 
@@ -31,7 +31,7 @@ void GuiShieldsEnableButton::setTargetSpaceship(P<PlayerSpaceship> targetSpacesh
     pdi->setTargetSpaceship(target_spaceship);
 }
 
-void GuiShieldsEnableButton::onDraw(sf::RenderTarget& window)
+void GuiShieldsEnableButton::onDraw(sp::RenderTarget& target)
 {
     if (target_spaceship)
     {
@@ -39,7 +39,7 @@ void GuiShieldsEnableButton::onDraw(sf::RenderTarget& window)
         {
             hide();
         }
-        else if (target_spaceship->shield_calibration_delay > 0.0)
+        else if (target_spaceship->shield_calibration_delay > 0.0f)
         {
             show();
             button->hide();
@@ -61,15 +61,15 @@ void GuiShieldsEnableButton::onDraw(sf::RenderTarget& window)
     }
 }
 
-void GuiShieldsEnableButton::onHotkey(const HotkeyResult& key)
+void GuiShieldsEnableButton::onUpdate()
 {
-    if (key.category == "WEAPONS" && target_spaceship)
+    if (target_spaceship && isVisible())
     {
-        if (key.hotkey == "TOGGLE_SHIELDS")
+        if (keys.weapons_toggle_shields.getDown())
             target_spaceship->commandSetShields(!target_spaceship->shields_active);
-        if (key.hotkey == "ENABLE_SHIELDS")
+        if (keys.weapons_enable_shields.getDown())
             target_spaceship->commandSetShields(true);
-        if (key.hotkey == "DISABLE_SHIELDS")
+        if (keys.weapons_disable_shields.getDown())
             target_spaceship->commandSetShields(false);
     }
 }

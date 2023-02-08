@@ -19,7 +19,10 @@ public:
     void setRange(float range) { this->range = range; }
     float getRange() { return range; }
 
-    virtual void drawOnRadar(sf::RenderTarget& window, sf::Vector2f position, float scale, float rotation, bool long_range) override;
+    void setHull(float hull) { this->hull = hull; }
+    float getHull() { return hull; }
+
+    virtual void drawOnRadar(sp::RenderTarget& renderer, glm::vec2 position, float scale, float rotation, bool long_range) override;
 
     static bool isWarpJammed(glm::vec2 position);
     static glm::vec2 getFirstNoneJammedPosition(glm::vec2 start, glm::vec2 end);

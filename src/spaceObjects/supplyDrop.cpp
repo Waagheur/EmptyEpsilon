@@ -6,13 +6,23 @@
 
 #include "scriptInterface.h"
 
-/// A supply drop.
+/// A SupplyDrop is a collectible item picked up on collision with a friendly SpaceShip.
+/// On pickup, the SupplyDrop restocks one type of the colliding SpaceShip's weapons.
+/// If the ship is a PlayerSpaceship, it can also recharge its energy.
+/// A SupplyDrop can also trigger a scripting function upon pickup.
+/// For a more generic object with similar collision properties, see Artifact.
+/// Example: SupplyDrop():setEnergy(500):setWeaponStorage("Homing",6)
 REGISTER_SCRIPT_SUBCLASS(SupplyDrop, SpaceObject)
 {
+    /// Sets the amount of energy recharged upon pickup when a PlayerSpaceship collides with this SupplyDrop.
+    /// Example: supply_drop:setEnergy(500)
     REGISTER_SCRIPT_CLASS_FUNCTION(SupplyDrop, setEnergy);
+    /// Sets the weapon type and amount restocked upon pickup when a SpaceShip collides with this SupplyDrop.
+    /// Example: supply_drop:setWeaponStorage("Homing",6)
     REGISTER_SCRIPT_CLASS_FUNCTION(SupplyDrop, setWeaponStorage);
-    /// Set a function that will be called if a player picks up the supply drop.
-    /// First argument given to the function will be the supply drop, the second the player.
+    /// Defines a function to call when a SpaceShip collides with the supply drop.
+    /// Passes the supply drop and the colliding ship (if it's a PlayerSpaceship) to the function.
+    /// Example: supply_drop:onPickUp(function(drop,ship) print("Supply drop picked up") end)
     REGISTER_SCRIPT_CLASS_FUNCTION(SupplyDrop, onPickUp);
 }
 
@@ -30,19 +40,12 @@ SupplyDrop::SupplyDrop()
     model_info.setData("ammo_box");
 }
 
-void SupplyDrop::drawOnRadar(sf::RenderTarget& window, sf::Vector2f position, float scale, float rotation, bool long_range)
+void SupplyDrop::drawOnRadar(sp::RenderTarget& renderer, glm::vec2 position, float scale, float rotation, bool long_range)
 {
-    sf::Sprite object_sprite;
-    textureManager.setTexture(object_sprite, "RadarBlip.png");
-    object_sprite.setRotation(getRotation());
-    object_sprite.setPosition(position);
+    glm::u8vec4 color(100, 200, 255, 255);
     if (my_spaceship && !my_spaceship->isFriendly(this))
-        object_sprite.setColor(sf::Color(200, 50, 50));
-    else
-        object_sprite.setColor(sf::Color(100, 200, 255));
-    float size = 0.5;
-    object_sprite.setScale(size, size);
-    window.draw(object_sprite);
+        color = glm::u8vec4(200, 50, 50, 255);
+    renderer.drawSprite("radar/blip.png", position, 8, color);
 }
 
 void SupplyDrop::collide(Collisionable* target, float force)

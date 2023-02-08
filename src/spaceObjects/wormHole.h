@@ -21,13 +21,12 @@ private:
 public:
     WormHole();
 
-#if FEATURE_3D_RENDERING
     virtual void draw3DTransparent() override;
-#endif//FEATURE_3D_RENDERING
-    virtual void drawOnRadar(sf::RenderTarget& window, sf::Vector2f position, float scale, float rotation, bool long_range) override;
-    virtual void drawOnGMRadar(sf::RenderTarget& window, sf::Vector2f position, float scale, float rotation, bool long_range) override;
+    virtual void drawOnRadar(sp::RenderTarget& renderer, glm::vec2 position, float scale, float rotation, bool long_range) override;
+    virtual void drawOnGMRadar(sp::RenderTarget& renderer, glm::vec2 position, float scale, float rotation, bool long_range) override;
     virtual void update(float delta) override;
     virtual void collide(Collisionable* target, float force) override;
+    virtual ERadarLayer getRadarLayer() const override { return ERadarLayer::BackgroundObjects; }
 
     void setTargetPosition(glm::vec2 v);   /* Where to jump to */
     glm::vec2 getTargetPosition();

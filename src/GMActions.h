@@ -1,7 +1,7 @@
 #ifndef GM_ACTIONS
 #define GM_ACTIONS
 
-#include "engine.h"
+#include "multiplayer.h"
 
 enum EShipOrder
 {
@@ -36,7 +36,7 @@ public:
     void commandOrderShip(EShipOrder order, PVector<SpaceObject> selection);
     void commandDestroy(PVector<SpaceObject> selection);
     void commandSendCommToPlayerShip(P<PlayerSpaceship> target, string line);
-    virtual void onReceiveClientCommand(int32_t client_id, sp::io::DataBuffer& packet);
+    virtual void onReceiveClientCommand(int32_t client_id, sp::io::DataBuffer& packet) override;
 
 private:
     void executeContextualGoTo(glm::vec2 position, bool force, PVector<SpaceObject> selection);

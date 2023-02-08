@@ -6,6 +6,8 @@
 #include "epsilonServer.h"
 #include "gameGlobalInfo.h"
 #include "playerInfo.h"
+#include "multiplayer_client.h"
+#include "multiplayer_server_scanner.h"
 
 #include "gui/gui2_label.h"
 #include "gui/gui2_overlay.h"
@@ -22,7 +24,7 @@ AutoConnectScreen::AutoConnectScreen(ECrewPosition crew_position, int auto_mains
     new GuiNoiseOverlay(this);
 
     status_label = new GuiLabel(this, "STATUS", "Coupure de courant", 50);
-    status_label->setPosition(0, 300, ATopCenter)->setSize(0, 50);
+    status_label->setPosition(0, 300, sp::Alignment::TopCenter)->setSize(0, 50);
 
     string position_name = "Ecran principal";
     if (crew_position < max_crew_positions)
@@ -30,10 +32,10 @@ AutoConnectScreen::AutoConnectScreen(ECrewPosition crew_position, int auto_mains
     if (auto_mainscreen == 1)
         position_name = "Ecran principal";
 
-    (new GuiLabel(this, "POSITION", position_name, 20))->setPosition(0, 10, ATopCenter)->setSize(0, 10);
+    (new GuiLabel(this, "POSITION", position_name, 50))->setPosition(0, 400, sp::Alignment::TopCenter)->setSize(0, 30);
 
     filter_label = new GuiLabel(this, "FILTER", "", 20);
-    filter_label->setPosition(0, 30, ATopCenter)->setSize(0, 10);
+    filter_label->setPosition(0, 30, sp::Alignment::TopCenter)->setSize(0, 10);
 
     for(string filter : ship_filter.split(";"))
     {
@@ -52,7 +54,7 @@ AutoConnectScreen::AutoConnectScreen(ECrewPosition crew_position, int auto_mains
 
     if (PreferencesManager::get("instance_name") != "")
     {
-        (new GuiLabel(this, "", PreferencesManager::get("instance_name"), 25))->setAlignment(ACenterLeft)->setPosition(20, 20, ATopLeft)->setSize(0, 18);
+        (new GuiLabel(this, "", PreferencesManager::get("instance_name"), 25))->setAlignment(sp::Alignment::CenterLeft)->setPosition(20, 20, sp::Alignment::TopLeft)->setSize(0, 18);
     }
 }
 
@@ -85,7 +87,6 @@ void AutoConnectScreen::update(float delta)
     }else{
         switch(game_client->getStatus())
         {
-        case GameClient::ReadyToConnect:
         case GameClient::Connecting:
         case GameClient::Authenticating:
             if (!connect_to_address.getHumanReadable().empty())
@@ -107,6 +108,7 @@ void AutoConnectScreen::update(float delta)
                         my_player_info = i;
                 if (my_player_info && gameGlobalInfo)
                 {
+                    my_player_info->commandSetName(PreferencesManager::get("username"));
                     if (!connect_to_address.getHumanReadable().empty())
                         status_label->setText("Attente de vaisseau à " + connect_to_address.getHumanReadable()[0] + "...");
                     else
@@ -129,10 +131,10 @@ void AutoConnectScreen::update(float delta)
                             if (auto_mainscreen == 1)
                             {
                                 for(int n=0; n<max_crew_positions; n++)
-                                    my_player_info->commandSetCrewPosition(crew_position, false);
+                                    my_player_info->commandSetCrewPosition(0, crew_position, false);
                             }
                             destroy();
-                            my_player_info->spawnUI();
+                            my_player_info->spawnUI(0, getRenderLayer());
                         }
                     }
                 }
@@ -209,8 +211,8 @@ void AutoConnectScreen::connectToShip(int index)
 
     if (auto_mainscreen != 1 && crew_position != max_crew_positions)    //If we are not the main screen, setup the right crew position.
     {
-        my_player_info->commandSetCrewPosition(crew_position, true);
-        my_player_info->commandSetMainScreenControl(control_main_screen);
+        my_player_info->commandSetCrewPosition(0, crew_position, true);
+        my_player_info->commandSetMainScreenControl(0, control_main_screen);
 
         // Add more screen
         if (PreferencesManager::get("autostationslist") != "")
@@ -221,9 +223,11 @@ void AutoConnectScreen::connectToShip(int index)
                 int crew_position_sup = station.toInt() - 1;
                 if (crew_position_sup < 0) crew_position_sup = 0;
                 if (crew_position_sup > max_crew_positions) crew_position_sup = max_crew_positions;
-                my_player_info->commandSetCrewPosition(ECrewPosition(crew_position_sup), true);
+                my_player_info->commandSetCrewPosition(0, ECrewPosition(crew_position_sup), true);
             }
         }
+    } else {
+        my_player_info->commandSetMainScreen(0, true);
     }
     my_player_info->commandSetShipId(ship->getMultiplayerId());
 }

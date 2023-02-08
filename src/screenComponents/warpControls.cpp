@@ -22,7 +22,7 @@ GuiWarpControls::GuiWarpControls(GuiContainer* owner, string id, P<PlayerSpacesh
         // Set the slider value to the warp level.
         slider->setValue(warp_level);
     });
-    slider->setPosition(0, 0, ATopLeft)->setSize(50, GuiElement::GuiSizeMax);
+    slider->setPosition(0, 0, sp::Alignment::TopLeft)->setSize(50, GuiElement::GuiSizeMax);
 
     // Snap the slider to integers up to 4.
     slider->addSnapValue(0.0, 0.5);
@@ -39,10 +39,10 @@ GuiWarpControls::GuiWarpControls(GuiContainer* owner, string id, P<PlayerSpacesh
 
     // Label the warp slider.
     label = new GuiKeyValueDisplay(this, id + "_LABEL", 0.5, tr("slider", "Warp"), "0.0");
-    label->setTextSize(30)->setPosition(50, 0, ATopLeft)->setSize(40, GuiElement::GuiSizeMax);
+    label->setTextSize(30)->setPosition(50, 0, sp::Alignment::TopLeft)->setSize(40, GuiElement::GuiSizeMax);
 
     // Prep the alert overlay.
-    pdi = new GuiPowerDamageIndicator(this, id + "_DPI", SYS_Warp, ATopCenter, target_spaceship);
+    pdi = new GuiPowerDamageIndicator(this, id + "_DPI", SYS_Warp, sp::Alignment::TopCenter, target_spaceship);
     pdi->setSize(50, GuiElement::GuiSizeMax);
 }
 
@@ -51,7 +51,7 @@ void GuiWarpControls::setTargetSpaceship(P<PlayerSpaceship> targetSpaceship){
     pdi->setTargetSpaceship(target_spaceship);
 }
 
-void GuiWarpControls::onDraw(sf::RenderTarget& window)
+void GuiWarpControls::onDraw(sp::RenderTarget& target)
 {
     // Update the label with the current warp factor.
     if (target_spaceship)
@@ -72,44 +72,44 @@ void GuiWarpControls::onDraw(sf::RenderTarget& window)
     }
 }
 
-void GuiWarpControls::onHotkey(const HotkeyResult& key)
+void GuiWarpControls::onUpdate()
 {
     // Handle hotkey input. Warp is a HELMS-category shortcut.
-    if (key.category == "HELMS" && target_spaceship)
+    if (target_spaceship && isVisible())
     {
-        if (key.hotkey == "WARP_0")
+        if (keys.helms_warp0.getDown())
         {
             target_spaceship->commandWarp(0);
             slider->setValue(0);
         }
-        else if (key.hotkey == "WARP_1")
+        if (keys.helms_warp1.getDown())
         {
             target_spaceship->commandWarp(1);
             slider->setValue(1);
         }
-        else if (key.hotkey == "WARP_2")
+        if (keys.helms_warp2.getDown())
         {
             target_spaceship->commandWarp(2);
             slider->setValue(2);
         }
-        else if (key.hotkey == "WARP_3")
+        if (keys.helms_warp3.getDown())
         {
             target_spaceship->commandWarp(3);
             slider->setValue(3);
         }
-        else if (key.hotkey == "WARP_4")
+        if (keys.helms_warp4.getDown())
         {
             target_spaceship->commandWarp(4);
             slider->setValue(4);
         }
-        else if (key.hotkey == "INC_WARP")
+        if (keys.helms_increase_warp.getDown())
         {
             if (my_spaceship->warp_request < 4) {
                 my_spaceship->commandWarp(my_spaceship->warp_request+1);
                 slider->setValue(my_spaceship->warp_request+1);
             }
         }
-        else if (key.hotkey == "DEC_WARP")
+        else if (keys.helms_decrease_warp.getDown())
         {
             if (my_spaceship->warp_request > 0) {
                 my_spaceship->commandWarp(my_spaceship->warp_request-1);

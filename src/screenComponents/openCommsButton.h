@@ -11,8 +11,8 @@ class GuiOpenCommsButton : public GuiButton
 public:
     GuiOpenCommsButton(GuiContainer* owner, string id, string name, TargetsContainer* targets);
 
-    virtual void onDraw(sf::RenderTarget& window);
-    virtual void onHotkey(const HotkeyResult& key) override;
+    virtual void onDraw(sp::RenderTarget& window) override;
+    virtual void onUpdate() override;
 };
 
 #endif//OPEN_COMMS_BUTTON_H

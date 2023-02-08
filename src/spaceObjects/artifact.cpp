@@ -1,72 +1,79 @@
-#include <SFML/OpenGL.hpp>
+#include <graphics/opengl.h>
 #include "artifact.h"
 #include "explosionEffect.h"
 #include "playerSpaceship.h"
 #include "main.h"
+#include "random.h"
 
 #include <glm/ext/matrix_transform.hpp>
 
 #include "scriptInterface.h"
 
-/// An artifact.
-/// Can be used for mission scripting.
+/// An Artifact is a configurable SpaceObject that can interact with other objects via collisions or scripting.
+/// Use this to define arbitrary objects or collectible pickups in scenario scripts.
+/// Example: artifact = Artifact():setModel("artifact6"):setSpin(0.5)
 REGISTER_SCRIPT_SUBCLASS(Artifact, SpaceObject)
 {
-    /// Set the 3D model used for this artifact.
-    /// Example: setModel("artifact6"), setModel("shield_generator"), setModel("ammo_box").
-    /// Check model_data.lua for all possible options.
+    /// Sets the 3D model used for this artifact, by its ModelData name.
+    /// ModelData is defined in scripts/model_data.lua.
+    /// Defaults to a ModelData whose name starts with "artifact" and ends with a random number between 1 and 8.
+    /// Example: artifact:setModel("artifact6")
     REGISTER_SCRIPT_CLASS_FUNCTION(Artifact, setModel);
-    /// Have this object explode with a visual explosion. The Artifact is destroyed by this action.
+    /// Immediately destroys this artifact with a visual explosion.
+    /// Example: artifact:explode() -- artifact is destroyed
     REGISTER_SCRIPT_CLASS_FUNCTION(Artifact, explode);
-    /// Set if this artifact can be picked up or not. When it is picked up, this artifact will be destroyed.
+    /// Defines whether this artifact can be picked up via collision.
+    /// The artifact is destroyed upon being picked up.
+    /// Defaults to false.
+    /// Example: artifact:allowPickup(true)
     REGISTER_SCRIPT_CLASS_FUNCTION(Artifact, allowPickup);
     REGISTER_SCRIPT_CLASS_FUNCTION(Artifact, setOrbit);
     REGISTER_SCRIPT_CLASS_FUNCTION(Artifact, setOrbitDistance);
     REGISTER_SCRIPT_CLASS_FUNCTION(Artifact, setHull);
-    /// Set a function that will be called every tick when a SpaceObject is
-    /// colliding with the artifact.
-    /// Passes the artifact and colliding SpaceObject.
-    /// Example:
-    /// artifact:onCollision(function(artifact, collider) print("Collision occurred") end)
+    /// Defines a function to call every tick when a SpaceObject is colliding with the artifact.
+    /// Passes the artifact and colliding SpaceObject to the called function.
+    /// Example: artifact:onCollision(function(artifact, collider) print("Collision occurred") end)
     REGISTER_SCRIPT_CLASS_FUNCTION(Artifact, onCollision);
-    /// Set a function that will be called every tick when a PlayerSpaceship is
-    /// colliding with the artifact.
-    /// Passes the artifact and colliding PlayerSpaceship.
-    /// Example:
-    /// artifact:onCollision(function(artifact, player) print("Collision occurred") end)
+    /// Defines a function to call every tick when a PlayerSpaceship is colliding with the artifact.
+    /// Passes the artifact and colliding PlayerSpaceship to the called function.
+    /// Example: artifact:onCollision(function(artifact, player) print("Collision occurred") end)
     REGISTER_SCRIPT_CLASS_FUNCTION(Artifact, onPlayerCollision);
-    /// Set a function that will be called once when a PlayerSpaceship collides
-    /// with the artifact while allowPickup is enabled. The artifact is
-    /// subsequently destroyed.
-    /// Passes the artifact and colliding PlayerSpaceship.
-    /// Example:
-    /// artifact:onPickUp(function(artifact, player) print("Artifact retrieved") end)
+    /// Defines a function to call once when a PlayerSpaceship collides with the artifact and allowPickup is enabled.
+    /// Passes the artifact and colliding PlayerSpaceship to the called function.
+    /// Example: artifact:onPickUp(function(artifact, player) print("Artifact retrieved") end)
     REGISTER_SCRIPT_CLASS_FUNCTION(Artifact, onPickUp);
-    /// Alias of onPickUp.
+    /// Alias of Artifact:onPickUp().
     REGISTER_SCRIPT_CLASS_FUNCTION(Artifact, onPickup);
-    /// Let the artifact rotate. For reference, normal asteroids in the game have spins between 0.1 and 0.8.
+    /// Defines whether the artifact rotates, and if so at what rotational velocity. (unit?)
+    /// For reference, normal asteroids spin at a rate between 0.1 and 0.8.
+    /// Example: artifact:setSpin(0.5)
     REGISTER_SCRIPT_CLASS_FUNCTION(Artifact, setSpin);
-    /// Set the icon to be used for this artifact on the radar.
-    /// For example, artifact:setRadarTraceIcon("RadarArrow.png") will show an arrow instead of a dot for this artifact.
+    /// Sets the radar trace image for this artifact.
+    /// Optional. Defaults to "blip.png".
+    /// Valid values are filenames to PNG files relative to resources/radar/.
+    /// Example: artifact:setRadarTraceIcon("arrow.png") -- displays an arrow instead of a blip for this artifact
     REGISTER_SCRIPT_CLASS_FUNCTION(Artifact, setRadarTraceIcon);
-    /// Scales the radar trace. Setting to 0 restores to standard autoscaling.
-    /// Setting to 1 is needed for mimicking ship traces.
+    /// Scales the radar trace for this artifact.
+    /// A value of 0 restores standard autoscaling relative to the artifact's radius.
+    /// Set to 1 to mimic ship traces.
+    /// Example: artifact:setRadarTraceScale(0.7)
     REGISTER_SCRIPT_CLASS_FUNCTION(Artifact, setRadarTraceScale);
-    /// Sets the color of the radar trace.
-    /// Example: 255,200,100 for mimicking asteroids.
+    /// Sets the color of this artifact's radar trace.
+    /// Optional. Defaults to solid white (255,255,255)
+    /// Example: artifact:setRadarTraceColor(255,200,100) -- mimics an asteroid
     REGISTER_SCRIPT_CLASS_FUNCTION(Artifact, setRadarTraceColor);
 }
 
 REGISTER_MULTIPLAYER_CLASS(Artifact, "Artifact");
 Artifact::Artifact()
 : SpaceObject(120, "Artifact"),
+  current_model_data_name("artifact" + string(irandom(1, 8))),
   model_data_name(current_model_data_name),
   artifact_spin(0.0f),
   allow_pickup(false),
-  radar_trace_icon("RadarBlip.png"),
+  radar_trace_icon("radar/blip.png"),
   radar_trace_scale(0),
-  radar_trace_color(sf::Color(255, 255, 255)),
-  current_model_data_name("artifact" + string(irandom(1, 8)))
+  radar_trace_color(glm::u8vec4(255, 255, 255, 255))
 {
     setRotation(random(0, 360));
     model_info.setData(current_model_data_name);
@@ -124,40 +131,24 @@ void Artifact::setOrbitDistance(float orbit_distance)
     this->orbit_distance = orbit_distance;
 }
 
-void Artifact::draw3D()
+void Artifact::drawOnRadar(sp::RenderTarget& renderer, glm::vec2 position, float scale, float rotation, bool long_range)
 {
-#if FEATURE_3D_RENDERING
-    if (artifact_spin != 0.0) {
-        glRotatef(engine->getElapsedTime() * artifact_spin, 0, 0, 1);
-    }
-    SpaceObject::draw3D();
-#endif//FEATURE_3D_RENDERING
-}
-
-void Artifact::drawOnRadar(sf::RenderTarget& window, sf::Vector2f position, float scale, float rotation, bool long_range)
-{
-    sf::Sprite object_sprite;
-    textureManager.setTexture(object_sprite, radar_trace_icon);
-    object_sprite.setRotation(getRotation());
-    object_sprite.setPosition(position);
-    object_sprite.setColor(radar_trace_color);
     // radar trace scaling, via script or automatically
     float size;
     if (radar_trace_scale > 0)
     {
         if (long_range)
-            size =radar_trace_scale * 0.7;
+            size = radar_trace_scale * 0.7f;
         else
             size = radar_trace_scale;
     }
     else
     {
-        size = getRadius() * scale / object_sprite.getTextureRect().width * 2;
-        if (size < 0.2)
-            size = 0.2;
+        size = getRadius() * scale / 16;
+        if (size < 0.2f)
+            size = 0.2f;
     }
-    object_sprite.setScale(size, size);
-    window.draw(object_sprite);
+    renderer.drawRotatedSprite(radar_trace_icon, position, size * 32.0f, getRotation() - rotation, radar_trace_color);
 }
 
 void Artifact::collide(Collisionable* target, float force)
@@ -184,7 +175,7 @@ void Artifact::collide(Collisionable* target, float force)
             }
 
             destroy();
-            player->addToShipLog("Objet recupere en soute",sf::Color::White);
+            player->addToShipLog("Objet recupere en soute",glm::u8vec4(255,255,255,255));
         }
         else
         {
@@ -228,7 +219,7 @@ void Artifact::setSpin(float spin)
 
 void Artifact::setRadarTraceIcon(string icon)
 {
-    radar_trace_icon = icon;
+    radar_trace_icon = "radar/" + icon;
 }
 
 void Artifact::setRadarTraceScale(float scale)

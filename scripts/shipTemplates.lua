@@ -13,17 +13,18 @@ These are:
 
 Player ships are in general large frigates to small corvette class
 --]]
-require("shipTemplates_40k_Stations.lua")
+require("shiptemplates/40k/Stations.lua")
 ---[[Ajouts 40k
-require("shipTemplates_40k_VaisseauxLegers.lua")
-require("shipTemplates_40k_Fregates.lua")
-require("shipTemplates_40k_Escorteurs.lua")
-require("shipTemplates_40k_CroiseursLegers.lua")
-require("shipTemplates_40k_Croiseurs.lua")
-require("shipTemplates_40k_Cuirasses.lua")
-require("shipTemplates_40k_Capitaux.lua")
-require("shipTemplates_40k_Autres.lua")
-require("shipTemplates_40k_Jouables.lua")
+require("shiptemplates/40k/VaisseauxLegers.lua")
+require("shiptemplates/40k/Fregates.lua")
+require("shiptemplates/40k/Escorteurs.lua")
+require("shiptemplates/40k/CroiseursLegers.lua")
+require("shiptemplates/40k/Croiseurs.lua")
+require("shiptemplates/40k/Cuirasses.lua")
+require("shiptemplates/40k/Capitaux.lua")
+require("shiptemplates/40k/Autres.lua")
+require("shiptemplates/40k/Jouables.lua")
+require("shiptemplates/satellites.lua") --TODO mettre en 40k
 ---[[Until these are ready, they are disabled
 ---require("shipTemplates_Drones.lua")
 ---require("shipTemplates_StarFighters.lua")

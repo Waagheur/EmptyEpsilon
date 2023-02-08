@@ -2,15 +2,15 @@
 #define CUSTOM_SHIP_FUNCTIONS_H
 
 #include "playerInfo.h"
-#include "gui/gui2_autolayout.h"
 #include "spaceObjects/playerSpaceship.h"
+#include "gui/gui2_element.h"
 
-class GuiCustomShipFunctions : public GuiAutoLayout
+class GuiCustomShipFunctions : public GuiElement
 {
 public:
     GuiCustomShipFunctions(GuiContainer* owner, ECrewPosition position, string id, P<PlayerSpaceship> targetSpaceship);
 
-    virtual void onDraw(sf::RenderTarget& window) override;
+    virtual void onUpdate() override;
 
     bool hasEntries();
 

@@ -6,9 +6,9 @@
 #include "gui/gui2_canvas.h"
 #include "gui/gui2_scrollbar.h"
 #include "gui/hotkeyBinder.h"
+#include "Updatable.h"
 
 class GuiArrowButton;
-class GuiAutoLayout;
 class GuiOverlay;
 class GuiSlider;
 class GuiLabel;
@@ -17,7 +17,7 @@ class GuiPanel;
 class GuiScrollText;
 class GuiHotkeyBinder;
 
-class HotkeyMenu : public GuiCanvas
+class HotkeyMenu : public GuiCanvas, public Updatable
 {
 private:
     const int ROW_HEIGHT = 50;
@@ -36,9 +36,9 @@ private:
     GuiPanel* rebinding_ui;
     GuiElement* bottom_row;
 
-    GuiAutoLayout* rebinding_container;
-    std::vector<GuiAutoLayout*> rebinding_columns;
-    std::vector<GuiAutoLayout*> rebinding_rows;
+    GuiElement* rebinding_container;
+    std::vector<GuiElement*> rebinding_columns;
+    std::vector<GuiElement*> rebinding_rows;
     std::vector<GuiHotkeyBinder*> text_entries;
     std::vector<GuiLabel*> label_entries;
     GuiArrowButton* previous_page;
@@ -48,15 +48,14 @@ private:
     string category = "";
     int category_index = 1;
     std::vector<string> category_list;
-    std::vector<std::pair<string, string>> hotkey_list;
+    std::vector<sp::io::Keybinding*> hotkey_list;
 
     void setCategory(int cat);
-    void saveHotkeys();
     void pageHotkeys(int direction);
 public:
     HotkeyMenu();
 
-    void onKey(sf::Event::KeyEvent key, int unicode);
+    virtual void update(float delta) override;
 };
 
 #endif //HOTKEYMENU_H

@@ -2,6 +2,7 @@
 #include "playerInfo.h"
 #include "preferenceManager.h"
 #include "spaceObjects/playerSpaceship.h"
+#include "main.h"
 
 GuiViewportMainScreen::GuiViewportMainScreen(GuiContainer* owner, string id)
 : GuiViewport3D(owner, id)
@@ -29,7 +30,7 @@ void GuiViewportMainScreen::update(float delta)
 }
 
 
-void GuiViewportMainScreen::onDraw(sf::RenderTarget& window)
+void GuiViewportMainScreen::onDraw(sp::RenderTarget& renderer)
 {
     if (my_spaceship)
     {
@@ -60,9 +61,9 @@ void GuiViewportMainScreen::onDraw(sf::RenderTarget& window)
         if (my_spaceship->main_screen_setting == MSS_ProbeView && probe)
         {
             //Tsht : tdelc Probe view. FIXME le mettre dans un AUTRE viewport
-            if (rotatetime <= 0.0)
+            if (rotatetime <= 0.f)
             {
-                rotatetime = 0.1;
+                rotatetime = 0.1f;
                 angle += 0.1f;
             }
 
@@ -72,7 +73,7 @@ void GuiViewportMainScreen::onDraw(sf::RenderTarget& window)
             glm::vec2 position = probe->getPosition() + rotateVec2(glm::vec2(probe->getRadius(), 0), camera_yaw);
             camera_position.x = position.x;
             camera_position.y = position.y;
-            camera_position.z = 0.0;
+            camera_position.z = 0.f;
         }
         else
         {
@@ -86,15 +87,6 @@ void GuiViewportMainScreen::onDraw(sf::RenderTarget& window)
             }    
             glm::vec2 cameraPosition2D = my_spaceship->getPosition() + vec2FromAngle(target_camera_yaw) * -camera_ship_distance;
             glm::vec3 targetCameraPosition(cameraPosition2D.x, cameraPosition2D.y, camera_ship_height);
-#ifdef DEBUG
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z))
-            {
-                targetCameraPosition.x = my_spaceship->getPosition().x;
-                targetCameraPosition.y = my_spaceship->getPosition().y;
-                targetCameraPosition.z = 3000.0;
-                camera_pitch = 90.0f;
-            }
-#endif
             if (first_person)
             {
                 camera_position = targetCameraPosition;
@@ -108,5 +100,5 @@ void GuiViewportMainScreen::onDraw(sf::RenderTarget& window)
         }
 
     }
-    GuiViewport3D::onDraw(window);
+    GuiViewport3D::onDraw(renderer);
 }

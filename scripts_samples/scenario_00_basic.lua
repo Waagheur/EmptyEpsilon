@@ -1,14 +1,24 @@
--- Name: Basic
+-- Name: Basic Battle
 -- Description: A few random stations are under attack by enemies, with random terrain around them. Destroy all enemies to win.
 ---
 --- The scenario provides a single player-controlled Atlantis, which is sufficient to win even in the "Extreme" variant.
 ---
 --- Other player ships can be spawned, but the strength of enemy ships is independent of the number and types of player ships.
 -- Type: Basic
--- Variation[Empty]: No enemies. Recommended for GM-controlled scenarios and rookie crew orientation. The scenario continues until the GM declares victory or all Human Navy ships are destroyed.
--- Variation[Easy]: Fewer enemies. Recommended for inexperienced crews.
--- Variation[Hard]: More enemies. Recommended if you have multiple player-controlled ships.
--- Variation[Extreme]: Many enemies. Inexperienced player crews will pretty surely be overwhelmed.
+-- Setting[Enemies]: Configures the amount of enemies spawned in the scenario.
+-- Enemies[Empty]: No enemies. Recommended for GM-controlled scenarios and rookie crew orientation. The scenario continues until the GM declares victory or all Human Navy ships are destroyed.
+-- Enemies[Easy]: Fewer enemies. Recommended for inexperienced crews.
+-- Enemies[Normal|Default]: Normal amount of enemies. Recommended for a normal crew.
+-- Enemies[Hard]: More enemies. Recommended if you have multiple player-controlled ships.
+-- Enemies[Extreme]: Many enemies. Inexperienced player crews will pretty surely be overwhelmed.
+-- Setting[Time]: Sets up how much time the players have for the scenario
+-- Time[Unlimited|Default]: No time limit
+-- Time[20min]: Automatic loss after 20 minutes
+-- Time[30min]: Automatic loss after 30 minutes
+-- Time[60min]: Automatic loss after 60 minutes
+-- Setting[PlayerShip]: Sets the default player ship
+-- PlayerShip[Atlantis|Default]: Powerful ship with sidewards missile tubes. Requires more advanced play.
+-- PlayerShip[Phobos M3P]: Simpler, less powerful ship. But easier to handle. Recommended for new crews.
 
 --- Scenario
 -- @script scenario_00_basic
@@ -34,7 +44,80 @@ require("luax.lua") --tsht for table functions
 local enemyList
 local friendlyList
 local stationList
+local playerList
 local addWavesToGMPosition      -- If set to true, add wave will require GM to click on the map to position, where the wave should be spawned. 
+
+local gametimeleft = nil -- Maximum game time in seconds.
+local timewarning = nil -- Used for checking when to give a warning, and to update it so the warning happens once.
+
+local ship_names = {
+    "SS Epsilon",
+    "Ironic Gentleman",
+    "Binary Sunset",
+    "USS Roddenberry",
+    "Earthship Sagan",
+    "Explorer",
+    "ISV Phantom",
+    "Keelhaul",
+    "Peacekeeper",
+    "WarMonger",
+    "Death Bringer",
+    "Executor",
+    "Excaliber",
+    "Voyager",
+    "Khan's Wrath",
+    "Kronos' Savior",
+    "HMS Captor",
+    "Imperial Stature",
+    "ESS Hellfire",
+    "Helen's Fury",
+    "Venus' Light",
+    "Blackbeard's Way",
+    "ISV Monitor",
+    "Argent",
+    "Echo One",
+    "Earth's Might",
+    "ESS Tomahawk",
+    "Sabretooth",
+    "Hiro-maru",
+    "USS Nimoy",
+    "Earthship Tyson",
+    "Destiny's Tear",
+    "HMS SuperNova",
+    "Alma del Terra",
+    "DreadHeart",
+    "Devil's Maw",
+    "Cougar's Claw",
+    "Blood-oath",
+    "Imperial Fist",
+    "HMS Promise",
+    "ESS Catalyst",
+    "Hercules Ascendant",
+    "Heavens Mercy",
+    "HMS Adams",
+    "Explorer",
+    "Discovery",
+    "Stratosphere",
+    "USS Kelly",
+    "HMS Honour",
+    "Devilfish",
+    "Minnow",
+    "Earthship Nye",
+    "Starcruiser Solo",
+    "Starcruiser Reynolds",
+    "Starcruiser Hunt",
+    "Starcruiser Lipinski",
+    "Starcruiser Tylor",
+    "Starcruiser Kato",
+    "Starcruiser Picard",
+    "Starcruiser Janeway",
+    "Starcruiser Archer",
+    "Starcruiser Sisko",
+    "Starcruiser Kirk",
+    "Aluminum Falcon",
+    "SS Essess",
+    "Jenny"
+}
 
 --- Wrapper to adding an enemy wave
 --
@@ -122,88 +205,94 @@ function randomWaveDistance(enemy_group_count)
     return random(35000, 40000 + enemy_group_count * 3000)
 end
 
--- Get number_of_systems random systems. Warning : systems may or may not be activated on the ship
-function luaRandomSystems(number_of_systems)
-    --local pship = getPlayerShip(-1)
-    rand_table = {}
-    for _, system in ipairs(SYSTEMS) do
-        table.insert(rand_table, system)
-    end
-    table.shuffle(rand_table)
-    return_table = {}
-    for count = 1,number_of_systems do
-        table.insert(return_table, rand_table[count])
-    end
-    return return_table
+--- Initializes main GM Menu
+function gmButtons()
+    clearGMFunctions()
+    addGMFunction(_("buttonGM", "+Named Waves"),namedWaves)
+    addGMFunction(_("buttonGM", "Random wave"),function()
+        addWave(
+            enemyList,
+            random(0,10),
+            randomWaveAngle(math.random(20),math.random(20)),
+            randomWaveDistance(math.random(20))
+        )
+    end)
+    
+    -- Let the GM spawn random reinforcements. Their distance from the
+    -- players' spawn point is about half that of enemy waves.
+    addGMFunction(_("buttonGM", "Random friendly"), function()
+        local friendlyShip = {"Phobos T3", "MU52 Hornet", "Piranha F12"}
+        local friendlyShipIndex = math.random(#friendlyShip)
+        
+        if addWavesToGMPosition then
+            onGMClick(function(x,y) 
+                onGMClick(nil)
+                local a = angleRotation(0, 0, x, y)
+                local d = distance(0, 0, x, y)
+                table.insert(friendlyList, setCirclePos(CpuShip():setTemplate(friendlyShip[friendlyShipIndex]):setRotation(a):setFaction("Human Navy"):orderRoaming():setScanned(true), 0, 0, a + random(-5, 5), d + random(-100, 100)))
+            end)
+        else
+            local a = randomWaveAngle(math.random(20), math.random(20))
+            local d = random(15000, 20000 + math.random(20) * 1500)
+            table.insert(friendlyList, setCirclePos(CpuShip():setTemplate(friendlyShip[friendlyShipIndex]):setRotation(a):setFaction("Human Navy"):orderRoaming():setScanned(true), 0, 0, a + random(-5, 5), d + random(-100, 100)))
+        end
+    end)
+        
+    addGMPositionToggle()
+    
+    -- End scenario with Human Navy (players) victorious.
+    addGMFunction(_("buttonGM", "Win"),gmVictoryYesNo)
 end
 
---You should only have to modify what is between "Begin balance modification" and "end balance modification"
-onNewShip(
-    function(ship)
-        ship:onTakingDamage(
-            function(self,instigator, typeOfDamage, freq, systemHit, shieldsDamage, hullDamage, hitShield)
-                string.format("")	--serious proton needs a global context
-                print(string.format("%s is hit", ship:getCallSign()))
-                if instigator ~= nil then --mandatory to check there is an instigator, else it can be asteroid etc.
-                    if typeOfDamage == "emp" and hullDamage > 0 then --means damage is an EMP missile, and some damage passed through shields
-                        -- BEGIN BALANCE MODIFICATION HERE
-                        -- BEGIN BALANCE MODIFICATION HERE
-                        -- BEGIN BALANCE MODIFICATION HERE
-                        local num_of_sys_hit = 3 --edit here to change number of affected systems
-                        -- END BALANCE MODIFICATION
-                        -- END BALANCE MODIFICATION
-                        -- END BALANCE MODIFICATION
+--- Shows Yes/No question dialogue GM submenu with question if Human Navy should win. 
+function gmVictoryYesNo()
+    clearGMFunctions()
+    addGMFunction(_("buttonGM", "Victory?"), function() string.format("") end)
+    addGMFunction(_("buttonGM", "Yes"), function() 
+        victory("Human Navy")
+        clearGMFunctions()
+        addGMMessage(_("msgGM", [[Players have won.
+Scenario ended.]]))
+    end)
+    addGMFunction(_("buttonGM", "No"), gmButtons)
+end
 
-                        list_of_systems = luaRandomSystems(num_of_sys_hit) --means we get the random systems (which may NOT be activated on ship)
-                        --print(string.format("Degats: type %s freq %i sys %s shi %f dam %f hit %i",typeOfDamage,freq,systemHit,shieldsDamage,hullDamage,hitShield))
-                        for count = 1, num_of_sys_hit do
-                            print(string.format("%s hit for %f damage ", list_of_systems[count], hullDamage))
+--- Generate GM Toggle button for changing wave positioning variant. 
+function addGMPositionToggle()
+    local name = _("buttonGM", "Position: ")
 
-                            -- BEGIN BALANCE MODIFICATION HERE
-                            -- BEGIN BALANCE MODIFICATION HERE
-                            -- BEGIN BALANCE MODIFICATION HERE
-                            
-                            --inflicts energy loss
-                            local current_energy = ship:getEnergy()
-                            ship:setEnergy((current_energy - hullDamage) *10 ) --set the multiplier as it's total energy - damage
-                            
-                            --inflicts heat (between 0 and 1)
-                            local current_heat = ship:getSystemHeat(list_of_systems[count])
-                            ship:setSystemHeat(list_of_systems[count], (current_heat + hullDamage)/100) --set this as for now it's 1 damage = 1%
-                            
-                            --inflicts hack (between 0 and 1)
-                            local current_hack = ship:getSystemHackedLevel(list_of_systems[count])
-                            ship:setSystemHackedLevel(list_of_systems[count], (current_hack + hullDamage)/100) --set this as for now it's 1 damage = 1%
-
-                            --inflicts damage on system (overrides system harness set by ratio or minimal damage needed to hit) (between 0 and 1)
-                            local current_health = ship:getSystemHealth(list_of_systems[count])
-                            ship:setSystemHealth(list_of_systems[count], (current_health + hullDamage)/100) --set this as for now it's 1 damage = 1%
-
-                            -- END BALANCE MODIFICATION
-                            -- END BALANCE MODIFICATION
-                            -- END BALANCE MODIFICATION
-
-                        end --for
-                    elseif typeOfDamage ~= "emp" then
-                            print "Not emp damage"
-                    elseif hullDamage <= 0 then
-                            print "No damage went through shields"
-                    end --if damage and type
-                end --if instigator
-            end
-        )
+    if(addWavesToGMPosition) then
+        name = name.._("buttonGM", "GM")
+    else
+        name = name.._("buttonGM", "Random")
     end
 )
 
-function popWarpJammer(toto)
-    nb_warpjam = tonumber(toto:getInfosValue(1))
-    print "test"
-    if(nb_warpjam and nb_warpjam > 0) then
-        local posx,posy = toto:getPosition()
-        warpJammer = WarpJammer():setFaction(toto:getFaction()):setRange(10000):setPosition(posx-500, posy)
-        toto:addInfos(11,"Nb Warpjam", nb_warpjam - 1)
-        toto:removeCustom(popWarpJammerButton)
-        toto:addCustomButton("Relay",popWarpJammerButton,string.format("Deployer antiwarp (%i)", tonumber(toto:getInfosValue(11))),toto.popWarpJammer)
+    addGMFunction(name, function()
+        string.format("")   -- Provides global context for SeriousProton
+        addWavesToGMPosition = not addWavesToGMPosition
+        gmButtons()
+    end)
+end
+
+--- Shows "Named waves" GM submenu (that allows spawning more waves).
+function namedWaves()
+    local wave_names = {
+        [0] = _("buttonGM", "Strikeship"),
+        [1] = _("buttonGM", "Fighter"),
+        [2] = _("buttonGM", "Gunship"),
+        [4] = _("buttonGM", "Dreadnought"),
+        [5] = _("buttonGM", "Missile Cruiser"),
+        [6] = _("buttonGM", "Cruiser"),
+        [9] = _("buttonGM", "Adv. striker"),
+    }
+    clearGMFunctions()
+    addGMFunction(_("buttonGM", "-From Named Waves"),gmButtons)
+    for index, name in pairs(wave_names) do
+        addGMFunction(name,function()
+            string.format("")
+            addWave(enemyList,index,randomWaveAngle(math.random(20), math.random(20)), randomWaveDistance(math.random(5)))
+        end)
     end
     
 end
@@ -224,12 +313,22 @@ onNewPlayerShip(
 --- Initialize scenario.
 function init()
     -- Spawn a player Atlantis.
-    player = PlayerSpaceship():setFaction("Human Navy"):setTemplate("Atlantis")
+    player = PlayerSpaceship():setFaction("Human Navy"):setTemplate(getScenarioSetting("PlayerShip"))
+    player:setCallSign(ship_names[irandom(1, #ship_names)])
+    if not player:hasWarpDrive() and not player:hasJumpDrive() then
+        player:setWarpDrive(true)
+    end
 
     enemyList = {}
     friendlyList = {}
     stationList = {}
-	list_info_value = {}
+    playerList = {player}
+
+    onNewPlayerShip(function(ship)
+        table.insert(playerList, ship)
+    end)
+    
+    addWavesToGMPosition = false
 
     -- Randomly distribute 3 allied stations throughout the region.
     local n
@@ -287,13 +386,23 @@ function init()
     local counts = {
         ["Extreme"] = 20,
         ["Hard"] = 8,
-        -- default:
-        ["None"] = 5,
+        ["Normal"] = 5,
         ["Easy"] = 3,
         ["Empty"] = 0
     }
-    local enemy_group_count = counts[getScenarioVariation()]
-    assert(enemy_group_count, "unknown variation " .. getScenarioVariation() .. " could not set enemy_group_count")
+    local enemy_group_count = counts[getScenarioSetting("Enemies")]
+    assert(enemy_group_count, "unknown enemies setting: " .. getScenarioSetting("Enemies") .. " could not set enemy_group_count")
+
+    local timesetting = {
+        ["Unlimited"] = nil,
+        ["20min"] = 20 * 60,
+        ["30min"] = 30 * 60,
+        ["60min"] = 60 * 60,
+    }
+    gametimeleft = timesetting[getScenarioSetting("Time")]
+    if gametimeleft ~= nil then
+        timewarning = gametimeleft - 5 * 60
+    end
 
     -- If not in the Empty variation, spawn the corresponding number of random
     -- enemy waves at distributed random headings and semi-random distances
@@ -316,7 +425,7 @@ function init()
             local dx1, dy1 = vectorFromAngle(a2, random(-1000, 1000))
             local dx2, dy2 = vectorFromAngle(a2 + 90, random(-20000, 20000))
             local posx = x + dx1 + dx2
-            local posy = x + dy1 + dy2
+            local posy = y + dy1 + dy2
             -- Avoid spawning asteroids within 1U of the player start position or
             -- 2U of any station.
             if math.abs(posx) > 1000 and math.abs(posy) > 1000 then
@@ -328,7 +437,7 @@ function init()
             end
         end
 
-        for j_ = 1, 100 do
+        for j_ = 1, 50 do
             local dx1, dy1 = vectorFromAngle(a2, random(-1500, 1500))
             local dx2, dy2 = vectorFromAngle(a2 + 90, random(-20000, 20000))
             VisualAsteroid():setPosition(x + dx1 + dx2, y + dy1 + dy2)
@@ -378,6 +487,36 @@ function init()
     
     -- Spawn random neutral transports.
     Script():run("util_random_transports.lua")
+
+
+    local station = friendlyList[1]
+    if gametimeleft ~= nil then
+        station:sendCommsMessage(
+            player, string.format(_("goal-incCall", [[%s, your objective is to fend off the incoming Kraylor attack.
+
+Please inform your Captain and crew that you have a total of %d minutes for this mission.
+
+The mission started at the arrival of this message.
+
+Good luck.]]), player:getCallSign(), gametimeleft / 60)
+        )
+    else
+        station:sendCommsMessage(
+            player, string.format(_("goal-incCall", [[%s, your objective is to fend off the incoming Kraylor attack.
+
+Good luck.]]), player:getCallSign())
+        )
+    end
+end
+
+function countValid(objectList)
+    local object_count = 0
+    for i_, object in ipairs(objectList) do
+        if object:isValid() then
+            object_count = object_count + 1
+        end
+    end
+    return object_count
 end
 
 --- Update.
@@ -385,18 +524,9 @@ end
 -- @tparam number delta the time delta (in seconds)
 function update(delta)
     -- Count all surviving enemies and allies.
-    local enemy_count = 0
-    for i_, enemy in ipairs(enemyList) do
-        if enemy:isValid() then
-            enemy_count = enemy_count + 1
-        end
-    end
-    local friendly_count = 0
-    for i_, friendly in ipairs(friendlyList) do
-        if friendly:isValid() then
-            friendly_count = friendly_count + 1
-        end
-    end
+    local enemy_count = countValid(enemyList)
+    local friendly_count = countValid(friendlyList)
+    local player_count = countValid(playerList)
 
     -- If not playing the Empty variation, declare victory for the
     -- Humans (players) once all enemies are destroyed. Note that players can win
@@ -404,13 +534,52 @@ function update(delta)
     --
     -- In the Empty variation, the GM must use the Win button to declare
     -- a Human victory.
-    if (enemy_count == 0 and getScenarioVariation() ~= "Empty") then
+    if (enemy_count == 0 and getScenarioSetting("Enemies") ~= "Empty") then
         victory("Human Navy")
+        if gametimeleft ~= nil then
+            local text = string.format(_("msgMainscreen&Spectbanner", "Mission: SUCCESS (%d seconds left)"), math.floor(gametimeleft))
+            globalMessage(text)
+            setBanner(text)
+            return
+        end
+    end
+
+    if gametimeleft ~= nil then
+        gametimeleft = gametimeleft - delta
+        if gametimeleft < 0 then
+            victory("Kraylor")
+            local text = _("msgMainscreen&Spectbanner", "Mission: FAILED (time has run out)")
+            globalMessage(text)
+            setBanner(text)
+            return
+        end
+        if gametimeleft < timewarning then
+            if timewarning <= 1 * 60 then -- Less then 1 minutes left.
+                for idx, player in ipairs(playerList) do
+                    friendlyList[1]:sendCommsMessage(player, string.format(_("time-incCall", [[%s, you have %d minute remaining.]]), player:getCallSign(), timewarning / 60))
+                end
+                timewarning = timewarning - 2 * 60
+            elseif timewarning <= 5 * 60 then -- Less then 5 minutes left. Warn ever 2 minutes instead of every 5.
+                for idx, player in ipairs(playerList) do
+                    friendlyList[1]:sendCommsMessage(player, string.format(_("time-incCall", [[%s, you have %d minutes remaining.]]), player:getCallSign(), timewarning / 60))
+                end
+                timewarning = timewarning - 2 * 60
+            else
+                for idx, player in ipairs(playerList) do
+                    friendlyList[1]:sendCommsMessage(player, string.format(_("time-incCall", [[%s, you have %d minutes remaining of mission time.]]), player:getCallSign(), timewarning / 60))
+                end
+                timewarning = timewarning - 5 * 60
+            end
+        end
     end
 
     -- If all allies are destroyed, the Humans (players) lose.
     if friendly_count == 0 then
         victory("Kraylor")
+        local text = _("msgMainscreen&Spectbanner", "Mission: FAILED (no friendlies left)")
+        globalMessage(text)
+        setBanner(text)
+        return
     else
         -- As the battle continues, award reputation based on
         -- the players' progress and number of surviving allies.
@@ -420,16 +589,18 @@ function update(delta)
             end
         end
     end
-	
-	--for pidx=1,12 do
-	--p = getPlayerShip(pidx)
-    --    if p ~= nil and p:isValid() then
-    --        print(string.format("%i", tonumber(p:getInfosValue(12))))
-	--		if p:getInfosValue(1) ~= list_info_value[pidx] then
-	--			popWarpJammerButton = "popWarpjammerButton"
-	--			p:addCustomButton("Relay",popWarpJammerButton,string.format("Deployer antiwarp (%i)", tonumber(p:getInfosValue(1))),p.popWarpJammer)
-	--			list_info_value[pidx] = p:getInfosValue(1)
-	--		end
-	--	end
-	--end
+
+    -- If last player ship is destroyed, the Humans (players) lose.
+    if player_count == 0 then
+        victory("Kraylor")
+        local text = _("msgMainscreen&Spectbanner", "Mission: FAILED (all your ships destroyed)")
+        globalMessage(text)
+        setBanner(text)
+        return
+    end
+    
+    -- Set banner for cinematic and top down views.
+    if gametimeleft ~= nil then
+        setBanner(string.format(_("msgSpectbanner", "Mission in progress - Time left: %d:%02d - Enemies: %d"), math.floor(gametimeleft / 60), math.floor(gametimeleft % 60), enemy_count))
+    end
 end

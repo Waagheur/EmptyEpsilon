@@ -16,7 +16,7 @@ private:
 public:
     GuiNoRadarPopup(GuiContainer* owner);
 
-    virtual void onDraw(sf::RenderTarget& window);
+    virtual void onDraw(sp::RenderTarget& renderer) override;
 };
 
 #endif//NO_RADAR_POPUP_H

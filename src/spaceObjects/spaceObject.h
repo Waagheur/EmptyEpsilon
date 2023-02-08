@@ -1,15 +1,26 @@
 #ifndef SPACE_OBJECT_H
 #define SPACE_OBJECT_H
 
-#include "engine.h"
+#include "collisionable.h"
+#include "multiplayer.h"
+#include "scriptInterface.h"
 #include "featureDefs.h"
 #include "modelInfo.h"
 #include "factionInfo.h"
 #include "shipTemplate.h"
 #include "EDamageType.h"
+#include "graphics/renderTarget.h"
+
 #include <glm/mat4x4.hpp>
 
 constexpr static int max_oxygen_zones = 10;
+
+enum class DockStyle
+{
+    None,
+    External,
+    Internal,
+};
 
 class DamageInfo
 {
@@ -68,6 +79,16 @@ enum EScannedState
     SS_FriendOrFoeIdentified,
     SS_SimpleScan,
     SS_FullScan
+};
+
+/*! Radar rendering layer.
+* Allow relative ordering of objects for drawing
+*/
+enum class ERadarLayer
+{
+    BackgroundZone,
+    BackgroundObjects,
+    Default
 };
 
 class SpaceObject;
@@ -146,6 +167,7 @@ public:
     float getRadarSignatureGravity() { return radar_signature.gravity; }
     float getRadarSignatureElectrical() { return radar_signature.electrical; }
     float getRadarSignatureBiological() { return radar_signature.biological; }
+    virtual ERadarLayer getRadarLayer() const { return ERadarLayer::Default; }
 
     string getDescription(EScannedState state)
     {
@@ -237,13 +259,13 @@ public:
 
     virtual void draw3D();
     virtual void draw3DTransparent() {}
-    virtual void drawOnRadar(sf::RenderTarget& window, sf::Vector2f position, float scale, float rotation, bool longRange);
-    virtual void drawOnGMRadar(sf::RenderTarget& window, sf::Vector2f position, float scale, float rotation, bool longRange);
-    virtual void destroy();
+    virtual void drawOnRadar(sp::RenderTarget& window, glm::vec2 position, float scale, float rotation, bool longRange);
+    virtual void drawOnGMRadar(sp::RenderTarget& window, glm::vec2 position, float scale, float rotation, bool longRange);
+    virtual void destroy() override;
 
     virtual void setCallSign(string new_callsign) { callsign = new_callsign; }
     virtual string getCallSign() { return callsign; }
-    virtual bool canBeDockedBy(P<SpaceObject> obj) { return false; }
+    virtual DockStyle canBeDockedBy(P<SpaceObject> obj) { return DockStyle::None; }
     virtual bool canBeLandedOn(P<SpaceObject> obj) { return false; }
     virtual bool canRestockMissiles() { return false; }
     virtual bool hasShield() { return false; }
@@ -278,8 +300,8 @@ public:
     bool isEnemy(P<SpaceObject> obj);
     bool isFriendly(P<SpaceObject> obj);
     void setFaction(string faction_name) { this->faction_id = FactionInfo::findFactionId(faction_name); }
-    string getFaction() { return factionInfo[this->faction_id]->getName(); }
-    string getLocaleFaction() { return factionInfo[this->faction_id]->getLocaleName(); }
+    string getFaction() { if (factionInfo[faction_id]) return factionInfo[this->faction_id]->getName(); return ""; }
+    string getLocaleFaction() { if (factionInfo[faction_id]) return factionInfo[this->faction_id]->getLocaleName(); return ""; }
     void setFactionId(unsigned int faction_id) { this->faction_id = faction_id; }
     unsigned int getFactionId() { return faction_id; }
 
@@ -309,7 +331,7 @@ public:
     bool takeOxygenPoints(float amount, int index = 0);
     void removeOxygenPoints(float amount, int index = 0);
     void addOxygenPoints(float amount, int index = 0);
-    void setCommsScript(string script_name) { this->comms_script_name = script_name; this->comms_script_callback.clear(); }
+    void setCommsScript(string script_name);
     void setCommsFunction(ScriptSimpleCallback callback) { this->comms_script_name = ""; this->comms_script_callback = callback; }
     bool areEnemiesInRange(float range);
     PVector<SpaceObject> getObjectsInRange(float range);
@@ -317,6 +339,7 @@ public:
     string getSectorNameLevel(int level);
     bool openCommsTo(P<PlayerSpaceship> target);
     bool sendCommsMessage(P<PlayerSpaceship> target, string message);
+    bool sendCommsMessageNoLog(P<PlayerSpaceship> target, string message);
 
     ScriptSimpleCallback on_destroyed;
 
@@ -328,6 +351,7 @@ protected:
     bool has_weight = true;
 };
 
+// template<> void convert<EDamageType>::param(lua_State* L, int& idx, EDamageType& dt);
 // Define a script conversion function for the DamageInfo structure.
 template<> void convert<DamageInfo>::param(lua_State* L, int& idx, DamageInfo& di);
 // Function to convert a lua parameter to a scan state.

@@ -2,7 +2,10 @@
 #define GUI2_TEXTENTRY_H
 
 #include "gui2_element.h"
+#include "timer.h"
 
+
+class GuiThemeStyle;
 class GuiTextEntry : public GuiElement
 {
 public:
@@ -11,21 +14,35 @@ public:
 
 protected:
     string text;
+    int selection_start = 0;
+    int selection_end = 0;
+
     float text_size;
-    sf::Font* text_font;
-    func_t func;
-    func_t enter_func;
-    Validator validator_func;
-    bool valid;
-    const float blink_rate = 0.530;
+    sp::Font* text_font;
+    Validator validator_func {nullptr};
+    bool valid {true};
+    bool multiline = false;
+    bool readonly = false;
+    bool hide_password = false;
+    const GuiThemeStyle* front_style;
+    const GuiThemeStyle* back_style;
+    func_t func {nullptr};
+    func_t enter_func {nullptr};
+
+    const float blink_rate = 0.530f;
     sp::SystemTimer blink_timer;
     bool typing_indicator{false};
+
+    glm::vec2 render_offset{0, 0};
 public:
     GuiTextEntry(GuiContainer* owner, string id, string text);
+    virtual ~GuiTextEntry();
 
-    virtual void onDraw(sf::RenderTarget& window) override;
-    virtual bool onMouseDown(sf::Vector2f position) override;
-    virtual bool onKey(sf::Event::KeyEvent key, int unicode) override;
+    virtual void onDraw(sp::RenderTarget& window) override;
+    virtual bool onMouseDown(sp::io::Pointer::Button button, glm::vec2 position, sp::io::Pointer::ID id) override;
+    virtual void onMouseDrag(glm::vec2 position, sp::io::Pointer::ID id) override;
+    virtual void onTextInput(const string& text) override;
+    virtual void onTextInput(sp::TextInputEvent e) override;
     virtual void onFocusGained() override;
     virtual void onFocusLost() override;
 
@@ -33,10 +50,16 @@ public:
     string getText() const;
     GuiTextEntry* setText(string text);
     GuiTextEntry* setTextSize(float size);
-    GuiTextEntry* setTextFont(sf::Font* font);
+    GuiTextEntry* setTextFont(sp::Font* font);
+    GuiTextEntry* setMultiline(bool enabled=true);
+    GuiTextEntry* setHidePassword(bool enabled=true);
     GuiTextEntry* callback(func_t func);
     GuiTextEntry* enterCallback(func_t func);
     GuiTextEntry* validator(Validator func);
+
+protected:
+    int getTextOffsetForPosition(glm::vec2 position);
+    void runChangeCallback();
 };
 
 #endif//GUI2_TEXTENTRY_H

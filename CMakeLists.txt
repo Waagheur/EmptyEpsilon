@@ -1,8 +1,12 @@
 # Set minimum target macOS version: https://cmake.org/cmake/help/v3.8/variable/CMAKE_OSX_DEPLOYMENT_TARGET.html#variable:CMAKE_OSX_DEPLOYMENT_TARGET
-# SFML targets 10.7, however EE targets C++17 features only available in 10.15+ (Catalina, June 2019).
+# SDL2 targets 10.5, however EE targets C++17 features only available in 10.15+ (Catalina, June 2019).
 # Must be first!
-if(NOT DEFINED ENV{MACOSX_DEPLOYMENT_TARGET})
-  set(ENV{MACOSX_DEPLOYMENT_TARGET} "10.15")
+if(APPLE)
+  if(NOT DEFINED ENV{MACOSX_DEPLOYMENT_TARGET})
+    set(ENV{MACOSX_DEPLOYMENT_TARGET} "10.15")
+  endif()
+  
+  message(STATUS "Mac deployment target is: $ENV{MACOSX_DEPLOYMENT_TARGET}")
 endif()
 
 cmake_minimum_required(VERSION 3.8 FATAL_ERROR)
@@ -45,6 +49,7 @@ if(NOT ANDROID)
     option(WITH_DISCORD "Build with Discord support" ${WITH_DISCORD_DEFAULT})
 else()
     set(WITH_DISCORD OFF)
+    option(APK_WITH_PACKS "Build APK with pack files (3D assets)" ON)
 endif()
 
 message(STATUS "EmptyEpsilon Version = ${PROJECT_VERSION}")
@@ -56,15 +61,7 @@ endif()
 
 # Dependencies
 
-# Setup OpenGL
-if(NOT ANDROID)
-    set(OpenGL_GL_PREFERENCE LEGACY)
-    find_package(OpenGL REQUIRED)
-endif()
-
 # SeriousProton
-# Use SP provided json library.
-set(SERIOUSPROTON_WITH_JSON ON CACHE BOOL "" FORCE)
 add_subdirectory("${SERIOUS_PROTON_DIR}" "${PROJECT_BINARY_DIR}/SeriousProton" EXCLUDE_FROM_ALL)
 
 set(EXTERNALS_DIR "${PROJECT_BINARY_DIR}/externals")
@@ -109,7 +106,113 @@ if(WITH_DISCORD)
   target_link_libraries(discord INTERFACE discord_h)
 endif()
 
-set(SOURCES
+# Meshoptimizer
+set(MESHOPTIMIZER_VERSION 0.16)
+if(CMAKE_VERSION VERSION_GREATER_EQUAL 3.11)
+  include(FetchContent)
+  FetchContent_Declare(
+    meshoptimizer
+    GIT_REPOSITORY https://github.com/zeux/meshoptimizer/
+    GIT_TAG "v${MESHOPTIMIZER_VERSION}"
+  )
+  FetchContent_GetProperties(meshoptimizer)
+else()
+  # Poor man's FetchContent.
+  set(MESHOPTIMIZER_BASE_PATH "${EXTERNALS_DIR}")
+  set(meshoptimizer_POPULATED FALSE)
+  if(NOT EXISTS "${MESHOPTIMIZER_BASE_PATH}/meshoptimizer/CMakeLists.txt")
+    set(MESHOPTIMIZER_ZIP "${DOWNLOADS_DIR}/meshoptimizer.zip")
+    file(DOWNLOAD "https://github.com/zeux/meshoptimizer/archive/refs/tags/v${MESHOPTIMIZER_VERSION}.zip" "${MESHOPTIMIZER_ZIP}" TIMEOUT 60 TLS_VERIFY ON)
+
+    execute_process(COMMAND ${CMAKE_COMMAND} -E tar -xf "${MESHOPTIMIZER_ZIP}" WORKING_DIRECTORY "${MESHOPTIMIZER_BASE_PATH}")
+    execute_process(COMMAND ${CMAKE_COMMAND} -E rename "meshoptimizer-${MESHOPTIMIZER_VERSION}" meshoptimizer WORKING_DIRECTORY "${MESHOPTIMIZER_BASE_PATH}")
+  endif()
+
+  set(meshoptimizer_SOURCE_DIR "${MESHOPTIMIZER_BASE_PATH}/meshoptimizer")
+  set(meshoptimizer_BINARY_DIR "${PROJECT_BINARY_DIR}/externals/meshoptimizer")
+endif()
+
+if(NOT meshoptimizer_POPULATED)
+  if(COMMAND FetchContent_Populate)
+    FetchContent_Populate(meshoptimizer)
+  endif()
+  add_subdirectory(${meshoptimizer_SOURCE_DIR} ${meshoptimizer_BINARY_DIR} EXCLUDE_FROM_ALL)
+endif()
+set(GUI_LIB_SOURCES
+    src/gui/colorConfig.cpp
+    src/gui/hotkeyBinder.cpp
+    src/gui/hotkeyConfig.cpp
+    src/gui/joystickConfig.cpp
+    src/gui/mouseRenderer.cpp
+    src/gui/scriptError.cpp
+    src/gui/gui2_slider.cpp
+    src/gui/gui2_togglebutton.cpp
+    src/gui/gui2_arrow.cpp
+    src/gui/gui2_selector.cpp
+    src/gui/gui2_canvas.cpp
+    src/gui/gui2_rotationdial.cpp
+    src/gui/gui2_textentry.cpp
+    src/gui/gui2_label.cpp
+    src/gui/gui2_image.cpp
+    src/gui/gui2_arrowbutton.cpp
+    src/gui/gui2_entrylist.cpp
+    src/gui/gui2_progressbar.cpp
+    src/gui/gui2_progressslider.cpp
+    src/gui/gui2_scrolltext.cpp
+    src/gui/gui2_advancedscrolltext.cpp
+    src/gui/gui2_button.cpp
+    src/gui/gui2_resizabledialog.cpp
+    src/gui/debugRenderer.cpp
+    src/gui/gui2_element.cpp
+    src/gui/gui2_keyvaluedisplay.cpp
+    src/gui/gui2_listbox.cpp
+    src/gui/gui2_scrollbar.cpp
+    src/gui/gui2_container.cpp
+    src/gui/gui2_panel.cpp
+    src/gui/gui2_overlay.cpp
+    src/gui/theme.cpp
+    src/gui/layout/layout.cpp
+    src/gui/layout/horizontal.cpp
+    src/gui/layout/vertical.cpp
+
+    src/gui/colorConfig.h
+    src/gui/debugRenderer.h
+    src/gui/gui2_advancedscrolltext.h
+    src/gui/gui2_arrowbutton.h
+    src/gui/gui2_arrow.h
+    src/gui/gui2_button.h
+    src/gui/gui2_canvas.h
+    src/gui/gui2_container.h
+    src/gui/gui2_element.h
+    src/gui/gui2_entrylist.h
+    src/gui/gui2_image.h
+    src/gui/gui2_keyvaluedisplay.h
+    src/gui/gui2_label.h
+    src/gui/gui2_listbox.h
+    src/gui/gui2_overlay.h
+    src/gui/gui2_panel.h
+    src/gui/gui2_progressbar.h
+    src/gui/gui2_progressslider.h
+    src/gui/gui2_resizabledialog.h
+    src/gui/gui2_rotationdial.h
+    src/gui/gui2_scrollbar.h
+    src/gui/gui2_scrolltext.h
+    src/gui/gui2_selector.h
+    src/gui/gui2_slider.h
+    src/gui/gui2_textentry.h
+    src/gui/gui2_togglebutton.h
+    src/gui/theme.h
+    src/gui/layout/layout.h
+    src/gui/layout/horizontal.h
+    src/gui/layout/vertical.h
+    src/gui/hotkeyBinder.h
+    src/gui/hotkeyConfig.h
+    src/gui/joystickConfig.h
+    src/gui/mouseRenderer.h
+    src/gui/scriptError.h
+)
+
+set(MAIN_SOURCES
 	  src/main.cpp
 	  src/cargo.cpp
 	  src/shipCargo.cpp
@@ -118,7 +221,6 @@ set(SOURCES
 	  src/pathPlanner.cpp
 	  src/epsilonServer.cpp
 	  src/particleEffect.cpp
-	  src/mouseCalibrator.cpp
 	  src/httpScriptAccess.cpp
 	  src/modelInfo.cpp
 	  src/packResourceProvider.cpp
@@ -174,7 +276,6 @@ set(SOURCES
 	  src/screens/extra/commsScreen.cpp
 	  src/screens/extra/shipLogScreen.cpp
 	  src/screens/extra/radarScreen.cpp
-	  src/screens/extra/navigationScreen.cpp
 	  src/screens/extra/commsScreen.cpp
 	  src/screens/extra/probeScreen.cpp
 	  src/screens/gm/gameMasterScreen.cpp
@@ -187,6 +288,7 @@ set(SOURCES
 	  src/screens/extra/droneMasterScreen.cpp
 	  src/screens/extra/targetAnalysisScreen.cpp
 	  src/screenComponents/aimLock.cpp
+    src/screenComponents/alertLevelButton.cpp
 	  src/screenComponents/alertOverlay.cpp
 	  src/screenComponents/helpOverlay.cpp
 	  src/screenComponents/missileTubeControls.cpp
@@ -200,7 +302,6 @@ set(SOURCES
 	  src/screenComponents/selfDestructButton.cpp
 	  src/screenComponents/shieldFreqencySelect.cpp
 	  src/screenComponents/sectorsView.cpp
-	  src/screenComponents/navigationView.cpp
 	  src/screenComponents/jumpControls.cpp
 	  src/screenComponents/impulseControls.cpp
 	  src/screenComponents/frequencyCurve.cpp
@@ -238,38 +339,6 @@ set(SOURCES
 	  src/screenComponents/mineSweeper.cpp
 	  src/screenComponents/impulseSound.cpp
 	  src/screenComponents/noRadarPopup.cpp
-	  src/gui/colorConfig.cpp
-	  src/gui/hotkeyBinder.cpp
-	  src/gui/hotkeyConfig.cpp
-	  src/gui/joystickConfig.cpp
-	  src/gui/mouseRenderer.cpp
-	  src/gui/scriptError.cpp
-	  src/gui/gui2_slider.cpp
-	  src/gui/gui2_togglebutton.cpp
-	  src/gui/gui2_arrow.cpp
-	  src/gui/gui2_selector.cpp
-	  src/gui/gui2_canvas.cpp
-	  src/gui/gui2_rotationdial.cpp
-	  src/gui/gui2_textentry.cpp
-	  src/gui/gui2_label.cpp
-	  src/gui/gui2_image.cpp
-	  src/gui/gui2_autolayout.cpp
-	  src/gui/gui2_arrowbutton.cpp
-	  src/gui/gui2_entrylist.cpp
-	  src/gui/gui2_progressbar.cpp
-	  src/gui/gui2_progressslider.cpp
-	  src/gui/gui2_scrolltext.cpp
-	  src/gui/gui2_advancedscrolltext.cpp
-	  src/gui/gui2_button.cpp
-	  src/gui/gui2_resizabledialog.cpp
-	  src/gui/debugRenderer.cpp
-	  src/gui/gui2_element.cpp
-	  src/gui/gui2_keyvaluedisplay.cpp
-	  src/gui/gui2_listbox.cpp
-	  src/gui/gui2_scrollbar.cpp
-	  src/gui/gui2_container.cpp
-	  src/gui/gui2_panel.cpp
-	  src/gui/gui2_overlay.cpp
 	  src/spaceObjects/missiles/missileWeapon.cpp
 	  src/spaceObjects/missiles/EMPMissile.cpp
 	  src/spaceObjects/missiles/homingMissile.cpp
@@ -321,7 +390,6 @@ set(SOURCES
     src/ai/missileVolleyAI.h
     src/beamTemplate.h
     src/commsScriptInterface.h
-    src/discord.h
     src/epsilonServer.h
     src/factionInfo.h
     src/featureDefs.h
@@ -330,38 +398,6 @@ set(SOURCES
     src/glObjects.h
     src/GMActions.h
     src/GMMessage.h
-    src/gui/colorConfig.h
-    src/gui/debugRenderer.h
-    src/gui/gui2_advancedscrolltext.h
-    src/gui/gui2_arrowbutton.h
-    src/gui/gui2_arrow.h
-    src/gui/gui2_autolayout.h
-    src/gui/gui2_button.h
-    src/gui/gui2_canvas.h
-    src/gui/gui2_container.h
-    src/gui/gui2_element.h
-    src/gui/gui2_entrylist.h
-    src/gui/gui2_image.h
-    src/gui/gui2_keyvaluedisplay.h
-    src/gui/gui2_label.h
-    src/gui/gui2_listbox.h
-    src/gui/gui2_overlay.h
-    src/gui/gui2_panel.h
-    src/gui/gui2_progressbar.h
-    src/gui/gui2_progressslider.h
-    src/gui/gui2_resizabledialog.h
-    src/gui/gui2_rotationdial.h
-    src/gui/gui2_scrollbar.h
-    src/gui/gui2_scrolltext.h
-    src/gui/gui2_selector.h
-    src/gui/gui2_slider.h
-    src/gui/gui2_textentry.h
-    src/gui/gui2_togglebutton.h
-    src/gui/hotkeyBinder.h
-    src/gui/hotkeyConfig.h
-    src/gui/joystickConfig.h
-    src/gui/mouseRenderer.h
-    src/gui/scriptError.h
     src/hardware/devices/dmx512SerialDevice.h
     src/hardware/devices/enttecDMXProDevice.h
     src/hardware/devices/philipsHueDevice.h
@@ -389,7 +425,6 @@ set(SOURCES
     src/missileWeaponData.h
     src/modelData.h
     src/modelInfo.h
-    src/mouseCalibrator.h
     src/packResourceProvider.h
     src/particleEffect.h
     src/pathPlanner.h
@@ -399,6 +434,7 @@ set(SOURCES
     src/scenarioInfo.h
     src/scienceDatabase.h
     src/screenComponents/aimLock.h
+    src/screenComponents/alertLevelButton.h
     src/screenComponents/alertOverlay.h
     src/screenComponents/beamFrequencySelector.h
     src/screenComponents/beamTargetSelector.h
@@ -505,29 +541,39 @@ set(SOURCES
 )
 
 if (WITH_DISCORD)
-  list(APPEND SOURCES src/discord.cpp)
+  list(APPEND MAIN_SOURCES src/discord.cpp src/discord.h)
+endif()
+if (STEAMSDK)
+  list(APPEND MAIN_SOURCES src/steamrichpresence.cpp src/steamrichpresence.h)
 endif()
 
 if (WIN32)
-  list(APPEND SOURCES EmptyEpsilon.rc)
+  list(APPEND MAIN_SOURCES EmptyEpsilon.rc)
 endif()
 
 # Config header.
 configure_file(cmake/config.h.in include/config.h)
 
+if (SHARED_SP)
+    set(EE_LIB_TYPE SHARED)
+else()
+    set(EE_LIB_TYPE STATIC)
+endif()
+
+add_library(EE_GuiLIB ${EE_LIB_TYPE} ${GUI_LIB_SOURCES})
+target_link_libraries(EE_GuiLIB PUBLIC seriousproton meshoptimizer)
+target_include_directories(EE_GuiLIB PUBLIC "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/src;${CMAKE_CURRENT_BINARY_DIR}/include>")
 
 if(ANDROID)
-    add_library(${PROJECT_NAME} SHARED ${SOURCES})
+    add_library(${PROJECT_NAME} SHARED ${MAIN_SOURCES})
 else()
-    add_executable(${PROJECT_NAME} MACOSX_BUNDLE ${SOURCES})
+    add_executable(${PROJECT_NAME} MACOSX_BUNDLE ${MAIN_SOURCES})
 endif()
 
 target_compile_definitions(${PROJECT_NAME}
     PUBLIC
         # Set RESOURCE_BASE_DIR on Unix so the built binary is able to find resources
-        $<$<BOOL:${UNIX}>:RESOURCE_BASE_DIR="${CMAKE_INSTALL_FULL_DATADIR}/emptyepsilon/">
-        $<$<BOOL:${CONFIG_DIR}>:CONFIG_DIR="${CONFIG_DIR}">
-        $<$<NOT:$<BOOL:${CONFIG_DIR}>>:CONFIG_DIR="${CMAKE_INSTALL_FULL_DATADIR}/emptyepsilon/">
+        $<$<AND:$<BOOL:${UNIX}>,$<NOT:$<BOOL:${STEAMSDK}>>>:RESOURCE_BASE_DIR="${CMAKE_INSTALL_FULL_DATADIR}/emptyepsilon/">
 )
 
 target_include_directories(${PROJECT_NAME}
@@ -535,36 +581,29 @@ target_include_directories(${PROJECT_NAME}
         "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/src;${CMAKE_CURRENT_BINARY_DIR}/include>"
 )
 
-add_library(opengl INTERFACE)
-target_link_libraries(opengl
-    INTERFACE
-        "$<IF:$<BOOL:${ANDROID}>,GLESv1_CM;EGL,OpenGL::GL>"
-)
-
 target_link_libraries(${PROJECT_NAME}
     PUBLIC
-        seriousproton opengl
+        seriousproton meshoptimizer EE_GuiLIB
         "$<$<BOOL:${ANDROID}>:log;android>"
-        "$<$<BOOL:${WIN32}>:iphlpapi>"
         "$<$<BOOL:${WITH_DISCORD}>:discord_h>"
-        "$<$<PLATFORM_ID:Darwin>:-framework Foundation>"   
+        "$<$<PLATFORM_ID:Darwin>:-framework Foundation>"
 )
+if(WIN32)
+    if (CMAKE_BUILD_TYPE STREQUAL "Debug")
+        target_link_libraries(${PROJECT_NAME} PUBLIC "-mconsole")
+    endif()
+endif()
 
 set_target_properties(${PROJECT_NAME}
     PROPERTIES
         MACOSX_BUNDLE_INFO_PLIST ${CMAKE_SOURCE_DIR}/osx/MacOSXBundleInfo.plist.in
         MACOSX_BUNDLE_ICON_FILE "${PROJECT_NAME}.icns")
 
-if(ANDROID)
-  set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,--whole-archive ${SFML_INSTALL_PATH}/lib/${ANDROID_ABI}/libsfml-main.a -Wl,--no-whole-archive")
-endif()
-
 include(InstallRequiredSystemLibraries)
 
 
 set(EE_RESOURCES resources scripts packs)
-if(WIN32)
-    
+if(WIN32 OR STEAMSDK)
     install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION .)
     install(DIRECTORY ${EE_RESOURCES} DESTINATION .)
 
@@ -576,7 +615,7 @@ elseif(APPLE)
   install(FILES logo.icns DESTINATION "$<TARGET_BUNDLE_CONTENT_DIR:${PROJECT_NAME}>/Resources" RENAME "${PROJECT_NAME}.icns")
   install(DIRECTORY ${EE_RESOURCES} DESTINATION "$<TARGET_BUNDLE_CONTENT_DIR:${PROJECT_NAME}>/Resources")
 elseif(ANDROID)
-  android_apk(EmptyEpsilon)
+  android_apk(EmptyEpsilon ${APK_WITH_PACKS})
 else()
     install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}")
     install(DIRECTORY ${EE_RESOURCES} DESTINATION "${CMAKE_INSTALL_DATADIR}/emptyepsilon")
@@ -606,7 +645,7 @@ if(PYTHONINTERP_FOUND)
     add_custom_target(script_reference ALL DEPENDS "${SCRIPT_REFERENCE_HTML}")
   
   # Matches install logic above.
-  if(WIN32)
+  if(WIN32 OR STEAMSDK)
     install(FILES "${SCRIPT_REFERENCE_HTML}" DESTINATION . OPTIONAL)
   elseif(APPLE)
     install(FILES "${SCRIPT_REFERENCE_HTML}" DESTINATION "$<TARGET_BUNDLE_CONTENT_DIR:${PROJECT_NAME}>/Resources" OPTIONAL)
@@ -617,9 +656,8 @@ if(PYTHONINTERP_FOUND)
 endif()
 
 add_custom_target(update_locale
-    COMMAND xgettext --keyword=tr:1c,2 --keyword=tr:1 --keyword=trMark:1c,2 --keyword=trMark:1 --omit-header -d resources/locale/main.en ${SOURCES}
-    COMMAND xgettext --keyword=_:1c,2 --keyword=_:1 --omit-header -j -d resources/locale/main.en scripts/shipTemplates_*.lua scripts/comms_ship.lua scripts/comms_station.lua scripts/comms_supply_drop.lua scripts/factionInfo.lua scripts/science_db.lua
-    COMMAND xgettext --keyword=_:1c,2 --keyword=_:1 --omit-header -d resources/locale/tutorial.en scripts/tutorial_*.lua
+    COMMAND xgettext --keyword=tr:1c,2 --keyword=tr:1 --keyword=trMark:1c,2 --keyword=trMark:1 --omit-header -d resources/locale/main.en ${MAIN_SOURCES} ${GUI_LIB_SOURCES}
+    COMMAND python3 update_locale.py
     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR})
 
 if(APPLE)
@@ -653,11 +691,11 @@ set(CPACK_WIX_PROPERTY_ARPURLUPDATEINFO "https://daid.github.io/EmptyEpsilon/#ta
 set(CPACK_WIX_PRODUCT_ICON "${CMAKE_CURRENT_SOURCE_DIR}/logo.ico")
 
 if(NOT DEFINED CPACK_GENERATOR)
-  if(WIN32)
+  if(WIN32 OR STEAMSDK)
     set(CPACK_GENERATOR "ZIP")
   elseif(UNIX)
     set(CPACK_GENERATOR "DEB")
-    set(CPACK_DEBIAN_PACKAGE_DEPENDS "libsfml-dev")
+    set(CPACK_DEBIAN_PACKAGE_DEPENDS "libfreetype6, libsdl2-2.0-0")
   endif()
 endif()
 
@@ -667,30 +705,24 @@ set(CPACK_PROJECT_CONFIG_FILE "${PROJECT_BINARY_DIR}/CPackProjectConfig.cmake")
 
 if(APPLE)
   if("DragNDrop" IN_LIST CPACK_GENERATOR)
-    if(DEFINED SFML_ROOT)
-      if(SFML_ROOT MATCHES "Frameworks$")
-        # Copy SFML and its extlibs to binary dir.
-	      # SFML_ROOT *should* be the Frameworks folder!
-	      execute_process(
-		      COMMAND ${CMAKE_COMMAND} -E copy_directory "${SFML_ROOT}/" "${CMAKE_BINARY_DIR}/Frameworks/"
-		      COMMAND ${CMAKE_COMMAND} -E copy_directory "${SFML_ROOT}/../extlibs/" "${CMAKE_BINARY_DIR}/Frameworks/")
-	      install(CODE "
-  		    include(BundleUtilities)
-  		    fixup_bundle(\"\${CMAKE_INSTALL_PREFIX}/EmptyEpsilon.app\" \"\" \"${CMAKE_BINARY_DIR};${CMAKE_BINARY_DIR}/Frameworks\")
-	      ")
-      else()
-        message(WARNING "macOS DMG packaging: SFML_ROOT *must* point to SFML's Frameworks folder (no trailing slashes). The bundle will not be fixed up properly.")
-      endif()
+    if(SDL2_LIBRARIES MATCHES "\\.framework$")
+      # SDL2_LIBRARIES points to the framework itself.
+      # For fixup_bundle to pick it up, we need to get its parent directory as the 'root'.
+      # SDL2 also depends on hidapi.framework, which comes with the official DMG (https://libsdl.org/download-2.0.php)
+      # Same idea - need the path to it for the dependency manager to pick it up.
+      install(CODE "
+        include(BundleUtilities)
+        fixup_bundle(\"\${CMAKE_INSTALL_PREFIX}/EmptyEpsilon.app\" \"\" \"${SDL2_LIBRARIES}/..;${SDL2_LIBRARIES}/Versions/Current/Frameworks\")
+      ")
     else()
-      # This is usually the case when using sfml from homebrew, which sadly not portable enough for DMG packages.
-      message(WARNING "macOS DMG package requested - please set SFML_ROOT, otherwise the bundle will not be fixed up properly.")
+      message(WARNING "macOS DMG packaging: ${SDL2_LIBRARIES} does not appear to be a framework. The bundle will not be fixed up properly.")
     endif()
   endif()
 endif()
 
 set(sp_runtime_root "/")
 
-if ("WIX" IN_LIST CPACK_GENERATOR)    
+if ("WIX" IN_LIST CPACK_GENERATOR)
     if (EmptyEpsilon_VERSION_MAJOR GREATER 100)
 	    # WIX does not like major version number > 256.
 	    # So if we're above 100, assume it's a year-like format and strip out century/millenium.
@@ -728,3 +760,8 @@ set(CPACK_INSTALL_CMAKE_PROJECTS
 )
 
 include(CPack)
+
+if(UNIX AND NOT APPLE AND NOT STEAMSDK)
+  install(FILES EmptyEpsilon.desktop DESTINATION "share/applications")
+  install(FILES logo.png DESTINATION "share/icons/hicolor/1024x1024/apps" RENAME "EmptyEpsilon.png")
+endif()

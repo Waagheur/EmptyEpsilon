@@ -27,13 +27,14 @@ private:
     bool locked;
     float lock_start_time;
     int scan_depth;
+    std::array<bool, max_sliders> set_active = {false, false, false, false};
 public:
     GuiScanningDialog(GuiContainer* owner, string id);
 
-    virtual void onDraw(sf::RenderTarget& window) override;
-    virtual bool onJoystickAxis(const AxisAction& axisAction) override;
+    virtual void onDraw(sp::RenderTarget& target) override;
+    virtual void onUpdate() override;
 
-    virtual void onHotkey(const HotkeyResult& key) override;
+    //TODO onUpdate
     
     void setupParameters();
     void updateSignal();

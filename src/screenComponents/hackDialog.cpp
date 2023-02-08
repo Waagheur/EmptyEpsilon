@@ -2,6 +2,7 @@
 #include "spaceObjects/playerSpaceship.h"
 #include "spaceObjects/spaceship.h"
 #include "hackDialog.h"
+#include "random.h"
 #include "gui/gui2_panel.h"
 #include "gui/gui2_progressbar.h"
 #include "gui/gui2_button.h"
@@ -15,7 +16,7 @@
 #include "onScreenKeyboard.h"
 
 GuiHackDialog::GuiHackDialog(GuiContainer* owner, string id)
-: GuiOverlay(owner, id, sf::Color(64,0,0,64))
+: GuiOverlay(owner, id, glm::u8vec4(64,0,0,64))
 {
 
     setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);
@@ -23,7 +24,7 @@ GuiHackDialog::GuiHackDialog(GuiContainer* owner, string id)
 
     // Panel de titre
     hack_title = new GuiPanel(this, "HACK_TITLE_BOX");
-    hack_title->setSize(600, 50)->setPosition(0, -720, ABottomCenter);
+    hack_title->setSize(600, 50)->setPosition(0, -720, sp::Alignment::BottomCenter);
 
     hack_label = new GuiLabel(hack_title, "", "", 30);
     hack_label->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);
@@ -36,23 +37,23 @@ GuiHackDialog::GuiHackDialog(GuiContainer* owner, string id)
             my_spaceship -> hack_protect = false;
         hide();
     });
-    hack_close_button->setTextSize(20)->setPosition(-10, 10, ATopRight)->setSize(60, 30);
+    hack_close_button->setTextSize(20)->setPosition(-10, 10, sp::Alignment::TopRight)->setSize(60, 30);
 
     hack_minimize_button = new GuiToggleButton(hack_title, "", "_", [this](bool value)
     {
         minimize(value);
     });
-    hack_minimize_button->setPosition(-70, 10, ATopRight)->setSize(60, 30);
+    hack_minimize_button->setPosition(-70, 10, sp::Alignment::TopRight)->setSize(60, 30);
 
     minimized = false;
 
     // Panel for chat communications with GMs and other player ships.
     hack_box = new GuiPanel(this, "HACK_CHAT_BOX");
-    hack_box->setSize(800, 600)->setPosition(0, -120, ABottomCenter);
+    hack_box->setSize(800, 600)->setPosition(0, -120, sp::Alignment::BottomCenter);
 
     // Message entry field for chat.
     hack_message_entry = new GuiTextEntry(hack_box, "HACK_CHAT_MESSAGE_ENTRY", "");
-    hack_message_entry ->setPosition(20, -20, ABottomLeft)->setSize(640, 50);
+    hack_message_entry ->setPosition(20, -20, sp::Alignment::BottomLeft)->setSize(640, 50);
     hack_message_entry ->enterCallback([this](string text){
         hack_delay = random(1,5);
         if (my_spaceship)
@@ -61,12 +62,12 @@ GuiHackDialog::GuiHackDialog(GuiContainer* owner, string id)
 
     // Progress bar
     progress = new GuiProgressbar(hack_box, "HACK_PROGRESS", 0, hack_delay, 0.0);
-    progress->setPosition(20, 30, ATopLeft)->setSize(GuiElement::GuiSizeMax, 30);
+    progress->setPosition(20, 30, sp::Alignment::TopLeft)->setSize(GuiElement::GuiSizeMax, 30);
     progress->setColor(colorConfig.log_receive_enemy)->setDrawBackground(false)->setText("Acces en cours");
 
     // Text of incoming chat messages.
     hack_comms_text = new GuiScrollText(hack_box, "HACK_CHAT_TEXT", "");
-    hack_comms_text->enableAutoScrollDown()->setPosition(20, 50, ATopLeft)->setSize(760, 500);
+    hack_comms_text->enableAutoScrollDown()->setPosition(20, 50, sp::Alignment::TopLeft)->setSize(760, 500);
 
     // Button to send a message.
     hack_send_button = new GuiButton(hack_box, "SEND_BUTTON", "Envoyer", [this]() {
@@ -74,14 +75,14 @@ GuiHackDialog::GuiHackDialog(GuiContainer* owner, string id)
         if (my_spaceship)
             my_spaceship->hack_time = 0.001;
     });
-    hack_send_button->setPosition(-20, -20, ABottomRight)->setSize(120, 50);
+    hack_send_button->setPosition(-20, -20, sp::Alignment::BottomRight)->setSize(120, 50);
 
     if (!engine->getObject("mouseRenderer")) //If we are a touch screen, add a on screen keyboard.
     {
         OnScreenKeyboardControl* keyboard = new OnScreenKeyboardControl(hack_box, hack_message_entry);
-        keyboard->setPosition(20, -20, ABottomLeft)->setSize(760, 200);
-        hack_message_entry ->setPosition(20, -220, ABottomLeft);
-        hack_send_button->setPosition(-20, -220, ABottomRight);
+        keyboard->setPosition(20, -20, sp::Alignment::BottomLeft)->setSize(760, 200);
+        hack_message_entry ->setPosition(20, -220, sp::Alignment::BottomLeft);
+        hack_send_button->setPosition(-20, -220, sp::Alignment::BottomRight);
         hack_comms_text->setSize(hack_comms_text->getSize().x, hack_comms_text->getSize().y - 200);
     }
 
@@ -115,14 +116,14 @@ void GuiHackDialog::open()
     show();
 }
 
-void GuiHackDialog::onDraw(sf::RenderTarget& window)
+void GuiHackDialog::onDraw(sp::RenderTarget& renderer)
 {
 //    if (!target)
 //    {
 //        hide();
 //        return;
 //    }
-    GuiOverlay::onDraw(window);
+    GuiOverlay::onDraw(renderer);
 
     if (my_spaceship)
     {
@@ -142,7 +143,7 @@ void GuiHackDialog::onDraw(sf::RenderTarget& window)
         hack_step = 0;
     }
 
-    if (hack_time > 0.0)
+    if (hack_time > 0.f)
     {
         progress->setValue(hack_time);
         hack_message_entry->disable();
@@ -261,7 +262,7 @@ void GuiHackDialog::commandHack()
                 if (!ship)
                     continue;
 
-                if (glm::length(obj->getPosition() - my_spaceship->getPosition()) > 50000.0)
+                if (glm::length(obj->getPosition() - my_spaceship->getPosition()) > 50000.f)
                     continue;
 
                 hack_test = obj -> getCallSign();

@@ -15,7 +15,6 @@ class GuiRadarView;
 class GuiOverlay;
 class GuiSelector;
 class GuiSlider;
-class GuiAutoLayout;
 class GuiKeyValueDisplay;
 class GuiListbox;
 class GuiButton;
@@ -50,11 +49,11 @@ private:
     GuiObjectTweak* jammer_tweak_dialog;
     GuiObjectTweak* asteroid_tweak_dialog;
 
-    GuiAutoLayout* info_layout;
+    GuiElement* info_layout;
     std::vector<GuiKeyValueDisplay*> info_items;
     GuiKeyValueDisplay* info_clock;
     GuiListbox* gm_script_options;
-    GuiAutoLayout* order_layout;
+    GuiElement* order_layout;
     GuiButton* player_comms_hail;
     GuiButton* global_message_button;
 //    GuiToggleButton* pause_button;
@@ -88,16 +87,14 @@ private:
     GuiButton* cancel_action_button;
 public:
 
-    GameMasterScreen();
+    GameMasterScreen(RenderLayer* render_layer);
     virtual ~GameMasterScreen();
 
-    virtual void update(float delta);
+    virtual void update(float delta) override;
 
-    void onMouseDown(glm::vec2 position);
+    void onMouseDown(sp::io::Pointer::Button button, glm::vec2 position);
     void onMouseDrag(glm::vec2 position);
     void onMouseUp(glm::vec2 position);
-
-    virtual void onKey(sf::Event::KeyEvent key, int unicode);
 
     PVector<SpaceObject> getSelection();
 

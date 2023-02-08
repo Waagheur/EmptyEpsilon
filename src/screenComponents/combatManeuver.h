@@ -16,12 +16,13 @@ private:
     GuiProgressbar* charge_bar;
     GuiPowerDamageIndicator* strafe_pdi;
     GuiPowerDamageIndicator* boost_pdi;
+    bool hotkey_strafe_active = false;
+    bool hotkey_boost_active = false;
 public:
     GuiCombatManeuver(GuiContainer* owner, string id, P<PlayerSpaceship> targetSpaceship);
     
     virtual void onUpdate() override;
-    virtual void onDraw(sf::RenderTarget& window) override;
-    virtual void onHotkey(const HotkeyResult& key) override;
+    virtual void onDraw(sp::RenderTarget& target) override;
 
     void setBoostValue(float value);
     void setStrafeValue(float value);

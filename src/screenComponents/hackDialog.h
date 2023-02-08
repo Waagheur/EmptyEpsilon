@@ -45,7 +45,7 @@ public:
 //    void open(P<SpaceShip> target);
     void open();
     void minimize(bool minimize=true);
-    virtual void onDraw(sf::RenderTarget& window) override;
+    virtual void onDraw(sp::RenderTarget& renderer) override;
     void clearElements();
     void commandHack();
     void defineHackCode(int hackDiff);

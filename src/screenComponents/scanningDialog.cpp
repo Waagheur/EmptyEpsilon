@@ -1,6 +1,7 @@
 #include "scanningDialog.h"
 #include "spaceObjects/playerSpaceship.h"
 #include "playerInfo.h"
+#include "random.h"
 #include "gui/gui2_panel.h"
 #include "gui/gui2_label.h"
 #include "gui/gui2_slider.h"
@@ -16,13 +17,13 @@ GuiScanningDialog::GuiScanningDialog(GuiContainer* owner, string id)
     setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);
 
     box = new GuiPanel(this, id + "_BOX");
-    box->setSize(500, 545)->setPosition(0, 0, ACenter);
+    box->setSize(500, 545)->setPosition(0, 0, sp::Alignment::Center);
 
     signal_label = new GuiLabel(box, id + "_LABEL", tr("scanning", "Electric signature"), 30);
-    signal_label->addBackground()->setPosition(0, 20, ATopCenter)->setSize(450, 50);
+    signal_label->addBackground()->setPosition(0, 20, sp::Alignment::TopCenter)->setSize(450, 50);
 
     signal_quality = new GuiSignalQualityIndicator(box, id + "_SIGNAL");
-    signal_quality->setPosition(0, 80, ATopCenter)->setSize(450, 100);
+    signal_quality->setPosition(0, 80, sp::Alignment::TopCenter)->setSize(450, 100);
 
     locked_label = new GuiLabel(signal_quality, id + "_LOCK_LABEL", tr("scanning", "LOCKED"), 50);
     locked_label->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);
@@ -30,24 +31,24 @@ GuiScanningDialog::GuiScanningDialog(GuiContainer* owner, string id)
     for(int n=0; n<max_sliders; n++)
     {
         sliders[n] = new GuiSlider(box, id + "_SLIDER_" + string(n), 0.0, 1.0, 0.0, nullptr);
-        sliders[n]->setPosition(0, 200 + n * 70, ATopCenter)->setSize(450, 50);
+        sliders[n]->setPosition(0, 200 + n * 70, sp::Alignment::TopCenter)->setSize(450, 50);
     }
     cancel_button = new GuiButton(box, id + "_CANCEL", tr("button", "Cancel"), []() {
         if (my_spaceship)
             my_spaceship->commandScanCancel();
     });
-    cancel_button->setPosition(0, -20, ABottomCenter)->setSize(300, 50);
+    cancel_button->setPosition(0, -20, sp::Alignment::BottomCenter)->setSize(300, 50);
 
     setupParameters();
 }
 
-void GuiScanningDialog::onDraw(sf::RenderTarget& window)
+void GuiScanningDialog::onDraw(sp::RenderTarget& target)
 {
     updateSignal();
 
     if (my_spaceship)
     {
-        if (my_spaceship->scanning_delay > 0.0 && my_spaceship->scanning_complexity > 0)
+        if (my_spaceship->scanning_delay > 0.0f && my_spaceship->scanning_complexity > 0)
         {
             if (!box->isVisible())
             {
@@ -79,19 +80,56 @@ void GuiScanningDialog::onDraw(sf::RenderTarget& window)
         }
     }
 }
-bool GuiScanningDialog::onJoystickAxis(const AxisAction& axisAction){
-    if(my_spaceship){
-        if (axisAction.category == "SCIENCE"){
-            for(int n=0; n<max_sliders; n++) {
-                if (axisAction.action == std::string("SCAN_PARAM_") + string(n+1)){
-                    sliders[n]->setValue((axisAction.value + 1) / 2.0);
-                    updateSignal();
-                    return true;
+
+void GuiScanningDialog::onUpdate()
+{
+    if(my_spaceship && isVisible())
+    {
+        for(int n=0; n<max_sliders; n++)
+        {
+            float adjust = (keys.science_scan_param_increase[n].getValue() - keys.science_scan_param_decrease[n].getValue()) * 0.01f;
+            if (adjust != 0.0f)
+            {
+                sliders[n]->setValue(sliders[n]->getValue() + adjust);
+                updateSignal();
+            }
+
+            float set_value = keys.science_scan_param_set[n].getValue();
+            if (set_value != sliders[n]->getValue() && (set_value != 0.0f || set_active[n]))
+            {
+                sliders[n]->setValue(set_value);
+                updateSignal();
+                set_active[n] = set_value != 0.0f; //Make sure the next update is send, even if it is back to zero.
+            }
+        }
+    }
+
+    if (my_spaceship)
+    {
+		if (keys.science_abort_scan.getDown())
+            my_spaceship->commandScanCancel();
+            
+        for(int n=0; n<max_sliders; n++)
+        {
+            if (sliders[n]->isVisible())
+            {
+                if (keys.science_move_left_scan[n].getDown())
+                {
+                    float new_value = sliders[n]->getValue()-0.05f;
+                    if (new_value <= 0.f)
+                        new_value = 0.f;
+                    sliders[n]->setValue(new_value);
+                }
+                if (keys.science_move_right_scan[n].getDown())
+                {
+                    float new_value = sliders[n]->getValue()+0.05f;
+                    if (new_value >= 1.f)
+                        new_value = 1.f;
+                    sliders[n]->setValue(new_value);
                 }
             }
         }
     }
-    return false;
 }
 
 void GuiScanningDialog::setupParameters()
@@ -112,7 +150,7 @@ void GuiScanningDialog::setupParameters()
     {
         target[n] = random(0.0, 1.0);
         sliders[n]->setValue(random(0.0, 1.0));
-        while(fabsf(target[n] - sliders[n]->getValue()) < 0.2)
+        while(fabsf(target[n] - sliders[n]->getValue()) < 0.2f)
             sliders[n]->setValue(random(0.0, 1.0));
     }
     updateSignal();
@@ -177,32 +215,3 @@ void GuiScanningDialog::updateSignal()
     signal_quality->setPhaseError(phase);
 }
 
-void GuiScanningDialog::onHotkey(const HotkeyResult& key)
-{
-    if (key.category == "SCIENCE" && my_spaceship)
-    {
-		if (key.hotkey == "ABORD_SCAN")
-            my_spaceship->commandScanCancel();
-            
-        for(int n=0; n<max_sliders; n++)
-        {
-            if (sliders[n]->isVisible())
-            {
-                if (key.hotkey == "MOVE_LEFT_SCAN_"+string(n+1))
-                {
-                    float new_value = sliders[n]->getValue()-0.05;
-                    if (new_value <= 0.0)
-                        new_value = 0.0;
-                    sliders[n]->setValue(new_value);
-                }
-                if (key.hotkey == "MOVE_RIGHT_SCAN_"+string(n+1))
-                {
-                    float new_value = sliders[n]->getValue()+0.05;
-                    if (new_value >= 1.0)
-                        new_value = 1.0;
-                    sliders[n]->setValue(new_value);
-                }
-            }
-        }
-    }
-}

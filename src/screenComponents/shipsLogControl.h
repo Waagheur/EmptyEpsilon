@@ -12,9 +12,9 @@ public:
     string station;
     ShipsLog(GuiContainer* owner, const string& station = "generic");
 
-    virtual void onDraw(sf::RenderTarget& window) override;
-    virtual void onHotkey(const HotkeyResult& key) override;
-    virtual bool onMouseDown(sf::Vector2f position) override;
+    virtual void onDraw(sp::RenderTarget& target) override;
+    virtual bool onMouseDown(sp::io::Pointer::Button button, glm::vec2 position, sp::io::Pointer::ID id) override;
+    virtual void onUpdate() override;
 private:
     bool open;
     GuiAdvancedScrollText* log_text;

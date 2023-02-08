@@ -1,7 +1,7 @@
-#include <GL/glew.h>
-#include <SFML/OpenGL.hpp>
+#include <graphics/opengl.h>
+#include <glm/gtc/type_ptr.hpp>
 
-#include "engine.h"
+#include "textureManager.h"
 #include "main.h"
 
 #include "spaceObjects/spaceObject.h"
@@ -10,23 +10,112 @@
 #include "scriptInterface.h"
 #include "glObjects.h"
 
+/// A ModelData object contains 3D appearance and SeriousProton physics collision details.
+/// Almost all SpaceObjects have a ModelData associated with them to define how they appear in 3D views.
+/// A ScienceDatabase entry can also have ModelData associated with and displayed in it.
+///
+/// This defines a 3D mesh file, an albedo map ("texture"), a specular/normal map, and an illumination map.
+/// These files might be located in the resources/ directory or loaded from resource packs.
+///
+/// ModelData also defines the model's position offset and scale relative to its mesh coordinates.
+/// If the model is for a SpaceShip with weapons or thrusters, this also defines the origin positions of its weapon effects, and particle emitters for thruster and engine effects.
+/// For physics, this defines the model's radius for a circle collider, or optional box collider dimensions.
+/// (While ModelData defines 3D models, EmptyEpsilon uses a 2D physics engine for collisions.)
+/// 
+/// EmptyEpsilon loads ModelData from scripts/model_data.lua when launched, and loads meshes and textures when an object using this ModelData is first viewed.
+///  
+/// For complete examples, see scripts/model_data.lua.
 REGISTER_SCRIPT_CLASS(ModelData)
 {
+    /// Sets this ModelData's name.
+    /// Use this name when referencing a ModelData from other objects.
+    /// Example: model:setName("space_station_1")
     REGISTER_SCRIPT_CLASS_FUNCTION(ModelData, setName);
+    /// Sets this ModelData's mesh file.
+    /// Required; if omitted, this ModelData generates an error.
+    /// Valid values include OBJ-format (.obj extension) 3D models relative to the resources/ directory.
+    /// You can also reference models from resource packs, which have ".model" extensions.
+    /// To view resource pack paths, extract strings from the pack, such as by running "strings packs/Angryfly.pack | grep -i model"  on *nix.
+    /// For example, this lists "battleship_destroyer_2_upgraded/battleship_destroyer_2_upgraded.model", which is a valid mesh path.
+    /// Examples:
+    /// setMesh("space_station_1/space_station_1.model") -- loads this model from a resource pack
+    /// setMesh("mesh/sphere.obj") -- loads this model from the resources/ directory
     REGISTER_SCRIPT_CLASS_FUNCTION(ModelData, setMesh);
     REGISTER_SCRIPT_CLASS_FUNCTION(ModelData, setAnimatedMesh);
+    /// Sets this ModelData's albedo map, or base flat-light color texture.
+    /// Required; if omitted, this ModelData generates an error.
+    /// Valid values include PNG- or JPG-format images relative to the resources/ directory.
+    /// You can also reference textures from resource packs.
+    /// To view resource pack paths, extract strings from the pack, such as by running "strings packs/Angryfly.pack | egrep -i (png|jpg)" on *nix.
+    /// Examples:
+    /// model:setTexture("space_station_1/space_station_1_color.jpg") -- loads this texture from a resource pack
+    /// model:setTexture("mesh/ship/Ender Battlecruiser.png") -- loads this texture from the resources/ directory
     REGISTER_SCRIPT_CLASS_FUNCTION(ModelData, setTexture);
+    /// Sets this ModelData's specular map, or shininess texture. Some models use this to load a normal map.
+    /// Optional; if omitted, no specular map is applied.
+    /// Valid values include PNG- or JPG-format images relative to the resources/ directory.
+    /// You can also reference textures from resource packs.
+    /// To view resource pack paths, extract strings from the pack, such as by running "strings packs/Angryfly.pack | egrep -i (png|jpg)" on *nix.
+    /// Examples:
+    /// model:setSpecular("space_station_1/space_station_1_specular.jpg") -- loads this texture from a resource pack
+    /// model:setSpecular("mesh/various/debris-blog-specular.jpg") -- loads this texture from the resources/ directory
     REGISTER_SCRIPT_CLASS_FUNCTION(ModelData, setSpecular);
+    /// Sets this ModelData's illumination map, or glow texture, which defines which parts of the texture appear to be luminescent.
+    /// Optional; if omitted, no illumination map is applied.
+    /// Valid values include PNG- or JPG-format images relative to the resources/ directory.
+    /// You can also reference textures from resource packs.
+    /// To view resource pack paths, extract strings from the pack, such as by running "strings packs/Angryfly.pack | egrep -i (png|jpg)" on *nix.
+    /// Examples:
+    /// model:setIllumination("space_station_1/space_station_1_illumination.jpg") -- loads this texture from a resource pack
+    /// model:setIllumination("mesh/ship/Ender Battlecruiser_illumination.png") -- loads this texture from the resources/ directory
     REGISTER_SCRIPT_CLASS_FUNCTION(ModelData, setIllumination);
+    /// Sets this ModelData's mesh offset, relative to its position in its mesh data.
+    /// If a 3D mesh's central origin point is not at 0,0,0, use this to compensate.
+    /// If you view the model in Blender, these values are equivalent to -X,+Y,+Z.
+    /// Example: model:setRenderOffset(1,2,5) -- offsets its in-game position from its mesh file position when rendered
     REGISTER_SCRIPT_CLASS_FUNCTION(ModelData, setRenderOffset);
     REGISTER_SCRIPT_CLASS_FUNCTION(ModelData, setRenderRotation);
+    /// Scales this ModelData's mesh by the given factor.
+    /// Values greater than 1.0 scale the model up, and values between 0 and 1.0 scale it down.
+    /// Use this if models you load are smaller or larger than expected.
+    /// Defaults to 1.0.
+    /// Example: model:setScale(20) -- scales the model up by 20x
     REGISTER_SCRIPT_CLASS_FUNCTION(ModelData, setScale);
+    /// Sets this ModelData's base radius.
+    /// By default, EmptyEpsilon uses this to create a circular collider around objects that use this ModelData.
+    /// SpaceObject:setRadius() can override this for colliders.
+    /// Setting a box collider with ModelData:setCollisionBox() also overrides this.
+    /// Defaults to 1.0.
+    /// Example: model:setRadius(100) -- sets the object's collisionable radius to 0.1U
     REGISTER_SCRIPT_CLASS_FUNCTION(ModelData, setRadius);
+    /// Sets a 2D box collider for this ModelData.
+    /// If both values are greater than 0.0, this overrides ModelData:setRadius() for collisions.
+    /// Defaults to 0,0.
+    /// Example: model:setCollisionBox(400, 400) -- sets the object's collision box to 0.4U by 0.4U
     REGISTER_SCRIPT_CLASS_FUNCTION(ModelData, setCollisionBox);
-
+    /// Adds a BeamEffect origin position to this ModelData.
+    /// If no origin positions are defined, this defaults to the model's origin (0,0,0).
+    /// If you view the model in Blender, these coordinate values are equivalent to -X,+Y,+Z.
+    /// Example:
+    /// -- Add a beam position at the given model X/Y/Z coordinates.
+    /// model:addBeamPosition(21,-28.2,-2)
     REGISTER_SCRIPT_CLASS_FUNCTION(ModelData, addBeamPosition);
+    /// Adds a WeaponTube origin position to this ModelData.
+    /// If no origin positions are defined, this defaults to the model's origin (0,0,0).
+    /// If you view the model in Blender, these coordinate values are equivalent to -X,+Y,+Z.
+    /// -- Add a tube position at the given model X/Y/Z coordinates.
+    /// model:addTubePosition(21,-28.2,-2)
     REGISTER_SCRIPT_CLASS_FUNCTION(ModelData, addTubePosition);
+    /// [DEPRECATED]
+    /// Use ModelData:addEngineEmitter().
     REGISTER_SCRIPT_CLASS_FUNCTION(ModelData, addEngineEmitor);
+    /// Adds an impulse engine particle effect emitter to this ModelData.
+    /// When a SpaceShip engages impulse engines, this defines the position, color, and size of a particle trail effect.
+    /// If no origin positions are defined, this defaults to the model's origin (0,0,0).
+    /// If you view the model in Blender, these coordinate values are equivalent to -X,+Y,+Z.
+    /// Example:
+    /// -- Add an engine emitter at the given model X/Y/Z coordinates, with a RGB color of 1.0/0.2/0.2 and scale of 3.
+    /// model:addEngineEmitter(-28, 1.5,-5,1.0,0.2,0.2,3.0)
     REGISTER_SCRIPT_CLASS_FUNCTION(ModelData, addEngineEmitter);
 }
 
@@ -36,10 +125,8 @@ ModelData::ModelData()
 :
     loaded(false), mesh(nullptr),
     texture(nullptr), specular_texture(nullptr), illumination_texture(nullptr),
-#if FEATURE_3D_RENDERING
     shader_id(ShaderRegistry::Shaders::Count),
-#endif
-scale(1.f), radius(1.f)
+    scale(1.f), radius(1.f)
 {
     animated_mesh = false;
     animation_nb_car = 6;
@@ -133,7 +220,7 @@ void ModelData::addEngineEmitter(glm::vec3 position, glm::vec3 color, float scal
 
 void ModelData::addEngineEmitor(glm::vec3 position, glm::vec3 color, float scale)
 {
-    LOG(WARNING) << "Depricated function addEngineEmitor called. Use addEngineEmitter instead.";
+    LOG(WARNING) << "Deprecated function addEngineEmitor called. Use addEngineEmitter instead.";
     addEngineEmitter(position, color, scale);
 }
 
@@ -192,7 +279,6 @@ void ModelData::load()
             specular_texture = textureManager.getTexture(specular_texture_name);
         if (illumination_texture_name != "")
             illumination_texture = textureManager.getTexture(illumination_texture_name);
-#if FEATURE_3D_RENDERING
         if (texture && specular_texture && illumination_texture)
             shader_id = ShaderRegistry::Shaders::ObjectSpecularIllumination;
         else if (texture && specular_texture)
@@ -201,7 +287,6 @@ void ModelData::load()
             shader_id = ShaderRegistry::Shaders::ObjectIllumination;
         else
             shader_id = ShaderRegistry::Shaders::Object;
-#endif
         loaded = true;
     }
 }
@@ -228,40 +313,44 @@ std::vector<string> ModelData::getModelDataNames()
     return ret;
 }
 
-void ModelData::render(float alpha)
+void ModelData::render(const glm::mat4& model_matrix)
 {
-#if FEATURE_3D_RENDERING
     load();
     if (!mesh)
         return;
 
-    glPushMatrix();
     // EE's coordinate flips to a Z-up left hand.
     // To account for that, flip the model around 180deg.
-    glRotatef(180.f, 0.f, 0.f, 1.f);
-    glScalef(scale, scale, scale);
-    glTranslatef(mesh_offset.x, mesh_offset.y, mesh_offset.z);
+    auto modeldata_matrix = glm::rotate(model_matrix, glm::radians(180.f), {0.f, 0.f, 1.f});
+    modeldata_matrix = glm::scale(modeldata_matrix, glm::vec3{scale});
+    modeldata_matrix = glm::translate(modeldata_matrix, mesh_offset);
 
-    glRotatef(mesh_rotation.x, 1.0, 0.0, 0.0);
-    glRotatef(mesh_rotation.y, 0.0, 1.0, 0.0);
-    glRotatef(mesh_rotation.z, 0.0, 0.0, 1.0);
-    glColor4f(1.0,1.0,1.0,alpha);
+    modeldata_matrix = glm::rotate(modeldata_matrix, mesh_rotation.x, {1.0f,0.0f,0.0f});
+    modeldata_matrix = glm::rotate(modeldata_matrix, mesh_rotation.y, {0.0f,1.0f,0.0f});
+    modeldata_matrix = glm::rotate(modeldata_matrix, mesh_rotation.z, {0.0f,0.0f,1.0f});
+
+    //glColor4f(1.0,1.0,1.0,alpha);
 
     ShaderRegistry::ScopedShader shader(shader_id);
+    glUniformMatrix4fv(shader.get().uniform(ShaderRegistry::Uniforms::Model), 1, GL_FALSE, glm::value_ptr(modeldata_matrix));
+
+
+    // Lights setup.
+    ShaderRegistry::setupLights(shader.get(), model_matrix);
 
     // Textures
-    glBindTexture(GL_TEXTURE_2D, texture->getNativeHandle());
+    texture->bind();
 
     if (specular_texture)
     {
         glActiveTexture(GL_TEXTURE0 + ShaderRegistry::textureIndex(ShaderRegistry::Textures::SpecularMap));
-        glBindTexture(GL_TEXTURE_2D, specular_texture->getNativeHandle());
+        specular_texture->bind();
     }
 
     if (illumination_texture)
     {
         glActiveTexture(GL_TEXTURE0 + ShaderRegistry::textureIndex(ShaderRegistry::Textures::IlluminationMap));
-        glBindTexture(GL_TEXTURE_2D, illumination_texture->getNativeHandle());
+        illumination_texture->bind();
     }
 
     // Draw
@@ -280,6 +369,4 @@ void ModelData::render(float alpha)
 
     if (specular_texture || illumination_texture)
         glActiveTexture(GL_TEXTURE0);
-    glPopMatrix();
-#endif//FEATURE_3D_RENDERING
 }

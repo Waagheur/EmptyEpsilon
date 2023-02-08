@@ -22,7 +22,6 @@ public:
 
     virtual void update(float delta) override;
 
-    virtual void onKey(sf::Event::KeyEvent key, int unicode) override;
  };
 
 #endif //PROBE_SCREEN_H

@@ -4,19 +4,30 @@
 #include "particleEffect.h"
 #include "explosionEffect.h"
 #include "pathPlanner.h"
+#include "random.h"
+#include "multiplayer_server.h"
 
 #include "scriptInterface.h"
 #include "spaceObjects/spaceship.h"
 
 #include "i18n.h"
 
-/// A mine object. Simple, effective, deadly.
+/// A Mine is an explosive weapon that detonates and deals kinetic damage when a SpaceObject collides with its trigger range.
+/// Mines can be owned by factions but are triggered by SpaceObjects of any faction can trigger them.
+/// Mines can be launched from a SpaceShip's weapon tube or added by a GM or scenario script.
+/// When launched from a SpaceShip, the mine has an eject timeout, during which its trigger range is inactive.
+/// In 3D views, mines are represented by a particle effect at the center of its trigger range.
+/// To create objects with more complex collision mechanics, use an Artifact.
+/// Example: mine = Mine():setPosition(1000,1000):onDestruction(this_mine, instigator) print("Tripped a mine!") end)
 REGISTER_SCRIPT_SUBCLASS(Mine, SpaceObject)
 {
-  // Get the mine's owner's object.
+  /// Returns this Mine owner's SpaceObject.
+  /// Works only on the server; mine ownership isn't replicated to clients.
+  /// Example: mine:getOwner()
   REGISTER_SCRIPT_CLASS_FUNCTION(Mine, getOwner);
-  // Set a function that will be called if the mine explodes.
-  // First argument is the mine, second argument is the mine's owner/instigator (or nil).
+  /// Defines a function to call when this Mine is destroyed.
+  /// Passes the mine object and the object of the mine's owner/instigator (or nil if there isn't one) to the function.
+  /// Example: mine:onDestruction(function(this_mine, instigator) print("Tripped a mine!") end)
   REGISTER_SCRIPT_CLASS_FUNCTION(Mine, onDestruction);
 }
 
@@ -49,28 +60,14 @@ void Mine::draw3DTransparent()
 {
 }
 
-void Mine::drawOnRadar(sf::RenderTarget& window, sf::Vector2f position, float scale, float rotation, bool long_range)
+void Mine::drawOnRadar(sp::RenderTarget& renderer, glm::vec2 position, float scale, float rotation, bool long_range)
 {
-    sf::Sprite objectSprite;
-    textureManager.setTexture(objectSprite, "RadarBlip.png");
-    objectSprite.setRotation(getRotation());
-    objectSprite.setPosition(position);
-    objectSprite.setScale(0.3, 0.3);
-    window.draw(objectSprite);
+    renderer.drawSprite("radar/blip.png", position, 0.3 * 32);
 }
 
-void Mine::drawOnGMRadar(sf::RenderTarget& window, sf::Vector2f position, float scale, float rotation, bool long_range)
+void Mine::drawOnGMRadar(sp::RenderTarget& renderer, glm::vec2 position, float scale, float rotation, bool long_range)
 {
-    sf::CircleShape hitRadius(trigger_range * scale);
-    hitRadius.setOrigin(trigger_range * scale, trigger_range * scale);
-    hitRadius.setPosition(position);
-    hitRadius.setFillColor(sf::Color::Transparent);
-    if (triggered)
-        hitRadius.setOutlineColor(sf::Color(255, 0, 0, 128));
-    else
-        hitRadius.setOutlineColor(sf::Color(255, 255, 255, 128));
-    hitRadius.setOutlineThickness(3.0);
-    window.draw(hitRadius);
+    renderer.drawCircleOutline(position, trigger_range * scale, 3.0, triggered ? glm::u8vec4(255, 0, 0, 128) : glm::u8vec4(255, 255, 255, 128));
 }
 
 void Mine::update(float delta)
@@ -84,7 +81,7 @@ void Mine::update(float delta)
         particleTimeout = 0.4;
     }
 
-    if (ejectTimeout > 0.0)
+    if (ejectTimeout > 0.0f)
     {
         ejectTimeout -= delta;
         setVelocity(vec2FromAngle(getRotation()) * speed);
@@ -102,7 +99,7 @@ void Mine::update(float delta)
 
 void Mine::collide(Collisionable* target, float force)
 {
-    if (!game_server || triggered || ejectTimeout > 0.0)
+    if (!game_server || triggered || ejectTimeout > 0.0f)
         return;
     
     P<SpaceObject> hitObject = P<Collisionable>(target);
@@ -124,7 +121,7 @@ void Mine::eject()
 void Mine::explode()
 {
     DamageInfo info(owner, DT_Kinetic, getPosition());
-    SpaceObject::damageArea(getPosition(), blastRange, damageAtEdge * damage_multiplier, damageAtCenter * damage_multiplier, info, blastRange / 2.0);
+    SpaceObject::damageArea(getPosition(), blastRange, damageAtEdge * damage_multiplier, damageAtCenter * damage_multiplier, info, blastRange / 2.0f);
 
     P<ExplosionEffect> e = new ExplosionEffect();
     e->setSize(blastRange);

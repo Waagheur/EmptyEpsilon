@@ -28,10 +28,12 @@ void GuiLandingButton::click()
 //        landing_spaceship->commandUndock();
 //        landing_spaceship->commandSetDockTarget(NULL);
 //        break;
+    case LS_Landed:
+        break;
     }
 }
 
-void GuiLandingButton::onDraw(sf::RenderTarget& window)
+void GuiLandingButton::onDraw(sp::RenderTarget& renderer)
 {
     if (landing_spaceship)
     {
@@ -39,14 +41,14 @@ void GuiLandingButton::onDraw(sf::RenderTarget& window)
         {
         case LS_NotLanding:
             //setText("Atterrissage demande");
-            if ((my_spaceship->getSystemEffectiveness(SYS_Hangar) > 0.3) 
+            if ((my_spaceship->getSystemEffectiveness(SYS_Hangar) > 0.3f) 
                 && landing_spaceship->canStartLanding() 
                 && findLandingTarget())
             {
                 enable();
                 setText("Se poser : " + findLandingTarget()->callsign);
             }
-            else if((my_spaceship->getSystemEffectiveness(SYS_Hangar) <= 0.3)
+            else if((my_spaceship->getSystemEffectiveness(SYS_Hangar) <= 0.3f)
                 && landing_spaceship->canStartLanding() 
                 && findLandingTarget())
             {
@@ -60,7 +62,7 @@ void GuiLandingButton::onDraw(sf::RenderTarget& window)
             }
             break;
         case LS_Landing:
-            if((my_spaceship->getSystemEffectiveness(SYS_Hangar) <= 0.3))
+            if((my_spaceship->getSystemEffectiveness(SYS_Hangar) <= 0.3f))
             {
                 disable();
                 setText("Hangar HS");
@@ -73,18 +75,20 @@ void GuiLandingButton::onDraw(sf::RenderTarget& window)
                 enable();    
             }
             break;
+        case LS_Landed:
+            break;
         }
 
         setVisible(landing_spaceship->hasSystem(SYS_Impulse));
     }
-    GuiButton::onDraw(window);
+    GuiButton::onDraw(renderer);
 }
 
-void GuiLandingButton::onHotkey(const HotkeyResult& key)
+void GuiLandingButton::onUpdate()
 {
-    if (key.category == "HELMS" && landing_spaceship && landing_spaceship->docking_state == DS_NotDocking)
+    if (landing_spaceship && landing_spaceship->docking_state == DS_NotDocking)
     {
-        if (key.hotkey == "LAND_ACTION")
+        if (keys.helms_land_action.getDown())
         {
             switch(landing_spaceship->landing_state)
             {
@@ -97,14 +101,14 @@ void GuiLandingButton::onHotkey(const HotkeyResult& key)
 //            case DS_Docked:
 //                landing_spaceship->commandUndock();
 //                break;
+            case LS_Landed:
+                break;
             }
         }
-        else if (key.hotkey == "LAND_REQUEST")
+        else if (keys.helms_land_request.getDown())
             landing_spaceship->commandLand(findLandingTarget());
-        else if (key.hotkey == "LAND_ABORT")
+        else if (keys.helms_land_abort.getDown())
             landing_spaceship->commandAbortLanding();
-//        else if (key.hotkey == "UNDOCK")
-//            landing_spaceship->commandUndock();
     }
 }
 

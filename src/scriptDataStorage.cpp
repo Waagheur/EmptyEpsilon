@@ -1,6 +1,6 @@
 #include <unordered_map>
 #include "scriptInterface.h"
-#include <json11/json11.hpp>
+#include "io/json.h"
 
 
 class ScriptStorage : public PObject
@@ -27,11 +27,17 @@ public:
             fclose(f);
 
             std::string err;
-            json11::Json json = json11::Json::parse(s, err);
-            for(auto it : json.object_items())
+            if (auto parsed_json = sp::json::parse(s, err); parsed_json)
             {
-                data[it.first] = it.second.string_value();
+                auto json = parsed_json.value();
+                for (const auto& [key, value] : json.items())
+                {
+                    data[key] = value.get<std::string>();
+                }
             }
+            else
+                LOG(WARNING, "Unable to parse ", scriptstorage_path, ": ", err);
+            
         }
     }
 
@@ -47,8 +53,7 @@ public:
 
         if (f)
         {
-            json11::Json json{data};
-            auto s = json.dump();
+            auto s = nlohmann::json(data).dump();
             fwrite(s.data(), s.size(), 1, f);
             fclose(f);
         }
@@ -67,20 +72,25 @@ private:
     std::unordered_map<std::string, std::string> data;
 };
 
+/// The ScriptStorage persistently saves key/value pairs to a file.
+/// These key/value pairs are permanently stored and survive server restarts.
+/// Its default file path is $HOME/.emptyepsilon/scriptstorage.json.
+/// See getScriptStorage().
 REGISTER_SCRIPT_CLASS(ScriptStorage)
 {
-    /// Get a value from persistent script storage.
-    /// Requires the key as a string.
-    /// Returns the value as a JSON string.
+    /// Returns the value for the given key from the persistent ScriptStorage as a JSON string.
     /// Returns nothing if the key is not found.
-    /// Example: storage = getScriptStorage()
-    ///          storage:get('key')
+    /// Example:
+    ///   storage = getScriptStorage()
+    ///   storage:set('key', 'value')
+    ///   storage:get('key') -- returns "value"
     REGISTER_SCRIPT_CLASS_FUNCTION(ScriptStorage, get);
-    /// Set a value in persistent script storage.
-    /// Requires the key and value as strings.
-    /// Creates scriptstorage.json if it doesn't exist.
-    /// Example: storage = getScriptStorage()
-    ///          storage:set('key', 'value')
+    /// Sets a key/value pair in the persistent ScriptStorage file.
+    /// If the scriptstorage.json file doesn't exist, this function creates it.
+    /// If the given key already exists, this function overwrites its value.
+    /// Example:
+    ///   storage = getScriptStorage()
+    ///   storage:set('key', 'value') -- writes {"key":"value"} to scriptstorage.json
     REGISTER_SCRIPT_CLASS_FUNCTION(ScriptStorage, set);
 }
 
@@ -93,8 +103,9 @@ static int getScriptStorage(lua_State* L)
     return convert<P<ScriptStorage> >::returnType(L, storage);
 }
 
-/// Expose the ScriptStorage object, which can save and load key-value pairs
-/// These key-value pairs are permanently stored and survive server restarts.
-/// Returns a ScriptStorage object; see also ScriptStorage.get() and .set().
+/// P<ScriptStorage> getScriptStorage()
+/// Returns the ScriptStorage object, which can save and load key/value pairs.
+/// These key/value pairs are permanently stored and survive server restarts.
+/// To use this object, see ScriptStorage:get() and :set().
 /// Example: storage = getScriptStorage();
 REGISTER_SCRIPT_FUNCTION(getScriptStorage);

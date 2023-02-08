@@ -9,7 +9,6 @@
 #include "spaceObjects/scanProbe.h"
 
 #include "gui/gui2_overlay.h"
-#include "gui/gui2_autolayout.h"
 #include "gui/gui2_panel.h"
 #include "gui/gui2_label.h"
 #include "gui/gui2_listbox.h"
@@ -19,15 +18,15 @@ const ECrewPosition crewPosition = ECrewPosition::singlePilot;
 DroneOperatorScreen::DroneOperatorScreen(GuiContainer *owner)
     : GuiOverlay(owner, "DRONE_PILOT_SCREEN", colorConfig.background), mode(DroneSelection)
 {
-    background_crosses = new GuiOverlay(this, "BACKGROUND_CROSSES", sf::Color::White);
-    background_crosses->setTextureTiled("gui/BackgroundCrosses");
+    background_crosses = new GuiOverlay(this, "BACKGROUND_CROSSES", glm::u8vec4(255,255,255,255));
+    background_crosses->setTextureTiled("gui/background/crosses.png");
 
     // Render the alert level color overlay.
     (new AlertLevelOverlay(this));
 
     // Draw a container for drone selection UI
-    droneSelection = new GuiAutoLayout(this, "", GuiAutoLayout::ELayoutMode::LayoutHorizontalRows);
-    droneSelection->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);
+    droneSelection = new GuiElement(this, "");
+    droneSelection->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax)->setAttribute("layout", "horizontal");;
 
     // Drone list
     drone_list = new GuiListbox(droneSelection, "PLAYER_SHIP_LIST", [this](int index, string value) {
@@ -45,26 +44,26 @@ DroneOperatorScreen::DroneOperatorScreen(GuiContainer *owner)
             single_pilot_screen->setTargetSpaceship(selected_drone);
         }
     });
-    drone_list->setPosition(0, -100, ABottomCenter)->setSize(500, 1000);
+    drone_list->setPosition(0, -100, sp::Alignment::BottomCenter)->setSize(500, 1000);
 
     // single pilot UI
     single_pilot_screen = new SinglePilotScreen(this, selected_drone);
-    single_pilot_screen->setPosition(0, 0, ATopLeft)->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);
+    single_pilot_screen->setPosition(0, 0, sp::Alignment::TopLeft)->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);
 
     connection_label = new GuiLabel(this, "CONNECTION_LABEL", "0%", 30);
-    connection_label->setPosition(0, -50, ABottomCenter)->setSize(460, 50);
+    connection_label->setPosition(0, -50, sp::Alignment::BottomCenter)->setSize(460, 50);
 
     disconnect_button = new GuiButton(this, "DISCONNECT_BUTTON", "Se deconnecter", [this]() {disconnected();});
-    disconnect_button->setPosition(0, 0, ABottomCenter)->setSize(400, 50);
+    disconnect_button->setPosition(0, 0, sp::Alignment::BottomCenter)->setSize(400, 50);
     disconnect_button->moveToFront();
     // label for when there are no drones
     no_drones_label = new GuiLabel(this, "SHIP_SELECTION_NO_SHIPS_LABEL", "Aucun drone actif dans la zone de portee de radar", 30);
-    no_drones_label->setPosition(0, 100, ATopCenter)->setSize(460, 50);
+    no_drones_label->setPosition(0, 100, sp::Alignment::TopCenter)->setSize(460, 50);
     // Prep the alert overlay.
-    (new GuiPowerDamageIndicator(this, "DOCKS_DPI", SYS_Drones, ATopCenter, my_spaceship))->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);
+    (new GuiPowerDamageIndicator(this, "DOCKS_DPI", SYS_Drones, sp::Alignment::TopCenter, my_spaceship))->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);
 
     custom_functions = new GuiCustomShipFunctions(this, dronePilot, "", my_spaceship);
-    custom_functions->setPosition(-20, 120, ATopRight)->setSize(250, GuiElement::GuiSizeMax);
+    custom_functions->setPosition(-20, 120, sp::Alignment::TopRight)->setSize(250, GuiElement::GuiSizeMax);
 
     for(auto &drone_template : my_spaceship->ship_template->drones)
     {
@@ -119,14 +118,14 @@ float DroneOperatorScreen::getConnectionQuality(P<PlayerSpaceship> ship)
     float droneStateFactor = 1.0f;
     return rangeFactor * droneStateFactor;
 }
-void DroneOperatorScreen::onDraw(sf::RenderTarget &window)
+void DroneOperatorScreen::onDraw(sp::RenderTarget& renderer)
 {
     if (my_spaceship)
     {
         // Update the player ship list with all player ships.
         std::vector<string> options;
         std::vector<string> values;
-        no_drones_label->setText("Aucun drone ni chasseur actif dans la zone de portee de radar (" + string(my_spaceship->getDronesControlRange() / 1000.0,1) + "U)");
+        no_drones_label->setText("Aucun drone ni chasseur actif dans la zone de portee de radar (" + string(my_spaceship->getDronesControlRange() / 1000.f,1) + "U)");
         for (int n = 0; n < GameGlobalInfo::max_player_ships; n++)
         {
             P<PlayerSpaceship> ship = gameGlobalInfo->getPlayerShip(n);

@@ -15,7 +15,7 @@ public:
     string station;
     ShipLogScreen(GuiContainer* owner, string station);
 
-    void onDraw(sf::RenderTarget& window) override;
+    void onDraw(sp::RenderTarget& target) override;
 };
 
 #endif//SHIP_LOG_SCREEN_H

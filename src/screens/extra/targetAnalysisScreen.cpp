@@ -1,5 +1,6 @@
 #include "targetAnalysisScreen.h"
 
+#include "random.h"
 #include "playerInfo.h"
 #include "shipTemplate.h"
 #include "gameGlobalInfo.h"
@@ -19,7 +20,6 @@
 #include "screenComponents/signalQualityIndicator.h"
 
 #include "gui/gui2_listbox.h"
-#include "gui/gui2_autolayout.h"
 #include "gui/gui2_element.h"
 #include "gui/gui2_panel.h"
 #include "gui/gui2_label.h"
@@ -42,36 +42,36 @@ TargetAnalysisScreen::TargetAnalysisScreen(GuiContainer *owner)
 
     selected_entry = nullptr;
 
-    GuiOverlay *background_crosses = new GuiOverlay(this, "BACKGROUND_CROSSES", sf::Color::White);
-    background_crosses->setTextureTiled("gui/BackgroundCrosses");
+    GuiOverlay *background_crosses = new GuiOverlay(this, "BACKGROUND_CROSSES", glm::u8vec4(255,255,255,255));
+    background_crosses->setTextureTiled("gui/background/crosses.png");
     
-    indicator_overlay = new GuiOverlay(this, "", sf::Color(0, 0, 0, 128));
-    (new GuiPanel(indicator_overlay, "PAUSE_BOX"))->setPosition(0, 0, ACenter)->setSize(600, 100);
+    indicator_overlay = new GuiOverlay(this, "", glm::u8vec4(0, 0, 0, 128));
+    (new GuiPanel(indicator_overlay, "PAUSE_BOX"))->setPosition(0, 0, sp::Alignment::Center)->setSize(600, 100);
     indicator_label = new GuiLabel(indicator_overlay, "PAUSE_LABEL", "Power cut", 70);
-    indicator_label->setPosition(0, 0, ACenter)->setSize(500, 100);
+    indicator_label->setPosition(0, 0, sp::Alignment::Center)->setSize(500, 100);
     
-    analysis_overlay = new GuiOverlay(this, "", sf::Color(0, 0, 0, 128));
+    analysis_overlay = new GuiOverlay(this, "", glm::u8vec4(0, 0, 0, 128));
     
     model = new GuiRotatingModelView(analysis_overlay, "MODEL_VIEW", nullptr);
     model->setSize(500, 500);
-    model->setPosition(0, 0, ACenter);
+    model->setPosition(0, 0, sp::Alignment::Center);
 
-    GuiAutoLayout* left_col = new GuiAutoLayout(analysis_overlay, "LEFT_LAYOUT", GuiAutoLayout::LayoutVerticalTopToBottom);
-    left_col->setPosition(25, 50, ATopLeft)->setSize(400, GuiElement::GuiSizeMax);
+    auto left_col = new GuiElement(analysis_overlay, "LEFT_LAYOUT");
+    left_col->setPosition(25, 50, sp::Alignment::TopLeft)->setSize(400, GuiElement::GuiSizeMax)->setAttribute("layout", "vertical");;
     left_col->setMargins(20, 20, 20, 20);
     
-    GuiAutoLayout* center_col = new GuiAutoLayout(analysis_overlay, "CENTER_LAYOUT", GuiAutoLayout::LayoutVerticalTopToBottom);
-    center_col->setPosition(0, 50, ATopCenter)->setSize(400, GuiElement::GuiSizeMax);
+    auto center_col = new GuiElement(analysis_overlay, "CENTER_LAYOUT");
+    center_col->setPosition(0, 50, sp::Alignment::TopCenter)->setSize(400, GuiElement::GuiSizeMax)->setAttribute("layout", "vertical");;
     center_col->setMargins(20, 20, 20, 20);
 
-    GuiAutoLayout* right_col = new GuiAutoLayout(analysis_overlay, "RIGHT_LAYOUT", GuiAutoLayout::LayoutVerticalTopToBottom);
-    right_col->setPosition(-25, 50, ATopRight)->setSize(400, GuiElement::GuiSizeMax);
+    auto right_col = new GuiElement(analysis_overlay, "RIGHT_LAYOUT");
+    right_col->setPosition(-25, 50, sp::Alignment::TopRight)->setSize(400, GuiElement::GuiSizeMax)->setAttribute("layout", "vertical");;
     right_col->setMargins(20, 20, 20, 20);
     
     (new GuiLabel(left_col, "TITLE", "Basic Informations", 30))
         ->addBackground()
-        ->setAlignment(ACenter)
-        ->setPosition(0, 0, ABottomCenter)
+        ->setAlignment(sp::Alignment::Center)
+        ->setPosition(0, 0, sp::Alignment::BottomCenter)
         ->setSize(GuiElement::GuiSizeMax, 50);
     
     info_callsign = new GuiKeyValueDisplay(left_col, "SCIENCE_CALLSIGN", 0.4, tr("Callsign"), "");
@@ -93,8 +93,8 @@ TargetAnalysisScreen::TargetAnalysisScreen(GuiContainer *owner)
 
     (new GuiLabel(left_col, "TITLE", "Description", 30))
         ->addBackground()
-        ->setAlignment(ACenter)
-        ->setPosition(0, 0, ABottomCenter)
+        ->setAlignment(sp::Alignment::Center)
+        ->setPosition(0, 0, sp::Alignment::BottomCenter)
         ->setSize(GuiElement::GuiSizeMax, 50);
         
     info_description = new GuiScrollText(left_col, "SCIENCE_DESC", "");
@@ -102,8 +102,8 @@ TargetAnalysisScreen::TargetAnalysisScreen(GuiContainer *owner)
 
     (new GuiLabel(left_col, "TITLE", "Additionnal Informations", 30))
         ->addBackground()
-        ->setAlignment(ACenter)
-        ->setPosition(0, 0, ABottomCenter)
+        ->setAlignment(sp::Alignment::Center)
+        ->setPosition(0, 0, sp::Alignment::BottomCenter)
         ->setSize(GuiElement::GuiSizeMax, 50);
 
     for(int n = 0; n < 10; n++)
@@ -115,8 +115,8 @@ TargetAnalysisScreen::TargetAnalysisScreen(GuiContainer *owner)
     
     (new GuiLabel(center_col, "TITLE", "Template Informations", 30))
         ->addBackground()
-        ->setAlignment(ACenter)
-        ->setPosition(0, 0, ABottomCenter)
+        ->setAlignment(sp::Alignment::Center)
+        ->setPosition(0, 0, sp::Alignment::BottomCenter)
         ->setSize(GuiElement::GuiSizeMax, 50);
 
     for(int n = 0; n < 30; n++)
@@ -128,8 +128,8 @@ TargetAnalysisScreen::TargetAnalysisScreen(GuiContainer *owner)
 
     (new GuiLabel(center_col, "TITLE", "Systems", 30))
         ->addBackground()
-        ->setAlignment(ACenter)
-        ->setPosition(0, 0, ABottomCenter)
+        ->setAlignment(sp::Alignment::Center)
+        ->setPosition(0, 0, sp::Alignment::BottomCenter)
         ->setSize(GuiElement::GuiSizeMax, 50);
 
     for(int n = 0; n < SYS_COUNT; n++)
@@ -142,8 +142,8 @@ TargetAnalysisScreen::TargetAnalysisScreen(GuiContainer *owner)
     // Advanced scan data.
     (new GuiLabel(right_col, "TITLE", "Frequencies", 30))
         ->addBackground()
-        ->setAlignment(ACenter)
-        ->setPosition(0, 0, ABottomCenter)
+        ->setAlignment(sp::Alignment::Center)
+        ->setPosition(0, 0, sp::Alignment::BottomCenter)
         ->setSize(GuiElement::GuiSizeMax, 50);
 
     // Frequency
@@ -160,8 +160,8 @@ TargetAnalysisScreen::TargetAnalysisScreen(GuiContainer *owner)
 
     (new GuiLabel(right_col, "TITLE", "Signatures", 30))
         ->addBackground()
-        ->setAlignment(ACenter)
-        ->setPosition(0, 0, ABottomCenter)
+        ->setAlignment(sp::Alignment::Center)
+        ->setPosition(0, 0, sp::Alignment::BottomCenter)
         ->setSize(GuiElement::GuiSizeMax, 50);
 
     info_electrical_signal_band = new GuiSignalQualityIndicator(right_col, "ELECTRICAL_SIGNAL");
@@ -180,7 +180,7 @@ TargetAnalysisScreen::TargetAnalysisScreen(GuiContainer *owner)
     info_biological_signal_label->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);
 }
 
-void TargetAnalysisScreen::onDraw(sf::RenderTarget &window)
+void TargetAnalysisScreen::onDraw(sp::RenderTarget& renderer)
 {
     info_callsign->setValue("-");
     info_distance->setValue("-");
@@ -206,7 +206,7 @@ void TargetAnalysisScreen::onDraw(sf::RenderTarget &window)
     for(int n = 0; n < 10; n++)
         info_other[n]->hide();
 
-    GuiOverlay::onDraw(window);
+    GuiOverlay::onDraw(renderer);
     if (my_spaceship)
     {
         P<SpaceObject> obj;
@@ -290,8 +290,8 @@ void TargetAnalysisScreen::onDraw(sf::RenderTarget &window)
 
             float rel_velocity = dot(obj->getVelocity(), position_diff / distance) - dot(my_spaceship->getVelocity(), position_diff / distance);
 
-            if (fabs(rel_velocity) < 0.01)
-                rel_velocity = 0.0;
+            if (fabs(rel_velocity) < 0.01f)
+                rel_velocity = 0.f;
 
             info_callsign->setValue(obj->getCallSign());
             info_distance->setValue(string(distance / 1000.0f, 1) + DISTANCE_UNIT_1K);
@@ -320,7 +320,7 @@ void TargetAnalysisScreen::onDraw(sf::RenderTarget &window)
                     {
                         info_system[n]->show();
                         float system_health = ship->systems[n].health;
-                        info_system[n]->setValue(string(int(system_health * 100.0f)) + "%")->setColor(sf::Color(255, 127.5 * (system_health + 1), 127.5 * (system_health + 1), 255));
+                        info_system[n]->setValue(string(int(system_health * 100.0f)) + "%")->setColor(glm::u8vec4(255, 127.5f * (system_health + 1), 127.5f * (system_health + 1), 255));
                     }
                 }
             }

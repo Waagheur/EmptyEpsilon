@@ -5,15 +5,15 @@ namespace {
     MissileWeaponData missile_data[MW_Count] =
     {
         //                speed, turnrate, lifetime, color, homing_range
-        MissileWeaponData(200.0f, 10.f, 54.0f, sf::Color(255, 200, 0), 1200.0, "sfx/rlaunch.wav", MW_Homing, DT_Kinetic),/*MW_Homing*/
-        MissileWeaponData(500.0f,  0.f, 27.0f, sf::Color(200, 200, 200), 0.0, "sfx/hvli_fire.wav", MW_HVLI, DT_Kinetic),/*MW_HVLI*/
-        MissileWeaponData(200.0f, 10.f, 54.0f, sf::Color(100, 32, 255), 500.0, "sfx/rlaunch.wav", MW_EMP, DT_EMP),/*MW_EMP*/
-        MissileWeaponData(200.0f, 10.f, 54.0f, sf::Color(255, 100, 32), 500.0, "sfx/rlaunch.wav", MW_Nuke, DT_Kinetic),/*MW_Nuke*/
-        MissileWeaponData(100.0f,  0.f, 30.0f, sf::Color(255, 255, 255), 0.0, "missile_launch.wav", MW_Mine, DT_Kinetic),/*MW_Mine, lifetime is used at time which the mine is ejecting from the ship*/
+        MissileWeaponData(200.0f, 10.f, 54.0f, glm::u8vec4(255, 200, 0, 255), 1200.0, "sfx/rlaunch.wav", MW_Homing, DT_Kinetic),/*MW_Homing*/
+        MissileWeaponData(500.0f,  0.f, 27.0f, glm::u8vec4(200, 200, 200, 255), 0.0, "sfx/hvli_fire.wav", MW_HVLI, DT_Kinetic),/*MW_HVLI*/
+        MissileWeaponData(200.0f, 10.f, 54.0f, glm::u8vec4(100, 32, 255, 255), 500.0, "sfx/rlaunch.wav", MW_EMP, DT_EMP),/*MW_EMP*/
+        MissileWeaponData(200.0f, 10.f, 54.0f, glm::u8vec4(255, 100, 32, 255), 500.0, "sfx/rlaunch.wav", MW_Nuke, DT_Kinetic),/*MW_Nuke*/
+        MissileWeaponData(100.0f,  0.f, 30.0f, glm::u8vec4(255, 255, 255, 255), 0.0, "sfx/missile_launch.wav", MW_Mine, DT_Kinetic),/*MW_Mine, lifetime is used at time which the mine is ejecting from the ship*/
     };
 }
 
-MissileWeaponData::MissileWeaponData(float speed, float turnrate, float lifetime, sf::Color color, float homing_range, string fire_sound, EMissileWeapons base_type, EDamageType dt)
+MissileWeaponData::MissileWeaponData(float speed, float turnrate, float lifetime, glm::u8vec4 color, float homing_range, string fire_sound, EMissileWeapons base_type, EDamageType dt)
 : basetype(base_type), speed(speed), turnrate(turnrate), lifetime(lifetime), color(color), homing_range(homing_range),
 fire_sound(fire_sound), damage_multiplier(1), fire_count(1) , line_count(1),damage_type(dt)
 {
@@ -99,7 +99,7 @@ string getMissileSizeString(EMissileSizes size)
     }
 }
 
-const float MissileWeaponData::convertSizeToCategoryModifier(EMissileSizes size)
+float MissileWeaponData::convertSizeToCategoryModifier(EMissileSizes size)
 {
     switch(size)
     {
@@ -114,13 +114,13 @@ const float MissileWeaponData::convertSizeToCategoryModifier(EMissileSizes size)
     }
 }
 
-const EMissileSizes MissileWeaponData::convertCategoryModifierToSize(float size)
+EMissileSizes MissileWeaponData::convertCategoryModifierToSize(float size)
 {
-    if (std::abs(size - 0.5) < 0.1)
+    if (std::abs(size - 0.5f) < 0.1f)
         return MS_Small;
-    if (std::abs(size - 1.0) < 0.1)
+    if (std::abs(size - 1.0f) < 0.1f)
         return MS_Medium;
-    if (std::abs(size - 2.0) < 0.1)
+    if (std::abs(size - 2.0f) < 0.1f)
         return MS_Large;
     return MS_Medium;
 }

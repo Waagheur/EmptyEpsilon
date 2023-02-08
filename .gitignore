@@ -34,7 +34,13 @@ thumbs.db
 # vim
 *.swp
 
+# gettext temp files
+*.po~
+
 options.ini
+keybindings.json
+
+
 .vscode
 *.html
 *.log
@@ -44,5 +50,8 @@ EmptyEpsilon.cscope_file_list
 _*
 *.orig
 logs
-cmake/android
 _debug
+build*/
+_build*/
+cmake/_win32/
+cmake/android/

@@ -1,54 +1,58 @@
-#include <SFML/OpenGL.hpp>
+#include <graphics/opengl.h>
 #include "scanProbe.h"
 #include "explosionEffect.h"
 #include "main.h"
 #include "playerSpaceship.h"
+#include "random.h"
 
 #include "scriptInterface.h"
 
-/// A scan probe.
+/// A ScanProbe deploys a short-range radar with a limited lifetime at a high speed to a specific point.
+/// ScanProbes can be targeted and destroyed by hostiles.
+/// It's typically launched by the relay officer and can be linked to the science radar, but can also be created by scripts.
+/// PlayerSpaceships have a limited stock of ScanProbes typically replenished automatically when docked to a SpaceStation or SpaceShip with the ScanProbe restocking feature enabled.
+/// Example: probe = ScanProbe():setSpeed(1500):setLifetime(60 * 30):setTarget(10000,10000):onArrival(function() print("Probe arrived!") end)
 REGISTER_SCRIPT_SUBCLASS(ScanProbe, SpaceObject)
 {
-    /// Set the probe's speed. A value of 1000 = 1U/second.
-    /// Probes move at a fixed rate of speed and ignore physics.
-    /// Requires a float value. The default vaule is 1000.
+    /// Sets this ScanProbe's speed.
+    /// Probes move at a fixed rate of speed and ignore collisions and physics while moving.
+    /// Defaults to 1000 (1U/second).
     /// Example: probe:setSpeed(2000)
     REGISTER_SCRIPT_CLASS_FUNCTION(ScanProbe, setSpeed);
-    /// Get the probe's speed. A value of 1000 = 1U/second.
-    /// Returns a float value.
-    /// Example: local speed = probe:getSpeed()
+    /// Returns this ScanProbe's speed.
+    /// Example: probe:getSpeed()
     REGISTER_SCRIPT_CLASS_FUNCTION(ScanProbe, getSpeed);
-    /// Set the probe's remaining lifetime, in seconds.
-    /// The default initial lifetime is 10 minutes.
-    /// Example: probe:setLifetime(60 * 5)
+    /// Sets this ScanProbe's remaining lifetime, in seconds.
+    /// Defaults to 600 seconds (10 minutes).
+    /// Example: probe:setLifetime(60 * 5) -- sets the lifetime to 5 minutes
     REGISTER_SCRIPT_CLASS_FUNCTION(ScanProbe, setLifetime);
-    /// Get the probe's remaining lifetime.
-    /// Example: local lifetime = probe:getLifetime()
+    /// Returns this ScanProbe's remaining lifetime.
+    /// Example: probe:getLifetime()
     REGISTER_SCRIPT_CLASS_FUNCTION(ScanProbe, getLifetime);
-    /// Set the probe's target coordinates.
-    /// Example: probe:setTarget(1000, 5000)
+    /// Sets this ScanProbe's target coordinates.
+    /// If the probe has reached its target, ScanProbe:setTarget() moves it again toward the new target coordinates.
+    /// Example: probe:setTarget(1000,5000)
     REGISTER_SCRIPT_CLASS_FUNCTION(ScanProbe, setTarget);
-    /// Get the probe's target coordinates.
-    /// Example: local targetX, targetY = probe:getTarget()
+    /// Returns this ScanProbe's target coordinates.
+    /// Example: targetX,targetY = probe:getTarget()
     REGISTER_SCRIPT_CLASS_FUNCTION(ScanProbe, getTarget);
-    /// Set the probe's owner SpaceObject.
-    /// Requires a SpaceObject.
-    /// Example: probe:setOwner(owner_ship)
+    /// Sets this ScanProbe's owner SpaceObject.
+    /// Example: probe:setOwner(owner)
     REGISTER_SCRIPT_CLASS_FUNCTION(ScanProbe, setOwner);
-    /// Get the probe's owner SpaceObject.
-    /// Example: local owner_ship = probe:getOwner()
+    /// Returns this ScanProbe's owner SpaceObject.
+    /// Example: probe:getOwner()
     REGISTER_SCRIPT_CLASS_FUNCTION(ScanProbe, getOwner);
-    /// Callback when the probe arrives to its target coordinates.
-    /// Passes the probe and position as arguments to the callback.
-    /// Example: probe:onArrival(probeArrived)
+    /// Defines a function to call when this ScanProbe arrives to its target coordinates.
+    /// Passes the probe and position as arguments to the function.
+    /// Example: probe:onArrival(function(this_probe, coords) print("Probe arrived!") end)
     REGISTER_SCRIPT_CLASS_FUNCTION(ScanProbe, onArrival);
-    /// Callback when the probe's lifetime expires.
-    /// Passes the probe as an argument to the callback.
-    /// Example: probe:onExpiration(probeExpired)
+    /// Defines a function to call when this ScanProbe's lifetime expires.
+    /// Passes the probe as an argument to the function.
+    /// Example: probe:onExpiration(function(this_probe) print("Probe expired!") end)
     REGISTER_SCRIPT_CLASS_FUNCTION(ScanProbe, onExpiration);
-    /// Callback when the probe is destroyed by damage.
-    /// Passes the probe and instigator as arguments to the callback.
-    /// Example: probe:onDestruction(probeDestroyed)
+    /// Defines a function to call when this ScanProbe is destroyed by damage.
+    /// Passes the probe and instigator as arguments to the function.
+    /// Example: probe:onDestruction(function(this_probe, instigator) print("Probe destroyed!") end)
     REGISTER_SCRIPT_CLASS_FUNCTION(ScanProbe, onDestruction);
 }
 
@@ -123,7 +127,7 @@ void ScanProbe::update(float delta)
     // Tick down lifetime until expiration, then destroy the probe.
     lifetime -= delta;
 
-    if (lifetime <= 0.0)
+    if (lifetime <= 0.0f)
     {
         // Fire the onExpiration callback, if set.
         if (on_expiration.isSet())
@@ -216,45 +220,30 @@ void ScanProbe::takeDamage(float damage_amount, DamageInfo info)
     destroy();
 }
 
-void ScanProbe::drawOnRadar(sf::RenderTarget& window, sf::Vector2f position, float scale, float rotation, bool long_range)
+void ScanProbe::drawOnRadar(sp::RenderTarget& renderer, glm::vec2 position, float scale, float rotation, bool long_range)
 {
     // All probes use the same green icon on radar.
-    sf::Sprite object_sprite;
-    textureManager.setTexture(object_sprite, "ProbeBlip.png");
-    object_sprite.setPosition(position);
-    object_sprite.setColor(sf::Color(96, 192, 128));
-    float size = 0.3;
-    object_sprite.setScale(size, size);
-    window.draw(object_sprite);
+    renderer.drawSprite("radar/probe.png", position, 10, glm::u8vec4(96, 192, 128, 255));
 
     if (long_range && !has_arrived)
     {
-        sf::VertexArray a(sf::Lines, 2);
-        a[0].position = position;
-        a[1].position = position + (sf::Vector2f(target_position.x, target_position.y) - 
-                        sf::Vector2f(getPosition().x, getPosition().y)) * scale;
-        a[0].color = sf::Color(255, 255, 255, 32);
-        float distance = sf::length(position - sf::Vector2f(target_position.x, target_position.y));
-        if (distance > 1000.0)
-            window.draw(a);
+        float distance = glm::length(position - glm::vec2(target_position.x, target_position.y));
+        if (distance > 1000.f)
+        {
+                renderer.drawLine(position, position + glm::vec2(target_position.x, target_position.y) - glm::vec2(getPosition().x, getPosition().y)*scale, glm::u8vec4(255, 255, 255, 32));
+        }
     }
 }
 
-void ScanProbe::drawOnGMRadar(sf::RenderTarget& window, sf::Vector2f position, float scale, float rotation, bool long_range)
+void ScanProbe::drawOnGMRadar(sp::RenderTarget& renderer, glm::vec2 position, float scale, float rotation, bool long_range)
 {
-    SpaceObject::drawOnGMRadar(window, position, scale, rotation, long_range);
+    SpaceObject::drawOnGMRadar(renderer, position, scale, rotation, long_range);
     if (long_range)
     {
         P<PlayerSpaceship> player = owner;
         if(player)
         {
-            sf::CircleShape radar_radius(player->getProbeRangeRadarRange() * scale);
-            radar_radius.setOrigin(player->getProbeRangeRadarRange() * scale, player->getProbeRangeRadarRange() * scale);
-            radar_radius.setPosition(position);
-            radar_radius.setFillColor(sf::Color::Transparent);
-            radar_radius.setOutlineColor(sf::Color(255, 255, 255, 64));
-            radar_radius.setOutlineThickness(3.0);
-            window.draw(radar_radius);
+            renderer.drawCircleOutline(position, player->getProbeRangeRadarRange()*scale, 3.0, glm::u8vec4(255, 255, 255, 64));
         }
     }
 }

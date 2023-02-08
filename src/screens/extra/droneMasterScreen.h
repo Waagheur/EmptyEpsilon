@@ -8,7 +8,6 @@ class GuiPanel;
 class GuiSlider;
 class GuiButton;
 class GuiLabel;
-class GuiAutoLayout;
 class GuiEntryList;
 class GuiSelector;
 class GuiProgressbar;
@@ -27,18 +26,18 @@ class DroneMasterScreen : public GuiOverlay
     GuiLabel *dockTitle;
     GuiLabel *droneTitle;
 
-    GuiAutoLayout *mainPanel;
-    GuiAutoLayout *topPanel;
-    GuiAutoLayout *bottomPanel;
-    GuiAutoLayout *dronePanel;
+    GuiElement *mainPanel;
+    GuiElement *topPanel;
+    GuiElement *bottomPanel;
+    GuiElement *dronePanel;
 
-    GuiAutoLayout* action_move;
-    GuiAutoLayout* action_launch;
-    GuiAutoLayout* action_energy;
-    GuiAutoLayout* action_weapons;
+    GuiElement* action_move;
+    GuiElement* action_launch;
+    GuiElement* action_energy;
+    GuiElement* action_weapons;
 
-    GuiAutoLayout* cargoInfo;
-    GuiAutoLayout* shipCargoInfo;
+    GuiElement* cargoInfo;
+    GuiElement* shipCargoInfo;
     std::vector<GuiKeyValueDisplay*> cargoInfoItems;
     std::vector<GuiKeyValueDisplay*> shipCargoInfoItems;
     GuiRotatingModelView* model;
@@ -47,18 +46,18 @@ class DroneMasterScreen : public GuiOverlay
     GuiProgressbar *energy_bar;
     GuiSlider *energy_slider;
 
-    GuiAutoLayout *table_weapons;
-    GuiAutoLayout *weapons_layout_label;
+    GuiElement *table_weapons;
+    GuiElement *weapons_layout_label;
 
-    GuiAutoLayout *weapons_layout_p1;
-    std::vector<GuiAutoLayout*> weapons_layout;
+    GuiElement *weapons_layout_p1;
+    std::vector<GuiElement*> weapons_layout;
     std::vector<GuiLabel*> weapons_stock_ship;
     std::vector<GuiLabel*> weapons_stock_cargo;
     std::vector<GuiButton*> weapons_stock_p1;
     std::vector<GuiButton*> weapons_stock_m1;
 
-    GuiAutoLayout* dronePanel_col1;
-    GuiAutoLayout* dronePanel_col2;
+    GuiElement* dronePanel_col1;
+    GuiElement* dronePanel_col2;
     GuiElement* dronePanel_col3;
 
     GuiButton* action_launch_button;
@@ -74,9 +73,9 @@ class DroneMasterScreen : public GuiOverlay
   public:
     DroneMasterScreen(GuiContainer *owner);
 
-    void onDraw(sf::RenderTarget &window) override;
+    void onDraw(sp::RenderTarget &renderer) override;
   private:
-    void selectDock(int index);
+    void selectDock(unsigned int index);
   private:
     void displayDroneDetails(Dock &dockData);
 };

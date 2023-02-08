@@ -2,27 +2,34 @@
 #include "spaceObjects/spaceship.h"
 #include "spaceObjects/beamEffect.h"
 #include "spaceObjects/spaceObject.h"
+#include "multiplayer_server.h"
+
+#include <SDL_assert.h>
+
 
 BeamWeapon::BeamWeapon()
 {
     arc = 0;
     direction = 0;
     range = 0;
-    turret_arc = 0.0;
-    turret_direction = 0.0;
-    turret_rotation_rate = 0.0;
-    cycle_time = 6.0;
-    cooldown = 0.0;
-    damage = 1.0;
-    energy_per_beam_fire = 3.0;
-    heat_per_beam_fire = 0.02;
+    turret_arc = 0.0f;
+    turret_direction = 0.0f;
+    turret_rotation_rate = 0.0f;
+    cycle_time = 6.0f;
+    cooldown = 0.0f;
+    damage = 1.0f;
+    energy_per_beam_fire = 3.0f;
+    heat_per_beam_fire = 0.02f;
     is_valid = true;
     parent = nullptr;
+    arc_color = {255, 0, 0, 128};
+    arc_color_fire = {255, 255, 0, 128};
+    damage_type = DT_Energy;
 }
 
 void BeamWeapon::setParent(SpaceShip* parent)
 {
-    assert(!this->parent);
+    SDL_assert(!this->parent);
     this->parent = parent;
 
     parent->registerMemberReplication(&arc);
@@ -33,6 +40,8 @@ void BeamWeapon::setParent(SpaceShip* parent)
     parent->registerMemberReplication(&turret_rotation_rate);
     parent->registerMemberReplication(&cycle_time);
     parent->registerMemberReplication(&cooldown, 0.5);
+    parent->registerMemberReplication(&arc_color);
+    parent->registerMemberReplication(&arc_color_fire);
 }
 
 void BeamWeapon::setArc(float arc)
@@ -43,6 +52,31 @@ void BeamWeapon::setArc(float arc)
 float BeamWeapon::getArc()
 {
     return arc;
+}
+
+void BeamWeapon::setArcColor(glm::u8vec4 color)
+{
+    arc_color = color;
+}
+
+glm::u8vec4 BeamWeapon::getArcColor()
+{
+    return arc_color;
+}
+
+void BeamWeapon::setArcFireColor(glm::u8vec4 color)
+{
+    arc_color_fire = color;
+}
+
+glm::u8vec4 BeamWeapon::getArcFireColor()
+{
+    return arc_color_fire;
+}
+
+void BeamWeapon::setDamageType(EDamageType type)
+{
+    damage_type = type;
 }
 
 void BeamWeapon::setDirection(float direction)
@@ -172,7 +206,7 @@ float BeamWeapon::getCooldown()
 
 void BeamWeapon::update(float delta)
 {
-    if (cooldown > 0.0)
+    if (cooldown > 0.0f)
         cooldown -= delta * parent->getSystemEffectiveness(SYS_BeamWeapons);
 
     P<SpaceObject> target = parent->getTarget();
@@ -180,16 +214,16 @@ void BeamWeapon::update(float delta)
     // Check on beam weapons only if we are on the server, have a target, and
     // not paused, and if the beams are cooled down or have a turret arc.
 //    if (game_server && range > 0.0 && target && delta > 0 && parent->current_warp == 0.0 && parent->docking_state == DS_NotDocking)
-    if (game_server && is_valid && range > 0.0 && target && delta > 0 && parent->docking_state == DS_NotDocking)
+    if (game_server && is_valid && range > 0.0f && target && delta > 0 && parent->docking_state == DS_NotDocking)
     {
         // Get the angle to the target.
         auto diff = target->getPosition() - (parent->getPosition() + rotateVec2(glm::vec2(position.x, position.y), parent->getRotation()));
-        float distance = glm::length(diff) - target->getRadius() / 2.0;
+        float distance = glm::length(diff) - target->getRadius() / 2.0f;
 
         // We also only care if the target is within no more than its
         // range * 1.3, which is when we want to start rotating the turret.
         // TODO: Add a manual aim override similar to weapon tubes.
-        if (distance < (range + target->getRadius()) * 1.3)
+        if (distance < (range + target->getRadius()) * 1.3f)
         {
             float angle = vec2ToAngle(diff);
             float angle_diff = angleDifference(direction + parent->getRotation(), angle);
@@ -203,7 +237,7 @@ void BeamWeapon::update(float delta)
                 if (turret_rotation_rate > 0)
                 {
                     // ... and if the target is within the turret's arc ...
-                    if (fabsf(turret_angle_diff) < turret_arc / 2.0)
+                    if (fabsf(turret_angle_diff) < turret_arc / 2.0f)
                     {
                         // ... rotate the turret's beam toward the target.
                         if (fabsf(angle_diff) > 0)
@@ -228,7 +262,7 @@ void BeamWeapon::update(float delta)
             // down, and the beam can consume enough energy to fire ...
             P<SpaceShip> ship = target;
 
-            if (parent->lock_fire && distance < range + target->getRadius()/4 && cooldown <= 0.0 && fabsf(angle_diff) < arc / 2.0 && parent->useEnergy(energy_per_beam_fire) && (!ship || ship->docking_target != parent))
+            if (parent->lock_fire && distance < range + target->getRadius()/4.0f && cooldown <= 0.0f && fabsf(angle_diff) < arc / 2.0f && parent->useEnergy(energy_per_beam_fire) && (!ship || ship->docking_target != parent))
             {
                 // ... add heat to the beam and zap the target.
                 parent->addHeat(SYS_BeamWeapons, heat_per_beam_fire);
@@ -237,7 +271,7 @@ void BeamWeapon::update(float delta)
         }
     // If the beam is turreted and can move, but doesn't have a target, reset it
     // if necessary.
-    } else if (game_server && range > 0.0 && delta > 0 && turret_arc > 0.0 && direction != turret_direction && turret_rotation_rate > 0) {
+    } else if (game_server && range > 0.0f && delta > 0 && turret_arc > 0.0f && direction != turret_direction && turret_rotation_rate > 0) {
         float reset_angle_diff = angleDifference(direction, turret_direction);
 
         if (fabsf(reset_angle_diff) > 0)
@@ -263,7 +297,7 @@ void BeamWeapon::fire(P<SpaceObject> target, ESystem system_target)
     effect->beam_fire_sound = "sfx/laser_fire.wav";
     effect->beam_fire_sound_power = damage / 6.0f;
 
-    DamageInfo info(parent, DT_Energy, hit_location);
+    DamageInfo info(parent, damage_type, hit_location);
     info.frequency = parent->beam_frequency; // Beam weapons now always use frequency of the ship.
     info.system_target = system_target;
     target->takeDamage(damage, info);

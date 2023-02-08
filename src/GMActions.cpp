@@ -5,6 +5,7 @@
 #include "spaceObjects/wormHole.h"
 #include "spaceObjects/cpuShip.h"
 #include "spaceObjects/explosionEffect.h"
+#include <SDL_assert.h>
 
 const static int16_t CMD_RUN_SCRIPT = 0x0000;
 const static int16_t CMD_SEND_GLOBAL_MESSAGE = 0x0001;
@@ -25,7 +26,7 @@ REGISTER_MULTIPLAYER_CLASS(GameMasterActions, "GameMasterActions")
 GameMasterActions::GameMasterActions()
 : MultiplayerObject("GameMasterActions"), gmSelectionForRunningScript(nullptr)
 {
-    assert(!gameMasterActions);
+    SDL_assert(!gameMasterActions);
     gameMasterActions = this;
 }
 
@@ -139,7 +140,8 @@ void GameMasterActions::onReceiveClientCommand(int32_t client_id, sp::io::DataBu
             {
                 if (n == index)
                 {
-                    callback.call<void>();
+                    auto cb = callback;
+                    cb.call<void>();
                     break;
                 }
                 n++;
@@ -369,7 +371,7 @@ void GameMasterActions::executeContextualGoTo(glm::vec2 position, bool force, PV
                 }
                 else
                 {
-                    if (!force && target->canBeDockedBy(cpu_ship))
+                    if (!force && target->canBeDockedBy(cpu_ship) != DockStyle::None)
                         cpu_ship->orderDock(target);
                     else
                         cpu_ship->orderDefendTarget(target);
@@ -402,9 +404,12 @@ static int addGMFunction(lua_State* L)
 
     return 0;
 }
-/// addGMFunction(name, function)
-/// Add a function that can be called from the GM console. This can be used to create helper scripts for the GM.
-/// Or to give the GM console certain control over the scenario.
+/// void addGMFunction(string name, ScriptSimpleCallback callback)
+/// Defines a function to call from a button on the GM console.
+/// The name is also used as the button text.
+/// Use this to create helper scripts for the GM or give the GM console certain controls over the scenario.
+/// These work only when added via scenario script, but not via the HTTP API. (#1807)
+/// Example: addGMFunction("Humans Win", function() victory("Human Navy") end)
 REGISTER_SCRIPT_FUNCTION(addGMFunction);
 static int removeGMFunction(lua_State* L)
 {
@@ -423,8 +428,10 @@ static int removeGMFunction(lua_State* L)
     }
     return 0;
 }
-/// removeGMFunction(name)
-/// Remove a function from the GM console
+
+/// void removeGMFunction(string name)
+/// Removes a function from the GM console.
+/// Example: removeGMFunction("Humans Win")
 REGISTER_SCRIPT_FUNCTION(removeGMFunction);
 static int clearGMFunctions(lua_State* L)
 {
@@ -432,8 +439,9 @@ static int clearGMFunctions(lua_State* L)
     gameGlobalInfo->gm_callback_functions.clear();
     return 0;
 }
-/// clearGMFunctions()
-/// Remove all the GM functions from the GM console.
+
+/// void clearGMFunctions()
+/// Removes all functions from the GM console.
 REGISTER_SCRIPT_FUNCTION(clearGMFunctions);
 static int getGMSelection(lua_State* L)
 {
@@ -443,8 +451,10 @@ static int getGMSelection(lua_State* L)
     }
     return convert<PVector<SpaceObject> >::returnType(L, objects);
 }
-/// getGMSelection()
-/// Returns an list of objects that the GM currently has selected.
+/// PVector<SpaceObject> getGMSelection()
+/// Returns a list of SpaceObjects selected on the GM console.
+/// Use in GM functions to apply them to specific objects.
+/// Example: addGMFunction("Destroy selected", function() for _, obj in ipairs(getGMSelection()) do obj:destroy() end end)
 REGISTER_SCRIPT_FUNCTION(getGMSelection);
 
 static int onGMClick(lua_State* L)
@@ -473,8 +483,11 @@ static int onGMClick(lua_State* L)
 
     return 0;
 }
-/// onGMClick(function)
-/// Register a callback function that is called when the gm clicks on the background of their screen.
-/// Example 1: onGMClick(function(x,y) print(x,y) end) -- print the x and y when clicked.
-/// Example 2: onGMClick(nil) -- resets to no function being called on clicks
+/// void onGMClick(ScriptSimpleCallback callback)
+/// Defines a function to call when the GM clicks on the background of their console.
+/// Passes the x and y game-space coordinates of the click location.
+/// These work only when added via scenario script, but not via the HTTP API. (#1807)
+/// Examples:
+///   onGMClick(function(x,y) print(x,y) end) -- print the clicked position's coordinates
+///   onGMClick(nil) -- reset the callback
 REGISTER_SCRIPT_FUNCTION(onGMClick);

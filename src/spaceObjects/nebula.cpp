@@ -1,9 +1,10 @@
-#include <GL/glew.h>
-#include <SFML/OpenGL.hpp>
+#include <graphics/opengl.h>
 
 #include "main.h"
 #include "nebula.h"
 #include "playerInfo.h"
+#include "random.h"
+#include "textureManager.h"
 
 #include "scriptInterface.h"
 
@@ -11,17 +12,20 @@
 #include "shaderRegistry.h"
 
 #include <glm/ext/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
-#if FEATURE_3D_RENDERING
 struct VertexAndTexCoords
 {
     glm::vec3 vertex;
     glm::vec2 texcoords;
 };
-#endif
 
 
-/// Nebulae block long-range radar in a 5U range.
+/// A Nebula is a piece of space terrain with a 5U radius that blocks long-range radar, but not short-range radar.
+/// This hides any SpaceObjects inside of a Nebula, as well as SpaceObjects on the other side of its radar "shadow", from any SpaceShip outside of it.
+/// Likewise, a SpaceShip fully inside of a nebula has effectively no long-range radar functionality.
+/// In 3D space, a Nebula resembles a dense cloud of colorful gases.
+/// Example: nebula = Nebula():setPosition(1000,2000)
 REGISTER_SCRIPT_SUBCLASS(Nebula, SpaceObject)
 {
 }
@@ -54,11 +58,9 @@ Nebula::Nebula()
     nebula_list.push_back(this);
 }
 
-#if FEATURE_3D_RENDERING
 void Nebula::draw3DTransparent()
 {
     ShaderRegistry::ScopedShader shader(ShaderRegistry::Shaders::Billboard);
-    glTranslatef(-getPosition().x, -getPosition().y, 0);
 
     std::array<VertexAndTexCoords, 4> quad{
         glm::vec3{}, {0.f, 1.f},
@@ -78,8 +80,8 @@ void Nebula::draw3DTransparent()
         float size = cloud.size;
 
         float distance = glm::length(camera_position - position);
-        float alpha = 1.0 - (distance / 100000.0f);
-        if (alpha < 0.0)
+        float alpha = 1.0f - (distance / 100000.0f);
+        if (alpha < 0.0f)
             continue;
 
         // setup our quad.
@@ -88,38 +90,26 @@ void Nebula::draw3DTransparent()
             point.vertex = position;
         }
 
-        glBindTexture(GL_TEXTURE_2D, textureManager.getTexture("Nebula" + string(cloud.texture) + ".png")->getNativeHandle());
+        textureManager.getTexture("Nebula" + string(cloud.texture) + ".png")->bind();
         glUniform4f(shader.get().uniform(ShaderRegistry::Uniforms::Color), alpha * 0.8f, alpha * 0.8f, alpha * 0.8f, size);
+        auto model_matrix = glm::translate(getModelMatrix(), {cloud.offset.x, cloud.offset.y, 0});
+        glUniformMatrix4fv(shader.get().uniform(ShaderRegistry::Uniforms::Model), 1, GL_FALSE, glm::value_ptr(model_matrix));
 
         glVertexAttribPointer(positions.get(), 3, GL_FLOAT, GL_FALSE, sizeof(VertexAndTexCoords), (GLvoid*)quad.data());
         glVertexAttribPointer(texcoords.get(), 2, GL_FLOAT, GL_FALSE, sizeof(VertexAndTexCoords), (GLvoid*)((char*)quad.data() + sizeof(glm::vec3)));
-        std::initializer_list<uint8_t> indices = { 0, 3, 2, 0, 2, 1 };
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_BYTE, std::begin(indices));
+        std::initializer_list<uint16_t> indices = { 0, 3, 2, 0, 2, 1 };
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, std::begin(indices));
     }
 }
-#endif//FEATURE_3D_RENDERING
 
-void Nebula::drawOnRadar(sf::RenderTarget& window, sf::Vector2f position, float scale, float rotation, bool long_range)
+void Nebula::drawOnRadar(sp::RenderTarget& renderer, glm::vec2 position, float scale, float rotation, bool long_range)
 {
-    sf::Sprite object_sprite;
-    textureManager.setTexture(object_sprite, "Nebula" + string(radar_visual) + ".png");
-    object_sprite.setRotation(getRotation()-rotation);
-    object_sprite.setPosition(position);
-    float size = getRadius() * scale / object_sprite.getTextureRect().width * 3.0;
-    object_sprite.setScale(size, size);
-    object_sprite.setColor(sf::Color(255, 255, 255));
-    window.draw(object_sprite, sf::BlendAdd);
+    renderer.drawRotatedSpriteBlendAdd("Nebula" + string(radar_visual) + ".png", position, getRadius() * scale * 3.0f, getRotation()-rotation);
 }
 
-void Nebula::drawOnGMRadar(sf::RenderTarget& window, sf::Vector2f position, float scale, float rotation, bool long_range)
+void Nebula::drawOnGMRadar(sp::RenderTarget& renderer, glm::vec2 position, float scale, float rotation, bool long_range)
 {
-    sf::CircleShape range_circle(getRadius() * scale);
-    range_circle.setOrigin(getRadius() * scale, getRadius() * scale);
-    range_circle.setPosition(position);
-    range_circle.setFillColor(sf::Color::Transparent);
-    range_circle.setOutlineColor(sf::Color(255, 255, 255, 64));
-    range_circle.setOutlineThickness(2.0);
-    window.draw(range_circle);
+    renderer.drawCircleOutline(position, getRadius() * scale, 2.0, glm::u8vec4(255, 255, 255, 64));
 }
 
 bool Nebula::inNebula(glm::vec2 position)
@@ -166,7 +156,7 @@ glm::vec2 Nebula::getFirstBlockedPosition(glm::vec2 start, glm::vec2 end)
     foreach(Nebula, n, nebula_list)
     {
         float f = glm::dot(startEndDiff, n->getPosition() - start) / startEndLength;
-        if (f < 0.0)
+        if (f < 0.0f)
             f = 0;
         glm::vec2 q = start + startEndDiff / startEndLength * f;
         if (glm::length2(q - n->getPosition()) < n->getRadius() * n->getRadius())

@@ -47,7 +47,7 @@
 //public:
 //    FighterPilotView(GuiContainer* owner, P<PlayerSpaceship> targetSpaceship);
 //
-//    virtual void onDraw(sf::RenderTarget& window);
+//    virtual void onDraw(sp::RenderTarget& renderer);
 //    virtual void onHotkey(const HotkeyResult& key) override;
 //    void setTargetSpaceship(P<PlayerSpaceship> targetSpaceship);
 //};

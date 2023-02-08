@@ -29,20 +29,20 @@
 
 #include "gui/gui2_keyvaluedisplay.h"
 #include "gui/gui2_rotationdial.h"
+#include "gui/gui2_image.h"
 
 SinglePilotView::SinglePilotView(GuiContainer* owner, P<PlayerSpaceship> targetSpaceship)
 : GuiElement(owner, "SINGLE_PILOT_VIEW"), target_spaceship(targetSpaceship)
 {
     // Render the radar shadow and background decorations.
-    background_gradient = new GuiOverlay(this, "BACKGROUND_GRADIENT", sf::Color::White);
-    background_gradient->setTextureCenter("gui/BackgroundGradientSingle");
+    (new GuiImage(this, "BACKGROUND_GRADIENT", "gui/background/gradientSingle.png"))->setPosition(glm::vec2(0, 0), sp::Alignment::Center)->setSize(1200, 900);
 
     // 5U tactical radar with piloting features.
     radar = new GuiRadarView(this, "TACTICAL_RADAR", &targets, (P<SpaceShip>)target_spaceship);
-    radar->setPosition(0, 0, ACenter)->setSize(GuiElement::GuiSizeMatchHeight, 750);
+    radar->setPosition(0, 0, sp::Alignment::Center)->setSize(GuiElement::GuiSizeMatchHeight, 750);
     radar->setRangeIndicatorStepSize(1000.0)->shortRange()->enableGhostDots()->enableWaypoints()->enableCallsigns()->enableHeadingIndicators()->setStyle(GuiRadarView::Circular);
     radar->setCallbacks(
-        [this](glm::vec2 position) {
+        [this](sp::io::Pointer::Button button, glm::vec2 position) {
             targets.setToClosestTo(position, 250, TargetsContainer::Targetable, target_spaceship);
             if (target_spaceship && targets.get())
                 target_spaceship->commandSetTarget(targets.get());
@@ -62,10 +62,10 @@ SinglePilotView::SinglePilotView(GuiContainer* owner, P<PlayerSpaceship> targetS
     
     // Ship stats and combat maneuver at bottom right corner of left panel.
     combat_maneuver = new GuiCombatManeuver(this, "COMBAT_MANEUVER", target_spaceship);
-    combat_maneuver->setPosition(-20, -240, ABottomRight)->setSize(200, 150)->setVisible(target_spaceship && target_spaceship->getCanCombatManeuver());
+    combat_maneuver->setPosition(-20, -240, sp::Alignment::BottomRight)->setSize(200, 150)->setVisible(target_spaceship && target_spaceship->getCanCombatManeuver());
 
-    GuiAutoLayout* stats = new GuiAutoLayout(this, "STATS", GuiAutoLayout::LayoutVerticalTopToBottom);
-    stats->setPosition(-20, -80, ABottomRight)->setSize(240, 160);
+    auto stats = new GuiElement(this, "STATS");
+    stats->setPosition(-20, -80, sp::Alignment::BottomRight)->setSize(240, 160)->setAttribute("layout", "vertical");;
     heat_display = new GuiKeyValueDisplay(stats, "HEAT_DISPLAY", 0.45, "Surchauffe", "");
     heat_display->setIcon("gui/icons/status_overheat")->setTextSize(20)->setSize(240, 40);
     hull_display = new GuiKeyValueDisplay(stats, "HULL_DISPLAY", 0.45, "Carlingue", "");
@@ -83,16 +83,16 @@ SinglePilotView::SinglePilotView(GuiContainer* owner, P<PlayerSpaceship> targetS
     missile_aim = new AimLock(this, "MISSILE_AIM", radar, -90, 360 - 90, 0, [this](float value){
         tube_controls->setMissileTargetAngle(value);
     });
-    missile_aim->setPosition(0, 0, ACenter)->setSize(GuiElement::GuiSizeMatchHeight, 700);
+    missile_aim->setPosition(0, 0, sp::Alignment::Center)->setSize(GuiElement::GuiSizeMatchHeight, 700);
 
     // Weapon tube controls.
     tube_controls = new GuiMissileTubeControls(this, "MISSILE_TUBES", target_spaceship);
-    tube_controls->setPosition(20, -20, ABottomLeft);
+    tube_controls->setPosition(20, -20, sp::Alignment::BottomLeft);
     radar->enableTargetProjections(tube_controls);
 
     // Engine layout in top left corner of left panel.
-    GuiAutoLayout* engine_layout = new GuiAutoLayout(this, "ENGINE_LAYOUT", GuiAutoLayout::LayoutHorizontalLeftToRight);
-    engine_layout->setPosition(20, 120, ATopLeft)->setSize(GuiElement::GuiSizeMax, 250);
+    auto engine_layout = new GuiElement(this, "ENGINE_LAYOUT");
+    engine_layout->setPosition(20, 120, sp::Alignment::TopLeft)->setSize(GuiElement::GuiSizeMax, 250)->setAttribute("layout", "horizontal");
 
     impulse_controls = new GuiImpulseControls(engine_layout, "IMPULSE", target_spaceship);
     impulse_controls->setSize(100, GuiElement::GuiSizeMax);
@@ -103,16 +103,16 @@ SinglePilotView::SinglePilotView(GuiContainer* owner, P<PlayerSpaceship> targetS
 
     // Docking, comms, and shields buttons across top.
     docking_button = new GuiDockingButton(this, "DOCKING", target_spaceship);
-    docking_button->setPosition(20, 20, ATopLeft)->setSize(250, 50);
+    docking_button->setPosition(20, 20, sp::Alignment::TopLeft)->setSize(250, 50);
     landing_button = new GuiLandingButton(this, "LANDING", target_spaceship);
-    landing_button->setPosition(20, 60, ATopLeft)->setSize(250, 50);
+    landing_button->setPosition(20, 60, sp::Alignment::TopLeft)->setSize(250, 50);
     if (target_spaceship == my_spaceship)
     {
-        (new GuiOpenCommsButton(this, "OPEN_COMMS_BUTTON", tr("Open Comms"), &targets))->setPosition(270, 20, ATopLeft)->setSize(250, 50);
+        (new GuiOpenCommsButton(this, "OPEN_COMMS_BUTTON", tr("Open Comms"), &targets))->setPosition(270, 20, sp::Alignment::TopLeft)->setSize(250, 50);
         (new GuiCommsOverlay(this))->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);
     }
     shields_enable_button = new GuiShieldsEnableButton(this, "SHIELDS_ENABLE", target_spaceship);
-    shields_enable_button->setPosition(-20, 80, ATopRight)->setSize(250, 50);
+    shields_enable_button->setPosition(-20, 80, sp::Alignment::TopRight)->setSize(250, 50);
 
 
     lock_fire = new GuiToggleButton(this, "TOOGLE_FIRE", "Feu", [this](bool value){
@@ -120,17 +120,17 @@ SinglePilotView::SinglePilotView(GuiContainer* owner, P<PlayerSpaceship> targetS
             target_spaceship->lock_fire = value;
     });
     lock_fire->setIcon("gui/icons/lock");
-    //lock_fire->setPosition(-70, -10, ABottomCenter)->setSize(200, 50);
-    lock_fire->setPosition(-20, 150, ATopRight)->setSize(150, 50);
+    //lock_fire->setPosition(-70, -10, sp::Alignment::BottomCenter)->setSize(200, 50);
+    lock_fire->setPosition(-20, 150, sp::Alignment::TopRight)->setSize(150, 50);
     lock_fire->setValue(false);
 
     // Missile lock button near top right of left panel.
     lock_aim = new AimLockButton(this, "LOCK_AIM", tube_controls, missile_aim, target_spaceship);
-    //lock_aim->setPosition(130, -10, ABottomCenter)->setSize(200, 50);
-    lock_aim->setPosition(-20, 200, ATopRight)->setSize(150, 50);
+    //lock_aim->setPosition(130, -10, sp::Alignment::BottomCenter)->setSize(200, 50);
+    lock_aim->setPosition(-20, 200, sp::Alignment::TopRight)->setSize(150, 50);
 
     custom_ship_functions = new GuiCustomShipFunctions(this, singlePilot, "", target_spaceship);
-    custom_ship_functions->setPosition(-20, 120, ATopRight)->setSize(250, GuiElement::GuiSizeMax);
+    custom_ship_functions->setPosition(-20, 120, sp::Alignment::TopRight)->setSize(250, GuiElement::GuiSizeMax);
 }
 
 void SinglePilotView::setTargetSpaceship(P<PlayerSpaceship> targetSpaceship){
@@ -148,7 +148,7 @@ void SinglePilotView::setTargetSpaceship(P<PlayerSpaceship> targetSpaceship){
     custom_ship_functions->setTargetSpaceship(target_spaceship);
 }
 
-void SinglePilotView::onDraw(sf::RenderTarget& window)
+void SinglePilotView::onDraw(sp::RenderTarget& renderer)
 {
     if (target_spaceship)
     {
@@ -158,9 +158,9 @@ void SinglePilotView::onDraw(sf::RenderTarget& window)
         heat_display->setValue(string(totalHeat, 2));
         hull_display->setValue(string(int(100 * target_spaceship->hull_strength / target_spaceship->hull_max)) + "%");
         energy_display->setValue(string(int(target_spaceship->energy_level)));
-        heading_display->setValue(string(fmodf(target_spaceship->getRotation() + 360.0 + 360.0 - 270.0, 360.0), 1));
+        heading_display->setValue(string(target_spaceship->getHeading(), 1));
         float velocity = glm::length(target_spaceship->getVelocity()) / 1000 * 60;
-        velocity_display->setValue(string(velocity, 1) + DISTANCE_UNIT_1K + "/min");
+        velocity_display->setValue(tr("{value} {unit}/min").format({{"value", string(velocity, 1)}, {"unit", DISTANCE_UNIT_1K}}));
 
         lock_aim->setVisible(target_spaceship->getWeaponTubeCount() > 0);
 
@@ -183,26 +183,26 @@ void SinglePilotView::onDraw(sf::RenderTarget& window)
 
         targets.set(target_spaceship->getTarget());
     }
-    GuiElement::onDraw(window);
+    GuiElement::onDraw(renderer);
 }
 
-void SinglePilotView::onHotkey(const HotkeyResult& key)
+void SinglePilotView::onUpdate()
 {
     if (isVisible()){
-        if (key.category == "HELMS" && target_spaceship)
+        if (target_spaceship && isVisible())
         {
-            if (key.hotkey == "TURN_LEFT")
-                target_spaceship->commandTargetRotation(target_spaceship->getRotation() - 5.0f);
-            else if (key.hotkey == "TURN_RIGHT")
-                target_spaceship->commandTargetRotation(target_spaceship->getRotation() + 5.0f);
-        }
-        if (key.category == "WEAPONS" && target_spaceship)
-        {
-            if (key.hotkey == "NEXT_ENEMY_TARGET")
+            auto angle = (keys.helms_turn_right.getValue() - keys.helms_turn_left.getValue()) * 5.0f;
+            if (angle != 0.0f)
+            {
+                my_spaceship->commandTargetRotation(my_spaceship->getRotation() + angle);
+            }
+            if (keys.weapons_enemy_next_target.getDown())
             {
                 bool current_found = false;
                 foreach(SpaceObject, obj, space_object_list)
                 {
+                    if (obj == my_spaceship)
+                        continue;
                     if (obj == targets.get())
                     {
                         current_found = true;
@@ -229,7 +229,7 @@ void SinglePilotView::onHotkey(const HotkeyResult& key)
                     }
                 }
             }
-            if (key.hotkey == "NEXT_TARGET")
+            if (keys.weapons_next_target.getDown())
             {
                 bool current_found = false;
                 foreach(SpaceObject, obj, space_object_list)
@@ -260,41 +260,13 @@ void SinglePilotView::onHotkey(const HotkeyResult& key)
                     }
                 }
             }
-            if (key.hotkey == "AIM_MISSILE_LEFT")
+            auto aim_adjust = keys.weapons_aim_left.getValue() - keys.weapons_aim_right.getValue();
+            if (aim_adjust != 0.0f)
             {
-                missile_aim->setValue(missile_aim->getValue() - 5.0f);
-                tube_controls->setMissileTargetAngle(missile_aim->getValue());
-            }
-            if (key.hotkey == "AIM_MISSILE_RIGHT")
-            {
-                missile_aim->setValue(missile_aim->getValue() + 5.0f);
+                missile_aim->setValue(missile_aim->getValue() - 5.0f * aim_adjust);
                 tube_controls->setMissileTargetAngle(missile_aim->getValue());
             }
         }
     }
-}
-
-bool SinglePilotView::onJoystickAxis(const AxisAction& axisAction){
-    if(target_spaceship){
-        if (axisAction.category == "HELMS"){
-            if (axisAction.action == "IMPULSE"){
-                target_spaceship->commandImpulse(axisAction.value);  
-                return true;
-            } 
-            if (axisAction.action == "ROTATE"){
-                target_spaceship->commandTurnSpeed(axisAction.value);
-                return true;
-            } 
-            if (axisAction.action == "STRAFE"){
-                target_spaceship->commandCombatManeuverStrafe(axisAction.value);
-                return true;
-            } 
-            if (axisAction.action == "BOOST"){
-                target_spaceship->commandCombatManeuverBoost(axisAction.value);
-                return true;
-            }
-        }
-    }
-    return false;
 }
    

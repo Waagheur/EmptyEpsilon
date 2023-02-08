@@ -46,7 +46,7 @@ public:
     // Repair effectiveness
     constexpr static float system_repair_effect_per_second = 0.005;
     constexpr static float default_energy_shield_use_per_second = 1.5f;
-    constexpr static float default_energy_warp_per_second = 1.0f;
+    constexpr static float default_energy_warp_per_second = 1.7f;
     // Total coolant
     float max_coolant_per_system = 10.0f;
     float max_coolant;
@@ -77,11 +77,11 @@ public:
     public:
         string prefix;
         string text;
-        sf::Color color;
+        glm::u8vec4 color;
         string station;
 
         ShipLogEntry() {}
-        ShipLogEntry(string prefix, string text, sf::Color color, string station)
+        ShipLogEntry(string prefix, string text, glm::u8vec4 color, string station)
         : prefix(prefix), text(text), color(color), station(station) {}
 
         bool operator!=(const ShipLogEntry& e) { return prefix != e.prefix || text != e.text || color != e.color || station != e.station; }
@@ -427,8 +427,8 @@ public:
     float getNetSystemEnergyUsage();
 
     // Ship's log functions
-    void addToSpecificShipLog(string message, sf::Color color, string station); // avec le register script, impossible d'avoir des signatures avec arguments differents
-    void addToShipLog(string message, sf::Color color) { addToSpecificShipLog(message, color, "generic"); }
+    void addToSpecificShipLog(string message, glm::u8vec4 color, string station); // avec le register script, impossible d'avoir des signatures avec arguments differents
+    void addToShipLog(string message, glm::u8vec4 color) { addToSpecificShipLog(message, color, "generic"); }
     void addToShipLogBy(string message, P<SpaceObject> target);
     const std::vector<ShipLogEntry>& getShipsLog(string station) const;
 
@@ -449,18 +449,18 @@ public:
     void setControlCode(string code) { control_code = code.upper(); }
 
     // Radar function
-    virtual void drawOnGMRadar(sf::RenderTarget& window, sf::Vector2f position, float scale, float rotation, bool long_range) override;
+    virtual void drawOnGMRadar(sp::RenderTarget& renderer, glm::vec2 position, float scale, float rotation, bool long_range) override;
 
     //specific to player ship
     /*!
     * Check if object can accept landing from this ship
     * \param object Object that wants to land
     */
-    virtual bool canBeLandedOn(P<SpaceObject> obj);
+    virtual bool canBeLandedOn(P<SpaceObject> obj) override;
     // Radar range
-    float getLongRangeRadarRange();
-    float getShortRangeRadarRange();
-    float getProbeRangeRadarRange();
+    float getLongRangeRadarRange() override;
+    float getShortRangeRadarRange() override;
+    float getProbeRangeRadarRange() override;
 
     //Ajout Tdelc, deplace depuis
     float getDronesControlRange();

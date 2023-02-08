@@ -2,6 +2,7 @@
 #define EDAMAGETYPE_H
 
 #include "engine.h"
+#include "scriptInterface.h"
 
 enum EDamageType
 {

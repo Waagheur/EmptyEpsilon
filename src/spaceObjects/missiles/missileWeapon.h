@@ -17,7 +17,7 @@ public:
     int32_t target_id;
     float target_angle;
     float speed;
-    sf::Color color;
+    glm::u8vec4 color;
     // Damage modifier for this missile which indicates it's size. (eg; Missiles by fighters have a low modifier), missiles from
     // capital ships have a high modifier.
     float category_modifier;  
@@ -31,7 +31,7 @@ public:
 
     MissileWeapon(string multiplayer_name, const MissileWeaponData& data, const EDamageType &i_damage_type);
 
-    virtual void drawOnRadar(sf::RenderTarget& window, sf::Vector2f position, float scale, float rotation, bool long_range) override;
+    virtual void drawOnRadar(sp::RenderTarget& renderer, glm::vec2 position, float scale, float rotation, bool long_range) override;
     virtual void update(float delta) override;
 
     virtual void collide(Collisionable* target, float force) override;

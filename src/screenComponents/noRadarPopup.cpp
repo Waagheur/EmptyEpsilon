@@ -13,13 +13,13 @@ GuiNoRadarPopup::GuiNoRadarPopup(GuiContainer* owner)
 {
     setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);
 
-    no_radar_overlay = new GuiOverlay(this, "NO_RADAR", sf::Color(0, 0, 0, 128));
-    (new GuiPanel(no_radar_overlay, "NO_RADAR_FRAME"))->setPosition(0, 0, ACenter)->setSize(500, 100);
-    (new GuiLabel(no_radar_overlay, "NO_RADAR_TEXT", "PAS D'AUSPEX", 70))->setPosition(0, 0, ACenter)->setSize(500, 100);
+    no_radar_overlay = new GuiOverlay(this, "NO_RADAR", glm::u8vec4(0, 0, 0, 128));
+    (new GuiPanel(no_radar_overlay, "NO_RADAR_FRAME"))->setPosition(0, 0, sp::Alignment::Center)->setSize(500, 100);
+    (new GuiLabel(no_radar_overlay, "NO_RADAR_TEXT", "PAS D'AUSPEX", 70))->setPosition(0, 0, sp::Alignment::Center)->setSize(500, 100);
 
 }
 
-void GuiNoRadarPopup::onDraw(sf::RenderTarget& window)
+void GuiNoRadarPopup::onDraw(sp::RenderTarget& renderer)
 {
     if (my_spaceship && my_spaceship->getLongRangeRadarRange() <=0)
     {

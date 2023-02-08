@@ -1,3 +1,7 @@
+-- A FactionInfo object contains presentation details and faction relationships for member SpaceObjects.
+-- This file is loaded upon launching a scenario.
+-- For details, see the FactionInfo class and getFactionInfo() global function in the scripting reference.
+
 neutre = FactionInfo():setName("Neutre")
 neutre:setGMColor(128, 128, 128)
 neutre:setDescription([[Les independants se distinguent principalement par le fait qu’ils n’ont aucune affiliation forte avec aucune faction.

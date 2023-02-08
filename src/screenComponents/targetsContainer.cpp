@@ -69,7 +69,7 @@ void TargetsContainer::setToClosestTo(glm::vec2 position, float max_range, ESele
                     continue;
                 break;
             }
-            if (!target || glm::length2(position - spaceObject->getPosition() - glm::vec2(spaceObject->getRadius() / 2.0,spaceObject->getRadius() / 2.0)) < glm::length2(position - target->getPosition()))
+            if (!target || glm::length2(position - spaceObject->getPosition() - glm::vec2(spaceObject->getRadius() / 2.f,spaceObject->getRadius() / 2.f)) < glm::length2(position - target->getPosition()))
                 target = spaceObject;
         }
     }

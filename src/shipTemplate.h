@@ -6,6 +6,8 @@
 #include <optional>
 #include "engine.h"
 #include "modelData.h"
+#include "scriptInterfaceMagic.h"
+#include "multiplayer.h"
 
 #include "beamTemplate.h"
 #include "missileWeaponData.h"
@@ -48,19 +50,19 @@ class DroneTemplate {
 class ShipRoomTemplate
 {
 public:
-    sf::Vector2i position;
-    sf::Vector2i size;
+    glm::ivec2 position;
+    glm::ivec2 size;
     ESystem system;
 
-    ShipRoomTemplate(sf::Vector2i position, sf::Vector2i size, ESystem system) : position(position), size(size), system(system) {}
+    ShipRoomTemplate(glm::ivec2 position, glm::ivec2 size, ESystem system) : position(position), size(size), system(system) {}
 };
 class ShipDoorTemplate
 {
 public:
-    sf::Vector2i position;
+    glm::ivec2 position;
     bool horizontal;
 
-    ShipDoorTemplate(sf::Vector2i position, bool horizontal) : position(position), horizontal(horizontal) {}
+    ShipDoorTemplate(glm::ivec2 position, bool horizontal) : position(position), horizontal(horizontal) {}
 };
 
 class SpaceObject;
@@ -90,7 +92,7 @@ private:
     string class_name;
     string sub_class_name;
     string os_name;
-    int hack_diff;
+    unsigned int hack_diff;
     TemplateType type;
     bool secret;
 public:
@@ -108,14 +110,16 @@ public:
     void setOSName(string os_name) { this->os_name = os_name; }
     void setHackDiff(int hack_diff) { this->hack_diff = hack_diff; }
     string getOSName() { return os_name; }
-    int getHackDiff() { return hack_diff; }
+    unsigned int getHackDiff() { return hack_diff; }
 
     P<ModelData> model_data;
+    bool visible{true}; //Should be visible in science/gm/other player facing locations. Invisible templates exists for backwards compatibility.
 
     /*!
      * List of ship classes that can dock with this ship. (only used for ship2ship docking)
      */
-    std::unordered_set<string> can_be_docked_by_class;
+    std::unordered_set<string> external_dock_classes;
+    std::unordered_set<string> internal_dock_classes;
     bool shares_energy_with_docked;
     bool repair_docked;
     bool has_reactor;
@@ -175,9 +179,12 @@ public:
     void setLocaleName(string name);
     void setClass(string class_name, string sub_class_name);
     void setDescription(string description);
+    void hidden() { visible = false; }
     void setModel(string model_name);
     void setDefaultAI(string default_ai_name);
-    void setDockClasses(std::vector<string> classes);
+    void setDockClasses(const std::vector<string>& classes);
+    void setExternalDockClasses(const std::vector<string>& classes);
+    void setInternalDockClasses(const std::vector<string>& classes);
     void setSharesEnergyWithDocked(bool enabled);
     void setRepairDocked(bool enabled);
     void setReactor(bool enabled);
@@ -217,8 +224,8 @@ public:
     void setTubeSize(int index, EMissileSizes size);
 
     void setTubeDirection(int index, float direction);
-    void setHull(float amount) { hull = amount; }
-    void setShields(std::vector<float> values);
+    void setHull(float amount) { if (amount < 0) return; hull = amount; };
+    void setShields(const std::vector<float>& values);
     void setShieldRechargeRate(float amount) { shield_recharge_rate = amount;}
     void setSpeed(float impulse, float turn, float acceleration, std::optional<float> reverse_speed, std::optional<float> reverse_acceleration);
     void setCombatManeuver(float boost, float strafe);
@@ -234,10 +241,9 @@ public:
     void setWeaponStorage(EMissileWeapons weapon, int amount);
     void setCustomWeaponStorage(string weapon, int amount);
     void onCustomWeaponDetonation(string weapon_name, ScriptSimpleCallback callback);
-    void addRoom(sf::Vector2i position, sf::Vector2i size);
-    void addRoomSystem(sf::Vector2i position, sf::Vector2i size, ESystem system);
-    void addDoor(sf::Vector2i position, bool horizontal);
-    void addDrones(string template_name, int count);
+    void addRoom(glm::ivec2 position, glm::ivec2 size);
+    void addRoomSystem(glm::ivec2 position, glm::ivec2 size, ESystem system);
+    void addDoor(glm::ivec2 position, bool horizontal);    void addDrones(string template_name, int count);
     void setDocks(int launchers, int energy, int weapons, int thermic, int repair, int stock);
     int getDocksCount() {return launcher_dock_count + energy_dock_count + weapons_dock_count + thermic_dock_count + repair_dock_count + stock_dock_count;}
     void setRadarTrace(string trace);
@@ -250,8 +256,8 @@ public:
 
     P<ShipTemplate> copy(string new_name);
 
-    sf::Vector2i interiorSize();
-    ESystem getSystemAtRoom(sf::Vector2i position);
+    glm::ivec2 interiorSize();
+    ESystem getSystemAtRoom(glm::ivec2 position);
 
     void setCollisionData(P<SpaceObject> object);
 public:

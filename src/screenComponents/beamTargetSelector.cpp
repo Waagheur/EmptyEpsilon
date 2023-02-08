@@ -14,7 +14,7 @@ GuiBeamTargetSelector::GuiBeamTargetSelector(GuiContainer* owner, string id, P<P
         if (target_spaceship)
             target_spaceship->commandSetBeamSystemTarget(ESystem(std::stoi(value)));
     });
-    selector->setPosition(0, 0, ABottomLeft)->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);
+    selector->setPosition(0, 0, sp::Alignment::BottomLeft)->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);
 
     selector->addEntry(tr("target","Hull"), "-1");
 
@@ -27,7 +27,7 @@ void GuiBeamTargetSelector::setTargetSpaceship(P<PlayerSpaceship> targetSpaceshi
     pdi->setTargetSpaceship(target_spaceship);
 }
 
-void GuiBeamTargetSelector::onDraw(sf::RenderTarget& window)
+void GuiBeamTargetSelector::onDraw(sp::RenderTarget& renderer)
 {
 //    if (target_spaceship)
 //        selector->setSelectionIndex(selector->indexByValue(target_spaceship->beam_system_target));
@@ -39,8 +39,7 @@ void GuiBeamTargetSelector::onDraw(sf::RenderTarget& window)
     {
         selector->enable();
 
-        int n_selector = 0;
-        for(int n=0; n<SYS_COUNT; n++)
+        for(unsigned int n=0; n<SYS_COUNT; n++)
         {
             if (ship->hasSystem(ESystem(n)))
             {
@@ -62,18 +61,18 @@ void GuiBeamTargetSelector::onDraw(sf::RenderTarget& window)
     }
 }
 
-void GuiBeamTargetSelector::onHotkey(const HotkeyResult& key)
+void GuiBeamTargetSelector::onUpdate()
 {
-    if (key.category == "WEAPONS" && target_spaceship && gameGlobalInfo->use_system_damage)
+    if (target_spaceship && gameGlobalInfo->use_system_damage && isVisible())
     {
-        if (key.hotkey == "BEAM_SUBSYSTEM_TARGET_NEXT")
+        if (keys.weapons_beam_subsystem_target_next.getDown())
         {
             if (selector->getSelectionIndex() >= selector->entryCount() - 1)
                 selector->setSelectionIndex(0);
             else
                 selector->setSelectionIndex(selector->getSelectionIndex() + 1);
         }
-        if (key.hotkey == "BEAM_SUBSYSTEM_TARGET_PREV")
+        if (keys.weapons_beam_subsystem_target_previous.getDown())
         {
             if (selector->getSelectionIndex() <= 0)
                 selector->setSelectionIndex(selector->entryCount() - 1);

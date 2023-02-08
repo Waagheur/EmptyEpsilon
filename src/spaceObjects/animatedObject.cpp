@@ -52,21 +52,16 @@ void AnimatedObject::draw3D()
 #endif//FEATURE_3D_RENDERING
 }
 
-void AnimatedObject::drawOnRadar(sf::RenderTarget& window, sf::Vector2f position, float scale, bool long_range)
+void AnimatedObject::drawOnRadar(sp::RenderTarget& renderer, sf::Vector2f position, float scale, bool long_range)
 {
     if (size != getRadius())
         setRadius(size);
 
-    sf::Sprite object_sprite;
-    textureManager.setTexture(object_sprite, "astero-1.png");
-    object_sprite.setRotation(getRotation());
-    object_sprite.setPosition(position);
-//    object_sprite.setColor(sf::Color(255, 200, 100));
+//    object_sprite.setColor(glm::u8vec4(255, 200, 100));
     float size = getRadius() * scale / object_sprite.getTextureRect().width * 2;
     if (size < 0.2)
         size = 0.2;
-    object_sprite.setScale(size, size);
-    window.draw(object_sprite);
+    renderer.drawRotatedSprite("astero-1.png", position, size, getRotation());
 }
 
 void AnimatedObject::collide(Collisionable* target, float force)

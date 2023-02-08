@@ -2,7 +2,9 @@
 #include "gameGlobalInfo.h"
 #include "radarView.h"
 #include "playerInfo.h"
+#include "random.h"
 #include "spaceObjects/playerSpaceship.h"
+
 
 RawScannerDataRadarOverlay::RawScannerDataRadarOverlay(GuiRadarView* owner, string id, float distance)
 : GuiElement(owner, id), radar(owner), distance(distance)
@@ -10,7 +12,7 @@ RawScannerDataRadarOverlay::RawScannerDataRadarOverlay(GuiRadarView* owner, stri
     setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);
 }
 
-void RawScannerDataRadarOverlay::onDraw(sf::RenderTarget& window)
+void RawScannerDataRadarOverlay::onDraw(sp::RenderTarget& renderer)
 {
     if (!my_spaceship)
         return;
@@ -22,7 +24,7 @@ void RawScannerDataRadarOverlay::onDraw(sf::RenderTarget& window)
     else
         probe = game_client->getObjectById(my_spaceship->linked_science_probe_id);
 
-    if (!probe && my_spaceship->getSystemEffectiveness(SYS_Drones) < 0.1)
+    if (!probe && my_spaceship->getSystemEffectiveness(SYS_Drones) < 0.1f)
         return;
 
     auto view_position = radar->getViewPosition();
@@ -31,7 +33,7 @@ void RawScannerDataRadarOverlay::onDraw(sf::RenderTarget& window)
     // Cap the number of signature points, which determines the raw data's
     // resolution.
     const int point_count = 512;
-    float radius = std::min(rect.width, rect.height) / 2.0f;
+    float radius = std::min(rect.size.x, rect.size.y) / 2.0f;
 
     RawRadarSignatureInfo signatures[point_count];
 
@@ -51,7 +53,7 @@ void RawScannerDataRadarOverlay::onDraw(sf::RenderTarget& window)
         // Initialize angle, distance, and scale variables.
         float a_0, a_1;
         float dist = glm::length(obj->getPosition() - view_position);
-        float scale = 1.0;
+        float scale = 1.f;
         
         // If the object is more than twice as far away as the maximum radar
         // range, disregard it.
@@ -62,7 +64,7 @@ void RawScannerDataRadarOverlay::onDraw(sf::RenderTarget& window)
             distance_modif = distance * std::sqrt(my_spaceship->getSystemEffectiveness(SYS_Drones));
         }
 
-        if (dist > distance_modif * 3)
+        if (dist > distance_modif * 3.0f)
             continue;
 
         // The further away the object is, the less its effect on radar data.
@@ -78,7 +80,7 @@ void RawScannerDataRadarOverlay::onDraw(sf::RenderTarget& window)
         }else{
             // Otherwise, measure the affected range of angles by the object's
             // distance and radius.
-            float a_diff = asinf(obj->getRadius() / dist) / M_PI * 180.0f;
+            float a_diff = glm::degrees(asinf(obj->getRadius() / dist));
             float a_center = vec2ToAngle(obj->getPosition() - view_position);
             a_0 = a_center - a_diff;
             a_1 = a_center + a_diff;
@@ -102,7 +104,7 @@ void RawScannerDataRadarOverlay::onDraw(sf::RenderTarget& window)
 
         // Anti-object have more signature range
         float material = info.gravity + info.biological + info.electrical;
-        if (material < 0.0)
+        if (material < 0.f)
         {
             a_0 -= - material * 10;
             a_1 += - material * 10;
@@ -172,9 +174,9 @@ void RawScannerDataRadarOverlay::onDraw(sf::RenderTarget& window)
     }
 
     // Create a vertex array containing each data point.
-    sf::VertexArray a_r(sf::LinesStrip, point_count+1);
-    sf::VertexArray a_g(sf::LinesStrip, point_count+1);
-    sf::VertexArray a_b(sf::LinesStrip, point_count+1);
+    std::vector<glm::vec2> a_r;
+    std::vector<glm::vec2> a_g;
+    std::vector<glm::vec2> a_b;
 
     // For each data point ...
     for(int n = 0; n < point_count; n++)
@@ -198,29 +200,26 @@ void RawScannerDataRadarOverlay::onDraw(sf::RenderTarget& window)
         b /= 5;
 
         // ... and add vectors for each point.
-        a_r[n].position.x = rect.left + rect.width / 2.0f;
-        a_r[n].position.y = rect.top + rect.height / 2.0f;
-        a_r[n].position += sf::vector2FromAngle(float(n) / float(point_count) * 360.0f - view_rotation) * (radius * (0.95f - r / 500));
-        a_r[n].color = sf::Color(255, 0, 0);
+        a_r.push_back(
+            glm::vec2(rect.position.x + rect.size.x / 2.0f, rect.position.y + rect.size.y / 2.0f) +
+            vec2FromAngle(float(n) / float(point_count) * 360.0f - view_rotation) * (radius * (0.95f - r / 500)));
 
-        a_g[n].position.x = rect.left + rect.width / 2.0f;
-        a_g[n].position.y = rect.top + rect.height / 2.0f;
-        a_g[n].position += sf::vector2FromAngle(float(n) / float(point_count) * 360.0f - view_rotation) * (radius * (0.92f - g / 500));
-        a_g[n].color = sf::Color(0, 255, 0);
+        a_g.push_back(
+            glm::vec2(rect.position.x + rect.size.x / 2.0f, rect.position.y + rect.size.y / 2.0f) +
+            vec2FromAngle(float(n) / float(point_count) * 360.0f - view_rotation) * (radius * (0.92f - g / 500)));
 
-        a_b[n].position.x = rect.left + rect.width / 2.0f;
-        a_b[n].position.y = rect.top + rect.height / 2.0f;
-        a_b[n].position += sf::vector2FromAngle(float(n) / float(point_count) * 360.0f - view_rotation) * (radius * (0.89f - b / 500));
-        a_b[n].color = sf::Color(0, 0, 255);
+        a_b.push_back(
+            glm::vec2(rect.position.x + rect.size.x / 2.0f, rect.position.y + rect.size.y / 2.0f) +
+            vec2FromAngle(float(n) / float(point_count) * 360.0f - view_rotation) * (radius * (0.89f - b / 500)));
     }
 
     // Set a zero value at the "end" of the data point array.
-    a_r[point_count] = a_r[0];
-    a_g[point_count] = a_g[0];
-    a_b[point_count] = a_b[0];
+    a_r.push_back(a_r.front());
+    a_g.push_back(a_g.front());
+    a_b.push_back(a_b.front());
 
     // Draw each band as a line.
-    if (my_spaceship->has_electrical_sensor) window.draw(a_r, sf::BlendAdd);
-    if (my_spaceship->has_biological_sensor) window.draw(a_g, sf::BlendAdd);
-    if (my_spaceship->has_gravity_sensor) window.draw(a_b, sf::BlendAdd);
+    if (my_spaceship->has_electrical_sensor) renderer.drawLineBlendAdd(a_r, glm::u8vec4(255, 0, 0, 255));
+    if (my_spaceship->has_biological_sensor) renderer.drawLineBlendAdd(a_g, glm::u8vec4(0, 255, 0, 255));
+    if (my_spaceship->has_gravity_sensor) renderer.drawLineBlendAdd(a_b, glm::u8vec4(0, 0, 255, 255));
 }

@@ -1,9 +1,12 @@
 #ifndef DEBUG_RENDERER_H
 #define DEBUG_RENDERER_H
 
+#include "Renderable.h"
+#include "timer.h"
 #include "engine.h"
 
-class DebugRenderer : public Renderable, public InputEventHandler
+
+class DebugRenderer : public Renderable
 {
 private:
     sp::SystemStopwatch fps_timer;
@@ -16,10 +19,9 @@ private:
 
     std::vector<Engine::EngineTiming> timing_graph_points;
 public:
-    DebugRenderer();
+    DebugRenderer(RenderLayer* renderLayer);
 
-    virtual void render(sf::RenderTarget& window);
-    virtual void handleKeyPress(sf::Event::KeyEvent key, int unicode);
+    virtual void render(sp::RenderTarget& target) override;
 };
 
 #endif//DEBUG_RENDERER_H

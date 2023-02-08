@@ -6,6 +6,7 @@
 #include <i18n.h>
 
 #include "mesh.h"
+#include "random.h"
 #include "shipTemplate.h"
 #include "playerInfo.h"
 #include "spaceObjects/beamEffect.h"
@@ -14,99 +15,270 @@
 #include "electricExplosionEffect.h"
 #include "particleEffect.h"
 #include "spaceObjects/warpJammer.h"
+#include "textureManager.h"
+#include "multiplayer_client.h"
 #include "gameGlobalInfo.h"
 #include "shipCargo.h"
 #include "gui/colorConfig.h"
 
 #include "scriptInterface.h"
 
+#include <SDL_assert.h>
+
+/// A SpaceShip is a ShipTemplateBasedObject controlled by either the AI (CpuShip) or players (PlayerSpaceship).
+/// It can carry and deploy weapons, dock with or carry docked ships, and move using impulse, jump, or warp drives.
+/// It's also subject to being moved by collision physics, unlike SpaceStations, which remain stationary.
+/// This is the parent class of CpuShip and PlayerSpaceship objects, which inherit all STBO and SpaceShip functions.
+/// Objects of this class can't be created by scripts, but its child classes can.
 REGISTER_SCRIPT_SUBCLASS_NO_CREATE(SpaceShip, ShipTemplateBasedObject)
 {
     /// [DEPRECATED]
+    /// Use SpaceShip:isFriendOrFoeIdentifiedBy() or SpaceShip:isFriendOrFoeIdentifiedByFaction().
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, isFriendOrFoeIdentified);
     /// [DEPRECATED]
+    /// Use SpaceShip:isFullyScannedBy() or SpaceShip:isFullyScannedByFaction().
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, isFullyScanned);
+    /// Returns whether this SpaceShip has been identified by the given ship as either hostile or friendly.
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, isFriendOrFoeIdentifiedBy);
+    /// Returns whether this SpaceShip has been fully scanned by the given ship.
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, isFullyScannedBy);
+    /// Returns whether this SpaceShip has been identified by the given faction as either hostile or friendly.
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, isFriendOrFoeIdentifiedByFaction);
+    /// Returns whether this SpaceShip has been fully scanned by the given faction.
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, isFullyScannedByFaction);
+    /// Returns whether this SpaceShip is docked with a station or another ship.
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, isDocked);
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, isDockedWith);
+    /// Returns the object with which this SpaceShip is docked.
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, getDockedWith);
+    /// Returns whether this SpaceShip has been identified by the given SpaceObject as either hostile or friendly.
+    /// Example: ship:isFriendOrFoeIdentifiedBy(enemy)
+    REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, isFriendOrFoeIdentifiedBy);
+    /// Returns whether this SpaceShip has been fully scanned by the given SpaceObject.
+    /// See also SpaceObject:isScannedBy().
+    /// Example: ship:isFullyScannedBy(enemy)
+    REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, isFullyScannedBy);
+    /// Returns whether this SpaceShip has been identified by the given faction as either hostile or friendly.
+    /// Example: ship:isFriendOrFoeIdentifiedByFaction("Kraylor")
+    REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, isFriendOrFoeIdentifiedByFaction);
+    /// Returns whether this SpaceShip has been fully scanned by the given faction.
+    /// See also SpaceObject:isScannedByFaction().
+    /// Example: ship:isFullyScannedByFaction("Kraylor")
+    REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, isFullyScannedByFaction);
+    /// Returns whether this SpaceShip is docked with the given SpaceObject.
+    /// Example: ship:isDocked(base) -- returns true if `ship` is fully docked with `base`
+    REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, isDocked);
+    /// Returns the SoaceObject with which this SpaceShip is docked.
+    /// Example: base = ship:getDockedWith()
+    REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, getDockedWith);
+    /// Returns the EDockingState value of this SpaceShip.
+    /// 0 = Not docked
+    /// 1 = Docking in progress
+    /// 2 = Docked
+    /// Example: ds = ship:getDockingState()
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, getDockingState);
+    /// Returns this SpaceShip's weapons target.
+    /// For a CpuShip, this can differ from its orders target.
+    /// Example: target = ship:getTarget()
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, getTarget);
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, getDockTarget);
+    /// Returns the number of the given weapon type stocked by this SpaceShip.
+    /// Example: homing = ship:getWeaponStorage("Homing")
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, getWeaponStorage);
+    /// Returns this SpaceShip's capacity for the given weapon type.
+    /// Example: homing_max = ship:getWeaponStorageMax("Homing")
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, getWeaponStorageMax);
+    /// Sets the number of the given weapon type stocked by this SpaceShip.
+    /// Example: ship:setWeaponStorage("Homing", 2) -- this ship has 2 Homing missiles
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, setWeaponStorage);
+    /// Sets this SpaceShip's capacity for the given weapon type.
+    /// If this ship has more stock of that weapon type than the new capacity, its stock is reduced.
+    /// However, if this ship's capacity for a weapon type is increased, its stocks are not.
+    /// Use SpaceShip:setWeaponStorage() to update the stocks.
+    /// Example: ship:setWeaponStorageMax("Homing", 4) -- this ship can carry 4 Homing missiles
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, setWeaponStorageMax);
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, getCustomWeaponStorage);
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, getCustomWeaponStorageMax);
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, setCustomWeaponStorage);
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, setCustomWeaponStorageMax);
+    /// Returns this SpaceShip's shield frequency index.
+    /// To convert the index to the value used by players, multiply it by 20, then add 400.
+    /// Example:
+    /// frequency = ship:getShieldsFrequency() -- frequency index is 10
+    /// -- Outputs "Ship's shield frequency is 600THz"
+    /// print("Ship's shield frequency is " .. (frequency * 20) + 400 .. "THz")
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, getShieldsFrequency);
+    /// Sets this SpaceShip's shield frequency index.
+    /// To convert the index to the value used by players, multiply it by 20, then add 400.
+    /// Valid values are 0 (400THz) to 20 (800THz). Defaults to a random value.
+    /// Unlike PlayerSpaceship:commandSetShieldFrequency(), this instantly changes the frequency with no calibration delay.
+    /// Example: frequency = ship:setShieldsFrequency(10) -- frequency is 600THz
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, setShieldsFrequency);
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, getOxygenRechargeRate);
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, setPassagersCount);
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, getPassagersCount);
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, setMaxPassagersCount);
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, getMaxPassagersCount);
+    /// Returns this SpaceShip's beam weapon frequency.
+    /// To convert the index to the value used by players, multiply it by 20, then add 400.
+    /// Example:
+    /// frequency = ship:getBeamFrequency() -- frequency index is 10
+    /// -- Outputs "Ship's beam frequency is 600THz"
+    /// print("Ship's beam frequency is " .. (frequency * 20) + 400 .. "THz")
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, getBeamFrequency);
+    /// Returns this SpaceShip's energy capacity.
+    /// Example: ship:getMaxEnergy()
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, getMaxEnergy);
+    /// Sets this SpaceShip's energy capacity.
+    /// CpuShips don't consume energy. Setting this value has no effect on their behavior or functionality.
+    /// For PlayerSpaceships, see PlayerSpaceship:setEnergyLevelMax().
+    /// Example: ship:setMaxEnergy(800)
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, setMaxEnergy);
+    /// Returns this SpaceShip's energy level.
+    /// Example: ship:getEnergy()
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, getEnergy);
+    /// Sets this SpaceShip's energy level.
+    /// Valid values are any greater than 0 and less than the energy capacity (getMaxEnergy()).
+    /// Invalid values are ignored.
+    /// CpuShips don't consume energy. Setting this value has no effect on their behavior or functionality.
+    /// For PlayerSpaceships, see PlayerSpaceship:setEnergyLevel().
+    /// Example: ship:setEnergy(1000) -- sets the ship's energy to 1000 if its capacity is 1000 or more
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, setEnergy);
+    /// Returns whether this SpaceShip has the given system.
+    /// Example: ship:hasSystem("impulse") -- returns true if the ship has impulse drive
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, hasSystem);
+    /// Returns the hacked level for the given system on this SpaceShip.
+    /// Returns a value between 0.0 (unhacked) and 1.0 (fully hacked).
+    /// Example: ship:getSystemHackedLevel("impulse")
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, getSystemHackedLevel);
+    /// Sets the hacked level for the given system on this SpaceShip.
+    /// Valid range is 0.0 (unhacked) to 1.0 (fully hacked).
+    /// Example: ship:setSystemHackedLevel("impulse",0.5) -- sets the ship's impulse drive to half hacked
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, setSystemHackedLevel);
+    /// Returns the given system's health on this SpaceShip.
+    /// System health is related to damage, and is separate from its hacked level.
+    /// Returns a value between 0.0 (fully disabled) and 1.0 (undamaged).
+    /// Example: ship:getSystemHealth("impulse")
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, getSystemHealth);
+    /// Sets the given system's health on this SpaceShip.
+    /// System health is related to damage, and is separate from its hacked level.
+    /// Valid range is 0.0 (fully disabled) and 1.0 (undamaged).
+    /// Example: ship:setSystemHealth("impulse",0.5) -- sets the ship's impulse drive to half damaged
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, setSystemHealth);
+    /// Returns the given system's maximum health on this SpaceShip.
+    /// Returns a value between 0.0 (fully disabled) and 1.0 (undamaged).
+    /// Example: ship:getSystemHealthMax("impulse")
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, getSystemHealthMax);
+    /// Sets the given system's maximum health on this SpaceShip.
+    /// Valid range is 0.0 (fully disabled) and 1.0 (undamaged).
+    /// Example: ship:setSystemHealthMax("impulse", 0.5) -- limits the ship's impulse drive health to half
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, setSystemHealthMax);
+    /// Returns the given system's heat level on this SpaceShip.
+    /// Returns a value between 0.0 (no heat) and 1.0 (overheating).
+    /// Example: ship:getSystemHeat("impulse")
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, getSystemHeat);
+    /// Sets the given system's heat level on this SpaceShip.
+    /// CpuShips don't generate or manage heat. Setting this has no effect on them.
+    /// Valid range is 0.0 (fully disabled) to 1.0 (undamaged).
+    /// Example: ship:setSystemHeat("impulse", 0.5) -- sets the ship's impulse drive heat to half of capacity
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, setSystemHeat);
+    /// Returns the given system's rate of heating or cooling, in percent (0.01 = 1%) per second?, on this SpaceShip.
+    /// Example: ship:getSystemHeatRate("impulse")
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, getSystemHeatRate);
+    /// Sets the given system's rate of heating or cooling, in percent (0.01 = 1%) per second?, on this SpaceShip.
+    /// CpuShips don't generate or manage heat. Setting this has no effect on them.
+    /// Example: ship:setSystemHeatRate("impulse", 0.05)
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, setSystemHeatRate);
+    /// Returns the given system's power level on this SpaceShip.
+    /// Returns a value between 0.0 (unpowered) and 1.0 (fully powered).
+    /// Example: ship:getSystemPower("impulse")
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, getSystemPower);
+    /// Sets the given system's power level.
+    /// Valid range is 0.0 (unpowered) to 1.0 (fully powered).
+    /// Example: ship:setSystemPower("impulse", 0.5) -- sets the ship's impulse drive to half power
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, setSystemPower);
+    /// Returns the given system's rate of consuming power, in points per second?, in this SpaceShip.
+    /// Example: ship:getSystemPowerRate("impulse")
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, getSystemPowerRate);
+    /// Sets the given system's rate of consuming power, in points per second?, in this SpaceShip.
+    /// CpuShips don't consume energy. Setting this has no effect.
+    /// Example: ship:setSystemPowerRate("impulse", 0.4)
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, setSystemPowerRate);
+    /// Returns the relative power drain factor for the given system.
+    /// Example: ship:getSystemPowerFactor("impulse")
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, getSystemPowerFactor);
+    /// Sets the relative power drain factor? for the given system in this SpaceShip.
+    /// "reactor" has a negative value because it generates power rather than draining it.
+    /// CpuShips don't consume energy. Setting this has no effect.
+    /// Example: ship:setSystemPowerFactor("impulse", 4)
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, setSystemPowerFactor);
+    /// Returns the coolant distribution for the given system in this SpaceShip.
+    /// Returns a value between 0.0 (none) and 1.0 (capacity).
+    /// Example: ship:getSystemCoolant("impulse")
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, getSystemCoolant);
+    /// Sets the coolant quantity for the given system in this SpaceShip.
+    /// CpuShips don't generate or manage heat. Setting this has no effect on them.
+    /// Valid range is 0.0 (none) to 1.0 (capacity).
+    /// Example: ship:setSystemPowerFactor("impulse", 4)
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, setSystemCoolant);
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, getSystemEffectiveness);
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, getSystemRepair);
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, setSystemRepair);
+    /// Returns the rate at which the given system in this SpaceShip takes coolant, in points per second?
+    /// Example: ship:getSystemCoolantRate("impulse")
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, getSystemCoolantRate);
+    /// Sets the rate at which the given system in this SpaceShip takes coolant, in points per second?
+    /// CpuShips don't generate or manage heat. Setting this has no effect on them.
+    /// Example: ship:setSystemCoolantRate("impulse", 1.2)
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, setSystemCoolantRate);
-    ///Get multiple results, first one is forward speed and second one is reverse speed.
-    ///ex : forward,reverse = getImpulseMaxSpeed() (you can also use select or _ to get only reverse speed)
-    ///You can also only get forward speed, reverse speed will just be discarded : 
-    ///forward = getImpulseMaxSpeed()
+    /// Returns this SpaceShip's forward and reverse impulse speed limits.
+    /// Examples:
+    /// forward,reverse = getImpulseMaxSpeed()
+    /// forward = getImpulseMaxSpeed() -- forward speed only
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, getImpulseMaxSpeed);
-    ///Sets max speed.
-    ///If called with only one argument, sets forward and reverse speed to equal values.
-    ///If called with two arguments, first one is forward speed and second one is reverse speed.
+    /// Sets this SpaceShip's maximum forward and reverse impulse speeds.
+    /// The reverse maximum speed value is optional.
+    /// Calling this with a single argument sets both forward and reverse maximum speeds to the same value.
+    /// Examples:
+    /// ship:setImpulseMaxSpeed(30,20) -- sets the max forward speed to 30 and reverse to 20
+    /// ship:setImpulseMaxSpeed(30) -- sets the max forward and reverse speed to 30
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, setImpulseMaxSpeed);
+    /// Returns this SpaceShip's maximum rotational speed, in degrees per second?
+    /// Example: ship:getRotationMaxSpeed()
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, getRotationMaxSpeed);
+    /// Sets this SpaceShip's maximum rotational speed, in degrees per second?
+    /// Example: ship:setRotationMaxSpeed(10)
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, setRotationMaxSpeed);
-    ///Get multiple resulsts, first one is forward acceleration and second one is reverse acceleration.
-    ///ex : forward, reverse = getAcceleration (you can also use select or _ to get only reverse speed)
-    ///You can also only get forward speed, reverse speed will just be discarded : 
-    ///forward = getAcceleration()
+    /// Returns the SpaceShip's forward and reverse impulse acceleration values, in (unit?)
+    /// Examples:
+    /// forward,reverse = getAcceleration()
+    /// forward = getAcceleration() -- forward acceleration only
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, getAcceleration);
-    ///Sets acceleration.
-    ///If called with one argument, sets forward and reverse acceleration to equal values.
-    ///If called with two arguments, first one is forward acceleration and second one is reverse acceleration.
+    /// Sets the SpaceShip's forward and reverse impulse acceleration values, in (unit?)
+    /// The reverse acceleration value is optional.
+    /// Calling with a single argument sets both forward and reverse acceleration to the same value.
+    /// Examples:
+    /// ship:setAcceleration(5,3.5) -- sets the max forward acceleration to 5 and reverse to 3.5
+    /// ship:setAcceleration(5) -- sets the max forward and reverse acceleration to 5
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, setAcceleration);
+    /// Sets the SpaceShip's combat maneuvering capacities.
+    /// The boost value sets the forward maneuver capacity, and the strafe value sets the lateral maneuver capacity.
+    /// Example: ship:setCombatManeuver(400,250) -- sets boost capacity to 400 and lateral to 250
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, setCombatManeuver);
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, hasReactor);
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, setReactor);
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, hasCloaking);
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, setCloaking);
+    /// Returns whether the SpaceShip has a jump drive.
+    /// Example: ship:hasJumpDrive()
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, hasJumpDrive);
+    /// Defines whether the SpaceShip has a jump drive.
+    /// If true, this ship gains jump drive controls and a "jumpdrive" ship system.
+    /// Example: ship:setJumpDrive(true) -- gives this ship a jump drive
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, setJumpDrive);
+    /// Sets the minimum and maximum jump distances for this SpaceShip.
+    /// Defaults to (5000,50000) if not set by the ShipTemplate.
+    /// Example: ship:setJumpDriveRange(2500,25000) -- sets the minimum jump distance to 2.5U and maximum to 25U
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, setJumpDriveRange);
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, setJumpDriveChargeTime);
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, setJumpDriveEnergy);
@@ -115,91 +287,207 @@ REGISTER_SCRIPT_SUBCLASS_NO_CREATE(SpaceShip, ShipTemplateBasedObject)
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, getJumpDriveMinDistance);
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, getJumpDriveChargeTime);
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, getJumpDriveEnergy);
-    /// sets the current jump range charged.
-    /// ships will be able to jump when this is equal to their max jump drive range.
-    /// Example ship:setJumpDriveCharge(50000)
+    /// Sets this SpaceShip's current jump drive charge.
+    /// Jumping depletes the ship's jump drive charge by a value equal to the distance jumped.
+    /// For example, a 5U jump depletes the charge by 5000.
+    /// A SpaceShip with a jump drive can jump only when this value is equal to or greater than the ship's maximum jump range.
+    /// Any numeric value is valid, including negative values (longer to recharge) and values larger than the ship's maximum jump range (can jump again with a shorter, or no, recharge required).
+    /// Jump drive charge regenerates at a rate modified by the "jumpdrive" system's effectiveness.
+    /// Example: ship:setJumpDriveCharge(50000)
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, setJumpDriveCharge);
-    /// returns the current amount of jump charged.
-    /// Example ship:getJumpDriveCharge()
+    /// Returns this SpaceShip's current jump drive charge.
+    /// Example: jump_charge = ship:getJumpDriveCharge()
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, getJumpDriveCharge);
+    /// Returns the time required by this SpaceShip to complete a jump once initiated.
+    /// A ship can't perform certain actions, such as docking, while its jump delay is not 0.
+    /// Returns a value between 0.0 (no delay, ready to jump) to 10.0.
+    /// With normal "jumpdrive" system effectiveness, this delay is 10 seconds.
+    /// System effectiveness can modify this delay.
+    /// Example: ship:getJumpDelay()
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, getJumpDelay);
+    /// Returns whether this SpaceShip has a warp drive.
+    /// Example: ship:hasWarpDrive()
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, hasWarpDrive);
+    /// Defines whether this SpaceShip has a warp drive.
+    /// If true, this ship gains warp drive controls and a "warp" ship system.
+    /// Example: ship:setWarpDrive(true)
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, setWarpDrive);
-    /// Set the warp speed for this ship's warp level 1.
-    /// Setting this is equivalent to also setting setWarpDrive(true).
-    /// If a value isn't specified in the ship template, the default is 1000.
-    /// Requires a numeric value.
-    /// Example: ship:setWarpSpeed(500);
+    /// Sets this SpaceShip's warp speed factor.
+    /// Valid values are any greater than 0. Ships don't tend to go faster than 24000 (1400U/min) due to engine limitations.
+    /// Unlike ShipTemplate:setWarpSpeed(), setting this value does NOT also grant this ship a warp drive.
+    /// Example: ship:setWarpSpeed(1000);
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, setWarpSpeed);
+    /// Returns this SpaceShip's warp speed factor.
+    /// Actual warp speed can be modified by "warp" system effectiveness.
+    /// Example: ship:getWarpSpeed();
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, getWarpSpeed);
+    /// Returns the arc, in degrees, for the BeamWeapon with the given index on this SpaceShip.
+    /// Example: ship:getBeamWeaponArc(0); -- returns beam weapon 0's arc
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, getBeamWeaponArc);
+    /// Returns the direction, in degrees relative to the ship's forward bearing, for the arc's center of the BeamWeapon with the given index on this SpaceShip.
+    /// Example: ship:getBeamWeaponDirection(0); -- returns beam weapon 0's direction
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, getBeamWeaponDirection);
+    /// Returns the range for the BeamWeapon with the given index on this SpaceShip.
+    /// Example: ship:getBeamWeaponRange(0); -- returns beam weapon 0's range
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, getBeamWeaponRange);
+    /// Returns the turret arc, in degrees, for the BeamWeapon with the given index on this SpaceShip.
+    /// Example: ship:getBeamWeaponTurretArc(0); -- returns beam weapon 0's turret arc
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, getBeamWeaponTurretArc);
+    /// Returns the direction, in degrees relative to the ship's forward bearing, for the turret arc's center for the BeamWeapon with the given index on this SpaceShip.
+    /// Example: ship:getBeamWeaponTurretDirection(0); -- returns beam weapon 0's turret direction
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, getBeamWeaponTurretDirection);
+    /// Returns the base firing delay, in seconds, for the BeamWeapon with the given index on this SpaceShip.
+    /// Actual cycle time can be modified by "beamweapon" system effectiveness.
+    /// Example: ship:getBeamWeaponCycleTime(0); -- returns beam weapon 0's cycle time
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, getBeamWeaponCycleTime);
+    /// Returns the base damage dealt by the BeamWeapon with the given index on this SpaceShip.
+    /// Actual damage can be modified by "beamweapon" system effectiveness.
+    /// Example: ship:getBeamWeaponDamage(0); -- returns beam weapon 0's damage
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, getBeamWeaponDamage);
+    /// Returns how much of this SpaceShip's energy is drained each time the BeamWeapon with the given index is fired.
+    /// Actual drain can be modified by "beamweapon" system effectiveness.
+    /// Example: ship:getBeamWeaponEnergyPerFire(0); -- returns beam weapon 0's energy use per firing
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, getBeamWeaponEnergyPerFire);
+    /// Returns the heat generated by each firing of the BeamWeapon with the given index on this SpaceShip.
+    /// Actual heat generation can be modified by "beamweapon" system effectiveness.
+    /// Example: ship:getBeamWeaponHeatPerFire(0); -- returns beam weapon 0's heat generation per firing
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, getBeamWeaponHeatPerFire);
+    /// Defines the traits of a BeamWeapon with the given index on this SpaceShip.
+    /// - index: Each beam weapon on this SpaceShip must have a unique index.
+    /// - arc: Sets the arc of its firing capability, in degrees.
+    /// - direction: Sets the default center angle of the arc, in degrees relative to the ship's forward bearing. Accepts 0, negative, and positive values.
+    /// - range: Sets how far away the beam can fire.
+    /// - cycle_time: Sets the base firing delay, in seconds. System effectiveness modifies the cycle time.
+    /// - damage: Sets the base damage done by the beam to the target. System effectiveness modifies the damage.
+    /// To create a turreted beam, also add SpaceShip:setBeamWeaponTurret(), and set the beam weapon's arc to be smaller than the turret's arc.
+    /// Example:
+    /// -- Creates a beam weapon with index 0, arc of 90 degrees, direction pointing backward, range of 1U, base cycle time of 1 second, and base damage of 1 point
+    /// ship:setBeamWeapon(0,90,180,1000,1,1)
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, setBeamWeapon);
+    /// Converts a BeamWeapon with the given index on this SpaceShip into a turret and defines its traits.
+    /// A turreted beam weapon rotates within its turret arc toward the weapons target at the given rotation rate.
+    /// - index: Must match the index of an existing beam weapon on this SpaceShip.
+    /// - arc: Sets the turret's maximum targeting angles, in degrees. The turret arc must be larger than the associated beam weapon's arc.
+    /// - direction: Sets the default center angle of the turret arc, in degrees relative to the ship's forward bearing. Accepts 0, negative, and positive values.
+    /// - rotation_rate: Sets how many degrees per tick (unit?) that the associated beam weapon's direction can rotate toward the target within the turret arc. System effectiveness modifies the turret's rotation rate.
+    /// To create a turreted beam, also add SpaceShip:setBeamWeapon(), and set the beam weapon's arc to be smaller than the turret's arc.
+    /// Example:
+    /// -- Makes beam weapon 0 a turret with a 200-degree turret arc centered on 90 degrees from forward, rotating at 5 degrees per tick (unit?)
+    /// ship:setBeamWeaponTurret(0,200,90,5)
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, setBeamWeaponTurret);
+    /// Sets the BeamEffect texture, by filename, for the BeamWeapon with the given index on this SpaceShip.
+    /// See BeamEffect:setTexture().
+    /// Example: ship:setBeamWeaponTexture(0,"texture/beam_blue.png")
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, setBeamWeaponTexture);
+    /// Sets how much energy is drained each time the BeamWeapon with the given index is fired on this SpaceShip.
+    /// Only PlayerSpaceships consume energy. Setting this for other ShipTemplateBasedObject types has no effect.
+    /// Example: ship:setBeamWeaponEnergyPerFire(0,1) -- sets beam 0 to use 1 energy per firing
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, setBeamWeaponEnergyPerFire);
+    /// Sets how much "beamweapon" system heat is generated, in percentage of total system heat capacity, each time the BeamWeapon with the given index is fired on this SpaceShip.
+    /// Only PlayerSpaceships generate and manage heat. Setting this for other ShipTemplateBasedObject types has no effect.
+    /// Example: ship:setBeamWeaponHeatPerFire(0,0.02) -- sets beam 0 to generate 0.02 (2%) system heat per firing
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, setBeamWeaponHeatPerFire);
+    /// Sets the colors used to draw the radar arc for the BeamWeapon with the given index on this SpaceShip.
+    /// The first three-number value sets the RGB color for the arc when idle, and the second sets the color when firing.
+    /// Example: ship:setBeamWeaponArcColor(0,0,128,0,0,255,0) -- makes beam 0's arc green
+    REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, setBeamWeaponArcColor);
+    /// Sets the damage type dealt by the BeamWeapon with the given index on this SpaceShip.
+    /// Example: ship:setBeamWeaponDamageType(0,"emp") -- makes beam 0 deal EMP damage
+    REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, setBeamWeaponDamageType);
+    /// Sets the number of WeaponTubes for this SpaceShip.
+    /// Weapon tubes are 0-indexed. For example, 3 tubes would be indexed 0, 1, and 2.
+    /// Ships are limited to a maximum of 16 weapon tubes.
+    /// Example: ship:setWeaponTubeCount(4)
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, setWeaponTubeCount);
+    /// Returns the number of WeaponTube on this SpaceShip.
+    /// Example: ship:getWeaponTubeCount()
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, getWeaponTubeCount);
+    /// Returns the weapon type loaded into the WeaponTube with the given index on this SpaceShip.
+    /// Returns no value if no weapon is loaded, which includes the tube being in a loading or unloading state.
+    /// Example: ship:getWeaponTubeLoadType(0)
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, getWeaponTubeLoadType);
+    /// Sets which weapon types the WeaponTube with the given index on this SpaceShip can load.
+    /// Note the spelling of "missle".
+    /// Example: ship:weaponTubeAllowMissle(0,"Homing") -- allows Homing missiles to be loaded in WeaponTube 0
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, weaponTubeAllowMissle);
+    /// Sets which weapon types the WeaponTube with the given index can't load on this SpaceShip.
+    /// Note the spelling of "missle".
+    /// Example: ship:weaponTubeDisallowMissle(0,"Homing") -- prevents Homing missiles from being loaded in tube 0
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, weaponTubeDisallowMissle);
+    /// Sets a weapon tube with the given index on this SpaceShip to allow loading only the given weapon type.
+    /// Example: ship:setWeaponTubeExclusiveFor(0,"Homing") -- allows only Homing missiles to be loaded in tube 0
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, setWeaponTubeExclusiveFor);
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, weaponTubeAllowCustomMissile);
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, weaponTubeDisallowCustomMissile);
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, setWeaponTubeExclusiveForCustom);
+    /// Sets the angle, relative to this SpaceShip's forward bearing, toward which the WeaponTube with the given index on this SpaceShip points.
+    /// Accepts 0, negative, and positive values.
+    /// Example:
+    /// -- Sets tube 0 to point 90 degrees right of forward, and tube 1 to point 90 degrees left of forward
+    /// ship:setWeaponTubeDirection(0,90):setWeaponTubeDirection(1,-90)
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, setWeaponTubeDirection);
-    /// Set the tube size
-    /// Example: ship:setTubeSize(0,"small")
-    /// Valid Sizes: "small" "medium" "large"
+    /// Sets the weapon size launched from the WeaponTube with the given index on this SpaceShip.
+    /// Example: ship:setTubeSize(0,"large") -- sets tube 0 to fire large weapons
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, setTubeSize);
-    /// Returns the size of the tube
-    /// Example: local size = ship:getTubeSize(0)
+    /// Returns the size of the weapon tube with the given index on this SpaceShip.
+    /// Example: ship:getTubeSize(0)
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, getTubeSize);
-    // Returns the time for a tube load
-    // Example: load_time = ship:getTubeLoadTime(0)
+    /// Returns the delay, in seconds, for loading and unloading the WeaponTube with the given index on this SpaceShip.
+    /// Example: ship:getTubeLoadTime(0)
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, getTubeLoadTime);
-    // Sets the load time for a tube
-    // Example ship:setTubeLoadTime(0, 15)
+    /// Sets the time, in seconds, required to load the weapon tube with the given index on this SpaceShip.
+    /// Example: ship:setTubeLoadTime(0,12) -- sets the loading time for tube 0 to 12 seconds
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, setTubeLoadTime);
-    /// Set the icon to be used for this ship on the radar.
-    /// For example, ship:setRadarTrace("RadarBlip.png") will show a dot instead of an arrow for this ship.
-    /// Note: Icon is only shown after scanning, before the ship is scanned it is always shown as an arrow.
+    /// Sets the radar trace image for this SpaceShip.
+    /// Valid values are filenames to PNG images relative to the resources/radar/ directory.
+    /// Radar trace images should be white with a transparent background.
+    /// Only scanned SpaceShips use a specific radar trace image. Unscanned SpaceShips always display as an arrow.
+    /// Example: ship:setRadarTrace("blip.png") -- displays a dot for this ship on radar when scanned
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, setRadarTrace);
-    /// Get the dynamic radar signature values for each component band.
-    /// Returns a float.
-    /// Example: obj:getDynamicRadarSignatureGravity()
+    /// Returns the dynamic gravitational radar signature value emitted by this SpaceShip.
+    /// Ship functions can dynamically modify this SpaceShip's radar signature values.
+    /// Example: ship:getDynamicRadarSignatureGravity()
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, getDynamicRadarSignatureGravity);
+    /// Returns the dynamic electrical radar signature value emitted by this SpaceShip.
+    /// Ship functions can dynamically modify this SpaceShip's radar signature values.
+    /// Example: ship:getDynamicRadarSignatureElectrical()
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, getDynamicRadarSignatureElectrical);
+    /// Returns the dynamic biological radar signature value emitted by this SpaceShip.
+    /// Ship functions can dynamically modify this SpaceShip's radar signature values.
+    /// Example: ship:getDynamicRadarSignatureBiological()
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, getDynamicRadarSignatureBiological);
+    /// Broadcasts a message from this SpaceShip to the comms of all other SpaceShips matching the threshold.
+    /// The threshold value can be an integer equivalent of EFactionVsFactionState:
+    /// 0: Broadcast to all friendly SpaceShips
+    /// 1: Broadcast to all friendly and neutral SpaceShips
+    /// 2: Broadcast to all SpaceShips, including enemies
+    /// Providing an invalid threshold value defaults to broadcasting only to friendly SpaceShips.
+    /// Examples:
+    /// ship:addBroadcast(1, "Help!")
+    /// ship:addBroadcast(2, "We're taking over!")
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, addBroadcast);
-    /// Set the scan state of this ship for every faction.
+    /// Sets the scan state of this SpaceShip for every faction.
+    /// Example: ship:setScanState("fullscan") -- every faction treats this ship as fully scanned
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, setScanState);
-    /// Set the scane state of this ship for a particular faction.
+    /// Sets the scan state of this SpaceShip for a given faction.
+    /// Example: ship:setScanStateByFaction("Kraylor","fullscan") -- Kraylor faction treats this ship as fully scanned
     REGISTER_SCRIPT_CLASS_FUNCTION(SpaceShip, setScanStateByFaction);
 }
 
 std::array<float, SYS_COUNT> SpaceShip::default_system_power_factors{
-    /*SYS_Reactor*/     -25.0,
-    /*SYS_BeamWeapons*/   3.0,
-    /*SYS_MissileSystem*/ 1.0,
-    /*SYS_Maneuver*/      2.0,
-    /*SYS_Impulse*/       4.0,
-    /*SYS_Warp*/          5.0,
-    /*SYS_JumpDrive*/     5.0,
-    /*SYS_FrontShield*/   5.0,
-    /*SYS_RearShield*/    5.0,
-    /*SYS_Dock*/          1.0,
-    /*SYS_Drone*/         3.0,
-    /*SYS_Hangar*/        1.0,
-    /*SYS_Cloaking*/     30.0
+    /*SYS_Reactor*/     -25.f,
+    /*SYS_BeamWeapons*/   3.f,
+    /*SYS_MissileSystem*/ 1.f,
+    /*SYS_Maneuver*/      2.f,
+    /*SYS_Impulse*/       4.f,
+    /*SYS_Warp*/          5.f,
+    /*SYS_JumpDrive*/     5.f,
+    /*SYS_FrontShield*/   5.f,
+    /*SYS_RearShield*/    5.f,
+    /*SYS_Dock*/          1.f,
+    /*SYS_Drone*/         3.f,
+    /*SYS_Hangar*/        1.f,
+    /*SYS_Cloaking*/     30.f
 };
 
 SpaceShip::SpaceShip(string multiplayerClassName, float multiplayer_significant_range)
@@ -211,30 +499,30 @@ SpaceShip::SpaceShip(string multiplayerClassName, float multiplayer_significant_
     impulse_request = 0;
     current_impulse = 0;
     has_warp_drive = true;
-    warp_request = 0.0;
-    current_warp = 0.0;
-    warp_speed_per_warp_level = 1000.0;
+    warp_request = 0;
+    current_warp = 0;
+    warp_speed_per_warp_level = 1000.f;
     has_jump_drive = true;
     has_reactor = true;
     has_cloaking = false;
-    jump_drive_min_distance = 5000.0;
-    jump_drive_max_distance = 50000.0;
+    jump_drive_min_distance = 5000.f;
+    jump_drive_max_distance = 50000.f;
     jump_drive_charge = jump_drive_max_distance;
-    jump_drive_charge_time = 90.0;
-    jump_drive_energy_per_km_charge = 4.0f;
-    jump_distance = 0.0;
-    jump_delay = 0.0;
-    wormhole_alpha = 0.0;
+    jump_drive_charge_time = 90.f;
+    jump_drive_energy_per_km_charge = 4.f;
+    jump_distance = 0.f;
+    jump_delay = 0.f;
+    wormhole_alpha = 0.f;
     weapon_tube_count = 0;
     beam_weapons_count = 0;
-    turn_speed = 10.0;
-    impulse_max_speed = 600.0;
-    impulse_max_reverse_speed = 600.0;
-    combat_maneuver_charge = 1.0;
-    combat_maneuver_boost_request = 0.0;
-    combat_maneuver_boost_active = 0.0;
-    combat_maneuver_strafe_request = 0.0;
-    combat_maneuver_strafe_active = 0.0;
+    turn_speed = 10.f;
+    impulse_max_speed = 600.f;
+    impulse_max_reverse_speed = 600.f;
+    combat_maneuver_charge = 1.f;
+    combat_maneuver_boost_request = 0.f;
+    combat_maneuver_boost_active = 0.f;
+    combat_maneuver_strafe_request = 0.f;
+    combat_maneuver_strafe_active = 0.f;
     combat_maneuver_boost_speed = 0.0f;
     combat_maneuver_strafe_speed = 0.0f;
     target_id = -1;
@@ -244,8 +532,8 @@ SpaceShip::SpaceShip(string multiplayerClassName, float multiplayer_significant_
     shield_frequency = irandom(0, max_frequency);
     docking_state = DS_NotDocking;
     landing_state = LS_NotLanding;
-    impulse_acceleration = 20.0;
-    impulse_reverse_acceleration = 20.0;
+    impulse_acceleration = 20.f;
+    impulse_reverse_acceleration = 20.f;
     energy_level = 1000;
     max_energy_level = 1000;
     turnSpeed = 0.0f;
@@ -253,23 +541,23 @@ SpaceShip::SpaceShip(string multiplayerClassName, float multiplayer_significant_
     max_passagers_count = 20;
     base_carrier_id = -1;
 
-    registerMemberReplication(&target_rotation, 1.5);
-    registerMemberReplication(&turnSpeed, 0.1);
-    registerMemberReplication(&impulse_request, 0.1);
-    registerMemberReplication(&current_impulse, 0.5);
+    registerMemberReplication(&target_rotation, 1.5f);
+    registerMemberReplication(&turnSpeed, 0.1f);
+    registerMemberReplication(&impulse_request, 0.1f);
+    registerMemberReplication(&current_impulse, 0.5f);
     registerMemberReplication(&has_warp_drive);
-    registerMemberReplication(&warp_request, 0.1);
-    registerMemberReplication(&current_warp, 0.1);
+    registerMemberReplication(&warp_request, 0.1f);
+    registerMemberReplication(&current_warp, 0.1f);
     registerMemberReplication(&has_jump_drive);
-    registerMemberReplication(&jump_drive_charge, 0.5);
-    registerMemberReplication(&jump_delay, 0.5);
+    registerMemberReplication(&jump_drive_charge, 0.5f);
+    registerMemberReplication(&jump_delay, 0.5f);
     registerMemberReplication(&jump_drive_min_distance);
     registerMemberReplication(&jump_drive_max_distance);
     registerMemberReplication(&jump_drive_charge_time);
     registerMemberReplication(&jump_drive_energy_per_km_charge);
     registerMemberReplication(&has_reactor);
     registerMemberReplication(&has_cloaking);
-    registerMemberReplication(&wormhole_alpha, 0.5);
+    registerMemberReplication(&wormhole_alpha, 0.5f);
     registerMemberReplication(&weapon_tube_count);
     registerMemberReplication(&beam_weapons_count);
     registerMemberReplication(&target_id);
@@ -283,12 +571,13 @@ SpaceShip::SpaceShip(string multiplayerClassName, float multiplayer_significant_
     registerMemberReplication(&warp_speed_per_warp_level);
     registerMemberReplication(&shield_frequency);
     registerMemberReplication(&docking_state);
+    registerMemberReplication(&docked_style);
     registerMemberReplication(&beam_frequency);
-    registerMemberReplication(&combat_maneuver_charge, 0.5);
+    registerMemberReplication(&combat_maneuver_charge, 0.5f);
     registerMemberReplication(&combat_maneuver_boost_request);
-    registerMemberReplication(&combat_maneuver_boost_active, 0.2);
+    registerMemberReplication(&combat_maneuver_boost_active, 0.2f);
     registerMemberReplication(&combat_maneuver_strafe_request);
-    registerMemberReplication(&combat_maneuver_strafe_active, 0.2);
+    registerMemberReplication(&combat_maneuver_strafe_active, 0.2f);
     registerMemberReplication(&combat_maneuver_boost_speed);
     registerMemberReplication(&combat_maneuver_strafe_speed);
     registerMemberReplication(&radar_trace);
@@ -298,9 +587,9 @@ SpaceShip::SpaceShip(string multiplayerClassName, float multiplayer_significant_
 
 
     // Initialize each subsystem to be powered with no coolant or heat.
-    for(int n=0; n<SYS_COUNT; n++)
+    for(unsigned int n=0; n<SYS_COUNT; n++)
     {
-        assert(n < default_system_power_factors.size());
+        SDL_assert(n < default_system_power_factors.size());
         systems[n].health = 1.0f;
         systems[n].health_max = 1.0f;
         systems[n].power_level = 1.0f;
@@ -318,23 +607,23 @@ SpaceShip::SpaceShip(string multiplayerClassName, float multiplayer_significant_
 
         if (n == SYS_Cloaking)
         {
-            systems[n].power_level = 0.0;
-            systems[n].power_request = 0.0;
+            systems[n].power_level = 0.f;
+            systems[n].power_request = 0.f;
         }
 
-        registerMemberReplication(&systems[n].health, 0.1);
-        registerMemberReplication(&systems[n].health_max, 0.1);
-        registerMemberReplication(&systems[n].power_level, 0.1);
+        registerMemberReplication(&systems[n].health, 0.1f);
+        registerMemberReplication(&systems[n].health_max, 0.1f);
+        registerMemberReplication(&systems[n].power_level, 0.1f);
         registerMemberReplication(&systems[n].power_rate_per_second, .5f);
-        registerMemberReplication(&systems[n].power_request, 0.1);
-        registerMemberReplication(&systems[n].coolant_level, 0.1);
+        registerMemberReplication(&systems[n].power_request, 0.1f);
+        registerMemberReplication(&systems[n].coolant_level, 0.1f);
         registerMemberReplication(&systems[n].coolant_rate_per_second, .5f);
-        registerMemberReplication(&systems[n].coolant_request, 0.1);
-        registerMemberReplication(&systems[n].repair_level, 0.1);
-        registerMemberReplication(&systems[n].repair_request, 0.1);
-        registerMemberReplication(&systems[n].heat_level, 0.1);
+        registerMemberReplication(&systems[n].coolant_request, 0.1f);
+        registerMemberReplication(&systems[n].repair_level, 0.1f);
+        registerMemberReplication(&systems[n].repair_request, 0.1f);
+        registerMemberReplication(&systems[n].heat_level, 0.1f);
         registerMemberReplication(&systems[n].heat_rate_per_second, .5f);
-        registerMemberReplication(&systems[n].hacked_level, 0.1);
+        registerMemberReplication(&systems[n].hacked_level, 0.1f);
         registerMemberReplication(&systems[n].power_factor);
     }
 
@@ -380,7 +669,7 @@ SpaceShip::SpaceShip(string multiplayerClassName, float multiplayer_significant_
 
     // Ships can have dynamic signatures. Initialize a default baseline value
     // from which clients derive the dynamic signature on update.
-    setRadarSignatureInfo(0.05, 0.2, 0.2);
+    setRadarSignatureInfo(0.05f, 0.2f, 0.2f);
 
     if (game_server)
         setCallSign(gameGlobalInfo->getNextShipCallsign());
@@ -420,7 +709,7 @@ void SpaceShip::applyTemplateValues()
     turn_speed = ship_template->turn_speed;
     combat_maneuver_boost_speed = ship_template->combat_maneuver_boost_speed;
     combat_maneuver_strafe_speed = ship_template->combat_maneuver_strafe_speed;
-    has_warp_drive = ship_template->warp_speed > 0.0;
+    has_warp_drive = ship_template->warp_speed > 0.0f;
     warp_speed_per_warp_level = ship_template->warp_speed;
     has_jump_drive = ship_template->has_jump_drive;
     has_reactor = ship_template->has_reactor;
@@ -507,10 +796,16 @@ void SpaceShip::applyTemplateValues()
     }
 }
 
-#if FEATURE_3D_RENDERING
+void SpaceShip::draw3D()
+{
+    if (docked_style == DockStyle::Internal) return;
+    ShipTemplateBasedObject::draw3D();
+}
+
 void SpaceShip::draw3DTransparent()
 {
     if (!ship_template) return;
+    if (docked_style == DockStyle::Internal) return;
     ShipTemplateBasedObject::draw3DTransparent();
 
     if ((has_jump_drive && jump_delay > 0.0f) ||
@@ -520,10 +815,9 @@ void SpaceShip::draw3DTransparent()
         if (wormhole_alpha > 0.0f)
             delay = wormhole_alpha;
         float alpha = 1.0f - (delay / 10.0f);
-        model_info.renderOverlay(textureManager.getTexture("electric_sphere_texture.png"), alpha);
+        model_info.renderOverlay(getModelMatrix(), textureManager.getTexture("texture/electric_sphere_texture.png"), alpha);
     }
 }
-#endif//FEATURE_3D_RENDERING
 
 RawRadarSignatureInfo SpaceShip::getDynamicRadarSignatureInfo()
 {
@@ -595,72 +889,143 @@ RawRadarSignatureInfo SpaceShip::getDynamicRadarSignatureInfo()
     return info;
 }
 
-void SpaceShip::drawOnRadar(sf::RenderTarget& window, sf::Vector2f position, float scale, float rotation, bool long_range)
+void SpaceShip::drawOnRadar(sp::RenderTarget& renderer, glm::vec2 position, float scale, float rotation, bool long_range)
 {
+    if (docked_style == DockStyle::Internal) return;
+
     // Draw beam arcs on short-range radar only, and only for fully scanned
     // ships.
     if (!long_range && (!my_spaceship || (getScannedStateFor(my_spaceship) == SS_FullScan)))
     {
+        auto draw_arc = [&renderer](auto arc_center, auto angle0, auto arc_angle, auto arc_radius, auto color)
+        {
+            // Initialize variables from the beam's data.
+            float beam_arc = arc_angle;
+            float beam_range = arc_radius;
+
+            // Set the beam's origin on radar to its relative position on the mesh.
+            float outline_thickness = std::min(20.0f, beam_range * 0.2f);
+            float beam_arc_curve_length = beam_range * beam_arc / 180.0f * glm::pi<float>();
+            outline_thickness = std::min(outline_thickness, beam_arc_curve_length * 0.25f);
+
+            size_t curve_point_count = 0;
+            if (outline_thickness > 0.f)
+                curve_point_count = static_cast<size_t>(beam_arc_curve_length / (outline_thickness * 0.9f));
+
+            struct ArcPoint {
+                glm::vec2 point;
+                glm::vec2 normal; // Direction towards the center.
+            };
+
+            //Arc points
+            std::vector<ArcPoint> arc_points;
+            arc_points.reserve(curve_point_count + 1);
+            
+            for (size_t i = 0; i < curve_point_count; i++)
+            {
+                auto angle = vec2FromAngle(angle0 + i * beam_arc / curve_point_count) * beam_range;
+                arc_points.emplace_back(ArcPoint{ arc_center + angle, glm::normalize(angle) });
+            }
+            {
+                auto angle = vec2FromAngle(angle0 + beam_arc) * beam_range;
+                arc_points.emplace_back(ArcPoint{ arc_center + angle, glm::normalize(angle) });
+            }
+
+            for (size_t n = 0; n < arc_points.size() - 1; n++)
+            {
+                const auto& p0 = arc_points[n].point;
+                const auto& p1 = arc_points[n + 1].point;
+                const auto& n0 = arc_points[n].normal;
+                const auto& n1 = arc_points[n + 1].normal;
+                renderer.drawTexturedQuad("gradient.png",
+                    p0, p0 - n0 * outline_thickness,
+                    p1 - n1 * outline_thickness, p1,
+                    { 0.f, 0.5f }, { 1.f, 0.5f }, { 1.f, 0.5f }, { 0.f, 0.5f },
+                    color);
+            }
+
+            if (beam_arc < 360.f)
+            {
+                // Arc bounds.
+                // We use the left- and right-most edges as lines, going inwards, parallel to the center.
+                const auto left_edge = vec2FromAngle(angle0) * beam_range;
+                const auto right_edge = vec2FromAngle(angle0 + beam_arc) * beam_range;
+            
+                // Compute the half point, always going clockwise from the left edge.
+                // This makes sure the algorithm never takes the short road.
+                auto halfway_angle = vec2FromAngle(angle0 + beam_arc / 2.f) * beam_range;
+                auto middle = glm::normalize(halfway_angle);
+
+                // Edge vectors.
+                const auto left_edge_vector = glm::normalize(left_edge);
+                const auto right_edge_vector = glm::normalize(right_edge);
+
+                // Edge normals, inwards.
+                auto left_edge_normal = glm::vec2{ left_edge_vector.y, -left_edge_vector.x };
+                const auto right_edge_normal = glm::vec2{ -right_edge_vector.y, right_edge_vector.x };
+
+                // Initial offset, follow along the edges' normals, inwards.
+                auto left_inner_offset = -left_edge_normal * outline_thickness;
+                auto right_inner_offset = -right_edge_normal * outline_thickness;
+
+                if (beam_arc < 180.f)
+                {
+                    // The thickness being perpendicular from the edges,
+                    // the inner lines just crosses path on the height,
+                    // so just use that point.
+                    left_inner_offset = middle * outline_thickness / sinf(glm::radians(beam_arc / 2.f));
+                    right_inner_offset = left_inner_offset;
+                }
+                else
+                {
+                    // Make it shrink nicely as it grows up to 360 deg.
+                    // For that, we use the edge's normal against the height which will change from 0 to 90deg.
+                    // Also flip the direction so our points stay inside the beam.
+                    auto thickness_scale = -glm::dot(middle, right_edge_normal);
+                    left_inner_offset *= thickness_scale;
+                    right_inner_offset *= thickness_scale;
+                }
+
+                renderer.drawTexturedQuad("gradient.png",
+                    arc_center, arc_center + left_inner_offset,
+                    arc_center + left_edge - left_edge_normal * outline_thickness, arc_center + left_edge,
+                    { 0.f, 0.5f }, { 1.f, 0.5f }, { 1.f, 0.5f }, { 0.f, 0.5f },
+                    color);
+
+                renderer.drawTexturedQuad("gradient.png",
+                    arc_center, arc_center + right_inner_offset,
+                    arc_center + right_edge - right_edge_normal * outline_thickness, arc_center + right_edge,
+                    { 0.f, 0.5f }, { 1.f, 0.5f }, { 1.f, 0.5f }, { 0.f, 0.5f },
+                    color);
+            }
+        };
+
         // For each beam ...
         for(int n = 0; n < max_beam_weapons; n++)
         {
             // Draw beam arcs only if the beam has a range. A beam with range 0
             // effectively doesn't exist; exit if that's the case.
-            if (beam_weapons[n].getRange() == 0.0) continue;
-
-            // Color beam arcs red.
-            // TODO: Make this color configurable.
-            sf::Color color = sf::Color::Red;
+            if (beam_weapons[n].getRange() == 0.0f) continue;
 
             // If the beam is cooling down, flash and fade the arc color.
-            if (beam_weapons[n].getCooldown() > 0)
-                color = sf::Color(255, 255 * (beam_weapons[n].getCooldown() / beam_weapons[n].getCycleTime()), 0);
+            glm::u8vec4 color = Tween<glm::u8vec4>::linear(std::max(0.0f, beam_weapons[n].getCooldown()), 0, beam_weapons[n].getCycleTime(), beam_weapons[n].getArcColor(), beam_weapons[n].getArcFireColor());
 
+            
             // Initialize variables from the beam's data.
             float beam_direction = beam_weapons[n].getDirection();
             float beam_arc = beam_weapons[n].getArc();
             float beam_range = beam_weapons[n].getRange();
 
-            // Set the beam's origin on radar to its relative position on the
-            // mesh.
-            auto beam_offset_vec2 = rotateVec2(ship_template->model_data->getBeamPosition2D(n) * scale, getRotation()-rotation);
-            sf::Vector2f beam_offset(beam_offset_vec2.x, beam_offset_vec2.y);
+            // Set the beam's origin on radar to its relative position on the mesh.
+            auto beam_offset = rotateVec2(ship_template->model_data->getBeamPosition2D(n) * scale, getRotation()-rotation);
+            auto arc_center = beam_offset + position;
 
-            // Configure an array to hold each point of the arc. Each point in
-            // the array draws a line to the next point. If the color between
-            // points is different, it's drawn as a gradient from the origin
-            // point's color to the destination point's.
-            sf::VertexArray a(sf::LinesStrip, 3);
-            a[0].color = color;
-            a[1].color = color;
-            a[2].color = sf::Color(color.r, color.g, color.b, 0);
-
-            // Drop the pen onto the beam's origin.
-            a[0].position = beam_offset + position;
-
-            // Draw the beam's left bound.
-            a[1].position = beam_offset + position + sf::vector2FromAngle(getRotation()-rotation + (beam_direction + beam_arc / 2.0f)) * beam_range * scale;
-            a[2].position = beam_offset + position + sf::vector2FromAngle(getRotation()-rotation + (beam_direction + beam_arc / 2.0f)) * beam_range * scale * 1.3f;
-            window.draw(a);
-
-            // Draw the beam's right bound.
-            a[1].position = beam_offset + position + sf::vector2FromAngle(getRotation()-rotation + (beam_direction - beam_arc / 2.0f)) * beam_range * scale;
-            a[2].position = beam_offset + position + sf::vector2FromAngle(getRotation()-rotation + (beam_direction - beam_arc / 2.0f)) * beam_range * scale * 1.3f;
-            window.draw(a);
-
-            // Draw the beam's arc.
-            int arcPoints = int(beam_arc / 10) + 1;
-            sf::VertexArray arc_line(sf::LinesStrip, arcPoints);
-            for(int i=0; i<arcPoints; i++)
-            {
-                arc_line[i].color = color;
-                arc_line[i].position = beam_offset + position + sf::vector2FromAngle(getRotation()-rotation + (beam_direction - beam_arc / 2.0f + 10 * i)) * beam_range * scale;
-            }
-            arc_line[arcPoints-1].position = beam_offset + position + sf::vector2FromAngle(getRotation()-rotation + (beam_direction + beam_arc / 2.0f)) * beam_range * scale;
-            window.draw(arc_line);
+            draw_arc(arc_center, getRotation() - rotation + (beam_direction - beam_arc / 2.0f), beam_arc, beam_range * scale, color);
+           
 
             // If the beam is turreted, draw the turret's arc. Otherwise, exit.
-            if (beam_weapons[n].getTurretArc() == 0.0) continue;
+            if (beam_weapons[n].getTurretArc() == 0.0f)
+                continue;
 
             // Initialize variables from the turret data.
             float turret_arc = beam_weapons[n].getTurretArc();
@@ -668,33 +1033,9 @@ void SpaceShip::drawOnRadar(sf::RenderTarget& window, sf::Vector2f position, flo
 
             // Draw the turret's bounds, at half the transparency of the beam's.
             // TODO: Make this color configurable.
-            a[0].color = sf::Color(color.r, color.g, color.b, color.a / 2);
-            a[1].color = sf::Color(color.r, color.g, color.b, color.a / 2);
+            color.a /= 4;
 
-            // Drawn Bounds only if beam arc diff than 360
-            if (turret_arc < 360.0)
-            {
-                // Draw the turret's left bound. (We're reusing the beam's origin.)
-                a[1].position = beam_offset + position + sf::vector2FromAngle(getRotation()-rotation + (turret_direction + turret_arc / 2.0f)) * beam_range * scale;
-                a[2].position = beam_offset + position + sf::vector2FromAngle(getRotation()-rotation + (turret_direction + turret_arc / 2.0f)) * beam_range * scale * 1.3f;
-                window.draw(a);
-
-                // Draw the turret's right bound.
-                a[1].position = beam_offset + position + sf::vector2FromAngle(getRotation()-rotation + (turret_direction - turret_arc / 2.0f)) * beam_range * scale;
-                a[2].position = beam_offset + position + sf::vector2FromAngle(getRotation()-rotation + (turret_direction - turret_arc / 2.0f)) * beam_range * scale * 1.3f;
-                window.draw(a);
-            }
-
-            // Draw the turret's arc.
-            int turret_points = int(turret_arc / 10) + 1;
-            sf::VertexArray turret_line(sf::LinesStrip, turret_points);
-            for(int i = 0; i < turret_points; i++)
-            {
-                turret_line[i].color = sf::Color(color.r, color.g, color.b, color.a / 2);
-                turret_line[i].position = beam_offset + position + sf::vector2FromAngle(getRotation()-rotation + (turret_direction - turret_arc / 2.0f + 10 * i)) * beam_range * scale;
-            }
-            turret_line[turret_points-1].position = beam_offset + position + sf::vector2FromAngle(getRotation()-rotation + (turret_direction + turret_arc / 2.0f)) * beam_range * scale;
-            window.draw(turret_line);
+            draw_arc(arc_center, getRotation() - rotation + (turret_direction - turret_arc / 2.0f), turret_arc, beam_range * scale, color);
         }
     }
     // If not on long-range radar ...
@@ -702,49 +1043,47 @@ void SpaceShip::drawOnRadar(sf::RenderTarget& window, sf::Vector2f position, flo
     {
         // ... and the ship being drawn is either not our ship or has been
         // scanned ...
-        float scale_radius = 1.0;
-        if (getRadius() > 1000)
-            scale_radius = getRadius() * 2.0 / 1000.0;
+        float scale_radius = 1.f;
+        if (getRadius() > 1000.f)
+            scale_radius = getRadius() * 2.f / 1000.f;
 
         if (!my_spaceship || getScannedStateFor(my_spaceship) >= SS_SimpleScan)
         {
             // ... draw and show shield indicators on our radar.
-            drawShieldsOnRadar(window, position, scale, rotation, scale_radius, true);
+            drawShieldsOnRadar(renderer, position, scale, rotation, scale_radius, true);
         } else {
             // Otherwise, draw the indicators, but don't show them.
-            drawShieldsOnRadar(window, position, scale, rotation, scale_radius, false);
+            drawShieldsOnRadar(renderer, position, scale, rotation, scale_radius, false);
         }
     }
 
     // Set up the radar sprite for objects.
-    sf::Sprite objectSprite;
-    float sprite_scale = 0.1;
-    float sprite_max = 5.0;
-    float sprite_min = 0.75;
+    string object_sprite = radar_trace;
+    glm::u8vec4 color = glm::u8vec4(255,255,255,255);
+    float sprite_scale = 0.32f;
+    float sprite_max = 480.0f;
+    float sprite_min = 24.0f;
 
     // If the object is a ship that hasn't been scanned, draw the default icon.
     // Otherwise, draw the ship-specific icon.
     if (my_spaceship && (getScannedStateFor(my_spaceship) == SS_NotScanned || getScannedStateFor(my_spaceship) == SS_FriendOrFoeIdentified))
     {
-		objectSprite.setColor(sf::Color(192, 192, 192));
-        textureManager.setTexture(objectSprite, "RadarBlip.png");
+        object_sprite = "radar/blip.png";
+        color = glm::u8vec4(192, 192, 192, 255);
     }
     else
     {
-		objectSprite.setColor(factionInfo[getFactionId()]->gm_color);
-        textureManager.setTexture(objectSprite, radar_trace);
-        sprite_scale = std::max(sprite_min,std::min(sprite_max,scale * getRadius() * 2 / objectSprite.getTextureRect().width));
+        if (factionInfo[getFactionId()])
+            color = factionInfo[getFactionId()]->getGMColor();
+        object_sprite = radar_trace;
+        sprite_scale = std::max(sprite_min,std::min(sprite_max,scale * getRadius() * 2));
         if (long_range)
-            sprite_scale = sprite_scale * 0.7;
+            sprite_scale = sprite_scale * 0.7f;
     }
-
-    objectSprite.setRotation(getRotation()-rotation);
-    objectSprite.setPosition(position);
-    objectSprite.setScale(sprite_scale, sprite_scale);
 
     if(my_spaceship == this)
     {
-        objectSprite.setColor(sf::Color(192,192,255));
+        color = glm::u8vec4(192, 192, 255, 255);
     }
     else if(my_spaceship)
     {
@@ -752,36 +1091,42 @@ void SpaceShip::drawOnRadar(sf::RenderTarget& window, sf::Vector2f position, flo
         {
             if(isEnemy(my_spaceship))
             {
-                objectSprite.setColor(sf::Color::Red);
+                color = glm::u8vec4(255,0,0,255);
             }
             else if(isFriendly(my_spaceship))
             {
-                objectSprite.setColor(sf::Color(128,255,128));
+                color = glm::u8vec4(128,255,128,255);
             }
             else
             {
-                objectSprite.setColor(sf::Color(192,192,192));
+                color = glm::u8vec4(192,192,192,255);
             }
         }
     }
-    window.draw(objectSprite);
+    renderer.drawRotatedSprite(object_sprite, position, sprite_scale, getRotation() - rotation, color);
 }
 
-void SpaceShip::drawOnGMRadar(sf::RenderTarget& window, sf::Vector2f position, float scale, float rotation, bool long_range)
+void SpaceShip::drawOnGMRadar(sp::RenderTarget& renderer, glm::vec2 position, float scale, float rotation, bool long_range)
 {
+    if (docked_style == DockStyle::Internal) return;
+
     if (!long_range)
     {
-        sf::RectangleShape bar(sf::Vector2f(60, 10));
-        bar.setPosition(position.x - 30, position.y - 30);
-        bar.setSize(sf::Vector2f(60 * hull_strength / hull_max, 5));
-        bar.setFillColor(sf::Color(128, 255, 128, 128));
-        window.draw(bar);
+        renderer.fillRect(sp::Rect(position.x - 30, position.y - 30, 60 * hull_strength / hull_max, 5), glm::u8vec4(128, 255, 128, 128));
     }
 }
 
 void SpaceShip::update(float delta)
 {
     ShipTemplateBasedObject::update(delta);
+
+    if (hasCollisionShape() != (docked_style != DockStyle::Internal))
+    {
+        if (docked_style == DockStyle::Internal)
+            setCollisionRadius(0);
+        else if (ship_template)
+            ship_template->setCollisionData(this);
+    }
 
     if (game_server)
     {
@@ -793,10 +1138,10 @@ void SpaceShip::update(float delta)
                 docking_state = DS_NotDocking;
             else
                 target_rotation = vec2ToAngle(getPosition() - docking_target->getPosition());
-            if (fabs(angleDifference(target_rotation, getRotation())) < 10.0)
-                impulse_request = -1.0;
+            if (fabs(angleDifference(target_rotation, getRotation())) < 10.0f)
+                impulse_request = -1.f;
             else
-                impulse_request = 0.0;
+                impulse_request = 0.f;
         }
 
         if (landing_state == LS_Landing)
@@ -807,7 +1152,7 @@ void SpaceShip::update(float delta)
                 landing_state = LS_NotLanding;
             else
                 target_rotation = vec2ToAngle(getPosition() - landing_target->getPosition());
-            if (fabs(angleDifference(target_rotation, getRotation())) < 10.0)
+            if (fabs(angleDifference(target_rotation, getRotation())) < 10.f)
                 impulse_request = -1.0;
             else
                 impulse_request = 0.0;
@@ -817,6 +1162,7 @@ void SpaceShip::update(float delta)
             if (!docking_target)
             {
                 docking_state = DS_NotDocking;
+                docked_style = DockStyle::None;
             }else{
                 setPosition(docking_target->getPosition() + rotateVec2(docking_offset, docking_target->getRotation()));
                 target_rotation = vec2ToAngle(getPosition() - docking_target->getPosition());
@@ -832,12 +1178,12 @@ void SpaceShip::update(float delta)
                     }
                 }
             }
-            impulse_request = 0.0;
+            impulse_request = 0.f;
         }
         if ((docking_state == DS_Docked) || (docking_state == DS_Docking))
-            warp_request = 0.0;
+            warp_request = 0;
         if (landing_state == LS_Landing)
-            warp_request = 0.0;
+            warp_request = 0;
     }
 
     float rotationDiff;
@@ -847,9 +1193,9 @@ void SpaceShip::update(float delta)
         rotationDiff = turnSpeed;
     }
 
-    if (rotationDiff > 1.0)
+    if (rotationDiff > 1.0f)
         setAngularVelocity(turn_speed * getSystemEffectiveness(SYS_Maneuver));
-    else if (rotationDiff < -1.0)
+    else if (rotationDiff < -1.0f)
         setAngularVelocity(-turn_speed * getSystemEffectiveness(SYS_Maneuver));
     else
         setAngularVelocity(rotationDiff * turn_speed * getSystemEffectiveness(SYS_Maneuver));
@@ -857,7 +1203,7 @@ void SpaceShip::update(float delta)
     //Here we want to have max speed at 100% impulse, and max reverse speed at -100% impulse
     float cap_speed = impulse_max_speed;
     
-    if(current_impulse < 0 && impulse_max_reverse_speed <= 0.01)
+    if(current_impulse < 0 && impulse_max_reverse_speed <= 0.01f)
     {
         current_impulse = 0; //we could get stuck with a ship with no reverse speed, not being able to accelerate
     }
@@ -870,51 +1216,51 @@ void SpaceShip::update(float delta)
         if (WarpJammer::isWarpJammed(getPosition()))
         {
             jump_delay = 0;
-            warp_request = 0.0f;
+            warp_request = 0;
         }
     }
     if (has_jump_drive && jump_delay > 0)
     {
-        if (current_impulse > 0.0)
+        if (current_impulse > 0.0f)
         {
             if (cap_speed > 0)
                 current_impulse -= delta * (impulse_reverse_acceleration / cap_speed);
-            if (current_impulse < 0.0)
-                current_impulse = 0.0;
+            if (current_impulse < 0.0f)
+                current_impulse = 0.f;
         }
-        if (current_impulse < 0.0)
+        if (current_impulse < 0.0f)
         {
             if (cap_speed > 0)
                 current_impulse += delta * (impulse_acceleration / cap_speed);
-            if (current_impulse > 0.0)
-                current_impulse = 0.0;
+            if (current_impulse > 0.0f)
+                current_impulse = 0.f;
         }
-        if (current_warp > 0.0)
+        if (current_warp > 0.0f)
         {
             current_warp -= delta;
-            if (current_warp < 0.0)
-                current_warp = 0.0;
+            if (current_warp < 0.0f)
+                current_warp = 0.f;
         }
         jump_delay -= delta * getSystemEffectiveness(SYS_JumpDrive);
-        if (jump_delay <= 0.0)
+        if (jump_delay <= 0.0f)
         {
             executeJump(jump_distance);
-            jump_delay = 0.0;
+            jump_delay = 0.f;
         }
     }else if (has_warp_drive && (warp_request > 0 || current_warp > 0))
     {
-        if (current_impulse > 0.0)
+        if (current_impulse > 0.0f)
         {
             if (cap_speed > 0)
                 current_impulse -= delta * (impulse_reverse_acceleration / cap_speed);
-            if (current_impulse < 0.0)
-                current_impulse = 0.0;
-        }else if (current_impulse < 0.0)
+            if (current_impulse < 0.0f)
+                current_impulse = 0.0f;
+        }else if (current_impulse < 0.0f)
         {
             if (cap_speed > 0)
                 current_impulse += delta * (impulse_acceleration / cap_speed);
-            if (current_impulse > 0.0)
-                current_impulse = 0.0;
+            if (current_impulse > 0.0f)
+                current_impulse = 0.0f;
         }else{
             if (current_warp < warp_request)
             {
@@ -937,7 +1283,7 @@ void SpaceShip::update(float delta)
                 if (jump_drive_charge < jump_drive_max_distance)
                 {
                     float extra_charge = (delta / jump_drive_charge_time * jump_drive_max_distance) * f;
-                    if (useEnergy(extra_charge * jump_drive_energy_per_km_charge / 1000.0))
+                    if (useEnergy(extra_charge * jump_drive_energy_per_km_charge / 1000.0f))
 //                  if (useEnergy(jump_drive_energy_per_km_charge / 1000.0))
                     {
                         jump_drive_charge += extra_charge;
@@ -951,11 +1297,11 @@ void SpaceShip::update(float delta)
                     jump_drive_charge = 0.0f;
             }
         }
-        current_warp = 0.0;
-        if (impulse_request > 1.0)
-            impulse_request = 1.0;
-        if (impulse_request < -1.0)
-            impulse_request = -1.0;
+        current_warp = 0.f;
+        if (impulse_request > 1.0f)
+            impulse_request = 1.0f;
+        if (impulse_request < -1.0f)
+            impulse_request = -1.0f;
         if (current_impulse < impulse_request)
         {
             if (cap_speed > 0)
@@ -972,7 +1318,7 @@ void SpaceShip::update(float delta)
     }
 
     // Add heat based on warp factor.
-    addHeat(SYS_Warp, current_warp * delta * heat_per_warp);
+    addHeat(SYS_Warp, current_warp * delta * heat_per_warp * getSystemEffectiveness(SYS_Warp));
 
     // Determine forward direction and velocity.
     auto forward = vec2FromAngle(getRotation());
@@ -1004,42 +1350,42 @@ void SpaceShip::update(float delta)
     }
 
     // If the ship is making a combat maneuver ...
-    if (combat_maneuver_boost_active != 0.0 || combat_maneuver_strafe_active != 0.0)
+    if (combat_maneuver_boost_active != 0.0f || combat_maneuver_strafe_active != 0.0f)
     {
         // ... consume its combat maneuver boost.
         combat_maneuver_charge -= fabs(combat_maneuver_boost_active) * delta / combat_maneuver_boost_max_time;
         combat_maneuver_charge -= fabs(combat_maneuver_strafe_active) * delta / combat_maneuver_strafe_max_time;
 
         // Use boost only if we have boost available.
-        if (combat_maneuver_charge <= 0.0)
+        if (combat_maneuver_charge <= 0.0f)
         {
-            combat_maneuver_charge = 0.0;
-            combat_maneuver_boost_request = 0.0;
-            combat_maneuver_strafe_request = 0.0;
+            combat_maneuver_charge = 0.0f;
+            combat_maneuver_boost_request = 0.0f;
+            combat_maneuver_strafe_request = 0.0f;
         }else
         {
             setVelocity(getVelocity() + forward * combat_maneuver_boost_speed * combat_maneuver_boost_active);
             setVelocity(getVelocity() + vec2FromAngle(getRotation() + 90) * combat_maneuver_strafe_speed * combat_maneuver_strafe_active);
         }
     // If the ship isn't making a combat maneuver, recharge its boost.
-    }else if (combat_maneuver_charge < 1.0)
+    }else if (combat_maneuver_charge < 1.0f)
     {
-        combat_maneuver_charge += (delta / combat_maneuver_charge_time) * (getSystemEffectiveness(SYS_Maneuver) + getSystemEffectiveness(SYS_Impulse)) / 2.0;
-        if (combat_maneuver_charge > 1.0)
-            combat_maneuver_charge = 1.0;
+        combat_maneuver_charge += (delta / combat_maneuver_charge_time) * (getSystemEffectiveness(SYS_Maneuver) + getSystemEffectiveness(SYS_Impulse)) / 2.0f;
+        if (combat_maneuver_charge > 1.0f)
+            combat_maneuver_charge = 1.0f;
     }
 
     // Add heat to systems consuming combat maneuver boost.
-    if (combat_maneuver_boost_speed > 0.0)
+    if (combat_maneuver_boost_speed > 0.0f)
         addHeat(SYS_Impulse, fabs(combat_maneuver_boost_active) * delta * heat_per_combat_maneuver_boost);
-    if (combat_maneuver_strafe_speed > 0.0)
+    if (combat_maneuver_strafe_speed > 0.0f)
         addHeat(SYS_Maneuver, fabs(combat_maneuver_strafe_active) * delta * heat_per_combat_maneuver_strafe);
 
     beam_weapons_count = 0;
     for(int n = 0; n < max_beam_weapons; n++)
     {
         beam_weapons[n].update(delta);
-        if (beam_weapons[n].getRange() > 0.0)
+        if (beam_weapons[n].getRange() > 0.0f)
             beam_weapons_count += 1;
     }
 
@@ -1064,7 +1410,7 @@ void SpaceShip::update(float delta)
     if (has_jump_drive && jump_delay > 0.0f)
         model_info.warp_scale = (10.0f - jump_delay) / 10.0f;
     else
-        model_info.warp_scale = 0.0;
+        model_info.warp_scale = 0.f;
 
     for(int n = 0; n < oxygen_zones; n++)
         addOxygenPoints(getOxygenRechargeRate(n) * delta, n);
@@ -1072,9 +1418,9 @@ void SpaceShip::update(float delta)
     if (has_cloaking)
     {
         setTransparency(getCloakingDegree());
-        float factor_heat_cloaking = 0.1 * getTransparency() * delta;
+        float factor_heat_cloaking = 0.1f * getTransparency() * delta;
 
-        addHeat(SYS_Cloaking , 0.1 * getSystemEffectiveness(SYS_Cloaking) * factor_heat_cloaking);
+        addHeat(SYS_Cloaking , 0.1f * getSystemEffectiveness(SYS_Cloaking) * factor_heat_cloaking);
 
         for(int n = 0; n < 2; n++)
         {
@@ -1086,15 +1432,15 @@ void SpaceShip::update(float delta)
 
 float SpaceShip::getCloakingDegree()
 {
-    return (std::tanh(getSystemEffectiveness(SYS_Cloaking))-std::tanh(0))/(std::tanh(3)-std::tanh(0));
+    return (std::tanh(getSystemEffectiveness(SYS_Cloaking))-(float)std::tanh(0))/(float)(std::tanh(3)-std::tanh(0));
 }
 
 float SpaceShip::getOxygenRechargeRate(int index)
 {
-    float rate = (oxygen_rate[index] / 100.0 * oxygen_max[index]) / 100.0;
+    float rate = (oxygen_rate[index] / 100.f * oxygen_max[index]) / 100.f;
     // Diminution de l'oxygene si Hull trop base
-    if (hull_strength / hull_max < 0.9)
-        rate -= (0.9 - hull_strength / hull_max) * 2.0f;
+    if (hull_strength / hull_max < 0.9f)
+        rate -= (0.9f - hull_strength / hull_max) * 2.f;
 
     // Modifs selon Reacteur
     if (getSystemEffectiveness(SYS_Reactor) < 0.8f)
@@ -1117,7 +1463,7 @@ float SpaceShip::getShieldRechargeRate(int shield_index)
     {
         P<SpaceShip> docked_with_ship = docking_target;
         if (!docked_with_ship)
-            rate *= 4.0;
+            rate *= 4.0f;
     }
     return rate;
 }
@@ -1146,10 +1492,10 @@ P<SpaceObject> SpaceShip::getLandingTarget()
 void SpaceShip::executeJump(float distance)
 {
     float f = systems[SYS_JumpDrive].health;
-    if (f <= 0.0)
+    if (f <= 0.0f)
         return;
 
-    distance = (distance * f) + (distance * (1.0 - f) * random(0.5, 1.5));
+    distance = (distance * f) + (distance * (1.0f - f) * random(0.5, 1.5));
     auto target_position = getPosition() + vec2FromAngle(getRotation()) * distance;
     //if (WarpJammer::isWarpJammed(target_position))
     target_position = WarpJammer::getFirstNoneJammedPosition(getPosition(), target_position);
@@ -1168,33 +1514,40 @@ void SpaceShip::executeJump(float distance)
 //    e2->setOnRadar(true);
 }
 
-bool SpaceShip::canBeDockedBy(P<SpaceObject> obj)
+DockStyle SpaceShip::canBeDockedBy(P<SpaceObject> obj)
 {
     if (isEnemy(obj) || !ship_template)
-        return false;
+        return DockStyle::None;
     P<SpaceShip> ship = obj;
     if (!ship || !ship->ship_template)
-        return false;
-    //return (ship_template->can_be_docked_by_class.count(ship->ship_template->getClass()) +
-	//   ship_template->can_be_docked_by_class.count(ship->ship_template->getSubClass())) > 0;
-    return true; //FIXME en parler avec Akim
+        return DockStyle::None;
+    if (ship_template->external_dock_classes.count(ship->ship_template->getClass()) > 0)
+        return DockStyle::External;
+    if (ship_template->external_dock_classes.count(ship->ship_template->getSubClass()) > 0)
+        return DockStyle::External;
+    if (ship_template->internal_dock_classes.count(ship->ship_template->getClass()) > 0)
+        return DockStyle::Internal;
+    if (ship_template->internal_dock_classes.count(ship->ship_template->getSubClass()) > 0)
+        return DockStyle::Internal;
+    return DockStyle::None;
 }
 
 void SpaceShip::collide(Collisionable* other, float force)
 {
-    if (docking_state == DS_Docking && fabs(angleDifference(target_rotation, getRotation())) < 10.0)
+    if (docking_state == DS_Docking && fabs(angleDifference(target_rotation, getRotation())) < 10.0f)
     {
         P<SpaceObject> dock_object = P<Collisionable>(other);
         if (dock_object == docking_target)
         {
             docking_state = DS_Docked;
+            docked_style = docking_target->canBeDockedBy(this);
             docking_offset = rotateVec2(getPosition() - other->getPosition(), -other->getRotation());
             float length = glm::length(docking_offset);
             docking_offset = docking_offset / length * (length + 2.0f);
         }
     }
 
-    if (landing_state == LS_Landing && fabs(angleDifference(target_rotation, getRotation())) < 10.0)
+    if (landing_state == LS_Landing && fabs(angleDifference(target_rotation, getRotation())) < 10.f)
     {
         P<SpaceShip> land_object = P<Collisionable>(other);
         if (land_object && (land_object == landing_target))
@@ -1229,17 +1582,17 @@ void SpaceShip::initializeJump(float distance)
         return;
     if (jump_drive_charge < jump_drive_max_distance) // You can only jump when the drive is fully charged
         return;
-    if (jump_delay <= 0.0)
+    if (jump_delay <= 0.0f)
     {
         jump_distance = distance;
-        jump_delay = 100 * distance / (1000 * 1000);
+        jump_delay = 100.f * distance / (1000.f * 1000.f);
         jump_drive_charge -= distance;
     }
 }
 
 void SpaceShip::requestDock(P<SpaceObject> target)
 {
-    if (!target || docking_state != DS_NotDocking || !target->canBeDockedBy(this))
+    if (!target || docking_state != DS_NotDocking || target->canBeDockedBy(this) == DockStyle::None)
         return;
     if (glm::length(getPosition() - target->getPosition()) > 1000 + target->getRadius())
         return;
@@ -1249,7 +1602,7 @@ void SpaceShip::requestDock(P<SpaceObject> target)
     docking_state = DS_Docking;
     docking_target = target;
 //    dock_target_id = target->getMultiplayerId();
-    warp_request = 0.0;
+    warp_request = 0;
 }
 
 void SpaceShip::requestLanding(P<SpaceObject> target)
@@ -1268,16 +1621,17 @@ void SpaceShip::requestLanding(P<SpaceObject> target)
 
     landing_state = LS_Landing;
     landing_target = target;
-    warp_request = 0.0;
+    warp_request = 0;
 }
 
 void SpaceShip::requestUndock()
 {
     if (docking_state == DS_Docked)
     {
+        docked_style = DockStyle::None;
         docking_state = DS_NotDocking;
-        if (getSystemEffectiveness(SYS_Impulse) > 0.1){
-            impulse_request = 0.5;
+        if (getSystemEffectiveness(SYS_Impulse) > 0.1f){
+            impulse_request = 0.5f;
         }
     }
 }
@@ -1287,8 +1641,8 @@ void SpaceShip::abortDock()
     if (docking_state == DS_Docking)
     {
         docking_state = DS_NotDocking;
-        impulse_request = 0.0;
-        warp_request = 0.0;
+        impulse_request = 0.f;
+        warp_request = 0;
         target_rotation = getRotation();
     }
 }
@@ -1323,6 +1677,8 @@ int SpaceShip::scanningComplexity(P<SpaceObject> other)
         if (getScannedStateFor(other) == SS_SimpleScan)
             return 3;
         return 2;
+    case SC_NbItem:
+        assert("Value SC_NbItem not expected");
     }
     return 0;
 }
@@ -1341,6 +1697,8 @@ int SpaceShip::scanningChannelDepth(P<SpaceObject> other)
         return 2;
     case SC_Advanced:
         return 2;
+    case SC_NbItem:
+        assert("Value SC_NbItem not expected");
     }
     return 0;
 }
@@ -1452,7 +1810,7 @@ void SpaceShip::hackFinished(P<SpaceObject> source, string target)
 
 float SpaceShip::getShieldDamageFactor(DamageInfo& info, int shield_index)
 {
-    float frequency_damage_factor = 1.0;
+    float frequency_damage_factor = 1.f;
     if (info.type == DT_Energy && gameGlobalInfo->use_beam_shield_frequencies)
     {
         frequency_damage_factor = frequencyVsFrequencyDamageFactor(info.frequency, shield_frequency);
@@ -1461,9 +1819,9 @@ float SpaceShip::getShieldDamageFactor(DamageInfo& info, int shield_index)
 
     //Shield damage reduction curve. Damage reduction gets slightly exponetial effective with power.
     // This also greatly reduces the ineffectiveness at low power situations.
-    float shield_damage_exponent = 1.6;
-    float shield_damage_divider = 7.0;
-    float shield_damage_factor = 1.0 + powf(1.0, shield_damage_exponent) / shield_damage_divider-powf(getSystemEffectiveness(system), shield_damage_exponent) / shield_damage_divider;
+    float shield_damage_exponent = 1.6f;
+    float shield_damage_divider = 7.0f;
+    float shield_damage_factor = 1.0f + powf(1.0f, shield_damage_exponent) / shield_damage_divider-powf(getSystemEffectiveness(system), shield_damage_exponent) / shield_damage_divider;
 
     return shield_damage_factor * frequency_damage_factor;
 }
@@ -1491,12 +1849,12 @@ void SpaceShip::takeHullDamage(float damage_amount, DamageInfo& info)
         {
             //Target specific system
 
-            float system_damage = (damage_amount / hull_max) * 2.0 * system_damage_ratio;
+            float system_damage = (damage_amount / hull_max) * 2.0f * system_damage_ratio;
             if (info.type == DT_Energy)
-                system_damage *= 3.0;   //Beam weapons do more system damage, as they penetrate the hull easier.
+                system_damage *= 3.0f;   //Beam weapons do more system damage, as they penetrate the hull easier.
             systems[info.system_target].health -= system_damage;
-            if (systems[info.system_target].health < -1.0)
-                systems[info.system_target].health = -1.0;
+            if (systems[info.system_target].health < -1.0f)
+                systems[info.system_target].health = -1.0f;
 
             for(int n=0; n<2; n++)
             {
@@ -1509,16 +1867,16 @@ void SpaceShip::takeHullDamage(float damage_amount, DamageInfo& info)
                         find_system = false;
                 }
                 //Damage the system compared to the amount of hull damage you would do. If we have less hull strength you get more system damage.
-                float system_damage = (damage_amount / hull_max) * 1.0 * system_damage_ratio;
+                float system_damage = (damage_amount / hull_max) * 1.0f * system_damage_ratio;
                 systems[random_system].health -= system_damage;
-                if (systems[random_system].health < -1.0)
-                    systems[random_system].health = -1.0;
+                if (systems[random_system].health < -1.0f)
+                    systems[random_system].health = -1.0f;
             }
 
             if (info.type == DT_Energy)
-                damage_amount *= 0.02;
+                damage_amount *= 0.02f;
             else
-                damage_amount *= 0.5;
+                damage_amount *= 0.5f;
         }else{
             ESystem random_system = SYS_None;
             bool find_system = true;
@@ -1530,12 +1888,12 @@ void SpaceShip::takeHullDamage(float damage_amount, DamageInfo& info)
             }
 
             //Damage the system compared to the amount of hull damage you would do. If we have less hull strength you get more system damage.
-            float system_damage = (damage_amount / hull_max) * 3.0 * system_damage_ratio;
+            float system_damage = (damage_amount / hull_max) * 3.0f * system_damage_ratio;
             if (info.type == DT_Energy)
-                system_damage *= 2.5;   //Beam weapons do more system damage, as they penetrate the hull easier.
+                system_damage *= 2.5f;   //Beam weapons do more system damage, as they penetrate the hull easier.
             systems[random_system].health -= system_damage;
-            if (systems[random_system].health < -1.0)
-                systems[random_system].health = -1.0;
+            if (systems[random_system].health < -1.0f)
+                systems[random_system].health = -1.0f;
         }
     }
 
@@ -1545,9 +1903,9 @@ void SpaceShip::takeHullDamage(float damage_amount, DamageInfo& info)
 void SpaceShip::destroyedByDamage(DamageInfo& info)
 {
     ExplosionEffect* e = new ExplosionEffect();
-    e->setSize(getRadius() * 1.5);
+    e->setSize(getRadius() * 1.5f);
     e->setPosition(getPosition());
-    e->setRadarSignatureInfo(0.0, 0.2, 0.2);
+    e->setRadarSignatureInfo(0.f, 0.2f, 0.2f);
 
     if (info.instigator)
     {
@@ -1585,9 +1943,9 @@ bool SpaceShip::hasSystem(ESystem system)
     case SYS_BeamWeapons:
         return beam_weapons_count > 0;
     case SYS_Maneuver:
-        return turn_speed > 0.0;
+        return turn_speed > 0.0f;
     case SYS_Impulse:
-        return impulse_max_speed > 0.0;
+        return impulse_max_speed > 0.0f;
     case SYS_Drones:
         return true;
     case SYS_Docks:
@@ -1616,9 +1974,9 @@ float SpaceShip::getSystemEffectiveness(ESystem system)
     // Degrade all systems except the reactor once energy level drops below 10.
     if (system != SYS_Reactor)
     {
-        if (energy_level < 10.0 && energy_level > 0.0 && power > 0.0)
+        if (energy_level < 10.0f && energy_level > 0.0f && power > 0.0f)
             power = std::min(power * energy_level / 10.0f, power);
-        else if (energy_level <= 0.0 || power <= 0.0)
+        else if (energy_level <= 0.0f || power <= 0.0f)
             power = 0.0f;
     }
 
@@ -1769,7 +2127,7 @@ void SpaceShip::addBroadcast(int threshold, string message)
 
     message = this->getCallSign() + " : " + message; //append the callsign at the start of broadcast
 
-    sf::Color color = sf::Color(255, 204, 51); //default : yellow, should never be seen
+    glm::u8vec4 color = glm::u8vec4(255, 204, 51, 255); //default : yellow, should never be seen
 
     for(int n=0; n<GameGlobalInfo::max_player_ships; n++)
     {
@@ -1779,17 +2137,17 @@ void SpaceShip::addBroadcast(int threshold, string message)
         {
             if (this->isFriendly(ship))
             {
-                color = sf::Color(154,255,154); //ally = light green
+                color = glm::u8vec4(154, 255, 154, 255); //ally = light green
                 addtolog = 1;
             }
-            else if ((factionInfo[this->getFactionId()]->states[ship->getFactionId()] == FVF_Neutral) && ((threshold >= FVF_Neutral)))
+            else if ((FactionInfo::getState(this->getFactionId(), ship->getFactionId()) == FVF_Neutral) && ((threshold >= FVF_Neutral)))
             {
-                color = sf::Color(128,128,128); //neutral = grey
+                color = glm::u8vec4(128,128,128, 255); //neutral = grey
                 addtolog = 1;
             }
             else if ((this->isEnemy(ship)) && (threshold == FVF_Enemy))
             {
-                color = sf::Color(255,102,102); //enemy = light red
+                color = glm::u8vec4(255,102,102, 255); //enemy = light red
                 addtolog = 1;
             }
 
@@ -2046,12 +2404,12 @@ string getLocaleMissileWeaponName(const EMissileWeapons& missile)
 float frequencyVsFrequencyDamageFactor(int beam_frequency, int shield_frequency)
 {
     if (beam_frequency < 0 || shield_frequency < 0)
-        return 1.0;
+        return 1.f;
 
-    float diff = abs(beam_frequency - shield_frequency);
-    float f1 = sinf(Tween<float>::linear(diff, 0, SpaceShip::max_frequency, 0, M_PI * (1.2 + shield_frequency * 0.05)) + M_PI / 2);
-    f1 = f1 * Tween<float>::easeInCubic(diff, 0, SpaceShip::max_frequency, 1.0, 0.1);
-    f1 = Tween<float>::linear(f1, 1.0, -1.0, 0.5, 1.5);
+    float diff = static_cast<float>(abs(beam_frequency - shield_frequency));
+    float f1 = sinf(Tween<float>::linear(diff, 0, SpaceShip::max_frequency, 0, float(M_PI) * (1.2f + shield_frequency * 0.05f)) + float(M_PI) / 2.0f);
+    f1 = f1 * Tween<float>::easeInCubic(diff, 0, SpaceShip::max_frequency, 1.f, 0.1f);
+    f1 = Tween<float>::linear(f1, 1.f, -1.f, 0.5f, 1.5f);
     return f1;
 }
 

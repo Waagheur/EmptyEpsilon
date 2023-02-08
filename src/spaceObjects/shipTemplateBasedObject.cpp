@@ -1,110 +1,188 @@
 #include "shipTemplateBasedObject.h"
 #include "spaceship.h"
 #include "gameGlobalInfo.h"
+#include "random.h"
+#include "soundManager.h"
 
 #include "scriptInterface.h"
 
+#include "tween.h"
 #include "i18n.h"
 
+/// A ShipTemplateBasedObject (STBO) is an object class created from a ShipTemplate.
+/// This is the parent class of SpaceShip (CpuShip, PlayerSpaceship) and SpaceStation objects, which inherit all STBO functions and can be created by scripts.
+/// Objects of this class can't be created by scripts, but SpaceStation and child classes of SpaceShip can.
 REGISTER_SCRIPT_SUBCLASS_NO_CREATE(ShipTemplateBasedObject, SpaceObject)
 {
-    /// Set the template to be used for this ship or station. Templates define hull/shields/looks etc.
+    /// Sets this ShipTemplate that defines this STBO's traits, and then applies them to this STBO.
+    /// ShipTemplates define the STBO's class, weapons, hull and shield strength, 3D appearance, and more.
+    /// See the ShipTemplate class for details, and files in scripts/shiptemplates/ for the default templates.
+    /// WARNING: Using a string that is not a valid ShipTemplate name crashes the game!
+    /// ShipTemplate string names are case-sensitive.
     /// Examples:
     /// CpuShip():setTemplate("Phobos T3")
     /// PlayerSpaceship():setTemplate("Phobos M3P")
     /// SpaceStation():setTemplate("Large Station")
-    /// WARNING: Using a string that is not a valid template name lets the game crash! This is case-sensitive.
-    /// See `scripts/shipTemplates.lua` for the existing templates.
     REGISTER_SCRIPT_CLASS_FUNCTION(ShipTemplateBasedObject, setTemplate);
-    /// [Depricated]
+    /// [DEPRECATED]
+    /// Use ShipTemplateBasedObject:setTemplate().
     REGISTER_SCRIPT_CLASS_FUNCTION(ShipTemplateBasedObject, setShipTemplate);
-    /// Set the class name of this object. Normally the class name is copied from the template name (Ex "Cruiser") but you can override it with this function.
+    /// Sets this STBO's vessel classification name, such as "Starfighter" or "Cruiser".
+    /// This overrides the vessel class name provided by the ShipTemplate.
+    /// Example: stbo:setTypeName("Prototype")
     REGISTER_SCRIPT_CLASS_FUNCTION(ShipTemplateBasedObject, setTypeName);
+    /// Returns this STBO's vessel classification name.
+    /// Example:
+    /// stbo:setTypeName("Prototype")
+    /// stbo:getTypeName() -- returns "Prototype"
     REGISTER_SCRIPT_CLASS_FUNCTION(ShipTemplateBasedObject, getTypeName);
     REGISTER_SCRIPT_CLASS_FUNCTION(ShipTemplateBasedObject, getClass);
     REGISTER_SCRIPT_CLASS_FUNCTION(ShipTemplateBasedObject, getSubClass);
     REGISTER_SCRIPT_CLASS_FUNCTION(ShipTemplateBasedObject, getHackDiff);
     REGISTER_SCRIPT_CLASS_FUNCTION(ShipTemplateBasedObject, setHackDiff);
     /// Get the current amount of hull
+    /// Returns this STBO's hull points.
+    /// Example: stbo:getHull()
     REGISTER_SCRIPT_CLASS_FUNCTION(ShipTemplateBasedObject, getHull);
-    /// Get the maximum hull value
+    /// Returns this STBO's maximum limit of hull points.
+    /// Example: stbo:getHullMax()
     REGISTER_SCRIPT_CLASS_FUNCTION(ShipTemplateBasedObject, getHullMax);
-    /// Set the current hull value, note that setting this to 0 does not destroy the station.
+    /// Sets this STBO's hull points.
+    /// If set to a value larger than the maximum, this sets the value to the limit.
+    /// If set to a value less than 0, this sets the value to 0.
+    /// Note that setting this value to 0 doesn't immediately destroy the STBO.
+    /// Example: stbo:setHull(100) -- sets the hull point limit to either 100, or the limit if less than 100
     REGISTER_SCRIPT_CLASS_FUNCTION(ShipTemplateBasedObject, setHull);
-    /// Set the maximum amount of hull for this station. Stations never repair hull damage, so this only effects the percentage displays
+    /// Sets this STBO's maximum limit of hull points.
+    /// Note that SpaceStations can't repair their own hull, so this only changes the percentage of remaining hull.
+    /// Example: stbo:setHullMax(100) -- sets the hull point limit to 100
     REGISTER_SCRIPT_CLASS_FUNCTION(ShipTemplateBasedObject, setHullMax);
-    /// Set whether the object can be destroyed.
-    /// Requires a Boolean value.
-    /// Example: ship:setCanBeDestroyed(true)
+    /// Defines whether this STBO can be destroyed by damage.
+    /// Defaults to true.
+    /// Example: stbo:setCanBeDestroyed(false) -- prevents the STBO from being destroyed by damage
     REGISTER_SCRIPT_CLASS_FUNCTION(ShipTemplateBasedObject, setCanBeDestroyed);
-    /// Get whether the object can be destroyed.
-    /// Returns a Boolean value.
-    /// Example: ship:getCanBeDestroyed()
+    /// Returns whether the STBO can be destroyed by damage.
+    /// Example: stbo:getCanBeDestroyed()
     REGISTER_SCRIPT_CLASS_FUNCTION(ShipTemplateBasedObject, getCanBeDestroyed);
-    /// Get the specified shield's current level.
-    /// Requires an integer index value.
-    /// Returns a float value.
-    /// Example to get shield level on front shields of a ship with two shields:
-    ///     ship:getShieldLevel(0)
-    /// Rear shields: ship:getShieldLevel(1)
+    /// Returns the shield points for this STBO's shield segment with the given index.
+    /// Shield segments are 0-indexed.
+    /// Example for a ship with two shield segments:
+    /// stbo:getShieldLevel(0) -- returns front shield points
+    /// stbo:getShieldLevel(1) -- returns rear shield points
     REGISTER_SCRIPT_CLASS_FUNCTION(ShipTemplateBasedObject, getShieldLevel);
-    /// Get the number of shields on this object.
-    /// For example, a ship with 1 shield count has a single shield covering
-    /// all angles, a ship with 2 covers front and back, etc.
-    /// Returns an integer count.
-    /// Example: ship:getShieldCount()
+    /// Returns this STBO's number of shield segments.
+    /// Each segment divides the 360-degree shield arc equally for each segment, up to a maximum of 8 segments.
+    /// The segments' order starts with the front-facing segment, then proceeds clockwise.
+    /// Example: stbo:getShieldCount()
     REGISTER_SCRIPT_CLASS_FUNCTION(ShipTemplateBasedObject, getShieldCount);
-    /// Get the maxium shield level.
+    /// Returns the maximum shield points for the STBO's shield segment with the given index.
+    /// Example: stbo:getShieldMax(0) -- returns the max shield strength for segment 0
     REGISTER_SCRIPT_CLASS_FUNCTION(ShipTemplateBasedObject, getShieldMax);
-    /// Set the current amount of shields.
+    /// Sets this STBO's shield points.
+    /// Each number provided as a parameter sets the points for a corresponding shield segment.
+    /// Note that the segments' order starts with the front-facing segment, then proceeds clockwise.
+    /// If more parameters are provided than the ship has shield segments, the excess parameters are discarded.
+    /// Example:
+    /// -- On a ship with 4 segments, this sets the forward shield segment to 50, right to 40, rear 30, left 20
+    /// -- On a ship with 2 segments, this sets forward 50, rear 40
+    /// stbo:setShields(50,40,30,20)
     REGISTER_SCRIPT_CLASS_FUNCTION(ShipTemplateBasedObject, setShields);
     /// Sets by how much the shields recharge over time for all shields. Default value is 0.3. Value is a float.
     REGISTER_SCRIPT_CLASS_FUNCTION(ShipTemplateBasedObject, setShieldRechargeRate);
-    /// Set the maximum shield level. Note that this does low the current shield level when the max becomes lower, but it does not increase the shield level.
-    /// A seperate call to setShield is needed for that.
+    /// Sets this STBO's maximum shield points per segment, and can also create new segments.
+    /// The number of parameters defines the STBO's number of shield segments, to a maximum of 8 segments.
+    /// The segments' order starts with the front-facing segment, then proceeds clockwise.
+    /// If more parameters are provided than the STBO has shield segments, the excess parameters create new segments with the defined max but 0 current shield points.
+    /// A STBO with one shield segment has only a front shield generator system, and a STBO with two or more segments has only front and rear generator systems.
+    /// Setting a lower maximum points value than the segment's current number of points also reduces the points to the limit.
+    /// However, increasing the maximum value to a higher value than the current points does NOT automatically increase the current points,
+    /// which requires a separate call to ShipTemplateBasedObject:setShield().
+    /// Example:
+    /// -- On a ship with 4 segments, this sets the forward shield max to 50, right to 40, rear 30, left 20
+    /// -- On a ship with 2 segments, this does the same, but its current rear shield points become right shield points, and the new rear and left shield segments have 0 points
+    /// stbo:setShieldsMax(50,40,30,20)
     REGISTER_SCRIPT_CLASS_FUNCTION(ShipTemplateBasedObject, setShieldsMax);
-    /// Set the icon to be used for this object on the radar.
-    /// For example, station:setRadarTrace("RadarArrow.png") will show an arrow instead of a dot for this station.
+    /// Sets this STBO's trace image.
+    /// Valid values are filenames of PNG images relative to the resources/radar directory.
+    /// Radar trace images should be white with a transparent background.
+    /// Example: stbo:setRadarTrace("arrow.png") -- sets the radar trace to resources/radar/arrow.png
     REGISTER_SCRIPT_CLASS_FUNCTION(ShipTemplateBasedObject, setRadarTrace);
-    /// Set the sound file to be used for this object's impulse engines.
-    /// Requires a string for a filename relative to the resources path.
-    /// Example: setImpulseSoundFile("engine.wav")
+    /// Sets this STBO's impulse engine sound effect.
+    /// Valid values are filenames of WAV files relative to the resources/ directory.
+    /// Use a looping sound file that tolerates being pitched up and down as the ship's impulse speed changes.
+    /// Example: stbo:setImpulseSoundFile("sfx/engine_fighter.wav") -- sets the impulse sound to resources/sfx/engine_fighter.wav
     REGISTER_SCRIPT_CLASS_FUNCTION(ShipTemplateBasedObject, setImpulseSoundFile);
-    /// Are the shields online or not. Currently always returns true except for player ships, as only players can turn off shields.
+    /// Defines whether this STBO's shields are activated.
+    /// Always returns true except for PlayerSpaceships, because only players can deactivate shields.
+    /// Example stbo:getShieldsActive() -- returns true if up, false if down
     REGISTER_SCRIPT_CLASS_FUNCTION(ShipTemplateBasedObject, getShieldsActive);
-
+    /// Returns whether this STBO supplies energy to docked PlayerSpaceships.
+    /// Example: stbo:getSharesEnergyWithDocked()
     REGISTER_SCRIPT_CLASS_FUNCTION(ShipTemplateBasedObject, getSharesEnergyWithDocked);
+    /// Defines whether this STBO supplies energy to docked PlayerSpaceships.
+    /// Example: stbo:getSharesEnergyWithDocked(false)
     REGISTER_SCRIPT_CLASS_FUNCTION(ShipTemplateBasedObject, setSharesEnergyWithDocked);
+    /// Returns whether this STBO repairs docked SpaceShips.
+    /// Example: stbo:getRepairDocked()
     REGISTER_SCRIPT_CLASS_FUNCTION(ShipTemplateBasedObject, getRepairDocked);
+    /// Defines whether this STBO repairs docked SpaceShips.
+    /// Example: stbo:setRepairDocked(true)
     REGISTER_SCRIPT_CLASS_FUNCTION(ShipTemplateBasedObject, setRepairDocked);
+    /// Returns whether the STBO restocks scan probes for docked PlayerSpaceships.
+    /// Example: stbo:getRestocksScanProbes()
     REGISTER_SCRIPT_CLASS_FUNCTION(ShipTemplateBasedObject, getRestocksScanProbes);
+    /// Defines whether the STBO restocks scan probes for docked PlayerSpaceships.
+    /// Example: stbo:setRestocksScanProbes(true)
     REGISTER_SCRIPT_CLASS_FUNCTION(ShipTemplateBasedObject, setRestocksScanProbes);
+    /// Returns whether this STBO restocks missiles for docked CpuShips.
+    /// Example: stbo:getRestocksMissilesDocked()
     REGISTER_SCRIPT_CLASS_FUNCTION(ShipTemplateBasedObject, getRestocksMissilesDocked);
+    /// Defines whether this STBO restocks missiles for docked CpuShips.
+    /// To restock docked PlayerSpaceships' weapons, use a comms script. See ShipTemplateBasedObject:setCommsScript() and :setCommsFunction().
+    /// Example: stbo:setRestocksMissilesDocked(true)
     REGISTER_SCRIPT_CLASS_FUNCTION(ShipTemplateBasedObject, setRestocksMissilesDocked);
-
+    /// Returns this STBO's long-range radar range.
+    /// Example: stbo:getLongRangeRadarRange()
     REGISTER_SCRIPT_CLASS_FUNCTION(ShipTemplateBasedObject, getLongRangeRadarRange);
-    REGISTER_SCRIPT_CLASS_FUNCTION(ShipTemplateBasedObject, getShortRangeRadarRange);
+    /// Sets this STBO's long-range radar range.
+    /// PlayerSpaceships use this range on the science and operations screens' radar.
+    /// AI orders of CpuShips use this range to detect potential targets.
+    /// Example: stbo:setLongRangeRadarRange(20000) -- sets the long-range radar range to 20U
     REGISTER_SCRIPT_CLASS_FUNCTION(ShipTemplateBasedObject, setLongRangeRadarRange);
+    /// Returns this STBO's short-range radar range.
+    REGISTER_SCRIPT_CLASS_FUNCTION(ShipTemplateBasedObject, getShortRangeRadarRange);
+    /// Sets this STBO's short-range radar range.
+    /// PlayerSpaceships use this range on the helms, weapons, and single pilot screens' radar.
+    /// AI orders of CpuShips use this range to decide when to disengage pursuit of fleeing targets.
+    /// This also defines the shared radar radius on the relay screen for friendly ships and stations, and how far into nebulae that this SpaceShip can detect objects.
+    /// Example: stbo:setShortRangeRadarRange(4000) -- sets the short-range radar range to 4U
     REGISTER_SCRIPT_CLASS_FUNCTION(ShipTemplateBasedObject, setShortRangeRadarRange);
-
-    /// [Depricated]
+    /// [DEPRECATED]
+    /// Use ShipTemplateBasedObject:getShieldLevel() with an index value.
     REGISTER_SCRIPT_CLASS_FUNCTION(ShipTemplateBasedObject, getFrontShield);
-    /// [Depricated]
+    /// [DEPRECATED]
+    /// Use ShipTemplateBasedObject:setShieldsMax().
     REGISTER_SCRIPT_CLASS_FUNCTION(ShipTemplateBasedObject, getFrontShieldMax);
-    /// [Depricated]
+    /// [DEPRECATED]
+    /// Use ShipTemplateBasedObject:setShieldLevel() with an index value.
     REGISTER_SCRIPT_CLASS_FUNCTION(ShipTemplateBasedObject, setFrontShield);
-    /// [Depricated]
+    /// [DEPRECATED]
+    /// Use ShipTemplateBasedObject:setShieldsMax().
     REGISTER_SCRIPT_CLASS_FUNCTION(ShipTemplateBasedObject, setFrontShieldMax);
-    /// [Depricated]
+    /// [DEPRECATED]
+    /// Use ShipTemplateBasedObject:getShieldLevel() with an index value.
     REGISTER_SCRIPT_CLASS_FUNCTION(ShipTemplateBasedObject, getRearShield);
-    /// [Depricated]
+    /// [DEPRECATED]
+    /// Use ShipTemplateBasedObject:setShieldsMax().
     REGISTER_SCRIPT_CLASS_FUNCTION(ShipTemplateBasedObject, getRearShieldMax);
-    /// [Depricated]
+    /// [DEPRECATED]
+    /// Use ShipTemplateBasedObject:setShieldLevel() with an index value.
     REGISTER_SCRIPT_CLASS_FUNCTION(ShipTemplateBasedObject, setRearShield);
-    /// [Depricated]
+    /// [DEPRECATED]
+    /// Use ShipTemplateBasedObject:setShieldsMax().
     REGISTER_SCRIPT_CLASS_FUNCTION(ShipTemplateBasedObject, setRearShieldMax);
-    /// Set a function that will be called if the object is taking damage.
-    /// First argument given to the function will be the object taking damage, the second the instigator SpaceObject (or nil).
+    /// Defines a function to call when this STBO takes damage.
+    /// Passes the object taking damage and the instigator SpaceObject (or nil) to the function.
     /// If instigator is not nil, you will get in this order :
     /// a string which is the damage type as defined in EDamageType and converted as string in shipTemplate source, 
     /// a number which is the frequency used, 
@@ -112,8 +190,9 @@ REGISTER_SCRIPT_SUBCLASS_NO_CREATE(ShipTemplateBasedObject, SpaceObject)
     /// two floats which are resp. damage taken by shields and damage taken by hull
     /// and a number which is the shield index if shield is hit, -1 if no shield is hit
     REGISTER_SCRIPT_CLASS_FUNCTION(ShipTemplateBasedObject, onTakingDamage);
-    /// Set a function that will be called if the object is destroyed by taking damage.
-    /// First argument given to the function will be the object taking damage, the second the instigator SpaceObject that gave the final blow (or nil).
+    /// Defines a function to call when this STBO is destroyed by taking damage.
+    /// Passes the object taking damage and the instigator SpaceObject that delivered the destroying damage (or nil) to the function.
+    /// Example: stbo:onTakingDamage(function(this_stbo,instigator) print(this_stbo:getCallSign() .. " was destroyed by " .. instigator:getCallSign()) end)
     REGISTER_SCRIPT_CLASS_FUNCTION(ShipTemplateBasedObject, onDestruction);
     //Ajouts Tdelc
     REGISTER_SCRIPT_CLASS_FUNCTION(ShipTemplateBasedObject, setRotationSpeed);
@@ -184,71 +263,60 @@ ShipTemplateBasedObject::ShipTemplateBasedObject(float collision_range, string m
     registerMemberReplication(&shield_recharge_rate);
 }
 
-void ShipTemplateBasedObject::drawShieldsOnRadar(sf::RenderTarget& window, sf::Vector2f position, float scale, float rotation, float sprite_scale, bool show_levels)
+void ShipTemplateBasedObject::drawShieldsOnRadar(sp::RenderTarget& renderer, glm::vec2 position, float scale, float rotation, float sprite_scale, bool show_levels)
 {
     if (!getShieldsActive())
         return;
     if (shield_count == 1)
     {
-        sf::Sprite objectSprite;
-        textureManager.setTexture(objectSprite, "shield_circle.png");
-        objectSprite.setPosition(position);
-
-        objectSprite.setScale(sprite_scale * 0.25f * 1.5f, sprite_scale * 0.25f * 1.5f);
-
-        sf::Color color = sf::Color(255, 255, 255, 64);
+        glm::u8vec4 color = glm::u8vec4(255, 255, 255, 64);
         if (show_levels)
         {
             float level = shield_level[0] / shield_max[0];
-            color = Tween<sf::Color>::linear(level, 1.0f, 0.0f, sf::Color(128, 128, 255, 128), sf::Color(255, 0, 0, 64));
+            color = Tween<glm::u8vec4>::linear(level, 1.0f, 0.0f, glm::u8vec4(128, 128, 255, 128), glm::u8vec4(255, 0, 0, 64));
         }
-        if (shield_hit_effect[0] > 0.0)
+        if (shield_hit_effect[0] > 0.0f)
         {
-            color = Tween<sf::Color>::linear(shield_hit_effect[0], 0.0f, 1.0f, color, sf::Color(255, 0, 0, 128));
+            color = Tween<glm::u8vec4>::linear(shield_hit_effect[0], 0.0f, 1.0f, color, glm::u8vec4(255, 0, 0, 128));
         }
-        objectSprite.setColor(color);
-
-        window.draw(objectSprite);
+        renderer.drawSprite("shield_circle.png", position, sprite_scale * 0.25f * 1.5f * 256.0f, color);
     }else if (shield_count > 1) {
         float direction = getRotation()-rotation;
         float arc = 360.0f / float(shield_count);
 
         for(int n=0; n<shield_count; n++)
         {
-            sf::Color color = sf::Color(255, 255, 255, 64);
+            glm::u8vec4 color = glm::u8vec4(255, 255, 255, 64);
             if (show_levels)
             {
                 float level = shield_level[n] / shield_max[n];
-                color = Tween<sf::Color>::linear(level, 1.0f, 0.0f, sf::Color(128, 128, 255, 128), sf::Color(255, 0, 0, 64));
+                color = Tween<glm::u8vec4>::linear(level, 1.0f, 0.0f, glm::u8vec4(128, 128, 255, 128), glm::u8vec4(255, 0, 0, 64));
             }
-            if (shield_hit_effect[n] > 0.0)
+            if (shield_hit_effect[n] > 0.0f)
             {
-                color = Tween<sf::Color>::linear(shield_hit_effect[n], 0.0f, 1.0f, color, sf::Color(255, 0, 0, 128));
+                color = Tween<glm::u8vec4>::linear(shield_hit_effect[n], 0.0f, 1.0f, color, glm::u8vec4(255, 0, 0, 128));
             }
-            sf::VertexArray a(sf::TrianglesFan, 4);
-            sf::Vector2f delta_a = sf::vector2FromAngle(direction - arc / 2.0f);
-            sf::Vector2f delta_b = sf::vector2FromAngle(direction);
-            sf::Vector2f delta_c = sf::vector2FromAngle(direction + arc / 2.0f);
-            a[0].position = position + delta_b * sprite_scale * 32.0f * 0.05f;
-            a[1].position = a[0].position + delta_a * sprite_scale * 32.0f * 1.5f;
-            a[2].position = a[0].position + delta_b * sprite_scale * 32.0f * 1.5f;
-            a[3].position = a[0].position + delta_c * sprite_scale * 32.0f * 1.5f;
-            a[0].texCoords = sf::Vector2f(128, 128);
-            a[1].texCoords = sf::Vector2f(128, 128) + delta_a * 128.0f;
-            a[2].texCoords = sf::Vector2f(128, 128) + delta_b * 128.0f;
-            a[3].texCoords = sf::Vector2f(128, 128) + delta_c * 128.0f;
-            a[0].color = color;
-            a[1].color = color;
-            a[2].color = color;
-            a[3].color = color;
-            window.draw(a, textureManager.getTexture("shield_circle.png"));
 
+            glm::vec2 delta_a = vec2FromAngle(direction - arc / 2.0f);
+            glm::vec2 delta_b = vec2FromAngle(direction);
+            glm::vec2 delta_c = vec2FromAngle(direction + arc / 2.0f);
+            
+            auto p0 = position + delta_b * sprite_scale * 32.0f * 0.05f;
+            renderer.drawTexturedQuad("shield_circle.png",
+                p0,
+                p0 + delta_a * sprite_scale * 32.0f * 1.5f,
+                p0 + delta_b * sprite_scale * 32.0f * 1.5f,
+                p0 + delta_c * sprite_scale * 32.0f * 1.5f,
+                glm::vec2(0.5, 0.5),
+                glm::vec2(0.5, 0.5) + delta_a * 0.5f,
+                glm::vec2(0.5, 0.5) + delta_b * 0.5f,
+                glm::vec2(0.5, 0.5) + delta_c * 0.5f,
+                color);
             direction += arc;
         }
     }
 }
 
-#if FEATURE_3D_RENDERING
 void ShipTemplateBasedObject::draw3DTransparent()
 {
     if (shield_count < 1)
@@ -256,21 +324,21 @@ void ShipTemplateBasedObject::draw3DTransparent()
 
     float angle = 0.0;
     float arc = 360.0f / shield_count;
+    const auto model_matrix = getModelMatrix();
     for(int n = 0; n<shield_count; n++)
     {
         if (shield_hit_effect[n] > 0)
         {
             if (shield_count > 1)
             {
-                model_info.renderShield((shield_level[n] / shield_max[n]) * shield_hit_effect[n], angle);
+                model_info.renderShield(model_matrix, (shield_level[n] / shield_max[n]) * shield_hit_effect[n], angle);
             }else{
-                model_info.renderShield((shield_level[n] / shield_max[n]) * shield_hit_effect[n]);
+                model_info.renderShield(model_matrix, (shield_level[n] / shield_max[n]) * shield_hit_effect[n]);
             }
         }
         angle += arc;
     }
 }
-#endif//FEATURE_3D_RENDERING
 
 void ShipTemplateBasedObject::update(float delta)
 {
@@ -305,7 +373,7 @@ void ShipTemplateBasedObject::update(float delta)
             shield_hit_effect[n] -= delta;
         }
     }
-    if (rotation_speed != 0.0)
+    if (rotation_speed != 0.f)
         setHeading(getHeading()+delta*rotation_speed);
 }
 
@@ -348,7 +416,7 @@ void ShipTemplateBasedObject::takeDamage(float damage_amount, DamageInfo info)
         shield_index %= shield_count;
 
         shield_damage = damage_amount * getShieldDamageFactor(info, shield_index);
-        soundManager->playSound("explosion_shields.wav", getPosition(), 200.0, 1.0, 1.0f + random(-0.1f, 0.1f),shield_damage*100.0);
+        soundManager->playSound("explosion_shields.wav", getPosition(), 200.0, 1.0, 1.0f + random(-0.1f, 0.1f),shield_damage*100.f);
 
         damage_amount -= shield_level[shield_index];
         shield_level[shield_index] -= shield_damage;
@@ -360,7 +428,7 @@ void ShipTemplateBasedObject::takeDamage(float damage_amount, DamageInfo info)
         } else {
             shield_hit_effect[shield_index] = 1.0;
         }
-        if (damage_amount < 0.0)
+        if (damage_amount < 0.0f)
         {
             damage_amount = 0.0;
         }
@@ -384,9 +452,9 @@ void ShipTemplateBasedObject::takeDamage(float damage_amount, DamageInfo info)
         }
     }
 
-    if (info.type != DT_EMP && damage_amount > 0.0)
+    if (info.type != DT_EMP && damage_amount > 0.0f)
     {
-        soundManager->playSound("explosion.wav", getPosition(), 200.0, 1.0, 1.0f + random(-0.1f, 0.1f),damage_amount*100.0);
+        soundManager->playSound("explosion.wav", getPosition(), 200.0, 1.0, 1.0f + random(-0.1f, 0.1f),damage_amount*100.f);
         takeHullDamage(damage_amount, info);
     }
 
@@ -407,11 +475,11 @@ void ShipTemplateBasedObject::takeDamage(float damage_amount, DamageInfo info)
 void ShipTemplateBasedObject::takeHullDamage(float damage_amount, DamageInfo& info)
 {
     hull_strength -= damage_amount;
-    if (hull_strength <= 0.0 && !can_be_destroyed)
+    if (hull_strength <= 0.0f && !can_be_destroyed)
     {
         hull_strength = 1;
     }
-    if (hull_strength <= 0.0)
+    if (hull_strength <= 0.0f)
     {
         destroyedByDamage(info);
         if (on_destruction.isSet())
@@ -475,7 +543,7 @@ void ShipTemplateBasedObject::setTemplate(string template_name)
     applyTemplateValues();
 }
 
-void ShipTemplateBasedObject::setShields(std::vector<float> amounts)
+void ShipTemplateBasedObject::setShields(const std::vector<float>& amounts)
 {
     for(int n=0; n<std::min(int(amounts.size()), shield_count); n++)
     {
@@ -483,7 +551,7 @@ void ShipTemplateBasedObject::setShields(std::vector<float> amounts)
     }
 }
 
-void ShipTemplateBasedObject::setShieldsMax(std::vector<float> amounts)
+void ShipTemplateBasedObject::setShieldsMax(const std::vector<float>& amounts)
 {
     shield_count = std::min(max_shield_count, int(amounts.size()));
     for(int n=0; n<shield_count; n++)
@@ -497,7 +565,7 @@ ESystem ShipTemplateBasedObject::getShieldSystemForShieldIndex(int index)
 {
     if (shield_count < 2)
         return SYS_FrontShield;
-    float angle = index * 360.0 / shield_count;
+    float angle = index * 360.0f / shield_count;
     if (std::abs(angleDifference(angle, 0.0f)) < 90)
         return SYS_FrontShield;
     return SYS_RearShield;
