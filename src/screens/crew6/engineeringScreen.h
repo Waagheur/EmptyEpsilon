@@ -38,6 +38,7 @@ private:
     GuiToggleButton* presets_button;
     std::vector<GuiButton*> presets_buttons;
     GuiProgressbar* coolant_remaining_bar;
+    GuiProgressbar* repair_remaining_bar;
 
     class SystemRow
     {
@@ -60,6 +61,7 @@ private:
         GuiProgressSlider* repair_bar;
         GuiLabel* repair_label;
         GuiImage* coolant_max_indicator;
+        GuiImage* repair_max_indicator;
     };
     std::vector<SystemRow> system_rows;
     GuiElement* system_effects_container;

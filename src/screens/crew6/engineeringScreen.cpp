@@ -113,6 +113,11 @@ EngineeringScreen::EngineeringScreen(GuiContainer* owner, ECrewPosition crew_pos
             info.power_bar->setSize(150, GuiElement::GuiSizeMax);
             info.coolant_bar->setSize(150, GuiElement::GuiSizeMax);
         }
+        info.coolant_max_indicator = new GuiImage(info.coolant_bar, "", "gui/widget/SliderTick.png");
+        info.coolant_max_indicator->setSize(40, 40);
+        info.coolant_max_indicator->setAngle(90);
+        info.coolant_max_indicator->setColor({255,255,255,0});
+
         if (gameGlobalInfo->use_nano_repair_crew)
         {
             info.damage_bar->setSize(150, GuiElement::GuiSizeMax);
@@ -121,19 +126,21 @@ EngineeringScreen::EngineeringScreen(GuiContainer* owner, ECrewPosition crew_pos
             info.coolant_bar->setSize(150, GuiElement::GuiSizeMax);
             if (gameGlobalInfo->use_system_damage)
             {
-                info.repair_bar = new GuiProgressSlider(info.row, id + "_REPAIR", 0.0, 10.0, 0.0, [this,n](float value){
+                info.repair_bar = new GuiProgressSlider(info.row, id + "_REPAIR", 0.0f, 10.0f, 0.0f, [this,n](float value){
                     if (my_spaceship)
                         my_spaceship->commandSetSystemRepairRequest(ESystem(n), value);
                 });
                 info.repair_bar->setColor(glm::u8vec4(32, 128, 32, 128))->setSize(150, GuiElement::GuiSizeMax);
                 info.repair_label = new GuiLabel(info.repair_bar, id + "_REPAIR_LABEL", "...", 20);
                 info.repair_label->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);
+                info.repair_max_indicator = new GuiImage(info.repair_bar, "", "gui/widget/SliderTick.png");
+                info.repair_max_indicator->setSize(40, 40);
+                info.repair_max_indicator->setAngle(90);
+                info.repair_max_indicator->setColor({255,255,255,0});
+        
             }
         }
-        info.coolant_max_indicator = new GuiImage(info.coolant_bar, "", "gui/widget/SliderTick.png");
-        info.coolant_max_indicator->setSize(40, 40);
-        info.coolant_max_indicator->setAngle(90);
-        info.coolant_max_indicator->setColor({255,255,255,0});
+        
 
         info.row->moveToBack();
         system_rows.push_back(info);
@@ -143,7 +150,7 @@ EngineeringScreen::EngineeringScreen(GuiContainer* owner, ECrewPosition crew_pos
     icon_layout->setSize(GuiElement::GuiSizeMax, 48)->setAttribute("layout", "horizontal");
     (new GuiElement(icon_layout, "FILLER"))->setSize(300, GuiElement::GuiSizeMax);
     
-    auto coolant_progress_func = [](float requested_unused_coolant) //TODO bien vérifier tout ça
+    auto coolant_progress_func = [](float requested_unused_coolant)
     {
         float total_requested = 0.0f;
         float new_max_total = my_spaceship->max_coolant - requested_unused_coolant;
@@ -164,6 +171,28 @@ EngineeringScreen::EngineeringScreen(GuiContainer* owner, ECrewPosition crew_pos
                     my_spaceship->commandSetSystemCoolantRequest((ESystem)n, std::min(my_spaceship->systems[n].coolant_request + add, 10.0f));
         }
     };
+
+    auto repair_progress_func = [](float requested_unused_repair)
+    {
+        float total_requested = 0.0f;
+        float new_max_total = my_spaceship->max_repair - requested_unused_repair;
+        for(int n=0; n<SYS_COUNT; n++)
+            total_requested += my_spaceship->systems[n].repair_request;
+        if (new_max_total < total_requested) { // Drain systems
+            for(int n=0; n<SYS_COUNT; n++)
+                my_spaceship->commandSetSystemRepairRequest((ESystem)n, my_spaceship->systems[n].repair_request * new_max_total / total_requested);
+        } else 
+        { // Put nanobots into systems
+            int system_count = 0;
+            for(int n=0; n<SYS_COUNT; n++)
+                if (my_spaceship->hasSystem((ESystem)n))
+                    system_count += 1;
+            float add = (new_max_total - total_requested) / float(system_count);
+            for(int n=0; n<SYS_COUNT; n++)
+                if (my_spaceship->hasSystem((ESystem)n))
+                    my_spaceship->commandSetSystemRepairRequest((ESystem)n, std::min(my_spaceship->systems[n].repair_request + add, 10.0f));
+        }
+    };
     
     
     if (gameGlobalInfo->use_system_damage){
@@ -175,7 +204,10 @@ EngineeringScreen::EngineeringScreen(GuiContainer* owner, ECrewPosition crew_pos
             coolant_remaining_bar = new GuiProgressSlider(icon_layout, "", 0, 10.0, 10.0, coolant_progress_func);
             coolant_remaining_bar->setColor(glm::u8vec4(32, 128, 128, 178))->setDrawBackground(false)->setSize(150, GuiElement::GuiSizeMax);
             (new GuiKeyValueDisplay(coolant_remaining_bar, "SYSTEM_COOLANT", 0.9, tr("coolant"), ""))->setIcon("gui/icons/coolant")->setTextSize(30)->setSize(150, GuiElement::GuiSizeMax);
-            (new GuiKeyValueDisplay(icon_layout, "SYSTEM_REPAIR", 0.9, tr("repair"), ""))->setIcon("gui/icons/system_health")->setTextSize(30)->setSize(150, GuiElement::GuiSizeMax);
+            
+            repair_remaining_bar = new GuiProgressSlider(icon_layout, "", 0, 10.0, 10.0, repair_progress_func);
+            repair_remaining_bar->setColor(glm::u8vec4(32, 128, 32, 178))->setDrawBackground(false)->setSize(150, GuiElement::GuiSizeMax);
+            (new GuiKeyValueDisplay(repair_remaining_bar, "SYSTEM_REPAIR", 0.9, tr("repair"), ""))->setIcon("gui/icons/system_health")->setTextSize(30)->setSize(150, GuiElement::GuiSizeMax);
         } else 
         {
             (new GuiImage(icon_layout, "SYSTEM_HEALTH_ICON", "gui/icons/hull"))->setSize(150, GuiElement::GuiSizeMax);
@@ -447,10 +479,8 @@ void EngineeringScreen::onDraw(sp::RenderTarget& renderer)
                 repair_display->setValue(toNearbyIntString(my_spaceship->max_repair));
         }
         
-        // float total_coolant_request = 0.0f;
-        // for(int n=0; n<SYS_COUNT; n++)
-        //     total_coolant_request += my_spaceship->systems[n].coolant_request;
         float total_coolant_used = 0.0f;
+        float total_repair_used = 0.0f;
         for(int n=0; n<SYS_COUNT; n++)
         {
             SystemRow info = system_rows[n];
@@ -511,15 +541,30 @@ void EngineeringScreen::onDraw(sp::RenderTarget& renderer)
                 ///info.repair_bar->setValue(system.repair_level);
                 info.repair_bar->setValue(std::min(system.repair_level, my_spaceship->max_repair_per_system));
 
+                if (system.repair_request > 0.0f) 
+                {
+                    float f = system.repair_request / my_spaceship->max_repair_per_system;
+                    info.repair_max_indicator->setPosition(-20 + info.repair_bar->getSize().x * f, 5);
+                    info.repair_max_indicator->setColor({255,255,255,255});
+                } 
+                else 
+                {
+                    info.repair_max_indicator->setColor({255,255,255,0});
+                }
+
                 if(system.repair_level > my_spaceship->max_repair_per_system)
                         my_spaceship->commandSetSystemRepairRequest(ESystem(n), my_spaceship->max_repair_per_system);
                 else if(system.repair_level > my_spaceship->max_repair)
                         my_spaceship->commandSetSystemRepairRequest(ESystem(n), my_spaceship->max_repair);
+                total_repair_used += system.repair_level;
             }
             total_coolant_used += system.coolant_level;
         }
         coolant_remaining_bar->setRange(0, my_spaceship->max_coolant);
         coolant_remaining_bar->setValue(my_spaceship->max_coolant - total_coolant_used);
+
+        repair_remaining_bar->setRange(0, my_spaceship->max_repair);
+        repair_remaining_bar->setValue(my_spaceship->max_repair - total_repair_used);
 
         if (selected_system != SYS_None)
         {

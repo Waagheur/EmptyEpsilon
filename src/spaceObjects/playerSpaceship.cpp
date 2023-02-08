@@ -964,6 +964,24 @@ void PlayerSpaceship::update(float delta)
         if (total_coolant_request > max_coolant)
             coolant_request_factor = max_coolant / total_coolant_request;
 
+        //The same for repair, if using nano repair
+        //Request should never be superior to request by system 
+        float repair_request_factor = 1.0f; 
+
+        if (gameGlobalInfo->use_nano_repair_crew)
+        {
+            float total_repair_request = 0.0f;
+            for(int n = 0; n < SYS_COUNT; n++)
+            {
+                if (!hasSystem(ESystem(n))) continue;
+                total_repair_request += systems[n].repair_request;
+            }
+            if(total_repair_request > max_repair)
+            {
+                repair_request_factor = max_repair / total_repair_request;
+            }
+        }
+
         for(int n = 0; n < SYS_COUNT; n++)
         {
             if (!hasSystem(ESystem(n))) continue;
@@ -995,17 +1013,18 @@ void PlayerSpaceship::update(float delta)
                     systems[n].coolant_level = coolant_request;
             }
             
-            if (systems[n].repair_request > systems[n].repair_level)
+            float repair_request = systems[n].repair_request * repair_request_factor;
+            if (repair_request > systems[n].repair_level)
             {
                 systems[n].repair_level += delta * system_repair_level_change_per_second;
-                if (systems[n].repair_level > systems[n].repair_request)
-                    systems[n].repair_level = systems[n].repair_request;
+                if (systems[n].repair_level > repair_request)
+                    systems[n].repair_level = repair_request;
             }
-            else if (systems[n].repair_request < systems[n].repair_level)
+            else if (repair_request < systems[n].repair_level)
             {
                 systems[n].repair_level -= delta * system_repair_level_change_per_second;
-                if (systems[n].repair_level < systems[n].repair_request)
-                    systems[n].repair_level = systems[n].repair_request;
+                if (systems[n].repair_level < repair_request)
+                    systems[n].repair_level = repair_request;
             }
 
             // Add heat to overpowered subsystems
@@ -1247,37 +1266,37 @@ void PlayerSpaceship::setSystemRepairRequest(ESystem system, float request)
 {
     request = std::max(0.0f, std::min(request, std::min((float) max_repair_per_system, max_repair)));
     // Set coolant levels on a system.
-    float total_repair = 0;
-    int cnt = 0;
-    for(int n = 0; n < SYS_COUNT; n++)
-    {
-        if (!hasSystem(ESystem(n))) continue;
-        if (n == system) continue;
+    // float total_repair = 0;
+    // int cnt = 0;
+    // for(int n = 0; n < SYS_COUNT; n++)
+    // {
+    //     if (!hasSystem(ESystem(n))) continue;
+    //     if (n == system) continue;
 
-        total_repair += systems[n].repair_request;
-        cnt++;
-    }
-    if (total_repair > max_repair - request)
-    {
-        for(int n = 0; n < SYS_COUNT; n++)
-        {
-            if (!hasSystem(ESystem(n))) continue;
-            if (n == system) continue;
+    //     total_repair += systems[n].repair_request;
+    //     cnt++;
+    // }
+    // if (total_repair > max_repair - request)
+    // {
+    //     for(int n = 0; n < SYS_COUNT; n++)
+    //     {
+    //         if (!hasSystem(ESystem(n))) continue;
+    //         if (n == system) continue;
 
-            systems[n].repair_request *= (max_repair - request) / total_repair;
-        }
-    }else{
-        for(int n = 0; n < SYS_COUNT; n++)
-        {
-            if (!hasSystem(ESystem(n))) continue;
-            if (n == system) continue;
+    //         systems[n].repair_request *= (max_repair - request) / total_repair;
+    //     }
+    // }else{
+    //     for(int n = 0; n < SYS_COUNT; n++)
+    //     {
+    //         if (!hasSystem(ESystem(n))) continue;
+    //         if (n == system) continue;
 
-            if (total_repair > 0)
-                systems[n].repair_request = std::min(systems[n].repair_request * (max_repair - request) / total_repair, (float) max_repair_per_system);
-            else
-                systems[n].repair_request = std::min((max_repair - request) / float(cnt), float(max_repair_per_system));
-        }
-    }
+    //         if (total_repair > 0)
+    //             systems[n].repair_request = std::min(systems[n].repair_request * (max_repair - request) / total_repair, (float) max_repair_per_system);
+    //         else
+    //             systems[n].repair_request = std::min((max_repair - request) / float(cnt), float(max_repair_per_system));
+    //     }
+    // }
 
     systems[system].repair_request = request;
 }
