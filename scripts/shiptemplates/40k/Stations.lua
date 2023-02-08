@@ -16,7 +16,7 @@ template = ShipTemplate():setName("Petite Station"):setModel("space_station_4"):
 template:setDescription([[ Petite station spatiale, elle sert pour le ravitaillement en espace profond]])
 template:setHull(150)
 template:setShields(300)
-template:setRadarTrace("radartrace_smallstation.png")
+template:setRadarTrace("smallstation.png")
 template:setDockClasses("Drone","Vaisseau leger","Fregate","destroyer","Croiseur leger",'croiseur','Cuirasse','Vaisseau-Mere')
 
 template:setSharesEnergyWithDocked(true)
@@ -27,7 +27,7 @@ template = ShipTemplate():setName("Station Moyenne"):setModel("space_station_3")
 template:setDescription([[Station de taille moyenne, bien equipe, servant au ravitaillement et au commerce en espace profond]])
 template:setHull(400)
 template:setShields(800)
-template:setRadarTrace("radartrace_mediumstation.png")
+template:setRadarTrace("mediumstation.png")
 template:setDockClasses("Drone","Vaisseau leger","Fregate","destroyer","Croiseur leger",'croiseur','Cuirasse','Vaisseau-Mere')
 template:setSharesEnergyWithDocked(true)
 template:setRepairDocked(true)
@@ -37,7 +37,7 @@ template = ShipTemplate():setName("Grande Station"):setModel("space_station_2"):
 template:setDescription([[De la taille d'une ville tentaculaire, les stations de cette echelle representent le centre de la puissance spatiale de cette region. Elles remplissent plusieurs fonctions a la fois et representent un investissement considerable en temps, en argent et en main d'oeuvre. Les boucliers et l'epaisse coque d'une enorme station peuvent la maintenir intacte assez longtemps pour que des renforts arrivent, même en cas de siege ou d'assaut massif parfaitement coordonne.]])
 template:setHull(500)
 template:setShields(1000, 1000, 1000)
-template:setRadarTrace("radartrace_largestation.png")
+template:setRadarTrace("largestation.png")
 template:setDockClasses("Drone","Vaisseau leger","Fregate","destroyer","Croiseur leger",'croiseur','Cuirasse','Vaisseau-Mere')
 
 
@@ -50,7 +50,7 @@ template = ShipTemplate():setName("Immense Station"):setModel("space_station_1")
 template:setDescription([[De la taille d'une ville tentaculaire, les stations de cette echelle representent le centre de la puissance spatiale de cette region. Elles remplissent plusieurs fonctions a la fois et representent un investissement considerable en temps, en argent et en main d'oeuvre. Les boucliers et l'epaisse coque d'une enorme station peuvent la maintenir intacte assez longtemps pour que des renforts arrivent, même en cas de siege ou d'assaut massif parfaitement coordonne.]])
 template:setHull(800)
 template:setShields(1200, 1200, 1200, 1200)
-template:setRadarTrace("radartrace_hugestation.png")
+template:setRadarTrace("hugestation.png")
 template:setDockClasses("Drone","Vaisseau leger","Fregate","destroyer","Croiseur leger",'croiseur','Cuirasse','Vaisseau-Mere')
 
 
@@ -67,7 +67,7 @@ template = ShipTemplate():setName("Grande station Imperial"):setModel("Navy_Stat
 template:setDescription([[De la taille d'une ville tentaculaire, les stations de cette echelle representent le centre de la puissance spatiale de cette region. Elles remplissent plusieurs fonctions a la fois et representent un investissement considerable en temps, en argent et en main d'oeuvre. Les boucliers et l'epaisse coque d'une enorme station peuvent la maintenir intacte assez longtemps pour que des renforts arrivent, même en cas de siege ou d'assaut massif parfaitement coordonne.]])
 template:setHull(3000)
 template:setShields(1000, 1000, 1000, 1000)
-template:setRadarTrace("radartrace_hugestation.png")
+template:setRadarTrace("hugestation.png")
 --                  Arc, Dir, Range, CycleTime, Dmg
 template:setBeam(0, 100, 1, 100.0, 30.0, 175)
 template:setBeam(1, 100, 180, 100.0, 30.0, 175)
@@ -134,7 +134,7 @@ template:setCustomWeaponStorage("FLAK", 6)
 -- Smaller ships can dock to this platform to re-supply.
 template = ShipTemplate():setName("Plateforme de defense"):setLocaleName(_("Plateforme de defense")):setClass(_("Installation Fixe"), _("subclass", "Support")):setModel("space_station_4")
 template:setDescription(_([[Stations de defense rotative standard.]]))
-template:setRadarTrace("radartrace_smallstation.png")
+template:setRadarTrace("smallstation.png")
 template:setHull(600)
 template:setShields(400, 400, 400, 400, 400, 400)
 template:setSpeed(0, 0.5, 0)	
@@ -159,7 +159,7 @@ template:setRestocksScanProbes(true)
 -- Smaller ships can dock to this platform to re-supply.
 template = ShipTemplate():setName("Laser de defense planetaire"):setLocaleName(_("laser planetaire")):setClass(_("defense"), _("subclass", "Support")):setModel("space_station_4")
 template:setDescription(_([[Laser de defense standard.]]))
-template:setRadarTrace("radartrace_smallstation.png")
+template:setRadarTrace("smallstation.png")
 template:setHull(1000)
 template:setShields(1200, 1200, 1200, 1200, 1200, 1200)
 template:setSpeed(0, 0.5, 0)
@@ -183,7 +183,7 @@ template:setDescription([[De la taille d'une ville tentaculaire, les stations de
 template:setHull(2000)
 template:setShields(700, 700, 700,700)
 template:setSpeed(0, 0.5, 0)
-template:setRadarTrace("radartrace_hugestation.png")
+template:setRadarTrace("hugestation.png")
 --                  Arc, Dir, Range, CycleTime, Dmg
 
 template:setCustomWeapon("HVLI", "XLAC", 8, 2200.0, "Kinetic", -1)
