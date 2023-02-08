@@ -86,12 +86,14 @@ jobs:
           files: |
             *.zip
             *.deb
-      - uses: actions/delete-artifact@v2
+      - uses: geekyeggo/delete-artifact@v2
         name: Delete Linux build
         with:
           name: linux-build
-      - uses: actions/delete-artifact@v2
+          failOnError: false
+      - uses: geekyeggo/delete-artifact@v2
         name: Delete Windows build
         with:
           name: windows-build
+          failOnError: false
       
