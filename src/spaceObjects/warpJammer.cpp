@@ -48,8 +48,9 @@ static int isWarpJammed(lua_State* L)
     lua_pushboolean(L, WarpJammer::isWarpJammed(glm::vec2(x,y)));
     return 1;
 }
+
+/// bool isWarpJammed(glm::vec2 position)
 /// Tests if position is warp jammed by any WarpJammer
-/// Arguments are x and y position
 REGISTER_SCRIPT_FUNCTION(isWarpJammed);
 
 static int getFirstNoneJammedPosition(lua_State* L)
@@ -70,6 +71,9 @@ static int getFirstNoneJammedPosition(lua_State* L)
 
     return 2;
 }
+
+///glm::vec2 getFirstNoneJammedPosition(glm::vec2 start, glm::vec2 end)
+///Returns a non jammed position (check every jammer) without any limit
 REGISTER_SCRIPT_FUNCTION(getFirstNoneJammedPosition);
 
 REGISTER_MULTIPLAYER_CLASS(WarpJammer, "WarpJammer");
