@@ -27,7 +27,7 @@ GuiCombatManeuver::GuiCombatManeuver(GuiContainer* owner, string id, P<PlayerSpa
     strafe_pdi = new GuiPowerDamageIndicator(slider, id + "_STRAFE_INDICATOR", SYS_Maneuver, sp::Alignment::CenterLeft, target_spaceship);
     strafe_pdi->setPosition(0, 0, sp::Alignment::BottomLeft)->setSize(GuiElement::GuiSizeMax, 50);
     boost_pdi = new GuiPowerDamageIndicator(slider, id + "_BOOST_INDICATOR", SYS_Impulse, sp::Alignment::BottomLeft, target_spaceship);
-    boost_pdi->setPosition(0, 0, sp::Alignment::BottomLeft)->setSize(GuiElement::GuiSizeMax, 50);
+    boost_pdi->setPosition(0, -50, sp::Alignment::BottomLeft)->setSize(GuiElement::GuiSizeMax, 50);
 }
 
  void GuiCombatManeuver::setTargetSpaceship(P<PlayerSpaceship> targetSpaceship){
