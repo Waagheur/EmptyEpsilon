@@ -267,6 +267,7 @@ public:
     virtual string getCallSign() { return callsign; }
     virtual DockStyle canBeDockedBy(P<SpaceObject> obj) { return DockStyle::None; }
     virtual bool canBeLandedOn(P<SpaceObject> obj) { return false; }
+    virtual DockStyle getDockedStyle() { return DockStyle::None; }
     virtual bool canRestockMissiles() { return false; }
     virtual bool hasShield() { return false; }
     void setHull(float amount) { hull = amount; }

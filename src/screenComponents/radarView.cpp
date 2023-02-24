@@ -662,7 +662,7 @@ void GuiRadarView::drawObjects(sp::RenderTarget& renderer)
         {
             if (obj->getTransparency() < 0.5f)
                 obj->drawOnRadar(renderer, object_position_on_screen, getScale(), getViewRotation(), long_range);
-            if (show_callsigns && obj->getCallSign() != "" && obj->getTransparency() < 0.2f)
+            if (show_callsigns && obj->getCallSign() != "" && obj->getTransparency() < 0.2f && obj->getDockedStyle() != DockStyle::Internal)
                 renderer.drawText(sp::Rect(object_position_on_screen.x, object_position_on_screen.y - 15, 0, 0), obj->getCallSign(), sp::Alignment::Center, 15, bold_font);
         }
     };

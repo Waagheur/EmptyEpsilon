@@ -417,6 +417,7 @@ public:
     void setCustomWeaponStorageMax(string weapon, int amount) { custom_weapon_storage_max.insert(std::map<string,int>::value_type(weapon,amount)); custom_weapon_storage[weapon] = std::min(int(custom_weapon_storage[weapon]), amount); }
 
     EDockingState getDockingState() { return docking_state; }
+    virtual DockStyle getDockedStyle() override { return docked_style; }
     int getWeaponStorage(EMissileWeapons weapon) { if (weapon == MW_None) return 0; return weapon_storage[weapon]; }
     int getWeaponStorageMax(EMissileWeapons weapon) { if (weapon == MW_None) return 0; return weapon_storage_max[weapon]; }
     void setWeaponStorage(EMissileWeapons weapon, int amount) { if (weapon == MW_None) return; weapon_storage[weapon] = amount; }
