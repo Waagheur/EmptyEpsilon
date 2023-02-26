@@ -21,6 +21,7 @@ GuiEntryList* GuiEntryList::setOptions(const std::vector<string>& options, const
 {
     entries.clear();
     auto count = std::min(options.size(), values.size());
+    entries.clear();
     entries.reserve(entries.size() + count);
     for(unsigned int n=0; n<count; n++)
     {
