@@ -399,8 +399,6 @@ public:
     P<SpaceObject> getDockTarget();
     P<SpaceObject> getLandingTarget();
 
-    virtual std::unordered_map<string, string> getGMInfo() override;
-
     int getPassagersCount(){return passagers_count;}
     void setPassagersCount(int value){passagers_count = value;}
     int getMaxPassagersCount(){return max_passagers_count;}
