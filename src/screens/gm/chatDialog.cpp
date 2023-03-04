@@ -101,4 +101,5 @@ void GameMasterChatDialog::onClose()
         player->commandCloseTextComm();
     }
     hide();
+    minimize(false);
 }
