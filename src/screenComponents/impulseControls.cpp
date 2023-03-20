@@ -32,7 +32,7 @@ void GuiImpulseControls::onDraw(sp::RenderTarget& target)
 {
     if (target_spaceship)
     {
-        label->setValue(string(int(target_spaceship->current_impulse * 100)) + "%");
+        label->setValue(string(static_cast<int>(std::round(target_spaceship->current_impulse * 100.0f))) + "%");
         slider->setValue(target_spaceship->impulse_request);
         soundManager->setMusicVolume(abs(int(target_spaceship->current_impulse * 100)/2+10));
 
@@ -44,9 +44,17 @@ void GuiImpulseControls::onUpdate()
 {
     if (target_spaceship && isVisible())
     {
-        float change = keys.helms_increase_impulse.getValue() - keys.helms_decrease_impulse.getValue();
+        const float change = keys.helms_increase_impulse.getValue() - keys.helms_decrease_impulse.getValue();
         if (change != 0.0f)
-            target_spaceship->commandImpulse(std::min(1.0f, slider->getValue() + change * 0.1f));
+            target_spaceship->commandImpulse(std::clamp(-1.0f, 1.0f, slider->getValue() + change * 0.01f));
+        if (keys.helms_increase_impulse_1.getDown())
+            target_spaceship->commandImpulse(std::min(1.0f, slider->getValue() + 0.01f));
+        if (keys.helms_decrease_impulse_1.getDown())
+            target_spaceship->commandImpulse(std::max(-1.0f, slider->getValue() - 0.01f));
+        if (keys.helms_increase_impulse_10.getDown())
+            target_spaceship->commandImpulse(std::min(1.0f, slider->getValue() + 0.1f));
+        if (keys.helms_decrease_impulse_10.getDown())
+            target_spaceship->commandImpulse(std::max(-1.0f, slider->getValue() - 0.1f));
         if (keys.helms_zero_impulse.getDown())
             target_spaceship->commandImpulse(0.0f);
         if (keys.helms_max_impulse.getDown())
