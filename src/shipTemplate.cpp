@@ -679,19 +679,19 @@ string getSystemName(ESystem system)
 {
     switch(system)
     {
-    case SYS_Reactor: return "Reacteur";
-    case SYS_Cloaking: return "Occulteur";
-    case SYS_BeamWeapons: return "Faisceau laser";
-    case SYS_MissileSystem: return "Systeme de missiles";
-    case SYS_Maneuver: return "Manoeuvres";
-    case SYS_Impulse: return "Moteur subluminique";
-    case SYS_Warp: return "Moteur WARP";
-    case SYS_JumpDrive: return "Moteur JUMP";
-    case SYS_FrontShield: return "Generateur Bouclier";
-    case SYS_RearShield: return "Generateur Bouclier Ar.";
-    case SYS_Docks: return "Gestion du Cargo";
-    case SYS_Drones: return "Drones et radar";
-    case SYS_Hangar: return "Pont d'envol";
+    case SYS_Reactor: return "reactor";
+    case SYS_Cloaking: return "cloaking";
+    case SYS_BeamWeapons: return "beamweapons";
+    case SYS_MissileSystem: return "missilesystem";
+    case SYS_Maneuver: return "maneuvering";
+    case SYS_Impulse: return "impulse";
+    case SYS_Warp: return "warp";
+    case SYS_JumpDrive: return "jumpdrive";
+    case SYS_FrontShield: return "frontshield";
+    case SYS_RearShield: return "rearshield";
+    case SYS_Docks: return "docks";
+    case SYS_Drones: return "drones";
+    case SYS_Hangar: return "hangar";
     default:
         return "UNKNOWN";
     }
