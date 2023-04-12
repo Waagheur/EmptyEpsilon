@@ -367,53 +367,6 @@ GuiElement* CrewStationScreen::findTab(string name)
     return nullptr;
 }
 
-<<<<<<< HEAD
-string CrewStationScreen::listHotkeysLimited(string station)
-{
-    string ret = "";
-    keyboard_general = "";
-    
-    for (auto binding : sp::io::Keybinding::listAllByCategory("General"))
-        if (binding->getLabel() == "Switch to next crew station" || binding->getLabel() =="Switch to previous crew station" || binding->getLabel() == "Switch crew station")
-            keyboard_general += binding->getLabel() + ":\t" + binding->getHumanReadableKeyName(0) + "\n";
-
-    if (station == "Tactique")
-    {
-        for (auto binding : sp::io::Keybinding::listAllByCategory("Helms"))
-            ret += binding->getLabel() + ":\t" + binding->getHumanReadableKeyName(0) + "\n";
-        for (auto binding : sp::io::Keybinding::listAllByCategory("Weapons"))
-        {
-            if (binding->getLabel() != "Toggle shields")
-                ret += binding->getLabel() + ":\t" + binding->getHumanReadableKeyName(0) + "\n";
-        }
-    } else if (station == "Engineering+") {
-        for (auto binding : sp::io::Keybinding::listAllByCategory("Engineering"))
-            ret += binding->getLabel() + ":\t" + binding->getHumanReadableKeyName(0) + "\n";
-        for (auto binding : sp::io::Keybinding::listAllByCategory("Weapons"))
-        {
-            if (binding->getLabel() == "Toggle shields")
-                ret += binding->getLabel() + ":\t" + binding->getHumanReadableKeyName(0) + "\n";
-        }
-    }
-
-//	-- not yet used --
-//	else if (station == "Operations")
-//		return ret;
-//	----
-
-    else if (station == "Pilote a tout faire")
-    {
-        for (auto binding : sp::io::Keybinding::listAllByCategory("Helms"))
-            ret += binding->getLabel() + ":\t" + binding->getHumanReadableKeyName(0) + "\n";
-        for (auto binding : sp::io::Keybinding::listAllByCategory("Weapons"))
-            ret += binding->getLabel() + ":\t" + binding->getHumanReadableKeyName(0) + "\n";
-    }
-
-    return ret;
-}
-
-=======
->>>>>>> 4cce77a72 ([CrewStationScreen] Improve keyboard shortcut list population (#1877))
 void CrewStationScreen::tileViewport()
 {
     if (!viewport)
