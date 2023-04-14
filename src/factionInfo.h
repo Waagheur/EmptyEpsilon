@@ -79,6 +79,7 @@ public:
      * \param faction info object.
      */
     void setFriendly(P<FactionInfo> other);
+    void setNeutral(P<FactionInfo> other);
 
     EFactionVsFactionState getState(P<FactionInfo> other);
 
