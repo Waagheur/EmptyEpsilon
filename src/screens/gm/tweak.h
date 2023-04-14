@@ -124,7 +124,9 @@ private:
 
     GuiSlider* heading_slider;
     GuiSlider* impulse_speed_slider;
+    GuiSlider* impulse_acceleration_slider;
     GuiSlider* impulse_reverse_speed_slider;
+    GuiSlider* impulse_reverse_acceleration_slider;
     GuiSlider* turn_speed_slider;
     GuiToggleButton* warp_toggle;
     GuiToggleButton* jump_toggle;

@@ -47,7 +47,7 @@ GuiObjectTweak::GuiObjectTweak(GuiContainer* owner, ETweakType tweak_type)
     if (tweak_type == TW_Asteroid)
     {
         pages.push_back(new GuiAsteroidTweak(this));
-        list->addEntry(tr("tab","Asteroid"), "");
+        list->addEntry(tr("tab", "Asteroid"), "");
     }
 
     if (tweak_type == TW_Jammer)
@@ -674,6 +674,7 @@ GuiShipTweak::GuiShipTweak(GuiContainer* owner)
     this->target = ship;
 
     impulse_speed_slider->clearSnapValues()->addSnapValue(ship->ship_template->impulse_speed, 5.0f);
+    impulse_acceleration_slider->clearSnapValues()->addSnapValue(ship->ship_template->impulse_acceleration, 5.0f);
     impulse_reverse_speed_slider->clearSnapValues()->addSnapValue(ship->ship_template->impulse_reverse_speed, 5.0f);
     turn_speed_slider->clearSnapValues()->addSnapValue(ship->ship_template->turn_speed, 1.0f);
 
