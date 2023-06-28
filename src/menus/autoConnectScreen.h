@@ -4,6 +4,7 @@
 #include "gui/gui2_canvas.h"
 #include "playerInfo.h"
 #include "io/network/address.h"
+#include "preferenceManager.h"
 
 class GuiLabel;
 class GuiOverlay;
@@ -21,6 +22,7 @@ class AutoConnectScreen : public GuiCanvas, public Updatable
 
     GuiLabel* status_label;
     GuiLabel* filter_label;
+    int crew_position_raw = (PreferencesManager::get("autoconnect").toInt());
 public:
     AutoConnectScreen(ECrewPosition crew_position, int auto_mainscreen, bool control_main_screen, string ship_filter);
     virtual ~AutoConnectScreen();

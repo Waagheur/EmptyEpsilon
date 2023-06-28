@@ -8,6 +8,7 @@
 #include "playerInfo.h"
 #include "multiplayer_client.h"
 #include "multiplayer_server_scanner.h"
+#include "screens/windowScreen.h"
 
 #include "gui/gui2_label.h"
 #include "gui/gui2_overlay.h"
@@ -27,6 +28,8 @@ AutoConnectScreen::AutoConnectScreen(ECrewPosition crew_position, int auto_mains
     status_label->setPosition(0, 300, sp::Alignment::TopCenter)->setSize(0, 50);
 
     string position_name = "Ecran principal";
+    if (crew_position_raw >=1000 && crew_position_raw<=1360)
+        position_name =tr("Ship window");
     if (crew_position < max_crew_positions)
         position_name = getCrewPositionName(crew_position);
     if (auto_mainscreen == 1)
@@ -134,7 +137,12 @@ void AutoConnectScreen::update(float delta)
                                     my_player_info->commandSetCrewPosition(0, crew_position, false);
                             }
                             destroy();
-                            my_player_info->spawnUI(0, getRenderLayer());
+                            if (crew_position_raw >=1000 && crew_position_raw<=1360){
+                                uint8_t window_flags = PreferencesManager::get("ship_window_flags", "1").toInt();
+                                new WindowScreen(getRenderLayer(), crew_position_raw-1000, window_flags);
+                            } else{
+                                my_player_info->spawnUI(0, getRenderLayer());
+                            }
                         }
                     }
                 }
