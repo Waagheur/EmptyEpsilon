@@ -22,6 +22,7 @@ protected:
     Validator validator_func {nullptr};
     bool valid {true};
     bool multiline = false;
+    bool select_on_focus = false;
     bool readonly = false;
     bool hide_password = false;
     const GuiThemeStyle* front_style;
@@ -52,6 +53,7 @@ public:
     GuiTextEntry* setTextSize(float size);
     GuiTextEntry* setTextFont(sp::Font* font);
     GuiTextEntry* setMultiline(bool enabled=true);
+    GuiTextEntry* setSelectOnFocus(bool enabled=true);
     GuiTextEntry* setHidePassword(bool enabled=true);
     GuiTextEntry* callback(func_t func);
     GuiTextEntry* enterCallback(func_t func);
