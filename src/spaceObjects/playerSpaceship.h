@@ -81,8 +81,8 @@ public:
         string station;
 
         ShipLogEntry() {}
-        ShipLogEntry(string prefix, string text, glm::u8vec4 color, string station)
-        : prefix(prefix), text(text), color(color), station(station) {}
+        ShipLogEntry(string prefix, string text, glm::u8vec4 color, string station, unsigned int seq)
+        : prefix(prefix), text(text), color(color), station(station), seq(seq) {}
 
         bool operator!=(const ShipLogEntry& e) { return prefix != e.prefix || text != e.text || color != e.color || station != e.station; }
     };
@@ -140,6 +140,7 @@ private:
 
     float energy_shield_use_per_second = default_energy_shield_use_per_second;
     float energy_warp_per_second = default_energy_warp_per_second;
+    unsigned int last_log_seq = 0;
 public:
     ESystem auto_repairing_system;
     std::vector<CustomShipFunction> custom_functions;

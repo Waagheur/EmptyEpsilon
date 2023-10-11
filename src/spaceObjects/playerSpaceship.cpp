@@ -566,8 +566,8 @@ string alertLevelToLocaleString(EAlertLevel level)
 }
 
 // Configure ship's log packets.
-static inline sp::io::DataBuffer& operator << (sp::io::DataBuffer& packet, const PlayerSpaceship::ShipLogEntry& e) { return packet << e.prefix << e.text << e.color.r << e.color.g << e.color.b << e.color.a  << e.station; }
-static inline sp::io::DataBuffer& operator >> (sp::io::DataBuffer& packet, PlayerSpaceship::ShipLogEntry& e) { packet >> e.prefix >> e.text >> e.color.r >> e.color.g >> e.color.b >> e.color.a  >> e.station; return packet; }
+static inline sp::io::DataBuffer& operator << (sp::io::DataBuffer& packet, const PlayerSpaceship::ShipLogEntry& e) { return packet << e.prefix << e.text << e.color.r << e.color.g << e.color.b << e.color.a  << e.station << e.seq; }
+static inline sp::io::DataBuffer& operator >> (sp::io::DataBuffer& packet, PlayerSpaceship::ShipLogEntry& e) { packet >> e.prefix >> e.text >> e.color.r >> e.color.g >> e.color.b >> e.color.a  >> e.station; return packet >> e.seq; }
 
 REGISTER_MULTIPLAYER_CLASS(PlayerSpaceship, "PlayerSpaceship");
 PlayerSpaceship::PlayerSpaceship()
@@ -1435,7 +1435,7 @@ void PlayerSpaceship::addToSpecificShipLog(string message, glm::u8vec4 color, st
         if (ships_log_generic.size() > 100)
             ships_log_generic.erase(ships_log_generic.begin());
         // Timestamp a log entry, color it, and add it to the end of the log.
-        ships_log_generic.emplace_back(gameGlobalInfo->getMissionTime() + string(": "), message, color, station);
+        ships_log_generic.emplace_back(gameGlobalInfo->getMissionTime() + string(": "), message, color, station, last_log_seq++);
         timer_log_generic = 6;
     }
     else if (station == "intern")
@@ -1443,7 +1443,7 @@ void PlayerSpaceship::addToSpecificShipLog(string message, glm::u8vec4 color, st
         if (ships_log_intern.size() > 100)
             ships_log_intern.erase(ships_log_intern.begin());
         // Timestamp a log entry, color it, and add it to the end of the log.
-        ships_log_intern.emplace_back(gameGlobalInfo->getMissionTime() + string(": "), message, color, station);
+        ships_log_intern.emplace_back(gameGlobalInfo->getMissionTime() + string(": "), message, color, station, last_log_seq++);
         timer_log_intern = 6;
     }
     else if (station == "docks")
@@ -1451,7 +1451,7 @@ void PlayerSpaceship::addToSpecificShipLog(string message, glm::u8vec4 color, st
         if (ships_log_docks.size() > 100)
             ships_log_docks.erase(ships_log_docks.begin());
         // Timestamp a log entry, color it, and add it to the end of the log.
-        ships_log_docks.emplace_back(gameGlobalInfo->getMissionTime() + string(": "), message, color, station);
+        ships_log_docks.emplace_back(gameGlobalInfo->getMissionTime() + string(": "), message, color, station, last_log_seq++);
         timer_log_docks = 6;
     }
     else if (station == "science")
@@ -1459,7 +1459,7 @@ void PlayerSpaceship::addToSpecificShipLog(string message, glm::u8vec4 color, st
         if (ships_log_science.size() > 100)
             ships_log_science.erase(ships_log_science.begin());
         // Timestamp a log entry, color it, and add it to the end of the log.
-        ships_log_science.emplace_back(gameGlobalInfo->getMissionTime() + string(": "), message, color, station);
+        ships_log_science.emplace_back(gameGlobalInfo->getMissionTime() + string(": "), message, color, station, last_log_seq++);
         timer_log_science = 6;
     }
 }
