@@ -79,6 +79,7 @@ public:
         string text;
         glm::u8vec4 color;
         string station;
+        unsigned int seq;
 
         ShipLogEntry() {}
         ShipLogEntry(string prefix, string text, glm::u8vec4 color, string station, unsigned int seq)
