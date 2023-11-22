@@ -239,14 +239,14 @@ EngineeringScreen::EngineeringScreen(GuiContainer* owner, ECrewPosition crew_pos
     system_rows[SYS_Drones].button->setIcon("gui/icons/heading");
     system_rows[SYS_Hangar].button->setIcon("gui/icons/door");
 
-    if (gameGlobalInfo->use_nano_repair_crew)
-    {
-        system_effects_container = new GuiElement(this, "");
-        system_effects_container->setPosition(-20, -100, sp::Alignment::TopRight)->setSize(270, 340)->setAttribute("layout", "vertical");
-    } else {
+    // if (gameGlobalInfo->use_nano_repair_crew)
+    // {
+    //     system_effects_container = new GuiElement(this, "");
+    //     system_effects_container->setPosition(-20, 100, sp::Alignment::TopRight)->setSize(270, 340)->setAttribute("layout", "vertical");
+    // } else {
         system_effects_container = new GuiElement(system_config_container, "");
         system_effects_container->setPosition(0, -400, sp::Alignment::BottomRight)->setSize(270, 400)->setAttribute("layout", "vertical");
-    }
+    //}
     
     GuiPanel* box = new GuiPanel(system_config_container, "POWER_COOLANT_BOX");
     box->setPosition(0, 0, sp::Alignment::BottomRight)->setSize(270, 400);
