@@ -33,11 +33,10 @@ enum ECrewPosition
     internLogView,
     targetAnalysisScreen,
     commsOnly,
-    max_crew_positions,
+    altRelay,
+    max_crew_positions
     //Non utilise
-    oxygenView,
-    altRelay
-
+    //oxygenView
 };
 
 class PlayerInfo;
@@ -50,14 +49,14 @@ extern PVector<PlayerInfo> player_info_list;
 class PlayerInfo : public MultiplayerObject
 {
 public:
-    int32_t client_id;
+    int32_t client_id = -1;
 
-    uint32_t crew_position[max_crew_positions];
+    uint32_t crew_position[max_crew_positions] = {0};
     uint32_t main_screen = 0;
     uint32_t main_screen_control = 0;
-    int32_t ship_id;
-    string name;
-    string last_ship_password;
+    int32_t ship_id = -1;
+    string name ="";
+    string last_ship_password ="";
 
     PlayerInfo();
 

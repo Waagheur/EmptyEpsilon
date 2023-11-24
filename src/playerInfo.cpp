@@ -45,15 +45,10 @@ REGISTER_MULTIPLAYER_CLASS(PlayerInfo, "PlayerInfo");
 PlayerInfo::PlayerInfo()
 : MultiplayerObject("PlayerInfo")
 {
-    ship_id = -1;
-    client_id = -1;
-    main_screen_control = 0;
-    last_ship_password = "";
     registerMemberReplication(&client_id);
 
     for(int n=0; n<max_crew_positions; n++)
     {
-        crew_position[n] = 0;
         registerMemberReplication(&crew_position[n]);
     }
     registerMemberReplication(&ship_id);
@@ -246,8 +241,8 @@ void PlayerInfo::spawnUI(int monitor_index, RenderLayer* render_layer)
             screen->addStationTab(new RelayScreen(container, false), altRelay, getCrewPositionName(altRelay), getCrewPositionIcon(altRelay));
         if (crew_position[commsOnly] & (1 << monitor_index))
             screen->addStationTab(new CommsScreen(container), commsOnly, getCrewPositionName(commsOnly), getCrewPositionIcon(commsOnly));
-        if (crew_position[oxygenView] & (1 << monitor_index))
-            screen->addStationTab(new OxygenScreen(container), oxygenView, getCrewPositionName(oxygenView), getCrewPositionIcon(oxygenView));
+        //if (crew_position[oxygenView] & (1 << monitor_index))
+        //    screen->addStationTab(new OxygenScreen(container), oxygenView, getCrewPositionName(oxygenView), getCrewPositionIcon(oxygenView));
         
         
         
@@ -312,7 +307,7 @@ string getCrewPositionName(ECrewPosition position)
     case dronePilot: return "Pilote seul";
     case droneMaster: return "Maitre des docks";
     case dockMaster: return tr("station","Maitre d'ammarrage");
-    case oxygenView: return "Log Oxygen";
+    //case oxygenView: return "Log Oxygen";
     case targetAnalysisScreen: return tr("station","Target Analysis Screen");
     default: return "ErrUnk: " + string(position);
     }
@@ -341,7 +336,7 @@ string getCrewPositionIcon(ECrewPosition position)
     case dronePilot: return "";
     case droneMaster: return "";
     case dockMaster: return "";
-    case oxygenView: return "";
+    //case oxygenView: return "";
     //ajouts Tdelc
     case tacticalRadar: return "";
     case scienceRadar: return "";
@@ -403,8 +398,8 @@ template<> void convert<ECrewPosition>::param(lua_State* L, int& idx, ECrewPosit
         cp = droneMaster;
     else if (str == "dockmaster" || str == "dockmasterview")
         cp = dockMaster;
-    else if (str == "oxygen" || str == "oxygenview")
-        cp = oxygenView;
+    //else if (str == "oxygen" || str == "oxygenview")
+    //    cp = oxygenView;
     else if (str == "tacticalradar" || str == "tacticalradarview")
         cp = tacticalRadar;
     else if (str == "scienceradar" || str == "scienceradarview")
