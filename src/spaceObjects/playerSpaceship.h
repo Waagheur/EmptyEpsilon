@@ -7,6 +7,7 @@
 #include "playerInfo.h"
 #include "spaceshipParts/dock.h"
 #include <iostream>
+#include <map>
 
 class ScanProbe;
 
@@ -138,6 +139,15 @@ private:
     std::vector<ShipLogEntry> ships_log_intern;
     std::vector<ShipLogEntry> ships_log_docks;
     std::vector<ShipLogEntry> ships_log_science;
+
+    //Server only
+    struct Modifier
+    {
+        string category;
+        string information;
+        bool activated{false};
+    };
+    std::map<string, Modifier> modifiers_to_data;
 
     float energy_shield_use_per_second = default_energy_shield_use_per_second;
     float energy_warp_per_second = default_energy_warp_per_second;
@@ -468,6 +478,31 @@ public:
     float getDronesControlRange();
     // Script export function
     virtual string getExportLine() override;
+
+    //Tsht
+    ScriptSimpleCallback on_modifier_toggle;
+    void registerModifier(string category, string name, string description) { modifiers_to_data.emplace (std::make_pair(name, Modifier{category, description, false}));}
+    void activateModifier(string name) 
+    { 
+        if (auto search = modifiers_to_data.find(name); search != modifiers_to_data.end())
+        {
+            search->second.activated = true;
+            on_modifier_toggle.call<void>(P<PlayerSpaceship>(this), name, "activate");
+        }
+    }
+    void deActivateModifier(string name)
+    { 
+       if (auto search = modifiers_to_data.find(name); search != modifiers_to_data.end())
+       {
+            search->second.activated = false;
+            on_modifier_toggle.call<void>(P<PlayerSpaceship>(this), name, "deactivate");
+       }
+    }
+
+    void onModifierToggle(ScriptSimpleCallback callback)
+    {
+        on_modifier_toggle = callback;
+    }
 };
 REGISTER_MULTIPLAYER_ENUM(ECommsState);
 template<> int convert<EAlertLevel>::returnType(lua_State* L, EAlertLevel l);

@@ -92,8 +92,8 @@ GuiObjectTweak::GuiObjectTweak(GuiContainer* owner, ETweakType tweak_type)
         pages.push_back(new GuiShipTweakCrew(this));
         list->addEntry(tr("tab", "Crew"), "");
 
-        pages.push_back(new GuiShipTweakOxygen(this));
-        list->addEntry("Oxygene", "");
+        // pages.push_back(new GuiShipTweakOxygen(this));
+        // list->addEntry("Oxygene", "");
         //Maybe later, this would be available for NPC ships too
         pages.push_back(new GuiShipTweakDock(this));
         list->addEntry("Dock", "");

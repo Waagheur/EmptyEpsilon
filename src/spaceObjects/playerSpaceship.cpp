@@ -479,6 +479,15 @@ REGISTER_SCRIPT_SUBCLASS(PlayerSpaceship, SpaceShip)
     /// All SpaceObjects within this radius are dealt damage upon self-destruction.
     /// Example: ship:getSelfDestructSize()
     REGISTER_SCRIPT_CLASS_FUNCTION(PlayerSpaceship, getSelfDestructSize);
+
+    ///Registers the modifier with the provided category, name and infos
+    ///Example : ship:registerModifier("Skill, "Name of my comp", "Upgrades hull (Engineer)")
+    REGISTER_SCRIPT_CLASS_FUNCTION(PlayerSpaceship, registerModifier);
+    ///Registers a callback when tweak button is called for a particular modifier
+    ///Returns the name of the modifier, and "activate" to tell the action is to activate the modifier,
+    ///deactivate if the action is to deactivate the modifier
+    ///three arguments callback : self (current ship), name, desired state (activate or deactivate)
+    REGISTER_SCRIPT_CLASS_FUNCTION(PlayerSpaceship, onModifierToggle);
 }
 
 static const int16_t CMD_TARGET_ROTATION = 0x0001;
@@ -701,7 +710,6 @@ PlayerSpaceship::PlayerSpaceship()
         registerMemberReplication(&self_destruct_code_entry_position[n]);
         registerMemberReplication(&self_destruct_code_show_position[n]);
     }
-    
     // Prepare presets initialization based on preference manager
     string power_default_presets = "";
     string power_saved_presets = "";
