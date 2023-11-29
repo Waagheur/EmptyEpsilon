@@ -92,14 +92,17 @@ GuiObjectTweak::GuiObjectTweak(GuiContainer* owner, ETweakType tweak_type)
         pages.push_back(new GuiShipTweakCrew(this));
         list->addEntry(tr("tab", "Crew"), "");
 
-        pages.push_back(new GuiShipTweakOxygen(this));
-        list->addEntry("Oxygene", "");
+        // pages.push_back(new GuiShipTweakOxygen(this));
+        // list->addEntry("Oxygene", "");
         //Maybe later, this would be available for NPC ships too
         pages.push_back(new GuiShipTweakDock(this));
         list->addEntry("Dock", "");
 
         pages.push_back(new GuiShipTweakMessages(this));
         list->addEntry("Messages", "");
+
+        pages.push_back(new GuiModifierTweak(this));
+        list->addEntry(tr("tab", "Modifiers"), "");
     }
 
     if (tweak_type == TW_Planet)
@@ -2345,4 +2348,79 @@ void GuiShipTweakSystemPowerFactors::onDraw(sp::RenderTarget& renderer)
     {
         system_current_power_factor[n]->setText(string(this->target->systems[n].power_factor, 1));
     }
+}
+
+GuiModifierTweak::GuiModifierTweak(GuiContainer* owner)
+    : GuiTweakPage(owner)
+{
+    // Add two columns.
+    button_col = new GuiElement(this, "LEFT_LAYOUT");
+    button_col->setPosition(50, 25, sp::Alignment::TopLeft)->setSize(300, GuiElement::GuiSizeMax)->setAttribute("layout", "vertical");
+
+    information_col = new GuiElement(this, "RIGHT_LAYOUT");
+    information_col->setPosition(-25, 25, sp::Alignment::TopRight)->setSize(300, GuiElement::GuiSizeMax)->setAttribute("layout", "vertical");
+
+    (new GuiLabel(button_col, "", tr("Modifier"), 20))->setSize(GuiElement::GuiSizeMax, 30);
+    (new GuiLabel(information_col, "", tr("Information"), 20))->setSize(GuiElement::GuiSizeMax, 30);
+}
+
+void GuiModifierTweak::open(P<SpaceObject> target)
+{
+    if(!target)
+        return;
+    if(this->target)
+        return;
+    P<PlayerSpaceship> ship = target;
+    this->target = ship;
+
+    std::map<string, std::vector<string>> category_indexed_modifiers;
+    
+    for (const auto & [key, modifier] : this->target->modifiers_to_data)
+    {
+        auto list_of_modifiers_it = category_indexed_modifiers.find(modifier.category);
+        if(list_of_modifiers_it == category_indexed_modifiers.end())
+        {
+            category_indexed_modifiers.emplace(std::make_pair(modifier.category, std::vector<string>{key}));
+        }
+        else
+        {
+            list_of_modifiers_it->second.push_back(key);
+        }
+    }
+
+    for (const auto &[category, vec_of_keys] : category_indexed_modifiers)
+    {
+        (new GuiLabel(button_col, "", tr(category), 20))->setSize(GuiElement::GuiSizeMax, 30);
+        (new GuiLabel(information_col, "", "", 20))->setSize(GuiElement::GuiSizeMax, 30);
+
+        for (const auto & key : vec_of_keys)
+        {
+            PlayerSpaceship::Modifier &modifier{this->target->modifiers_to_data[key]};
+        
+            modifier_buttons.push_back(new GuiToggleButton(button_col, "", key, [this, key](bool value) {
+                    if(this->target)
+                    {
+                        if(true == value)
+                        {
+                            this->target->activateModifier(key);
+                        }
+                        else
+                        {
+                            this->target->deActivateModifier(key);
+                        }
+                    }
+                }));
+            modifier_buttons.back()->setSize(GuiElement::GuiSizeMax, 40);
+            
+            modifier_information.push_back(new GuiLabel(information_col, "", modifier.information, 20));
+            modifier_information.back()->setSize(GuiElement::GuiSizeMax, 40);
+            
+        }
+    }
+
+}
+
+void GuiModifierTweak::onDraw(sp::RenderTarget& renderer)
+{
+
 }

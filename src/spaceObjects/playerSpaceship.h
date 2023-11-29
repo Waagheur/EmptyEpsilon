@@ -7,6 +7,7 @@
 #include "playerInfo.h"
 #include "spaceshipParts/dock.h"
 #include <iostream>
+#include <map>
 
 class ScanProbe;
 
@@ -122,6 +123,15 @@ public:
     string control_code;
 
     float energy_consumption_ratio;
+
+    //Server only
+    struct Modifier
+    {
+        string category;
+        string information;
+        bool activated{false};
+    };
+    std::map<string, Modifier> modifiers_to_data;
 
 private:
     bool on_new_player_ship_called=false;
@@ -468,6 +478,17 @@ public:
     float getDronesControlRange();
     // Script export function
     virtual string getExportLine() override;
+
+    //Tsht
+    ScriptSimpleCallback on_modifier_toggle;
+    void registerModifier(string category, string name, string description) { modifiers_to_data.emplace (std::make_pair(name, Modifier{category, description, false}));}
+    void activateModifier(string name);
+    void deActivateModifier(string name);
+    
+    void onModifierToggle(ScriptSimpleCallback callback)
+    {
+        on_modifier_toggle = callback;
+    }
 };
 REGISTER_MULTIPLAYER_ENUM(ECommsState);
 template<> int convert<EAlertLevel>::returnType(lua_State* L, EAlertLevel l);
