@@ -124,6 +124,15 @@ public:
 
     float energy_consumption_ratio;
 
+    //Server only
+    struct Modifier
+    {
+        string category;
+        string information;
+        bool activated{false};
+    };
+    std::map<string, Modifier> modifiers_to_data;
+
 private:
     bool on_new_player_ship_called=false;
     // Comms variables
@@ -139,15 +148,6 @@ private:
     std::vector<ShipLogEntry> ships_log_intern;
     std::vector<ShipLogEntry> ships_log_docks;
     std::vector<ShipLogEntry> ships_log_science;
-
-    //Server only
-    struct Modifier
-    {
-        string category;
-        string information;
-        bool activated{false};
-    };
-    std::map<string, Modifier> modifiers_to_data;
 
     float energy_shield_use_per_second = default_energy_shield_use_per_second;
     float energy_warp_per_second = default_energy_warp_per_second;
@@ -482,23 +482,9 @@ public:
     //Tsht
     ScriptSimpleCallback on_modifier_toggle;
     void registerModifier(string category, string name, string description) { modifiers_to_data.emplace (std::make_pair(name, Modifier{category, description, false}));}
-    void activateModifier(string name) 
-    { 
-        if (auto search = modifiers_to_data.find(name); search != modifiers_to_data.end())
-        {
-            search->second.activated = true;
-            on_modifier_toggle.call<void>(P<PlayerSpaceship>(this), name, "activate");
-        }
-    }
-    void deActivateModifier(string name)
-    { 
-       if (auto search = modifiers_to_data.find(name); search != modifiers_to_data.end())
-       {
-            search->second.activated = false;
-            on_modifier_toggle.call<void>(P<PlayerSpaceship>(this), name, "deactivate");
-       }
-    }
-
+    void activateModifier(string name);
+    void deActivateModifier(string name);
+    
     void onModifierToggle(ScriptSimpleCallback callback)
     {
         on_modifier_toggle = callback;

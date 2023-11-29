@@ -445,5 +445,26 @@ public:
     virtual void open(P<SpaceObject> target) override;
 };
 
+//Tsht
+class GuiModifierTweak : public GuiTweakPage
+{
+private:
+    P<PlayerSpaceship> target;
+
+    std::vector<GuiToggleButton*> modifier_buttons;
+    std::vector<GuiLabel*> categories;
+    std::vector<GuiLabel*> modifier_information;
+
+    GuiElement* button_col{nullptr};
+    GuiElement* information_col{nullptr};
+public:
+    GuiModifierTweak(GuiContainer* owner);
+
+    virtual void onDraw(sp::RenderTarget& renderer) override;
+
+    virtual void open(P<SpaceObject> target) override;
+};
+
+
 
 #endif//TWEAK_H

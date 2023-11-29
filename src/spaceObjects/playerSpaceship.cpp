@@ -3020,4 +3020,26 @@ void PlayerSpaceship::onProbeUnlink(ScriptSimpleCallback callback)
     this->on_probe_unlink = callback;
 }
 
+void PlayerSpaceship::activateModifier(string name)
+{ 
+    if(!on_modifier_toggle.isSet())
+        return;
+    if (auto search = modifiers_to_data.find(name); search != modifiers_to_data.end())
+    {
+        search->second.activated = true;
+        on_modifier_toggle.call<void>(P<PlayerSpaceship>(this), name, string("activated"));
+    }
+}
+
+void PlayerSpaceship::deActivateModifier(string name)
+{ 
+    if(!on_modifier_toggle.isSet())
+        return;
+    if (auto search = modifiers_to_data.find(name); search != modifiers_to_data.end())
+    {
+        search->second.activated = false;
+        on_modifier_toggle.call<void>(P<PlayerSpaceship>(this), name, string("deactivated"));
+    }
+}
+
 #include "playerSpaceship.hpp"
