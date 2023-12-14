@@ -13,7 +13,7 @@
 GuiShieldsEnableButton::GuiShieldsEnableButton(GuiContainer* owner, string id, P<PlayerSpaceship> targetSpaceship)
 : GuiElement(owner, id), target_spaceship(targetSpaceship)
 {
-    button = new GuiToggleButton(this, id + "_BUTTON", "Bouclier: ON", [this](bool value) {
+    button = new GuiToggleButton(this, id + "_BUTTON", tr("shields", "Shields: ON"), [this](bool value) {
         if (target_spaceship)
             target_spaceship->commandSetShields(!target_spaceship->shields_active);
     });

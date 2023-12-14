@@ -91,10 +91,10 @@ RelayScreen::RelayScreen(GuiContainer* owner, bool allow_comms)
     auto sidebar = new GuiElement(this, "SIDE_BAR");
     sidebar->setPosition(-20, 150, sp::Alignment::TopRight)->setSize(250, GuiElement::GuiSizeMax)->setAttribute("layout", "vertical");
 
-    info_distance = new GuiKeyValueDisplay(sidebar, "DISTANCE", 0.4, "Distance", "");
+    info_distance = new GuiKeyValueDisplay(sidebar, "DISTANCE", 0.4, tr("Distance"), "");
     info_distance->setSize(GuiElement::GuiSizeMax, 30);
 
-    info_radar_range = new GuiKeyValueDisplay(sidebar, "DISTANCE", 0.4, "Portee radar", "");
+    info_radar_range = new GuiKeyValueDisplay(sidebar, "RADAR_RANGE", 0.4, tr("Radar range"), "");
     info_radar_range->setSize(GuiElement::GuiSizeMax, 30);
 
     info_callsign = new GuiKeyValueDisplay(sidebar, "SCIENCE_CALLSIGN", 0.4, tr("Callsign"), "");
@@ -103,7 +103,7 @@ RelayScreen::RelayScreen(GuiContainer* owner, bool allow_comms)
     info_faction = new GuiKeyValueDisplay(sidebar, "SCIENCE_FACTION", 0.4, tr("Faction"), "");
     info_faction->setSize(GuiElement::GuiSizeMax, 30);
 
-    info_probe = new GuiKeyValueDisplay(sidebar, "RADAR_RANGE", 0.4, "Temps", "");
+    info_probe = new GuiKeyValueDisplay(sidebar, "TIME", 0.4, tr("Time"), "");
     info_probe->setSize(GuiElement::GuiSizeMax, 30);
 
     // Controls for the radar view

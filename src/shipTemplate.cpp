@@ -710,10 +710,10 @@ string getLocaleSystemName(ESystem system)
     case SYS_JumpDrive: return tr("system", "Jump Drive");
     case SYS_FrontShield: return tr("system", "Front Shield Generator");
     case SYS_RearShield: return tr("system", "Rear Shield Generator");
-    case SYS_Docks: return "Gestion du Cargo";
-    case SYS_Drones: return "Drones et radar";
-    case SYS_Hangar: return "Pont d'envol";
-    case SYS_Cloaking: return "Occulteur";
+    case SYS_Docks: return tr("system","Dock");
+    case SYS_Drones: return tr("system","Drones and radar");
+    case SYS_Hangar: return tr("system","Flight deck");
+    case SYS_Cloaking: return tr("system","Cloaking");
     default:
         return "UNKNOWN";
     }

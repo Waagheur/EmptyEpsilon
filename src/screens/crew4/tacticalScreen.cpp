@@ -77,7 +77,7 @@ TacticalScreen::TacticalScreen(GuiContainer* owner)
     heading_display->setIcon("gui/icons/heading")->setTextSize(20)->setSize(240, 40);
     velocity_display = new GuiKeyValueDisplay(stats, "VELOCITY_DISPLAY", 0.45, tr("Speed"), "");
     velocity_display->setIcon("gui/icons/speed")->setTextSize(20)->setSize(240, 40);
-    target_display = new GuiKeyValueDisplay(stats, "TARGET_DISPLAY", 0.45, "Cible", ""); //TRAD
+    target_display = new GuiKeyValueDisplay(stats, "TARGET_DISPLAY", 0.45, tr("Target"), ""); //TRAD
     target_display->setIcon("gui/icons/lock")->setTextSize(20)->setSize(240, 40);
     shields_display = new GuiKeyValueDisplay(stats, "SHIELDS_DISPLAY", 0.45, tr("Shields"), "");
     shields_display->setIcon("gui/icons/shields")->setTextSize(20)->setSize(240, 40);

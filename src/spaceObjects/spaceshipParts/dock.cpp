@@ -220,19 +220,19 @@ string getDockTypeName(EDockType dockType)
     switch (dockType)
     {
     case Dock_Launcher:
-        return "Pont d'envol";
+        return tr("dock","Flight deck");
     case Dock_Energy:
-        return "Energie";
+        return tr("dock","Energy");
     case Dock_Weapons:
-        return "Missiles";
+        return tr("dock","Missiles");
     case Dock_Thermic:
-        return "Thermique";
+        return tr("dock","Thermal");
     case Dock_Repair:
-        return "Reparation";
+        return tr("dock","Repair");
     case Dock_Stock:
-        return "Stock";
+        return tr("dock","Supply");
     case Dock_Maintenance:
-        return "Maintenance";
+        return tr("dock","Maintenance");
     default:
         return "Unknown";
     }
@@ -240,19 +240,19 @@ string getDockTypeName(EDockType dockType)
 
 EDockType getDockTypeEnum(std::string dockType)
 {
-    if("Pont d'envol"==dockType)
+    if(tr("dock","Flight deck")==dockType)
         return Dock_Launcher;
-    if("Energie"==dockType)
+    if(tr("dock","Energy")==dockType)
         return Dock_Energy;
-    if("Missiles"==dockType)
+    if(tr("dock","Missiles")==dockType)
         return Dock_Weapons;
-    if("Thermique"==dockType)
+    if(tr("dock","Thermal")==dockType)
         return Dock_Thermic;
-    if("Reparation"==dockType)
+    if(tr("dock","Repair")==dockType)
         return Dock_Repair;
-    if("Stock"==dockType)
+    if(tr("dock","Supply")==dockType)
         return Dock_Stock;
-    if("Maintenance" == dockType)
+    if(tr("dock","Maintenance") == dockType)
         return Dock_Maintenance;
     return Dock_Disabled;
 

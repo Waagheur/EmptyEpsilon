@@ -52,10 +52,10 @@ void GuiJumpControls::onDraw(sp::RenderTarget& target)
             float time = target_spaceship->jump_drive_charge_time / target_spaceship->getJumpDriveRechargeRate() * (target_spaceship->jump_drive_max_distance - target_spaceship->jump_drive_charge) / target_spaceship->jump_drive_max_distance;
             if (time < 0)
             {
-                label->setKey("chargement");
-                label->setValue("impossible");
+                label->setKey(tr("jumpcontrol","charging"));
+                label->setValue(tr("jumpcontrol","impossible"));
             }else{
-                label->setKey("Charge :");
+                label->setKey(tr("jumpcontrol","Charge :"));
                 label->setValue(string(int(ceilf(time))) + " S");
             }
             slider->hide();

@@ -175,7 +175,7 @@ void Artifact::collide(Collisionable* target, float force)
             }
 
             destroy();
-            player->addToShipLog("Objet recupere en soute",glm::u8vec4(255,255,255,255));
+            player->addToShipLog(tr("Object taken"),glm::u8vec4(255,255,255,255));
         }
         else
         {

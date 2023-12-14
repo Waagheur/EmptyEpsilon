@@ -71,10 +71,10 @@ void GuiDockingButton::onDraw(sp::RenderTarget& renderer)
             if (target_spaceship->canStartDocking() && findDockingTarget())
             {
                 enable();
-                setText("Se docker : " + findDockingTarget()->callsign);
+                setText(tr("Dock with : ") + findDockingTarget()->callsign);
             }else{
                 disable();
-                setText("Se docker");
+                setText(tr("Dock"));
             }
             break;
         case DS_Docking:

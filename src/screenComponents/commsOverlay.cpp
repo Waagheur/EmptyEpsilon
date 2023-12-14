@@ -93,7 +93,7 @@ GuiCommsOverlay::GuiCommsOverlay(GuiContainer* owner)
     chat_label->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);
 
         // Button to close chat comms.
-    chat_comms_close_button = new GuiButton(chat_comms_title, "CLOSE_BUTTON", "Fin", [this]() {
+    chat_comms_close_button = new GuiButton(chat_comms_title, "CLOSE_BUTTON", tr("button", "Close"), [this]() {
         if (my_spaceship)
             my_spaceship->commandCloseTextComm();
     });
@@ -188,9 +188,9 @@ void GuiCommsOverlay::onUpdate()
 
         chat_comms_title->setVisible(my_spaceship->isCommsChatOpen());
         if (my_spaceship->getCommsTargetName() != "")
-            chat_label->setText("Communication avec " + my_spaceship->getCommsTargetName());
+            chat_label->setText(tr("Communication with") + my_spaceship->getCommsTargetName());
         else
-            chat_label->setText("Communication");
+            chat_label->setText(tr("Communication"));
         chat_comms_box->setVisible(my_spaceship->isCommsChatOpen() && !minimized);
         chat_comms_text->setText(my_spaceship->getCommsIncommingMessage());
 //        chat_comms_message_entry->setFocus(chat_comms_box -> isVisible());

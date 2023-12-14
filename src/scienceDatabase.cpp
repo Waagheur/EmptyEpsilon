@@ -506,7 +506,7 @@ void fillDefaultDatabaseData()
         entry->setModelData(ship_template->model_data);
         entry->setImage(ship_template->radar_trace);
 
-        entry->addKeyValue("Type", ship_template->getLocaleName());
+        entry->addKeyValue(tr("database", "Type"), ship_template->getLocaleName());
         entry->addKeyValue(tr("database", "Class"), ship_template->getClass());
         entry->addKeyValue(tr("database", "Sub-class"), ship_template->getSubClass());
         entry->addKeyValue(tr("database", "Size"), string(int(ship_template->model_data->getRadius())));
@@ -520,7 +520,7 @@ void fillDefaultDatabaseData()
                     shield_info += "/";
                 shield_info += string(int(ship_template->shield_level[n]));
             }
-            entry->addKeyValue("Shield", shield_info);
+            entry->addKeyValue(tr("Shield"), shield_info);
         }
 
         entry->addKeyValue(tr("Hull"), string(int(ship_template->hull)));
@@ -548,7 +548,7 @@ void fillDefaultDatabaseData()
             if (ship_template->beams[n].getRange() > 0)
                 beam_weapons_count += 1;
         if (beam_weapons_count > 0)
-            entry->addKeyValue("Canons lasers",string(beam_weapons_count));
+            entry->addKeyValue(tr("database","Beam Weapons"),string(beam_weapons_count));
         for(int n=0; n<max_beam_weapons; n++)
         {
 	        if (ship_template->beams[n].getRange() > 0)
@@ -564,7 +564,7 @@ void fillDefaultDatabaseData()
         }
 
          if (ship_template->weapon_tube_count > 0)
-            entry->addKeyValue("Tubes",string(ship_template->weapon_tube_count));
+            entry->addKeyValue(tr("database","Tubes"),string(ship_template->weapon_tube_count));
         for(int n=0; n<ship_template->weapon_tube_count; n++)
         {
             //entry->addKeyValue(tr("database", "Missile tubes"), string(ship_template->weapon_tube_count));
@@ -601,7 +601,7 @@ void fillDefaultDatabaseData()
         if (ship_template->getDescription().length() > 0)
             entry->setLongDescription(ship_template->getDescription());
         if (ship_template->getDocksCount() > 0)
-            entry->addKeyValue("Docks", string(ship_template->getDocksCount()));
+            entry->addKeyValue(tr("database","Docks"), string(ship_template->getDocksCount()));
     }
 
     // Populate the Stations top-level entry.

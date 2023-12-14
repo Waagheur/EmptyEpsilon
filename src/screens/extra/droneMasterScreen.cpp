@@ -46,7 +46,7 @@ DroneMasterScreen::DroneMasterScreen(GuiContainer *owner)
         if (my_spaceship->docks[n].dock_type != Dock_Disabled)
         {
             string state = my_spaceship ? " (" + getDockStateName(my_spaceship->docks[n].state) + ")" : "";
-            docks->addEntry("dock-" + std::to_string(n + 1) + state, "dock-" + std::to_string(n + 1) + " " + getDockTypeName(my_spaceship->docks[n].dock_type));
+            docks->addEntry(tr("dock")+"-" + std::to_string(n + 1) + state, tr("dock")+"-" + std::to_string(n + 1) + " " + getDockTypeName(my_spaceship->docks[n].dock_type));
         }
     }
 
@@ -65,7 +65,7 @@ DroneMasterScreen::DroneMasterScreen(GuiContainer *owner)
     bottomPanel->setPosition(0, 500, sp::Alignment::TopRight);
 
     // Dock actions
-    (new GuiLabel(topPanel, "TITLE", "Transfert des astronefs", 30))
+    (new GuiLabel(topPanel, "TITLE", tr("Airship transfer"), 30))
         ->addBackground()
         ->setAlignment(sp::Alignment::Center)
         ->setPosition(0, 0, sp::Alignment::BottomCenter)
@@ -73,20 +73,20 @@ DroneMasterScreen::DroneMasterScreen(GuiContainer *owner)
 
     action_move = new GuiElement(topPanel, "ACTION_MOVE");
     action_move->setSize(GuiElement::GuiSizeMax, 50)->setPosition(0, 50, sp::Alignment::TopCenter)->setAttribute("layout", "vertical");;
-    (new GuiLabel(action_move, "MOVE_DEST_LABEL", "Transfert vers :", 30))->setAlignment(sp::Alignment::CenterRight);
+    (new GuiLabel(action_move, "MOVE_DEST_LABEL", tr("Transfer to :"), 30))->setAlignment(sp::Alignment::CenterRight);
     action_move_selector = new GuiSelector(action_move, "MOVE_DEST_SELECTOR", [this](int _idx, string value) {
         if (my_spaceship)
             my_spaceship->commandSetDockMoveTarget(index, value.toInt());
     });
 
-    action_move_button = new GuiButton(action_move, "MOVE_BUTTON", "Transferer", [this]() {
+    action_move_button = new GuiButton(action_move, "MOVE_BUTTON", tr("Transfer"), [this]() {
         if (my_spaceship)
             if (my_spaceship->getSystemEffectiveness(SYS_Docks) > 0)
             {
                 Dock &dockData = my_spaceship->docks[index];
                 P<Cargo> cargo = dockData.getCargo();
 
-                my_spaceship->addToSpecificShipLog("Transfert de l'astronef " + cargo->getCallSign(),colorConfig.log_generic,"docks");
+                my_spaceship->addToSpecificShipLog(tr("Transfer airship ") + cargo->getCallSign(),colorConfig.log_generic,"docks");
                 my_spaceship->commandMoveCargo(index);
             }
     });
@@ -95,7 +95,7 @@ DroneMasterScreen::DroneMasterScreen(GuiContainer *owner)
 
     (new GuiLabel(topPanel, "SPACE", " ", 30))->setSize(GuiElement::GuiSizeMax, 50);
 
-    dockTitle = new GuiLabel(topPanel, "TITLE", "Dock x", 30);
+    dockTitle = new GuiLabel(topPanel, "TITLE", tr("Dock x"), 30);
     dockTitle->addBackground()
         ->setAlignment(sp::Alignment::Center)
         ->setPosition(0, 0, sp::Alignment::BottomCenter)
@@ -105,15 +105,15 @@ DroneMasterScreen::DroneMasterScreen(GuiContainer *owner)
     action_launch->setSize(GuiElement::GuiSizeMax, 50)->setPosition(0, 50, sp::Alignment::TopCenter)->setAttribute("layout", "vertical");;
 
     (new GuiLabel(action_launch, "SPACE", " ", 30));
-    (new GuiLabel(action_launch, "ACTION_LAUNCH_LABEL", "Lancer dans l'espace :", 30))->setAlignment(sp::Alignment::CenterRight)->setMargins(20,20,20,20);
-    action_launch_button = new GuiButton(action_launch, "LAUNCH_DRONE_BUTTON", "Decollage", [this]() {
+    (new GuiLabel(action_launch, "ACTION_LAUNCH_LABEL", tr("Launch in space :"), 30))->setAlignment(sp::Alignment::CenterRight)->setMargins(20,20,20,20);
+    action_launch_button = new GuiButton(action_launch, "LAUNCH_DRONE_BUTTON", tr("Take off"), [this]() {
         if (my_spaceship)
             //if (my_spaceship->getSystemEffectiveness(SYS_Docks) > 0)
             {
                 Dock &dockData = my_spaceship->docks[index];
                 P<Cargo> cargo = dockData.getCargo();
 
-                my_spaceship->addToSpecificShipLog("Decollage " + cargo->getCallSign(),colorConfig.log_generic,"docks");
+                my_spaceship->addToSpecificShipLog(tr("Take off ") + cargo->getCallSign(),colorConfig.log_generic,"docks");
                 my_spaceship->commandLaunchCargo(index);
             }
     });
@@ -124,7 +124,7 @@ DroneMasterScreen::DroneMasterScreen(GuiContainer *owner)
     action_energy->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax)->setPosition(0, 50, sp::Alignment::TopCenter)->setAttribute("layout", "vertical");;
 
     (new GuiLabel(action_energy, "SPACE", " ", 30));
-    (new GuiLabel(action_energy, "ACTION_LAUNCH_LABEL", "Controle de l'energie :", 30))->setAlignment(sp::Alignment::TopRight)->setMargins(10, 10, 10, 10);
+    (new GuiLabel(action_energy, "ACTION_LAUNCH_LABEL", tr("Energy control :"), 30))->setAlignment(sp::Alignment::TopRight)->setMargins(10, 10, 10, 10);
 
     GuiElement *energyControl = new GuiElement(action_energy, "ENERGY_CONTROL");
     energyControl->setSize(COLUMN_WIDTH, 50);
@@ -133,27 +133,27 @@ DroneMasterScreen::DroneMasterScreen(GuiContainer *owner)
         if (my_spaceship)
         {
             my_spaceship->commandSetDockEnergyRequest(index, value);
-            my_spaceship->addToSpecificShipLog("Transfert d'energie requis",colorConfig.log_generic,"docks");
+            my_spaceship->addToSpecificShipLog(tr("Energy transfer requested"),colorConfig.log_generic,"docks");
         }
     });
     energy_slider->setSize(GuiElement::GuiSizeMax, 50);
     (new GuiPowerDamageIndicator(energy_slider, "DOCKS_DPI", SYS_Docks, sp::Alignment::BottomCenter, my_spaceship))->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);
 
     energy_bar = new GuiProgressbar(energy_slider, "ENERGY_BAR", 0.0, 10.0, 0.0);
-    energy_bar->setColor(glm::u8vec4(192, 192, 32, 128))->setText("Energie")->setDrawBackground(false)->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax)->setMargins(10, 0, 10, 0);
+    energy_bar->setColor(glm::u8vec4(192, 192, 32, 128))->setText(tr("Energy"))->setDrawBackground(false)->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax)->setMargins(10, 0, 10, 0);
 
     action_weapons = new GuiElement(topPanel, "ACTION_WEAPONS");
     action_weapons->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax)->setPosition(0, 50, sp::Alignment::TopCenter)->setAttribute("layout", "vertical");;
-    (new GuiLabel(action_weapons, "ACTION_WEAPONS_LABEL", "Transfert missiles :", 30))->setAlignment(sp::Alignment::CenterRight)->setMargins(10, 10, 10, 10);
+    (new GuiLabel(action_weapons, "ACTION_WEAPONS_LABEL", tr("Missiles transfer :"), 30))->setAlignment(sp::Alignment::CenterRight)->setMargins(10, 10, 10, 10);
 
     table_weapons = new GuiElement(action_weapons, "TABLE_WEAPONS");
     table_weapons->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax)->setAttribute("layout", "vertical");;
 
     weapons_layout_label = new GuiElement(table_weapons, "WEAPONS_LAYOUT_LABEL");
     weapons_layout_label -> setSize(GuiElement::GuiSizeMax, 40)->setAttribute("layout", "vertical");;
-    (new GuiLabel(weapons_layout_label, "", "Missile", 20));
-    (new GuiLabel(weapons_layout_label, "", "Station", 20));
-    (new GuiLabel(weapons_layout_label, "", "Astronef", 20));
+    (new GuiLabel(weapons_layout_label, "", tr("Missile"), 20));
+    (new GuiLabel(weapons_layout_label, "", tr("Station"), 20));
+    (new GuiLabel(weapons_layout_label, "", tr("Airship"), 20));
     (new GuiLabel(weapons_layout_label, "", " ", 20));
     (new GuiLabel(weapons_layout_label, "", " ", 20));
 
@@ -182,17 +182,17 @@ DroneMasterScreen::DroneMasterScreen(GuiContainer *owner)
 
                 if (my_spaceship->weapon_storage[n] <= 0)
                 {
-                    my_spaceship->addToSpecificShipLog("Transfert de missile impossible. Aucun stock dans la station",colorConfig.log_generic,"docks");
+                    my_spaceship->addToSpecificShipLog(tr("Missile transfer impossible. No missile in station."),colorConfig.log_generic,"docks");
                     return;
                 }
 
                 if (cargo->getWeaponStorageMax(EMissileWeapons(n)) == cargo->getWeaponStorage(EMissileWeapons(n)))
                 {
-                    my_spaceship->addToSpecificShipLog("Transfert de missile impossible. Stock maximum dans l'astronef",colorConfig.log_generic,"docks");
+                    my_spaceship->addToSpecificShipLog(tr("Missile transfer impossible. No more space available in airship."),colorConfig.log_generic,"docks");
                     return;
                 }
 
-                my_spaceship->addToSpecificShipLog("Transfert de 1 " + getMissileWeaponName(EMissileWeapons(n)) + " Vers l'astronef",colorConfig.log_generic,"docks");
+                my_spaceship->addToSpecificShipLog(tr("Transfer 1 ") + getMissileWeaponName(EMissileWeapons(n)) + tr(" to airship"),colorConfig.log_generic,"docks");
 
                 my_spaceship->weapon_storage[n] -= 1;
                 cargo->setWeaponStorage(EMissileWeapons(n), cargo->getWeaponStorage(EMissileWeapons(n)) + 1);
@@ -211,17 +211,17 @@ DroneMasterScreen::DroneMasterScreen(GuiContainer *owner)
 
                 if (cargo->getWeaponStorage(EMissileWeapons(n)) <= 0)
                 {
-                    my_spaceship->addToSpecificShipLog("Transfert de missile impossible. Aucun stock dans l'astronef",colorConfig.log_generic,"docks");
+                    my_spaceship->addToSpecificShipLog(tr("Missile transfer impossible. No missile in airship."),colorConfig.log_generic,"docks");
                     return;
                 }
 
                 if (my_spaceship->weapon_storage[n] == my_spaceship->weapon_storage_max[n])
                 {
-                    my_spaceship->addToSpecificShipLog("Transfert de missile impossible. Stock maximum dans la station",colorConfig.log_generic,"docks");
+                    my_spaceship->addToSpecificShipLog(tr("Missile transfer impossible. No more space available in station."),colorConfig.log_generic,"docks");
                     return;
                 }
 
-                my_spaceship->addToSpecificShipLog("Transfert de 1 " + getMissileWeaponName(EMissileWeapons(n)) + " vers la station",colorConfig.log_generic,"docks");
+                my_spaceship->addToSpecificShipLog(tr("Transfer 1 ") + getMissileWeaponName(EMissileWeapons(n)) + tr(" to station"),colorConfig.log_generic,"docks");
 
                 my_spaceship->weapon_storage[n] += 1;
                 cargo->setWeaponStorage(EMissileWeapons(n), cargo->getWeaponStorage(EMissileWeapons(n)) - 1);
@@ -257,17 +257,17 @@ DroneMasterScreen::DroneMasterScreen(GuiContainer *owner)
 
                 if (my_spaceship->custom_weapon_storage[kv.first] <= 0)
                 {
-                    my_spaceship->addToSpecificShipLog("Transfert de missile impossible. Aucun stock dans la station",colorConfig.log_generic,"docks");
+                    my_spaceship->addToSpecificShipLog(tr("Missile transfer impossible. No more missile available in station."),colorConfig.log_generic,"docks");
                     return;
                 }
 
                 if (cargo->getCustomWeaponStorageMax(kv.first) == cargo->getCustomWeaponStorage(kv.first))
                 {
-                    my_spaceship->addToSpecificShipLog("Transfert de missile impossible. Stock maximum dans l'astronef",colorConfig.log_generic,"docks");
+                    my_spaceship->addToSpecificShipLog(tr("Missile transfer impossible. No more space available in airship."),colorConfig.log_generic,"docks");
                     return;
                 }
 
-                my_spaceship->addToSpecificShipLog("Transfert de 1 " + getMissileWeaponName(kv.first) + " Vers l'astronef",colorConfig.log_generic,"docks");
+                my_spaceship->addToSpecificShipLog(tr("Transfer 1 ") + getMissileWeaponName(kv.first) + tr(" to airship"),colorConfig.log_generic,"docks");
 
                 my_spaceship->custom_weapon_storage[kv.first] -= 1;
                 cargo->setCustomWeaponStorage(kv.first, cargo->getCustomWeaponStorage(kv.first) + 1);
@@ -286,17 +286,17 @@ DroneMasterScreen::DroneMasterScreen(GuiContainer *owner)
 
                 if (cargo->getCustomWeaponStorage(kv.first) <= 0)
                 {
-                    my_spaceship->addToSpecificShipLog("Transfert de missile impossible. Aucun stock dans l'astronef",colorConfig.log_generic,"docks");
+                    my_spaceship->addToSpecificShipLog(tr("Missile transfer impossible. No more missile available in ship."),colorConfig.log_generic,"docks");
                     return;
                 }
 
                 if (my_spaceship->custom_weapon_storage[kv.first] == my_spaceship->custom_weapon_storage_max[kv.first])
                 {
-                    my_spaceship->addToSpecificShipLog("Transfert de missile impossible. Stock maximum dans la station",colorConfig.log_generic,"docks");
+                    my_spaceship->addToSpecificShipLog(tr("Missile transfer impossible. No more space available in station."),colorConfig.log_generic,"docks");
                     return;
                 }
 
-                my_spaceship->addToSpecificShipLog("Transfert de 1 " + getMissileWeaponName(kv.first) + " vers la station",colorConfig.log_generic,"docks");
+                my_spaceship->addToSpecificShipLog(tr("Transfer 1 ") + getMissileWeaponName(kv.first) + tr(" to station"),colorConfig.log_generic,"docks");
 
                 my_spaceship->custom_weapon_storage[kv.first] += 1;
                 cargo->setCustomWeaponStorage(kv.first, cargo->getCustomWeaponStorage(kv.first) - 1);
@@ -344,13 +344,13 @@ DroneMasterScreen::DroneMasterScreen(GuiContainer *owner)
 
     overlay = new GuiOverlay(this, "OVERLAY", glm::u8vec4(0, 0, 0, 128));
     overlay->setBlocking(true)->setPosition(COLUMN_WIDTH, 100, sp::Alignment::TopLeft)->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);
-    overlay_label = new GuiLabel(overlay, "OVERLAY_LABEL", "Transporting cargo out", 30);
+    overlay_label = new GuiLabel(overlay, "OVERLAY_LABEL", tr("Transporting cargo out"), 30);
     overlay_label->setPosition(0, 0, sp::Alignment::Center)->setSize(COLUMN_WIDTH, 50);
     distance_bar = new GuiProgressbar(overlay, "DISTANCE_BAR", 0.0, 1.0, 0.0);
     distance_bar->setPosition(0, 50, sp::Alignment::Center)->setSize(COLUMN_WIDTH, 50);
     (new GuiPowerDamageIndicator(distance_bar, "DOCKS_DPI", SYS_Docks, sp::Alignment::TopCenter, my_spaceship))->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);
 
-    cancel_move_button = new GuiButton(overlay, "CANCEL_MOVE_BUTTON", "Annuler transfert", [this]() {
+    cancel_move_button = new GuiButton(overlay, "CANCEL_MOVE_BUTTON", tr("Cancel transfer"), [this]() {
         my_spaceship->commandCancelMoveCargo(index);
     });
     cancel_move_button->setPosition(0, 100, sp::Alignment::Center)->setSize(COLUMN_WIDTH, 50);
@@ -385,12 +385,12 @@ void DroneMasterScreen::onDraw(sp::RenderTarget& renderer)
         if (my_spaceship->getSystemEffectiveness(SYS_Hangar) > 0.3f)
         {
             action_launch_button->enable();
-            action_launch_button->setText("Decollage");
+            action_launch_button->setText(tr("Take off"));
         }
         else
         {
             action_launch_button->disable();
-            action_launch_button->setText("Hangar HS");
+            action_launch_button->setText(tr("Flight deck OOS"));
         }
         
 
@@ -418,7 +418,7 @@ void DroneMasterScreen::onDraw(sp::RenderTarget& renderer)
         case Empty:
             model->setModel(nullptr);
             overlay->setVisible(true);
-            overlay_label->setText("Vide");
+            overlay_label->setText(tr("Empty"));
             distance_bar->setVisible(false);
             cancel_move_button->setVisible(false);
             mainPanel->setVisible(false);
@@ -426,7 +426,7 @@ void DroneMasterScreen::onDraw(sp::RenderTarget& renderer)
         case MovingIn:
             displayDroneDetails(dockData);
             overlay->setVisible(true);
-            overlay_label->setText("Transfert en cours");
+            overlay_label->setText(tr("Transfer in progress"));
             distance_bar->setVisible(true);
             distance_bar->setValue(dockData.current_distance);
             cancel_move_button->setVisible(true);
@@ -441,7 +441,7 @@ void DroneMasterScreen::onDraw(sp::RenderTarget& renderer)
         case MovingOut:
             displayDroneDetails(dockData);
             overlay->setVisible(true);
-            overlay_label->setText("Transfert en cours");
+            overlay_label->setText(tr("Transfer in progress"));
             distance_bar->setVisible(true);
             distance_bar->setValue(dockData.current_distance);
             cancel_move_button->setVisible(true);
@@ -460,7 +460,7 @@ void DroneMasterScreen::displayDroneDetails(Dock &dockData)
     P<ShipCargo> shipCargo = cargo;
     if(shipCargo)
     {
-        std::string type = (ShipTemplate::TemplateType::Drone==shipCargo->getTemplate()->getType()) ? "Drone " : "Vaisseau ";
+        std::string type = (ShipTemplate::TemplateType::Drone==shipCargo->getTemplate()->getType()) ? tr("Drone ") : tr("Ship ");
         droneTitle->setText(type + cargo->getCallSign());
     }
 

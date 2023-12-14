@@ -300,13 +300,13 @@ string getCrewPositionName(ECrewPosition position)
     case commsOnly: return tr("station","Comms");
     case shipLog: return tr("station","Ship's Log");
     //TODO reverifier tout ça
-    case tacticalRadar: return "Radar Tactique";
-    case scienceRadar: return "Radar Science";
-    case relayRadar: return "Radar Auspex LP";
-    case internLogView: return "Intern Log View";
-    case dronePilot: return "Pilote seul";
-    case droneMaster: return "Maitre des docks";
-    case dockMaster: return tr("station","Maitre d'ammarrage");
+    case tacticalRadar: return tr("station","Tactical Radar");
+    case scienceRadar: return tr("station","Science Radar");
+    case relayRadar: return tr("station","Relay Radar");
+    case internLogView: return tr("station","Intern Log View");
+    case dronePilot: return tr("station","Single Pilot");
+    case droneMaster: return tr("station","Dock Master");
+    case dockMaster: return tr("station","Flight Deck Master");
     //case oxygenView: return "Log Oxygen";
     case targetAnalysisScreen: return tr("station","Target Analysis Screen");
     default: return "ErrUnk: " + string(position);

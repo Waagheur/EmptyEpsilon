@@ -75,17 +75,17 @@ void AutoConnectScreen::update(float delta)
         string autoconnect_address = PreferencesManager::get("autoconnect_address", "");
 
         if (autoconnect_address != "") {
-            status_label->setText("Using autoconnect server " + autoconnect_address);
+            status_label->setText(tr("autoconnect", "Using autoconnect server ") + autoconnect_address);
             connect_to_address = autoconnect_address;
             new GameClient(VERSION_NUMBER, autoconnect_address);
             scanner->destroy();
         } else if (serverList.size() > 0) {
-            status_label->setText("Found server " + serverList[0].name);
+            status_label->setText(tr("autoconnect","Found server ") + serverList[0].name);
             connect_to_address = serverList[0].address;
             new GameClient(VERSION_NUMBER, serverList[0].address);
             scanner->destroy();
         }else{
-            status_label->setText("Coupure de courant");
+            status_label->setText(tr("autoconnect","Searching for server..."));
         }
     }else{
         switch(game_client->getStatus())
@@ -93,9 +93,9 @@ void AutoConnectScreen::update(float delta)
         case GameClient::Connecting:
         case GameClient::Authenticating:
             if (!connect_to_address.getHumanReadable().empty())
-                status_label->setText("Connexion: " + connect_to_address.getHumanReadable()[0]);
+                status_label->setText(tr("autoconnect","Connecting: ") + connect_to_address.getHumanReadable()[0]);
             else
-                status_label->setText("Connexion...");
+                status_label->setText(tr("autoconnect","Connecting..."));
             break;
         case GameClient::WaitingForPassword: //For now, just disconnect when we found a password protected server.
         case GameClient::Disconnected:
@@ -113,9 +113,9 @@ void AutoConnectScreen::update(float delta)
                 {
                     my_player_info->commandSetName(PreferencesManager::get("username"));
                     if (!connect_to_address.getHumanReadable().empty())
-                        status_label->setText("Attente de vaisseau à " + connect_to_address.getHumanReadable()[0] + "...");
+                        status_label->setText(tr("autoconnect","Waiting for ship on ") + connect_to_address.getHumanReadable()[0] + "...");
                     else
-                        status_label->setText("Attente de vaisseau...");
+                        status_label->setText(tr("autoconnect","Waiting for ship..."));
                     if (!my_spaceship)
                     {
                         for(int n=0; n<GameGlobalInfo::max_player_ships; n++)
@@ -148,7 +148,7 @@ void AutoConnectScreen::update(float delta)
                 }
                 else
                 {
-                    status_label->setText("Connexion en cours...");
+                    status_label->setText(tr("autoconnect","Connected, waiting for game data..."));
                 }
             }
             break;

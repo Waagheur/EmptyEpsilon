@@ -16,9 +16,9 @@ PowerManagementScreen::PowerManagementScreen(GuiContainer* owner)
 {
     selected_system = SYS_None;
 
-    energy_display = new GuiKeyValueDisplay(this, "ENERGY_DISPLAY", 0.45, "Energie", "");
+    energy_display = new GuiKeyValueDisplay(this, "ENERGY_DISPLAY", 0.45, tr("Energy"), "");
     energy_display->setIcon("gui/icons/energy")->setTextSize(20)->setPosition(20, 20, sp::Alignment::TopLeft)->setSize(285, 40);
-    coolant_display = new GuiKeyValueDisplay(this, "COOLANT_DISPLAY", 0.45, "Refroidissement", "");
+    coolant_display = new GuiKeyValueDisplay(this, "COOLANT_DISPLAY", 0.45, tr("Coolant"), "");
     coolant_display->setIcon("gui/icons/coolant")->setTextSize(20)->setPosition(315, 20, sp::Alignment::TopLeft)->setSize(280, 40);
     GuiElement* layout = new GuiElement(this, "");
     //layout->setPosition(20, 60, sp::Alignment::TopLeft)->setSize(GuiElement::GuiSizeMax, 400)->setAttribute("layout", "horizontal");

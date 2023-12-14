@@ -41,7 +41,7 @@ DockMasterScreen::DockMasterScreen(GuiContainer *owner)
 
     // the index in the button list is assumed to equal the index of the dock
     for (int n = 0; n < 10; n++)
-        docks->addEntry("dock-"+string(n+1), "Vide");
+        docks->addEntry(tr("dock") +"-"+string(n+1), tr("Empty"));
 
     bays = new GuiListbox(rootLayout, "DOCKS_LIST", [this](unsigned int index_bay, string value) {
         if (index_bay < 3)
@@ -52,7 +52,7 @@ DockMasterScreen::DockMasterScreen(GuiContainer *owner)
 
     // the index in the button list is assumed to equal the index of the dock
     for (int n = 0; n < 3; n++)
-        bays->addEntry("Baie-"+string(n+1), "Vide");
+        bays->addEntry(tr("dock") +"-"+string(n+1), tr("Empty"));
 
     mainPanel = new GuiElement(rootLayout, "TOP_PANEL");
     mainPanel->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax)->setAttribute("layout", "horizontal");;
@@ -82,21 +82,21 @@ DockMasterScreen::DockMasterScreen(GuiContainer *owner)
                 {
                     for (int n = 0; n < 3; n++)
                         if (bays->getEntryName(n) == selected_ship->callsign)
-                            bays->setEntryName(n,"Baie-"+string(n+1));
+                            bays->setEntryName(n,tr("dock")+"-"+string(n+1));
                     selected_ship->setDockId(index_bay + 1);
                     bays->setEntryName(index_bay,selected_ship->callsign);
-                    my_spaceship->addToSpecificShipLog("Transfert du vaisseau " + selected_ship->callsign + " Vers la baie d'amarrage " + string(index_bay+1),colorConfig.log_generic,"docks");
+                    my_spaceship->addToSpecificShipLog(tr("Ship transfer ") + selected_ship->callsign + tr(" To docking bay ") + string(index_bay+1),colorConfig.log_generic,"docks");
                     return;
                 }
             }
     });
     action_move_button->setSize(COLUMN_WIDTH, 40);
 
-    action_empty_button = new GuiButton(layout_move, "EMPTY_BUTTON", "Liberer", [this]() {
+    action_empty_button = new GuiButton(layout_move, "EMPTY_BUTTON", tr("Release"), [this]() {
         if (my_spaceship)
             if (my_spaceship->getSystemEffectiveness(SYS_Docks) > 0)
             {
-                bays->setEntryName(index_bay,"Baie-"+string(index_bay+1));
+                bays->setEntryName(index_bay,tr("dock")+"-"+string(index_bay+1));
                 if (selected_ship)
                     selected_ship->setDockId("");
             }
@@ -104,7 +104,7 @@ DockMasterScreen::DockMasterScreen(GuiContainer *owner)
     action_empty_button->setSize(COLUMN_WIDTH, 40);
     (new GuiPowerDamageIndicator(action_move_button, "DOCKS_DPI", SYS_Docks, sp::Alignment::TopCenter, my_spaceship))->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);
 
-    droneTitle = new GuiLabel(topPanel, "DRONE_TITLE", "Astronef x", 30);
+    droneTitle = new GuiLabel(topPanel, "DRONE_TITLE", tr("Airship x"), 30);
     droneTitle->addBackground()
         ->setAlignment(sp::Alignment::Center)
         ->setPosition(0, 0, sp::Alignment::TopCenter)
@@ -140,7 +140,7 @@ void DockMasterScreen::onDraw(sp::RenderTarget& renderer)
 {
     GuiOverlay::onDraw(renderer);
     for (int n = 0; n < 10; n++)
-        docks->setEntryName(n, "Vide");
+        docks->setEntryName(n, tr("Empty"));
     if (my_spaceship)
     {
         int n = 0;
@@ -184,8 +184,8 @@ void DockMasterScreen::displayShipDetails(P<SpaceShip> ship)
     P<ShipTemplate> st = ship->ship_template;
     model->setModel(st->model_data);
     if (ship->id_dock == "")
-        droneTitle->setText("Aucune baie d'ammarage");
+        droneTitle->setText(tr("No docking bay"));
     else
-        droneTitle->setText("Baie d'ammarage " + ship->id_dock );
+        droneTitle->setText(tr("Docking bay ") + ship->id_dock );
 }
 

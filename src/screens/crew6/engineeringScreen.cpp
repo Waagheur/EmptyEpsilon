@@ -37,9 +37,9 @@ EngineeringScreen::EngineeringScreen(GuiContainer* owner, ECrewPosition crew_pos
     energy_display->setIcon("gui/icons/energy")->setTextSize(20)->setSize(240, 40);
     hull_display = new GuiKeyValueDisplay(stats, "HULL_DISPLAY", 0.45, tr("health","Hull"), "");
     hull_display->setIcon("gui/icons/hull")->setTextSize(20)->setSize(240, 40);
-    shields_display = new GuiKeyValueDisplay(stats, "SHIELDS_DISPLAY", 0.45, "Boucliers", "");
+    shields_display = new GuiKeyValueDisplay(stats, "SHIELDS_DISPLAY", 0.45, tr("Shields"), "");
     shields_display->setIcon("gui/icons/shields")->setTextSize(20)->setSize(240, 40);
-    oxygen_display = new GuiKeyValueDisplay(stats, "OXYGEN_DISPLAY", 0.45, "Oxygene", "");
+    oxygen_display = new GuiKeyValueDisplay(stats, "OXYGEN_DISPLAY", 0.45, tr("Oxygen"), "");
     oxygen_display->setIcon("gui/icons/oxygen")->setTextSize(20)->setSize(240, 40);
     coolant_display = new GuiKeyValueDisplay(stats, "COOLANT_DISPLAY", 0.45, tr("total","Coolant"), "");
     coolant_display->setIcon("gui/icons/coolant")->setTextSize(20)->setSize(240, 40);
@@ -569,23 +569,23 @@ void EngineeringScreen::onDraw(sp::RenderTarget& renderer)
         if (selected_system != SYS_None)
         {
             ShipSystem& system = my_spaceship->systems[selected_system];
-            power_label->setText("Puissance: " + toNearbyIntString(system.power_level * 100) + "%/" + toNearbyIntString(system.power_request * 100) + "%");
+            power_label->setText(tr("Power") +": " + toNearbyIntString(system.power_level * 100) + "%/" + toNearbyIntString(system.power_request * 100) + "%");
             power_slider->setValue(system.power_request);
-            coolant_label->setText("Coolant: " + toNearbyIntString(system.coolant_level / my_spaceship->max_coolant_per_system * 100) + "%/" + toNearbyIntString(std::min(system.coolant_request, my_spaceship->max_coolant) / my_spaceship->max_coolant_per_system * 100) + "%");
+            coolant_label->setText(tr("Coolant") +": " + toNearbyIntString(system.coolant_level / my_spaceship->max_coolant_per_system * 100) + "%/" + toNearbyIntString(std::min(system.coolant_request, my_spaceship->max_coolant) / my_spaceship->max_coolant_per_system * 100) + "%");
             coolant_slider->setEnable(!my_spaceship->auto_coolant_enabled);
             coolant_slider->setRange(0.0, my_spaceship->max_coolant_per_system);
             coolant_slider->setValue(std::min(system.coolant_request, my_spaceship->max_coolant));
             if (gameGlobalInfo->use_nano_repair_crew)
             {
-                coolant_label->setText("Coolant: " + string(system.coolant_level, 1) + " / " + string(my_spaceship->max_coolant_per_system, 1) + "\t\t (Target: " + string(system.coolant_request, 1)+")");
-                power_label->setText("Power: " + toNearbyIntString(system.power_level * 100) + "% \t\t (Target: " + toNearbyIntString(system.power_request * 100) + "%)");
+                coolant_label->setText(tr("Coolant") +": " + string(system.coolant_level, 1) + " / " + string(my_spaceship->max_coolant_per_system, 1) + "\t\t ("+ tr("Target") +": " + string(system.coolant_request, 1)+")");
+                power_label->setText(tr("Power") +": " + toNearbyIntString(system.power_level * 100) + "% \t\t ("+ tr("Target") +": " + toNearbyIntString(system.power_request * 100) + "%)");
                 if (gameGlobalInfo->use_system_damage)
                 {
                     repair_slider->setEnable(!my_spaceship->auto_repair_enabled);
                     repair_slider->setRange(0.0, my_spaceship->max_repair_per_system);
                     repair_slider->setValue(std::min(system.repair_request, my_spaceship->max_repair_per_system));
                     repair_slider->addSnapValue(my_spaceship->max_repair, 0.1);
-                    repair_label->setText("Repair: " + string(system.repair_level, 1) + " / " + string(my_spaceship->max_repair_per_system, 1) + "\t\t (Target: " + string(system.repair_request, 1)+")");
+                    repair_label->setText(tr("Repair") +": " + string(system.repair_level, 1) + " / " + string(my_spaceship->max_repair_per_system, 1) + "\t\t ("+ tr("Target") +": " + string(system.repair_request, 1)+")");
                 }
             }
 
@@ -594,8 +594,8 @@ void EngineeringScreen::onDraw(sp::RenderTarget& renderer)
             float health_max = my_spaceship->getSystemHealthMax(selected_system);
             if (health_max < 1.0f)
             {
-                addSystemEffect("Intervention necessaire", "voir log",glm::u8vec4(255,0,0,255)); //TODO TRAD
-                addSystemEffect("Maximal health", toNearbyIntString(health_max * 100) + "%"); //TODO TRAD
+                addSystemEffect(tr("Necessary intervention"), tr("see log"),glm::u8vec4(255,0,0,255)); //TODO TRAD
+                addSystemEffect(tr("Maximal health"), toNearbyIntString(health_max * 100) + "%"); //TODO TRAD
             }
             switch(selected_system)
             {
@@ -605,14 +605,14 @@ void EngineeringScreen::onDraw(sp::RenderTarget& renderer)
                 addSystemEffect(tr("Energy production"),  tr("{energy}/min").format({{"energy", string(effectiveness * -my_spaceship->systems[SYS_Reactor].power_factor * 60.0f, 1)}}));
                 // Oxygene
                 for(int n = 0; n < my_spaceship->oxygen_zones; n++)
-                    addSystemEffect("Zone " + string(n+1) + ", oxygene", string(my_spaceship->getOxygenRechargeRate(n) * 60.0f, 1) + "/m");
+                    addSystemEffect(tr("Zone ") + string(n+1) + ", oxygene", string(my_spaceship->getOxygenRechargeRate(n) * 60.0f, 1) + "/m");
                 break;
             case SYS_Cloaking:
-                addSystemEffect("Degre d'invisibilite", string(my_spaceship->getCloakingDegree() * 100.0f, 1) + "%");
+                addSystemEffect(tr("Cloaking grade"), string(my_spaceship->getCloakingDegree() * 100.0f, 1) + "%");
                 if (my_spaceship->getCloakingDegree() > 0.5f)
-                    addSystemEffect("Detection via radar", "non");
+                    addSystemEffect(tr("Radar detection"), tr("no"));
                 else
-                    addSystemEffect("Detection via radar", "oui");
+                    addSystemEffect(tr("Radar detection"), tr("yes"));
                 break;
             case SYS_BeamWeapons:
                 addSystemEffect(tr("Firing rate"), toNearbyIntString(effectiveness * 100) + "%");
@@ -622,14 +622,14 @@ void EngineeringScreen::onDraw(sp::RenderTarget& renderer)
                 {
                     if (my_spaceship->beam_weapons[n].getTurretArc() > 0)
                     {
-                        addSystemEffect("Rotation des lasers", toNearbyIntString(effectiveness * 100) + "%");
+                        addSystemEffect(tr("Beam rotation"), toNearbyIntString(effectiveness * 100) + "%");
                         break;
                     }
                 }
                 break;
             case SYS_MissileSystem:
                 addSystemEffect(tr("missile","Reload rate"), toNearbyIntString(effectiveness * 100) + "%");
-                addSystemEffect("Vitesse des missiles", toNearbyIntString(effectiveness * 100) + "%");
+                addSystemEffect(tr("Missiles speed"), toNearbyIntString(effectiveness * 100) + "%");
                 break;
             case SYS_Maneuver:
                 addSystemEffect(tr("Turning speed"), toNearbyIntString(effectiveness * 100) + "%");
@@ -679,20 +679,20 @@ void EngineeringScreen::onDraw(sp::RenderTarget& renderer)
                 }
                 break;
             case SYS_Docks:
-                addSystemEffect("Vitesse de transfert astronefs", toNearbyIntString(effectiveness * 100) + "%");
-                addSystemEffect("Vitesse de transfert energie", string(effectiveness * PlayerSpaceship::energy_transfer_per_second) + "/s");
+                addSystemEffect(tr("Airship transfer speed"), toNearbyIntString(effectiveness * 100) + "%");
+                addSystemEffect(tr("Energy transfer speed"), string(effectiveness * PlayerSpaceship::energy_transfer_per_second) + "/s");
                 break;
             case SYS_Drones:
-                addSystemEffect("Controle des drones", string(my_spaceship->getDronesControlRange() / 1000.0f,1) + "U");
-                addSystemEffect("Auspex Courte Portee", string(my_spaceship->getShortRangeRadarRange() / 1000.0f,1) + "U");
-                addSystemEffect("Auspex Longue Portee", string( my_spaceship->getLongRangeRadarRange() / 1000.0f,1) + "U");
+                addSystemEffect(tr("Drone control"), string(my_spaceship->getDronesControlRange() / 1000.0f,1) + "U");
+                addSystemEffect(tr("Short range radar"), string(my_spaceship->getShortRangeRadarRange() / 1000.0f,1) + "U");
+                addSystemEffect(tr("Long range radar"), string( my_spaceship->getLongRangeRadarRange() / 1000.0f,1) + "U");
                 if(my_spaceship->getSystemEffectiveness(SYS_Drones) >= 0.1f)
                 {
-                    addSystemEffect("Facteur de puissance", " x" + string(std::sqrt(my_spaceship->getSystemEffectiveness(SYS_Drones)) ,1));
+                    addSystemEffect(tr("Power factor"), " x" + string(std::sqrt(my_spaceship->getSystemEffectiveness(SYS_Drones)) ,1));
                 }
                 else
                 {
-                    addSystemEffect("Generateur de secours", " x" + string(std::sqrt(0.1f), 1) ,glm::u8vec4(255,255,0,255));
+                    addSystemEffect(tr("Auxiliary generator"), " x" + string(std::sqrt(0.1f), 1) ,glm::u8vec4(255,255,0,255));
                     
                 }
                 
@@ -702,11 +702,11 @@ void EngineeringScreen::onDraw(sp::RenderTarget& renderer)
                 
                 if(my_spaceship->getSystemEffectiveness(SYS_Hangar) >= 0.3f)
                 {
-                    addSystemEffect("Operationnel","");
+                    addSystemEffect(tr("Working"),"");
                 }
                 else
                 {
-                    addSystemEffect("Energie insuffisante","", glm::u8vec4(255,0,0,255));
+                    addSystemEffect(tr("Not enough energy"),"", glm::u8vec4(255,0,0,255));
                 }
             }
                 break;

@@ -36,7 +36,7 @@ void GuiOpenCommsButton::onDraw(sp::RenderTarget& renderer)
             if (targets->get())
                 setText("Comms : " + targets->get()->getCallSign());
             else
-                setText("Diffusion large");
+                setText(tr("Broadcast"));
         }else
         {
             disable();

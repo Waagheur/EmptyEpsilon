@@ -171,7 +171,7 @@ void GuiScanningDialog::setupParameters()
 //    case 9: label += "Improbabilite infinie"; break;
 //    case 10: label += "Frequence audio a gravite nulle"; break;
 //    }
-    label += "Scan des frequences";
+    label += tr("Frequencies scan");
     signal_label->setText(label);
 }
 

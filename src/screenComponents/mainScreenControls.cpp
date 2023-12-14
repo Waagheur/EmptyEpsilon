@@ -143,7 +143,7 @@ GuiMainScreenControls::GuiMainScreenControls(GuiContainer* owner)
 //    ship_state_button = buttons.back();
 
     // Far-range radar button.
-    buttons.push_back(new GuiButton(this, "MAIN_SCREEN_TARGET_ANALYSIS_BUTTON", "Target analysis", [this]() //TODO TRAD
+    buttons.push_back(new GuiButton(this, "MAIN_SCREEN_TARGET_ANALYSIS_BUTTON", tr("mainscreen","Target analysis"), [this]() //TODO TRAD
     {
         if (my_spaceship)
         {

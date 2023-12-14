@@ -58,7 +58,7 @@ WeaponsScreen::WeaponsScreen(GuiContainer* owner)
     lock_aim = new AimLockButton(this, "LOCK_AIM", tube_controls, missile_aim, my_spaceship);
     lock_aim->setPosition(250, 20, sp::Alignment::TopCenter)->setSize(200, 50);
 
-    lock_fire = new GuiToggleButton(this, "TOOGLE_FIRE", "Feu", [this](bool value){
+    lock_fire = new GuiToggleButton(this, "TOOGLE_FIRE", tr("Fire"), [this](bool value){
         if (my_spaceship)
             my_spaceship->lock_fire = value;
     });
@@ -73,7 +73,7 @@ WeaponsScreen::WeaponsScreen(GuiContainer* owner)
         {
             GuiElement* beam_info_box = new GuiElement(this, "BEAM_INFO_BOX");
             beam_info_box->setPosition(-20, -120, sp::Alignment::BottomRight)->setSize(280, 150);
-            (new GuiLabel(beam_info_box, "BEAM_INFO_LABEL", "Info Laser", 30))->addBackground()->setSize(GuiElement::GuiSizeMax, 50);
+            (new GuiLabel(beam_info_box, "BEAM_INFO_LABEL", tr("Beam info"), 30))->addBackground()->setSize(GuiElement::GuiSizeMax, 50);
             (new GuiPowerDamageIndicator(beam_info_box, "", SYS_BeamWeapons, sp::Alignment::CenterLeft, my_spaceship))->setSize(GuiElement::GuiSizeMax, 50);
             (new GuiBeamFrequencySelector(beam_info_box, "BEAM_FREQUENCY_SELECTOR"))->setPosition(0, 0, sp::Alignment::BottomRight)->setSize(GuiElement::GuiSizeMax, 50);
             (new GuiBeamTargetSelector(beam_info_box, "BEAM_TARGET_SELECTOR", my_spaceship))->setPosition(0, -50, sp::Alignment::BottomRight)->setSize(GuiElement::GuiSizeMax, 50);
@@ -91,9 +91,9 @@ WeaponsScreen::WeaponsScreen(GuiContainer* owner)
 
     energy_display = new GuiKeyValueDisplay(stats, "ENERGY_DISPLAY", 0.45, tr("Energy"), "");
     energy_display->setIcon("gui/icons/energy")->setTextSize(20)->setSize(240, 40);
-    target_display = new GuiKeyValueDisplay(stats, "TARGET_DISPLAY", 0.45, "Cible", "");
+    target_display = new GuiKeyValueDisplay(stats, "TARGET_DISPLAY", 0.45, tr("Target"), "");
     target_display->setIcon("gui/icons/lock")->setTextSize(20)->setSize(240, 40);
-    shields_display = new GuiKeyValueDisplay(stats, "SHIELDS_DISPLAY", 0.45, "Boucliers", "");
+    shields_display = new GuiKeyValueDisplay(stats, "SHIELDS_DISPLAY", 0.45, tr("Shields"), "");
     shields_display->setIcon("gui/icons/shields")->setTextSize(20)->setSize(240, 40);
 
     if (my_spaceship && my_spaceship->getShieldCount() > 0)

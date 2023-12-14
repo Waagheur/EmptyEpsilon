@@ -176,28 +176,28 @@ ShipCargo::Entries ShipCargo::getEntries()
     P<ShipTemplate> ship_template = ShipTemplate::getTemplate(template_name);
     if (ship_template)
     {
-        result.push_back(std::make_tuple("gui/icons/hull", "Carlingue", string(int(100 * hull_strength / ship_template->hull)) + "%"));
+        result.push_back(std::make_tuple("gui/icons/hull", tr("health","Hull"), string(int(100 * hull_strength / ship_template->hull)) + "%"));
     }
     result.push_back(std::make_tuple("", "ID", callsign));
     result.push_back(std::make_tuple("", "type", template_name));
 
     if (has_reactor)
-        result.push_back(std::make_tuple("", "Reacteur ?", "Oui"));
+        result.push_back(std::make_tuple("",tr("system", "Reactor") + " ? ", tr("Yes")));
     else
-        result.push_back(std::make_tuple("", "Reacteur ?", "Non"));
+        result.push_back(std::make_tuple("", tr("system", "Reactor") + " ?", tr("No")));
 
     float velocity = ship_template->impulse_speed / 1000 * 60;
     result.push_back(std::make_tuple("", "Vitesse", string(velocity, 1) + DISTANCE_UNIT_1K + "/min"));
 
     if (ship_template->weapon_tube_count > 0)
-        result.push_back(std::make_tuple("", "Tubes a missiles", ship_template->weapon_tube_count));
+        result.push_back(std::make_tuple("", tr("cargo", "Missile tubes"), ship_template->weapon_tube_count));
 
     int beam_weapons_count = 0;
     for(int n=0; n<max_beam_weapons; n++)
         if (ship_template->beams[n].getRange() > 0)
             beam_weapons_count += 1;
     if (beam_weapons_count > 0)
-        result.push_back(std::make_tuple("", "Canons lasers", beam_weapons_count));
+        result.push_back(std::make_tuple("", tr("system", "Beam Weapons"), beam_weapons_count));
 
     return result;
 }

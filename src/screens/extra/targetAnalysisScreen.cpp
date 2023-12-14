@@ -91,7 +91,7 @@ TargetAnalysisScreen::TargetAnalysisScreen(GuiContainer *owner)
     info_hull = new GuiKeyValueDisplay(left_col, "SCIENCE_HULL", 0.4, tr("science", "Hull"), "");
     info_hull->setSize(GuiElement::GuiSizeMax, 30);
 
-    (new GuiLabel(left_col, "TITLE", "Description", 30))
+    (new GuiLabel(left_col, "TITLE", tr("Description"), 30))
         ->addBackground()
         ->setAlignment(sp::Alignment::Center)
         ->setPosition(0, 0, sp::Alignment::BottomCenter)
@@ -100,7 +100,7 @@ TargetAnalysisScreen::TargetAnalysisScreen(GuiContainer *owner)
     info_description = new GuiScrollText(left_col, "SCIENCE_DESC", "");
     info_description->setTextSize(28)->setMargins(20, 20, 0, 0)->setSize(GuiElement::GuiSizeMax, 150);
 
-    (new GuiLabel(left_col, "TITLE", "Additionnal Informations", 30))
+    (new GuiLabel(left_col, "TITLE", tr("Additionnal Informations"), 30))
         ->addBackground()
         ->setAlignment(sp::Alignment::Center)
         ->setPosition(0, 0, sp::Alignment::BottomCenter)
@@ -113,7 +113,7 @@ TargetAnalysisScreen::TargetAnalysisScreen(GuiContainer *owner)
         info_other[n]->hide();
     }
     
-    (new GuiLabel(center_col, "TITLE", "Template Informations", 30))
+    (new GuiLabel(center_col, "TITLE", tr("Template Informations"), 30))
         ->addBackground()
         ->setAlignment(sp::Alignment::Center)
         ->setPosition(0, 0, sp::Alignment::BottomCenter)
@@ -126,7 +126,7 @@ TargetAnalysisScreen::TargetAnalysisScreen(GuiContainer *owner)
         info_template[n]->hide();
     }
 
-    (new GuiLabel(center_col, "TITLE", "Systems", 30))
+    (new GuiLabel(center_col, "TITLE", tr("Systems"), 30))
         ->addBackground()
         ->setAlignment(sp::Alignment::Center)
         ->setPosition(0, 0, sp::Alignment::BottomCenter)
@@ -140,7 +140,7 @@ TargetAnalysisScreen::TargetAnalysisScreen(GuiContainer *owner)
     }
     
     // Advanced scan data.
-    (new GuiLabel(right_col, "TITLE", "Frequencies", 30))
+    (new GuiLabel(right_col, "TITLE", tr("Frequencies"), 30))
         ->addBackground()
         ->setAlignment(sp::Alignment::Center)
         ->setPosition(0, 0, sp::Alignment::BottomCenter)
@@ -158,7 +158,7 @@ TargetAnalysisScreen::TargetAnalysisScreen(GuiContainer *owner)
         info_beam_frequency->hide();
     }
 
-    (new GuiLabel(right_col, "TITLE", "Signatures", 30))
+    (new GuiLabel(right_col, "TITLE", tr("Signatures"), 30))
         ->addBackground()
         ->setAlignment(sp::Alignment::Center)
         ->setPosition(0, 0, sp::Alignment::BottomCenter)
@@ -166,17 +166,17 @@ TargetAnalysisScreen::TargetAnalysisScreen(GuiContainer *owner)
 
     info_electrical_signal_band = new GuiSignalQualityIndicator(right_col, "ELECTRICAL_SIGNAL");
     info_electrical_signal_band->showGreen(false)->showBlue(false)->setSize(GuiElement::GuiSizeMax, 80);
-    info_electrical_signal_label = new GuiLabel(info_electrical_signal_band, "", "Electrical", 30);
+    info_electrical_signal_label = new GuiLabel(info_electrical_signal_band, "", tr("Electrical"), 30);
     info_electrical_signal_label->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);
 
     info_gravity_signal_band = new GuiSignalQualityIndicator(right_col, "GRAVITY_SIGNAL");
     info_gravity_signal_band->showRed(false)->showBlue(false)->setSize(GuiElement::GuiSizeMax, 80);
-    info_gravity_signal_label = new GuiLabel(info_gravity_signal_band, "", "Gravitational", 30);
+    info_gravity_signal_label = new GuiLabel(info_gravity_signal_band, "", tr("Gravitational"), 30);
     info_gravity_signal_label->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);
 
     info_biological_signal_band = new GuiSignalQualityIndicator(right_col, "BIOLOGICAL_SIGNAL");
     info_biological_signal_band->showRed(false)->showGreen(false)->setSize(GuiElement::GuiSizeMax, 80);
-    info_biological_signal_label = new GuiLabel(info_biological_signal_band, "", "Biological", 30);
+    info_biological_signal_label = new GuiLabel(info_biological_signal_band, "", tr("Biological"), 30);
     info_biological_signal_label->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);
 }
 
@@ -217,13 +217,13 @@ void TargetAnalysisScreen::onDraw(sp::RenderTarget& renderer)
         
         if (!obj)
         {
-            indicator_label->setText("No object targeted");
+            indicator_label->setText(tr("targetanalysis","No object targeted"));
             indicator_overlay->show();
             analysis_overlay->hide();
         }
         else if (obj->getScannedStateFor(my_spaceship) < SS_FullScan)
         {
-            indicator_label->setText("Object not fully scanned");
+            indicator_label->setText(tr("targetanalysis","Object not fully scanned"));
             indicator_overlay->show();
             analysis_overlay->hide();
         }
@@ -356,17 +356,17 @@ void TargetAnalysisScreen::onDraw(sp::RenderTarget& renderer)
             signal = std::max(0.0f, info.electrical - distance_variance);
             info_electrical_signal_band->setMaxAmp(signal);
             info_electrical_signal_band->setNoiseError(std::max(0.0f, (signal - 1.0f) / 10));
-            info_electrical_signal_label->setText("Electrical: " + string(signal) + " MJ");
+            info_electrical_signal_label->setText(tr("Electrical: ") + string(signal) + " MJ");
 
             signal = std::max(0.0f, info.gravity - distance_variance);
             info_gravity_signal_band->setMaxAmp(signal);
             info_gravity_signal_band->setPeriodError(std::max(0.0f, (signal - 1.0f) / 10));
-            info_gravity_signal_label->setText("Gravitational: " + string(signal) + " dN");
+            info_gravity_signal_label->setText(tr("Gravitational: ") + string(signal) + " dN");
 
             signal = std::max(0.0f, info.biological - distance_variance);
             info_biological_signal_band->setMaxAmp(signal);
             info_biological_signal_band->setPhaseError(std::max(0.0f, (signal - 1.0f) / 10));
-            info_biological_signal_label->setText("Biological: " + string(signal) + " um");
+            info_biological_signal_label->setText(tr("Biological: ") + string(signal) + " um");
         }
     }
 }

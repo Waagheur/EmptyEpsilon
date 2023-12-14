@@ -46,32 +46,32 @@ void GuiLandingButton::onDraw(sp::RenderTarget& renderer)
                 && findLandingTarget())
             {
                 enable();
-                setText("Se poser : " + findLandingTarget()->callsign);
+                setText(tr("Land : ") + findLandingTarget()->callsign);
             }
             else if((my_spaceship->getSystemEffectiveness(SYS_Hangar) <= 0.3f)
                 && landing_spaceship->canStartLanding() 
                 && findLandingTarget())
             {
                 disable();
-                setText("Hangar HS");
+                setText(tr("Fight deck OOS"));
             }
             else
             {
                 disable();
-                setText("Se poser");
+                setText(tr("Land"));
             }
             break;
         case LS_Landing:
             if((my_spaceship->getSystemEffectiveness(SYS_Hangar) <= 0.3f))
             {
                 disable();
-                setText("Hangar HS");
+                setText(tr("Fight deck OOS"));
                 landing_spaceship->commandAbortLanding();
                 landing_spaceship->commandSetLandingTarget(NULL);
             }   
             else
             {
-                setText("Annuler se poser");
+                setText(tr("Cancel landing"));
                 enable();    
             }
             break;

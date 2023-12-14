@@ -66,9 +66,9 @@ SinglePilotView::SinglePilotView(GuiContainer* owner, P<PlayerSpaceship> targetS
 
     auto stats = new GuiElement(this, "STATS");
     stats->setPosition(-20, -80, sp::Alignment::BottomRight)->setSize(240, 160)->setAttribute("layout", "vertical");;
-    heat_display = new GuiKeyValueDisplay(stats, "HEAT_DISPLAY", 0.45, "Surchauffe", "");
+    heat_display = new GuiKeyValueDisplay(stats, "HEAT_DISPLAY", 0.45, tr("Overheat"), "");
     heat_display->setIcon("gui/icons/status_overheat")->setTextSize(20)->setSize(240, 40);
-    hull_display = new GuiKeyValueDisplay(stats, "HULL_DISPLAY", 0.45, "Carlingue", "");
+    hull_display = new GuiKeyValueDisplay(stats, "HULL_DISPLAY", 0.45, tr("Hull"), "");
     hull_display->setIcon("gui/icons/hull")->setTextSize(20)->setSize(240, 40);
     energy_display = new GuiKeyValueDisplay(stats, "ENERGY_DISPLAY", 0.45, tr("Energy"), "");
     energy_display->setIcon("gui/icons/energy")->setTextSize(20)->setSize(240, 40);
@@ -115,7 +115,7 @@ SinglePilotView::SinglePilotView(GuiContainer* owner, P<PlayerSpaceship> targetS
     shields_enable_button->setPosition(-20, 80, sp::Alignment::TopRight)->setSize(250, 50);
 
 
-    lock_fire = new GuiToggleButton(this, "TOOGLE_FIRE", "Feu", [this](bool value){
+    lock_fire = new GuiToggleButton(this, "TOOGLE_FIRE", tr("Fire"), [this](bool value){
         if (target_spaceship)
             target_spaceship->lock_fire = value;
     });

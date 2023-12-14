@@ -98,11 +98,13 @@ GameMasterScreen::GameMasterScreen(RenderLayer* render_layer)
     player_ship_selector = new GuiSelector(this, "PLAYER_SHIP_SELECTOR", [this](int index, string value) {
         P<SpaceObject> ship = gameGlobalInfo->getPlayerShip(value.toInt());
         if (ship)
+        {
             target = ship;
-        main_radar->setViewPosition(ship->getPosition());
-        if(!position_text_custom)
-            position_text->setText(getStringFromPosition(ship->getPosition()));
-        targets.set(ship);
+            main_radar->setViewPosition(ship->getPosition());
+            if(!position_text_custom)
+                position_text->setText(getStringFromPosition(ship->getPosition()));
+            targets.set(ship);
+        }
     });
     player_ship_selector->setPosition(270, -20, sp::Alignment::BottomLeft)->setSize(250, 50);
 
@@ -126,18 +128,22 @@ GameMasterScreen::GameMasterScreen(RenderLayer* render_layer)
     CPU_ship_selector = new GuiSelector(this, "CPU_SHIP_SELECTOR", [this](int index, string value) {
         P<SpaceShip> ship = space_object_list[value.toInt()];
         if (ship)
+        {
             target = ship;
-        main_radar->setViewPosition(ship->getPosition());
-        targets.set(ship);
+            main_radar->setViewPosition(ship->getPosition());
+            targets.set(ship);
+        }
     });
     CPU_ship_selector->setPosition(270, -70, sp::Alignment::BottomLeft)->setSize(250, 50);
 
     space_station_selector = new GuiSelector(this, "SPACE_STATION_SELECTOR", [this](int index, string value) {
         P<SpaceObject> station = space_object_list[value.toInt()];
         if (station)
+        {
             target = station;
-        main_radar->setViewPosition(station->getPosition());
-        targets.set(station);
+            main_radar->setViewPosition(station->getPosition());
+            targets.set(station);
+        }
     });
     space_station_selector->setPosition(270, -120, sp::Alignment::BottomLeft)->setSize(250, 50);
 
@@ -202,7 +208,7 @@ GameMasterScreen::GameMasterScreen(RenderLayer* render_layer)
             {
                 asteroid_tweak_dialog->open(obj);
             }
-            else
+            else /*if(obj)*/
             {
                 object_tweak_dialog->open(obj);
                 break;
@@ -421,8 +427,10 @@ void GameMasterScreen::update(float delta)
             has_player_ship = true;
     }
 
-    // Show player ship selector only if there are player ships.
+    // Show selector only if there are objects.
     player_ship_selector->setVisible(player_ship_selector->entryCount() > 0);
+    CPU_ship_selector->setVisible(CPU_ship_selector->entryCount() > 0);
+    space_station_selector->setVisible(space_station_selector->entryCount() > 0);
 
     // Show tweak button.
     tweak_button->setVisible(has_object);

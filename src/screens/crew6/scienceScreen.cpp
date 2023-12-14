@@ -140,7 +140,7 @@ ScienceScreen::ScienceScreen(GuiContainer* owner, ECrewPosition crew_position)
     info_shields->setSize(GuiElement::GuiSizeMax, 30);
     info_hull = new GuiKeyValueDisplay(info_sidebar, "SCIENCE_HULL", 0.4, tr("science", "Hull"), "");
     info_hull->setSize(GuiElement::GuiSizeMax, 30);
-    info_signatures = new GuiKeyValueDisplay(info_sidebar, "SCIENCE_SIGNATURES", 0.4, "Signatures", "");
+    info_signatures = new GuiKeyValueDisplay(info_sidebar, "SCIENCE_SIGNATURES", 0.4, tr("Signatures"), "");
     info_signatures->setSize(GuiElement::GuiSizeMax, 30);
 
     // Full scan data
@@ -188,7 +188,7 @@ ScienceScreen::ScienceScreen(GuiContainer* owner, ECrewPosition crew_position)
         info_system[n]->hide();
     }
 
-    info_oxygen = new GuiKeyValueDisplay(info_sidebar, "SCIENCE_SYSTEM_OXYGEN", 0.75, "Oxygene", "-");
+    info_oxygen = new GuiKeyValueDisplay(info_sidebar, "SCIENCE_SYSTEM_OXYGEN", 0.75, tr("scienceButton","Oxygen"), "-");
     info_oxygen->setSize(GuiElement::GuiSizeMax, 30);
     info_oxygen->hide();
 
@@ -282,7 +282,7 @@ void ScienceScreen::onDraw(sp::RenderTarget& renderer)
 
     if(my_spaceship->getLongRangeRadarRange() <= 0)
     {
-        zoom_label->setText("PAS D'AUSPEX");
+        zoom_label->setText(tr("NO RADAR"));
         return;
         //and popup shown
     }

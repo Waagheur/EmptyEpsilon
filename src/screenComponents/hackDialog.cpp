@@ -28,10 +28,10 @@ GuiHackDialog::GuiHackDialog(GuiContainer* owner, string id)
 
     hack_label = new GuiLabel(hack_title, "", "", 30);
     hack_label->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);
-    hack_label->setText("Invite de commande");
+    hack_label->setText(tr("hacking","Command prompt"));
 
     // Button to close chat comms.
-    hack_close_button = new GuiButton(hack_title, "CLOSE_BUTTON", "Fin", [this]() {
+    hack_close_button = new GuiButton(hack_title, "CLOSE_BUTTON", tr("button", "Close"), [this]() {
         hack_step = 0;
         if (my_spaceship)
             my_spaceship -> hack_protect = false;
@@ -63,14 +63,14 @@ GuiHackDialog::GuiHackDialog(GuiContainer* owner, string id)
     // Progress bar
     progress = new GuiProgressbar(hack_box, "HACK_PROGRESS", 0, hack_delay, 0.0);
     progress->setPosition(20, 30, sp::Alignment::TopLeft)->setSize(GuiElement::GuiSizeMax, 30);
-    progress->setColor(colorConfig.log_receive_enemy)->setDrawBackground(false)->setText("Acces en cours");
+    progress->setColor(colorConfig.log_receive_enemy)->setDrawBackground(false)->setText(tr("hacking","Access in progress"));
 
     // Text of incoming chat messages.
     hack_comms_text = new GuiScrollText(hack_box, "HACK_CHAT_TEXT", "");
     hack_comms_text->enableAutoScrollDown()->setPosition(20, 50, sp::Alignment::TopLeft)->setSize(760, 500);
 
     // Button to send a message.
-    hack_send_button = new GuiButton(hack_box, "SEND_BUTTON", "Envoyer", [this]() {
+    hack_send_button = new GuiButton(hack_box, "SEND_BUTTON", tr("button","Send"), [this]() {
         hack_delay = random(1,5);
         if (my_spaceship)
             my_spaceship->hack_time = 0.001;
@@ -110,9 +110,12 @@ void GuiHackDialog::open()
 {
     //this->target = target;
     hack_step = 0;
-    hack_message = "\n> Lancement de l'invite de commande";
-    hack_message += "\n> Choisissez l'action a mener";
-    hack_message += "\n> Intrusion ou protection";
+    hack_message = "\n>";
+    hack_message += tr("hacking","Launching command prompt");
+    hack_message += "\n>";
+    hack_message += tr("hacking","Choose type of action");
+    hack_message += "\n>";
+    hack_message += tr("hacking","Intrusion or protection");
     show();
 }
 
@@ -138,8 +141,10 @@ void GuiHackDialog::onDraw(sp::RenderTarget& renderer)
 
     if (hack_target && hack_target -> hack_protect)
     {
-        hack_message  = "\n> Intruision detectee par " + hack_target -> getCallSign();
-        hack_message  = "\n> Exclusion du systeme";
+        hack_message  = "\n>";
+        hack_message += tr("hacking", "Intrusion detected by ") + hack_target -> getCallSign();
+        hack_message += "\n>";
+        hack_message += tr("hacking","Kicked from system");
         hack_step = 0;
     }
 
@@ -167,29 +172,30 @@ void GuiHackDialog::onDraw(sp::RenderTarget& renderer)
     // Si fini
     if (hack_step == 9 && my_spaceship && hack_target)
     {
-        hack_message  += "\n> Hack reussi vers " + hack_target -> getCallSign();
+        hack_message  += "\n>";
+        hack_message +=tr("hacking","Hack succeeded in : ") + hack_target -> getCallSign();
         hack_step = 99;
 
-        if (target_system == "reacteur")
-            my_spaceship->commandHackingFinished(hack_target, "Reacteur","");
-        else if (target_system == "laser")
-            my_spaceship->commandHackingFinished(hack_target, "Faisceau laser","");
-        else if (target_system == "missile")
-            my_spaceship->commandHackingFinished(hack_target, "Systeme de missiles","");
-        else if (target_system == "manoeuvre")
-            my_spaceship->commandHackingFinished(hack_target, "Manoeuvres","");
-        else if (target_system == "impulsion")
-            my_spaceship->commandHackingFinished(hack_target, "Moteur subluminique","");
-        else if (target_system == "warp")
-            my_spaceship->commandHackingFinished(hack_target, "Moteur WARP","");
-        else if (target_system == "jump")
-            my_spaceship->commandHackingFinished(hack_target, "Moteur JUMP","");
-        else if (target_system == "boulierAv")
-            my_spaceship->commandHackingFinished(hack_target, "Generateur Bouclier Av.","");
-        else if (target_system == "boulierAr")
-            my_spaceship->commandHackingFinished(hack_target, "Generateur Bouclier Ar.","");
+        if (target_system == tr("hacking","reactor"))
+            my_spaceship->commandHackingFinished(hack_target, tr("system","Reactor"),"");
+        else if (target_system == tr("hacking","beam"))
+            my_spaceship->commandHackingFinished(hack_target, tr("system","Beam Weapons"),"");
+        else if (target_system == tr("hacking","missile"))
+            my_spaceship->commandHackingFinished(hack_target, tr("system","Missile System"),"");
+        else if (target_system == tr("hacking","maneuver"))
+            my_spaceship->commandHackingFinished(hack_target, tr("system","Maneuvering"),"");
+        else if (target_system == tr("hacking","impulse"))
+            my_spaceship->commandHackingFinished(hack_target, tr("system","Impulse Engines"),"");
+        else if (target_system == tr("hacking","warp"))
+            my_spaceship->commandHackingFinished(hack_target, tr("system","Warp Drive"),"");
+        else if (target_system == tr("hacking","jump"))
+            my_spaceship->commandHackingFinished(hack_target, tr("system","Jump Drive"),"");
+        else if (target_system == tr("hacking","fwdshield"))
+            my_spaceship->commandHackingFinished(hack_target, tr("system","Front Shield Generator"),"");
+        else if (target_system == tr("hacking","rearshield"))
+            my_spaceship->commandHackingFinished(hack_target, tr("system","Rear Shield Generator"),"");
         else
-            hack_message  += "\n> Systeme cible inconnu";
+            hack_message  += "\n>" + tr("hacking","Unknown target system");
     }
     // Si fini (federation)
     if (hack_step == 91 && my_spaceship && hack_target)
@@ -201,12 +207,12 @@ void GuiHackDialog::onDraw(sp::RenderTarget& renderer)
         P<PlayerSpaceship> player_target = hack_target;
         if (player_target)
         {
-            player_target -> addToShipLog("Tentative de Piratage de la signature de faction",colorConfig.log_receive_enemy);
-            player_target -> addToSpecificShipLog("Tentative de Piratage de la signature de faction",colorConfig.log_receive_enemy,"intern");
+            player_target -> addToShipLog(tr("hacking","Faction signature hacking attempt"),colorConfig.log_receive_enemy);
+            player_target -> addToSpecificShipLog(tr("hacking","Faction signature hacking attempt"),colorConfig.log_receive_enemy,"intern");
         }
 
-        hack_message  += "\n> Hack reussi vers " + hack_target -> getCallSign();
-        hack_message  += "\n> Tentative de transformation vers " + target_system;
+        hack_message  += "\n>" + tr("hacking","Hack succeeded in : ") + hack_target -> getCallSign();
+        hack_message  += "\n>" + tr("hacking","Transform signature to :") + target_system;
     }
 }
 
@@ -233,22 +239,22 @@ void GuiHackDialog::commandHack()
         {
             if (hack_text == "intrusion")
             {
-                hack_message  = "\n> Module d'intrusion lance";
-                hack_message  = "\n> Intrusion possible dans un rayon de 50U";
-                hack_message  += "\n> Indiquez l'identifiant de la cible : ";
+                hack_message  = "\n>" + tr("hacking","Intrusion module turned on");
+                hack_message  = "\n>" + tr("hacking","Possible intrusion in a 50U radius");
+                hack_message  += "\n>" + tr("hacking","Enter target callsign : ");
                 hack_step = 1;
             }
             else if (hack_text == "protection")
             {
-                hack_message  = "\n> Module de protection lance";
-                hack_message  += "\n> Confirmez le lancement de la protection : OUI";
+                hack_message  = "\n>" + tr("hacking","Protection module turned on");
+                hack_message  += "\n>" + tr("hacking","Confirm launch of protection module : yes");
                 hack_step = 10;
             }
             else
             {
-                hack_message = "\n> Lancement de l'invite de commande";
-                hack_message += "\n> Choisissez l'action a mener";
-                hack_message += "\n> Intrusion ou protection";
+                hack_message = "\n>" + tr("hacking","Command prompt startup");
+                hack_message += "\n>" + tr("hacking","Choose next action : ");
+                hack_message += "\n>" + tr("hacking","Intrusion or protection");
                 hack_step = 0;
             }
         }
@@ -271,26 +277,26 @@ void GuiHackDialog::commandHack()
                 //if (hack_text.startswith(hack_test))
                 if (hack_text == hack_test)
                 {
-                    hack_message  = "\n> Connexion vers " + obj -> getCallSign() + " reussie";
+                    hack_message  = "\n>" + tr("hacking","Connection to ") + obj -> getCallSign() + tr("hacking"," succeeded");
 
                     hack_target = obj;
 
-                    hack_message += "\n> Code d'acces du systeme informatique :";
-                    hack_message += "\n> (Le code est en " + string(hack_target -> getHackDiff()) + " bits)";
+                    hack_message += "\n>" + tr("hacking","Access code to computer system :");
+                    hack_message += "\n>" + tr("hacking","(Code consists of ") + string(hack_target -> getHackDiff()) + tr("hacking"," bits)");
 
                     defineHackCode(hack_target -> getHackDiff());
 
                     P<PlayerSpaceship> player_target = obj;
                     if (player_target)
-                        player_target -> addToSpecificShipLog("Intrusion informatique en cours",colorConfig.log_receive_enemy,"intern");
+                        player_target -> addToSpecificShipLog(tr("hacking","Computer intrusion in progress"),colorConfig.log_receive_enemy,"intern");
                     hack_step = 2;
                     break;
                 }
             }
             if (hack_step != 2)
             {
-                hack_message  += "\n> Aucune cible atteinte";
-                hack_message  += "\n> Hack rate";
+                hack_message  += "\n>" + tr("hacking","No target reached");
+                hack_message  += "\n>" + tr("hacking"," Hack failed");
                 hack_step = 99;
             }
         }
@@ -299,19 +305,21 @@ void GuiHackDialog::commandHack()
         {
             if (hack_text == hack_code)
             {
-                hack_message  = "\n> Acces complet a l'interface";
-                hack_message  += "\n> Choisissez le systeme a hacker";
-                hack_message  += "\n> reacteur | laser | missile | manoeuvre | impulsion | warp | jump | boulierAv | boulierAr";
+                hack_message  = "\n>" + tr("hacking","Complete access to interface");
+                hack_message  += "\n>" + tr("hacking","Choose system to hack");
+                hack_message  += "\n>" +  tr("hacking","reactor") + "|" +tr("hacking","beam") + "|" +tr("hacking","missile")+"|" 
+                + tr("hacking","maneuver") +"|" + tr("hacking","impulse") +"|" +tr("hacking","warp") +"|" 
+                + tr("hacking","jump") +"|" + tr("hacking","fwdshield") +"|" + tr("hacking","rearshield");
                 hack_step = 5;
             }
             else if (hack_text.length() != hack_target -> getHackDiff())
             {
-                hack_message  += "\n> Nombre de bits incorrect";
+                hack_message  += "\n>" + tr("hacking","Incorrect number of bits");
             }
             else
             {
-                hack_message  += "\n> Code " + hack_text + " incorrect";
-                hack_message  += "\n> " + string(verifHackCode(hack_target -> getHackDiff(), hack_text, hack_code)) + "bits corrects";
+                hack_message  += "\n>" + tr("hacking","Code ") + hack_text + tr("hacking"," incorrect");
+                hack_message  += "\n> " + string(verifHackCode(hack_target -> getHackDiff(), hack_text, hack_code)) + tr("hacking","correct bits");
             }
         }
         else if (hack_step == 5)
@@ -386,23 +394,26 @@ void GuiHackDialog::commandHack()
         // Protection
         else if (hack_step == 10)
         {
-            if (hack_text == "oui")
+            if (hack_text == tr("hacking","yes"))
             {
-                hack_message  = "\n> Protection active, les eventuels intrus ont ete ejectes.";
+                hack_message  = "\n>" + tr("hacking","Protection is active, potential intruders are kicked out.");
                 my_spaceship -> hack_protect = true;
             }
             else
             {
-                hack_message  += "\n> Systeme de protection abandonne";
+                hack_message  += "\n>" + tr("hacking","Protection system cancelled");
                 hack_step = 99;
                 my_spaceship -> hack_protect = false;
             }
         }
         else if (hack_step == 99)
         {
-            hack_message = "\n> Lancement de l'invite de commande";
-            hack_message += "\n> Choisissez l'action a mener";
-            hack_message += "\n> Intrusion ou protection";
+            hack_message = "\n>";
+            hack_message += tr("hacking","Launching command prompt");
+            hack_message += "\n>";
+            hack_message += tr("hacking","Choose type of action");
+            hack_message += "\n>";
+            hack_message += tr("hacking","Intrusion or protection");
             hack_step = 0;
         }
 //    }

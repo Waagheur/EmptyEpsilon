@@ -13,6 +13,7 @@
 
 #include <glm/vec4.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <i18n.h>
 
 struct VertexAndTexCoords
 {
@@ -200,31 +201,31 @@ Planet::Planet()
 
     setRadarSignatureInfo(0.5f, 0.f, 0.3f);
 
-    addInfos(0,"Rotation",string(irandom(5,45))+ " H.LO");
-    addInfos(1,"Revolution",string(irandom(50,5000))+ " J.LO");
-    addInfos(2,"Axe de rotation",string(irandom(1,360))+"deg" + string(irandom(1,60))+"'" + string(irandom(1,60))+"''");
-    addInfos(3,"Taille",string(irandom(50,500) * 100) + " km");
+    addInfos(0,tr("Rotation"),string(irandom(5,45))+ " H.LO");
+    addInfos(1,tr("Revolution"),string(irandom(50,5000))+ " J.LO");
+    addInfos(2,tr("Rotation axis"),string(irandom(1,360))+"deg" + string(irandom(1,60))+"'" + string(irandom(1,60))+"''");
+    addInfos(3,tr("Size"),string(irandom(50,500) * 100) + " km");
     if (random(0.f,1.f) < 0.1f)
     {
-        addInfos(4,"Type","Gazeuse");
+        addInfos(4,tr("Type"),tr("Gazeous"));
     }
     else
     {
-        addInfos(4,"Type","Tellurique");
+        addInfos(4,tr("Type"),tr("Terestrial"));
     }
-    addInfos(5,"Age",string(irandom(5,100)*100)+ " M3 A.LO");
+    addInfos(5,tr("Age"),string(irandom(5,100)*100)+ " M3 A.LO");
 
-    if (infos_value[4] == "Tellurique" && random(0.f,1.f) < 0.3f)
+    if (infos_value[4] == tr("Terestrial") && random(0.f,1.f) < 0.3f)
     { 
-        addInfos(6,"Atmosphere","oui");
+        addInfos(6,tr("Atmosphere"),tr("Yes"));
     }
     else
     {
-        addInfos(6,"Atmosphere","non");
+        addInfos(6,tr("Atmosphere"),tr("No"));
     }
-    addInfos(7,"Pression",string(random(0.1,4),1)+" Pa");
-    addInfos(8,"Gravite",string(random(2.0,20.0),3)+" m/s2");
-    addInfos(9,"ressource principale","");
+    addInfos(7,tr("Pressure"),string(random(0.1,4),1)+" Pa");
+    addInfos(8,tr("Gravity"),string(random(2.0,20.0),3)+" m/s2");
+    addInfos(9,tr("Main resource"),"");
 
     registerMemberReplication(&planet_size);
     registerMemberReplication(&cloud_size);
