@@ -283,7 +283,7 @@ void RelayScreen::onDraw(sp::RenderTarget& renderer)
     float radar_range = 5000.0;
     if (my_spaceship)
     {
-        radar_range = my_spaceship->getShortRangeRadarRange();
+        radar_range = my_spaceship->getLongRangeRadarRange();
         info_radar_range -> setValue(string(radar_range / 1000.0f, 1.0f) + " U");
     }
 
@@ -291,8 +291,8 @@ void RelayScreen::onDraw(sp::RenderTarget& renderer)
     if (my_spaceship)
     {
         float ratio_screen = radar->getRect().size.x / radar->getRect().size.y;
-        float distance_width = radar->getDistance() * 2.f * ratio_screen / 1000.0f;
-        float distance_height = radar->getDistance() * 2.f / 1000.0f;
+        float distance_width = radar->getDistance() /** 2.f*/ * ratio_screen / 1000.0f;
+        float distance_height = radar->getDistance() /** 2.f*/ / 1000.0f;
         if (distance_width < 100)
             info_distance -> setValue(string(distance_width, 1.0f) + " U / " + string(distance_height, 1.0f) + " U");
         else
