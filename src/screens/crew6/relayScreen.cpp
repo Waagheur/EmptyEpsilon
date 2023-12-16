@@ -32,16 +32,17 @@ RelayScreen::RelayScreen(GuiContainer* owner, bool allow_comms)
 {
     targets.setAllowWaypointSelection();
     radar = new GuiRadarView(this, "RELAY_RADAR", 50000.0f, &targets, my_spaceship);
-    // if(gameGlobalInfo->use_long_range_for_relay)
-    // {
-    //     radar->longRange();
-    // }
-    // else
-    // {
-    //     radar->shortRange();
-    // }
-    radar->shortRange();
-    radar->enableWaypoints()->enableCallsigns()->setStyle(GuiRadarView::Rectangular)->setFogOfWarStyle(GuiRadarView::FriendlysShortRangeFogOfWar);
+    //radar long range is only for two things : draw ship without beam arc etc. and set distance. This is hacky.
+    radar->longRange()->enableWaypoints()->enableCallsigns()->setStyle(GuiRadarView::Rectangular);
+    if(gameGlobalInfo->use_long_range_for_relay)
+    {
+        radar->setFogOfWarStyle(GuiRadarView::FriendlysLongRangeFogOfWar);
+    }
+    else
+    {
+        radar->setFogOfWarStyle(GuiRadarView::FriendlysShortRangeFogOfWar);
+    }
+
     radar->setAutoCentering(false);
     radar->setPosition(0, 0, sp::Alignment::TopLeft)->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);
     radar->setCallbacks(

@@ -24,6 +24,7 @@ public:
         NoFogOfWar,
         NebulaFogOfWar,
         FriendlysShortRangeFogOfWar,
+        FriendlysLongRangeFogOfWar,
         NoObjects
     };
 

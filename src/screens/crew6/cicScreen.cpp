@@ -13,8 +13,6 @@
 #include "screenComponents/openCommsButton.h"
 #include "screenComponents/commsOverlay.h"
 #include "screenComponents/shipsLogControl.h"
-#include "screenComponents/hackingDialog.h"
-#include "screenComponents/hackDialog.h"
 #include "screenComponents/customShipFunctions.h"
 #include "screenComponents/alertLevelButton.h"
 
@@ -32,7 +30,8 @@ CicScreen::CicScreen(GuiContainer* owner, bool allow_comms)
 {
     targets.setAllowWaypointSelection();
     radar = new GuiRadarView(this, "CIC_RADAR", 50000.0f, &targets, my_spaceship);
-    radar->shortRange()->enableCallsigns()->enableWaypoints()->setStyle(GuiRadarView::Rectangular)->setFogOfWarStyle(GuiRadarView::FriendlysShortRangeFogOfWar);
+    //radar long range is only for two things : draw ship without beam arc etc. and set distance. This is hacky.
+    radar->longRange()->enableWaypoints()->enableCallsigns()->setStyle(GuiRadarView::Rectangular)->setFogOfWarStyle(GuiRadarView::FriendlysShortRangeFogOfWar);
     radar->setAutoCentering(false);
     radar->setPosition(0, 0, sp::Alignment::TopLeft)->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);
     radar->setCallbacks(
@@ -75,12 +74,6 @@ CicScreen::CicScreen(GuiContainer* owner, bool allow_comms)
                 mode = TargetSelection;
                 targets.setWaypointIndex(drag_waypoint_index);
                 break;
-            case LaunchProbe:
-                if (my_spaceship)
-                    my_spaceship->commandLaunchProbe(position);
-                mode = TargetSelection;
-                option_buttons->show();
-                break;
             }
         }
     );
@@ -102,9 +95,6 @@ CicScreen::CicScreen(GuiContainer* owner, bool allow_comms)
 
     info_faction = new GuiKeyValueDisplay(sidebar, "SCIENCE_FACTION", 0.4, tr("Faction"), "");
     info_faction->setSize(GuiElement::GuiSizeMax, 30);
-
-    info_probe = new GuiKeyValueDisplay(sidebar, "TIME", 0.4, tr("Time"), "");
-    info_probe->setSize(GuiElement::GuiSizeMax, 30);
 
     // Controls for the radar view
     view_controls = new GuiElement(this, "VIEW_CONTROLS");
@@ -195,50 +185,8 @@ CicScreen::CicScreen(GuiContainer* owner, bool allow_comms)
     else
         (new GuiOpenCommsButton(option_buttons, "OPEN_COMMS_BUTTON", tr("Link to Comms"), &targets))->setSize(GuiElement::GuiSizeMax, 50);
 
-
-    // Hack target
-    hack_target_button = new GuiButton(option_buttons, "HACK_TARGET", tr("Start hacking"), [this](){
-        P<SpaceObject> target = targets.get();
-//        if (my_spaceship && target && target->canBeHackedBy(my_spaceship))
-        if (my_spaceship)
-        {
-//            hacking_dialog->open(target);
-            hacking_dialog->open();
-        }
-    });
-    hack_target_button->setSize(GuiElement::GuiSizeMax, 50);
-    hack_target_button->enable();
-    hack_target_button->setIcon("gui/icons/hack");
-
 //    (new GuiLabel(option_buttons, "LABEL_PROBES", "Sondes", 30))->setSize(GuiElement::GuiSizeMax, 50);
     (new GuiLabel(option_buttons, "", " ", 30))->setSize(GuiElement::GuiSizeMax, 50);
-
-    // Launch probe button.
-    launch_probe_button = new GuiButton(option_buttons, "LAUNCH_PROBE_BUTTON", tr("Launch Probe"), [this]() {
-        mode = LaunchProbe;
-        option_buttons->hide();
-    });
-    launch_probe_button->setSize(GuiElement::GuiSizeMax, 50)->setVisible(my_spaceship && my_spaceship->getCanLaunchProbe());;
-    launch_probe_button->setIcon("gui/icons/probe");
-
-    // Rechargement probe
-    progress_probe = new GuiProgressbar(launch_probe_button,"PROBE_PROGRESS", 0, PlayerSpaceship::scan_probe_charge_time * 20.0f, 0.0);
-    progress_probe->setDrawBackground(false);
-    progress_probe->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);
-
-    // Link probe to science button.
-    link_to_science_button = new GuiToggleButton(option_buttons, "LINK_TO_SCIENCE", tr("Link to Science"), [this](bool value){
-        if (value)
-        {
-            my_spaceship->commandSetScienceLink(targets.get());
-        }
-        else
-        {
-            my_spaceship->commandClearScienceLink();
-        }
-    });
-    link_to_science_button->setSize(GuiElement::GuiSizeMax, 50)->setVisible(my_spaceship && my_spaceship->getCanLaunchProbe());
-    link_to_science_button->setIcon("gui/icons/station-science");
 
     // Reputation display.
     //info_reputation = new GuiKeyValueDisplay(option_buttons, "INFO_REPUTATION", 0.4f, tr("Reputation") + ":", "");
@@ -251,9 +199,6 @@ CicScreen::CicScreen(GuiContainer* owner, bool allow_comms)
     (new GuiAlertLevelSelect(this, ""))->setPosition(-20, -70, sp::Alignment::BottomRight)->setSize(300, GuiElement::GuiSizeMax)->setAttribute("layout", "verticalbottom");
 
     (new GuiCustomShipFunctions(this, cagOfficer, "", my_spaceship))->setPosition(-20, 350, sp::Alignment::TopRight)->setSize(250, GuiElement::GuiSizeMax);
-
-    //hacking_dialog = new GuiHackingDialog(this, ""); //ici hack Daid
-    hacking_dialog = new GuiHackDialog(this, ""); //ici hack Tdelc
 
     new ShipsLog(this,"generic");
     if (allow_comms)
@@ -297,20 +242,6 @@ void CicScreen::onDraw(sp::RenderTarget& renderer)
             info_distance -> setValue(string(distance_width, 1.0f) + " U / " + string(distance_height, 1.0f) + " U");
         else
             info_distance -> setValue(string(distance_width, 0.0f) + " U / " + string(distance_height, 0.0f) + " U");
-    }
-
-
-
-    // Info progress probe
-    if (my_spaceship)
-    {
-        if (my_spaceship -> current_impulse == 0  && my_spaceship -> scan_probe_stock < my_spaceship -> max_scan_probes)
-        {
-            progress_probe->show();
-            progress_probe->setValue(std::max(my_spaceship->scan_probe_recharge,my_spaceship->scan_probe_recharge_dock));
-        }else{
-            progress_probe->hide();
-        }
     }
 
     info_faction->setValue("-");
@@ -363,9 +294,8 @@ void CicScreen::onDraw(sp::RenderTarget& renderer)
         if (!near_friendly)
         {
             // If the target is no longer near a friendly object, unset it as
-            // the target, and close any open hacking dialogs.
+            // the target.
             targets.clear();
-            hacking_dialog->hide();
         }
     }
 
@@ -393,55 +323,15 @@ void CicScreen::onDraw(sp::RenderTarget& renderer)
             }
         }
 
-        if (probe && my_spaceship && probe->owner_id == my_spaceship->getMultiplayerId() && probe->canBeTargetedBy(my_spaceship))
-        {
-            link_to_science_button->setValue(my_spaceship->linked_science_probe_id == probe->getMultiplayerId());
-            link_to_science_button->enable();
-
-            info_probe->show();
-            float distance = glm::length(probe->getPosition() - probe->getTarget());
-            if (distance > 1000.f)
-                info_probe->setValue(string(int(ceilf(distance / probe->getSpeed()))) + " S");
-            else
-                info_probe->hide();
-//            link_to_3D_port_button->setValue(my_spaceship->linked_probe_3D_id == probe->getMultiplayerId());
-//            link_to_3D_port_button->enable();
-        }
-        else
-        {
-            link_to_science_button->setValue(false);
-            link_to_science_button->disable();
-
-//            link_to_3D_port_button->setValue(false);
-//            link_to_3D_port_button->disable();
-        }
-//        if (my_spaceship && obj->canBeHackedBy(my_spaceship))
-//        {
-//            hack_target_button->enable();
-//        }else{
-//            hack_target_button->disable();
-//        }
-    }else{
-//        hack_target_button->disable();
-        link_to_science_button->disable();
-        link_to_science_button->setValue(false);
-
-        info_probe->hide();
-//        link_to_3D_port_button->disable();
-//        link_to_3D_port_button->setValue(false);
+    }
+    else
+    {
         info_callsign->setValue("-");
     }
     if (my_spaceship)
     {
-        // Toggle ship capabilities.
-        launch_probe_button->setVisible(my_spaceship->getCanLaunchProbe());
-        launch_probe_button->setEnable(my_spaceship->scan_probe_stock > 0);
-        link_to_science_button->setVisible(my_spaceship->getCanLaunchProbe());
-        hack_target_button->setVisible(my_spaceship->getCanHack());
-
         //info_reputation->setValue(string(my_spaceship->getReputationPoints(), 0)); //tsht : TODO voir si on peut reajouter
         info_clock->setValue(gameGlobalInfo->getMissionTime());
-        launch_probe_button->setText(tr("Launch Probe") + " (" + string(my_spaceship->scan_probe_stock) + "/" + string(my_spaceship->max_scan_probes) + ")");
     }
 
     if (targets.getWaypointIndex() >= 0)
@@ -569,25 +459,6 @@ void CicScreen::onUpdate()
                 }
             }
         }
-        if (keys.relay_link_science.getDown())
-        {
-            P<ScanProbe> obj = targets.get();
-            if (obj && obj->isFriendly(my_spaceship))
-            {
-                if (!link_to_science_button->getValue())
-                    my_spaceship->commandSetScienceLink(targets.get());
-                else
-                    my_spaceship->commandClearScienceLink();
-            }
-        }
-        if (keys.relay_begin_hack.getDown())
-        {
-//            P<SpaceObject> target = targets.get();
-//            if (target && target->canBeHackedBy(my_spaceship))
-//            {
-                hacking_dialog->open();
-//            }
-        }
         if (keys.relay_add_waypoint.getDown())
         {
             mode = WaypointPlacement;
@@ -597,11 +468,6 @@ void CicScreen::onUpdate()
         {
             if (targets.getWaypointIndex() >= 0)
                 my_spaceship->commandRemoveWaypoint(targets.getWaypointIndex());
-        }
-        if (keys.relay_launch_probe.getDown())
-        {
-            mode = LaunchProbe;
-            option_buttons->hide();
         }
         //TODO check
         // if (key.hotkey == "INCREASE_ZOOM")

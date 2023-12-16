@@ -23,7 +23,6 @@ private:
     {
         TargetSelection,
         WaypointPlacement,
-        LaunchProbe,
         MoveWaypoint
     };
 
@@ -46,14 +45,10 @@ private:
     //GuiKeyValueDisplay* info_reputation;
     GuiKeyValueDisplay* info_clock;
     GuiElement* option_buttons;
-    GuiButton* hack_target_button;
-    GuiToggleButton* link_to_science_button;
     GuiToggleButton* link_to_3D_port_button;
     GuiElement* waypoints_layout;
     GuiButton* add_waypoint_button;
     GuiButton* delete_waypoint_button;
-    GuiButton* launch_probe_button;
-    GuiProgressbar* progress_probe;
     GuiElement* view_controls;
     bool position_text_custom;
     GuiTextEntry* position_text;
@@ -61,9 +56,6 @@ private:
 
     GuiSlider* zoom_slider;
     GuiLabel* zoom_label;
-
-    //GuiHackingDialog* hacking_dialog;
-    GuiHackDialog* hacking_dialog;
 
     glm::vec2 mouse_down_position;
     const float max_distance = 10000000.0f;

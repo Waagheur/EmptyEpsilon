@@ -312,7 +312,7 @@ string getCrewPositionName(ECrewPosition position)
     case dockMaster: return tr("station","Flight Deck Master");
     //case oxygenView: return "Log Oxygen";
     case targetAnalysisScreen: return tr("station","Target Analysis Screen");
-    case cagOfficer: return tr("station","Command Information Center");
+    case cagOfficer: return tr("station","CIC");
     default: return "ErrUnk: " + string(position);
     }
 }
