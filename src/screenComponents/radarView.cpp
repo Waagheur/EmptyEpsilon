@@ -293,7 +293,7 @@ void GuiRadarView::drawNoneFriendlyBlockedAreas(sp::RenderTarget& renderer)
             
             if (obj == my_spaceship || (stb_obj && (obj->faction_id == my_spaceship->faction_id || obj->personality_id == 1)))
             {
-                float r_stb = gameGlobalInfo->use_long_range_for_relay ? stb_obj->getLongRangeRadarRange() : stb_obj->getShortRangeRadarRange();
+                float r_stb = long_range ? stb_obj->getLongRangeRadarRange() : stb_obj->getShortRangeRadarRange();
                 r_stb *= getScale();
                 renderer.fillCircle(worldToScreen(obj->getPosition()), r_stb, glm::u8vec4{ 20, 20, 20, background_alpha });
             }
@@ -588,7 +588,7 @@ void GuiRadarView::drawObjects(sp::RenderTarget& renderer)
             else if(target_spaceship == obj) //we already checked we shared same faction
             {
                 //TODO FIXME verifier pourquoi c'est que moi et pas les autres de ma faction
-                radar_range = gameGlobalInfo->use_long_range_for_relay ? target_spaceship->getLongRangeRadarRange() : target_spaceship->getShortRangeRadarRange();
+                radar_range = long_range ? target_spaceship->getLongRangeRadarRange() : target_spaceship->getShortRangeRadarRange();
             }     
 
             // Query for objects within short-range radar/5U of this object.

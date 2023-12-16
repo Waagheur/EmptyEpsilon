@@ -12,6 +12,7 @@ enum ECrewPosition
     engineering,
     scienceOfficer,
     relayOfficer,
+    cagOfficer,
     //4/3 player crew
     tacticalOfficer,    //helms+weapons-shields
     engineeringAdvanced,//engineering+shields

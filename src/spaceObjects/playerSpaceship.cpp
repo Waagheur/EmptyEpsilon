@@ -2188,7 +2188,7 @@ void PlayerSpaceship::onReceiveClientCommand(int32_t client_id, sp::io::DataBuff
             self_destruct_code_entry_position[n] = max_crew_positions;
             while(self_destruct_code_entry_position[n] == max_crew_positions)
             {
-                self_destruct_code_entry_position[n] = ECrewPosition(irandom(0, relayOfficer));
+                self_destruct_code_entry_position[n] = ECrewPosition(irandom(0, cagOfficer));
                 for(int i=0; i<n; i++)
                     if (self_destruct_code_entry_position[n] == self_destruct_code_entry_position[i])
                         self_destruct_code_entry_position[n] = max_crew_positions;
@@ -2196,7 +2196,7 @@ void PlayerSpaceship::onReceiveClientCommand(int32_t client_id, sp::io::DataBuff
             self_destruct_code_show_position[n] = max_crew_positions;
             while(self_destruct_code_show_position[n] == max_crew_positions)
             {
-                self_destruct_code_show_position[n] = ECrewPosition(irandom(0, relayOfficer));
+                self_destruct_code_show_position[n] = ECrewPosition(irandom(0, cagOfficer));
                 if (self_destruct_code_show_position[n] == self_destruct_code_entry_position[n])
                     self_destruct_code_show_position[n] = max_crew_positions;
                 for(int i=0; i<n; i++)

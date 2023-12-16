@@ -8,6 +8,7 @@
 #include "screens/crew6/engineeringScreen.h"
 #include "screens/crew6/scienceScreen.h"
 #include "screens/crew6/relayScreen.h"
+#include "screens/crew6/cicScreen.h"
 
 #include "screens/crew4/tacticalScreen.h"
 #include "screens/crew4/engineeringAdvancedScreen.h"
@@ -195,6 +196,8 @@ void PlayerInfo::spawnUI(int monitor_index, RenderLayer* render_layer)
             screen->addStationTab(new ScienceScreen(container), scienceOfficer, getCrewPositionName(scienceOfficer), getCrewPositionIcon(scienceOfficer));
         if (crew_position[relayOfficer] & (1 << monitor_index))
             screen->addStationTab(new RelayScreen(container, true), relayOfficer, getCrewPositionName(relayOfficer), getCrewPositionIcon(relayOfficer));
+        if (crew_position[cagOfficer] & (1 << monitor_index))
+            screen->addStationTab(new CicScreen(container, true), cagOfficer, getCrewPositionName(cagOfficer), getCrewPositionIcon(cagOfficer));
 
         //Crew 4/3
         if (crew_position[tacticalOfficer] & (1 << monitor_index))
@@ -309,6 +312,7 @@ string getCrewPositionName(ECrewPosition position)
     case dockMaster: return tr("station","Flight Deck Master");
     //case oxygenView: return "Log Oxygen";
     case targetAnalysisScreen: return tr("station","Target Analysis Screen");
+    case cagOfficer: return tr("station","Command Information Center");
     default: return "ErrUnk: " + string(position);
     }
 }
@@ -343,6 +347,7 @@ string getCrewPositionIcon(ECrewPosition position)
     case relayRadar: return "";
     //ajouts Tdelc Larp
     case targetAnalysisScreen: return "";
+    case cagOfficer: return "";
     default: return "ErrUnk: " + string(position);
     }
 }
@@ -363,6 +368,8 @@ template<> void convert<ECrewPosition>::param(lua_State* L, int& idx, ECrewPosit
         cp = scienceOfficer;
     else if (str == "relay" || str == "relayofficer")
         cp = relayOfficer;
+    else if (str == "cag" || str == "cic")
+        cp = cagOfficer;
 
     //4/3 player crew
     else if (str == "tactical" || str == "tacticalofficer")

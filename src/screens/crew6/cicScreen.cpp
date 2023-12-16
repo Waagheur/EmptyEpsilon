@@ -1,4 +1,4 @@
-#include "relayScreen.h"
+#include "CicScreen.h"
 #include "gameGlobalInfo.h"
 #include "playerInfo.h"
 #include "spaceObjects/playerSpaceship.h"
@@ -27,21 +27,12 @@
 #include "gui/gui2_textentry.h"
 
 
-RelayScreen::RelayScreen(GuiContainer* owner, bool allow_comms)
-: GuiOverlay(owner, "RELAY_SCREEN", colorConfig.background), mode(TargetSelection)
+CicScreen::CicScreen(GuiContainer* owner, bool allow_comms)
+: GuiOverlay(owner, "CIC_SCREEN", colorConfig.background), mode(TargetSelection)
 {
     targets.setAllowWaypointSelection();
-    radar = new GuiRadarView(this, "RELAY_RADAR", 50000.0f, &targets, my_spaceship);
-    // if(gameGlobalInfo->use_long_range_for_relay)
-    // {
-    //     radar->longRange();
-    // }
-    // else
-    // {
-    //     radar->shortRange();
-    // }
-    radar->shortRange();
-    radar->enableWaypoints()->enableCallsigns()->setStyle(GuiRadarView::Rectangular)->setFogOfWarStyle(GuiRadarView::FriendlysShortRangeFogOfWar);
+    radar = new GuiRadarView(this, "CIC_RADAR", 50000.0f, &targets, my_spaceship);
+    radar->shortRange()->enableCallsigns()->enableWaypoints()->setStyle(GuiRadarView::Rectangular)->setFogOfWarStyle(GuiRadarView::FriendlysShortRangeFogOfWar);
     radar->setAutoCentering(false);
     radar->setPosition(0, 0, sp::Alignment::TopLeft)->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);
     radar->setCallbacks(
@@ -259,7 +250,7 @@ RelayScreen::RelayScreen(GuiContainer* owner, bool allow_comms)
 
     (new GuiAlertLevelSelect(this, ""))->setPosition(-20, -70, sp::Alignment::BottomRight)->setSize(300, GuiElement::GuiSizeMax)->setAttribute("layout", "verticalbottom");
 
-    (new GuiCustomShipFunctions(this, relayOfficer, "", my_spaceship))->setPosition(-20, 350, sp::Alignment::TopRight)->setSize(250, GuiElement::GuiSizeMax);
+    (new GuiCustomShipFunctions(this, cagOfficer, "", my_spaceship))->setPosition(-20, 350, sp::Alignment::TopRight)->setSize(250, GuiElement::GuiSizeMax);
 
     //hacking_dialog = new GuiHackingDialog(this, ""); //ici hack Daid
     hacking_dialog = new GuiHackDialog(this, ""); //ici hack Tdelc
@@ -271,7 +262,7 @@ RelayScreen::RelayScreen(GuiContainer* owner, bool allow_comms)
     }
 }
 
-void RelayScreen::onDraw(sp::RenderTarget& renderer)
+void CicScreen::onDraw(sp::RenderTarget& renderer)
 {
     ///Handle mouse wheel
     float mouse_wheel_delta = keys.zoom_in.getValue() - keys.zoom_out.getValue();
@@ -292,7 +283,7 @@ void RelayScreen::onDraw(sp::RenderTarget& renderer)
     float radar_range = 5000.0;
     if (my_spaceship)
     {
-        radar_range = my_spaceship->getLongRangeRadarRange();
+        radar_range = my_spaceship->getShortRangeRadarRange();
         info_radar_range -> setValue(string(radar_range / 1000.0f, 1.0f) + " U");
     }
 
@@ -465,7 +456,7 @@ void RelayScreen::onDraw(sp::RenderTarget& renderer)
     position_entry->setVisible(position_text->isFocus());
 }
 
-void RelayScreen::onUpdate()
+void CicScreen::onUpdate()
 {
     if (my_spaceship)
     {
