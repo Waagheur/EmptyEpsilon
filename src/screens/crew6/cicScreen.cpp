@@ -1,4 +1,4 @@
-#include "CicScreen.h"
+#include "cicScreen.h"
 #include "gameGlobalInfo.h"
 #include "playerInfo.h"
 #include "spaceObjects/playerSpaceship.h"

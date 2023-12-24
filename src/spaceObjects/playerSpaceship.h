@@ -6,8 +6,10 @@
 #include "commsScriptInterface.h"
 #include "playerInfo.h"
 #include "spaceshipParts/dock.h"
+#include "spaceObjects/cpuShip.h"
 #include <iostream>
 #include <map>
+#include <set>
 
 class ScanProbe;
 
@@ -201,6 +203,32 @@ public:
     float scan_probe_recharge = 0.0;
     ScriptSimpleCallback on_probe_launch;
     float scan_probe_recharge_dock;
+
+    //Squadrons for CiC
+    struct SquadronTemplate
+    {
+        string squadron_name;
+        std::vector<string> ship_names;
+        bool operator<(const SquadronTemplate& rhs) const 
+        {
+            return squadron_name < rhs.squadron_name;
+        }
+    };
+    
+    struct Squadron
+    {
+        string squadron_name;
+        PVector<CpuShip> ships;    
+        bool operator<(const Squadron& rhs) const 
+        {
+            return squadron_name < rhs.squadron_name;
+        }
+    };
+
+    std::set<SquadronTemplate> squadrons_compositions;
+
+    std::set<Squadron> launched_squadrons;
+    std::set<Squadron> waiting_squadrons;
 
     string comms_target_name;
     string comms_incomming_message;
@@ -489,6 +517,14 @@ public:
     {
         on_modifier_toggle = callback;
     }
+
+    void registerSquadronComposition(const string& name, const std::vector<string>& ship_names)
+    {
+        squadrons_compositions.insert({name, ship_names});
+    }
+
+    void instantiateSquadron(const string& identifier, const string& type);
+    
 };
 REGISTER_MULTIPLAYER_ENUM(ECommsState);
 template<> int convert<EAlertLevel>::returnType(lua_State* L, EAlertLevel l);

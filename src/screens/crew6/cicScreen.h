@@ -41,7 +41,9 @@ private:
     //GuiKeyValueDisplay* info_reputation;
     GuiButton* center_screen_button;
     GuiSelector* station_selector;
-    GuiSelector* probe_selector;
+    
+    GuiSelector* squadron_type_selector;
+    
     //GuiKeyValueDisplay* info_reputation;
     GuiKeyValueDisplay* info_clock;
     GuiElement* option_buttons;

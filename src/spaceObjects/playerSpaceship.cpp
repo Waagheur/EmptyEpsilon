@@ -488,6 +488,27 @@ REGISTER_SCRIPT_SUBCLASS(PlayerSpaceship, SpaceShip)
     ///deactivate if the action is to deactivate the modifier
     ///three arguments callback : self (current ship), name, desired state (activate or deactivate)
     REGISTER_SCRIPT_CLASS_FUNCTION(PlayerSpaceship, onModifierToggle);
+
+    ///Registers a new squandron type
+    ///First argument registers the name of the squadron, this is an identifier (for instance "Interceptors")
+    ///Other arguments register the ship class name (for instance "Light Fighter Defiant class", "Viper", ...)
+    REGISTER_SCRIPT_CLASS_FUNCTION(PlayerSpaceship, registerSquadronComposition);
+
+    ///Creates a squadron ships, needs a name and a type
+    ///First argument is its name/identifier ("Rogue Squadron 42")
+    ///Second mandatory argument is it composition identifier ("Interceptors")
+    REGISTER_SCRIPT_CLASS_FUNCTION(PlayerSpaceship, instantiateSquadron);
+    
+    ///Destroys squadron specifiing its name/identifier
+    //REGISTER_SCRIPT_CLASS_FUNCTION(PlayerSpaceship, destroySquadron);
+
+    ///Launch a squadron specifying its name
+    //REGISTER_SCRIPT_CLASS_FUNCTION(PlayerSpaceship, launchSquadron);
+    ///Recalls a squadron specifying its name. 
+    ///If not at range, launch an order to go to based ship
+    ///If at range, land the squadron.
+    //REGISTER_SCRIPT_CLASS_FUNCTION(PlayerSpaceship, recallSquadron);
+
 }
 
 static const int16_t CMD_TARGET_ROTATION = 0x0001;
@@ -3039,6 +3060,36 @@ void PlayerSpaceship::deActivateModifier(string name)
     {
         search->second.activated = false;
         on_modifier_toggle.call<void>(P<PlayerSpaceship>(this), name, string("deactivated"));
+    }
+}
+
+void PlayerSpaceship::instantiateSquadron(const string& identifier, const string& compo_identifier)
+{
+    for(const SquadronTemplate &sqt : squadrons_compositions)
+    {
+        if (sqt.squadron_name == compo_identifier)
+        {
+            Squadron squadron;
+            squadron.squadron_name = identifier;
+            for(const string &template_name : sqt.ship_names)
+            {
+                std::vector<string> v = ShipTemplate::getAllTemplateNames();
+                if(std::find(v.begin(), v.end(), template_name) != v.end())
+                {
+                    P<CpuShip> ship = new CpuShip();
+                    ship->setTemplate(template_name);
+                    ship->setPosition(getPosition());
+                    ship->setFaction(getFaction());
+                    ship->orderDefendTarget(this);
+                    squadron.ships.push_back(ship);
+                }
+                else
+                {
+                    LOG(ERROR) << "Failed to find ship template for squadron creation : " << template_name << ", squadron name : " << compo_identifier;
+                }
+           } 
+           waiting_squadrons.insert(squadron);
+        }
     }
 }
 
