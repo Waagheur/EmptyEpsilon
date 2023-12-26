@@ -15,6 +15,7 @@
 #include "screenComponents/shipsLogControl.h"
 #include "screenComponents/customShipFunctions.h"
 #include "screenComponents/alertLevelButton.h"
+#include "screenComponents/blueprintControls.h"
 
 #include "gui/gui2_keyvaluedisplay.h"
 #include "gui/gui2_selector.h"
@@ -47,14 +48,14 @@ CicScreen::CicScreen(GuiContainer* owner, bool allow_comms)
             mouse_down_position = position;
         },
         [this](glm::vec2 position) { //drag
-            if (mode == TargetSelection)
-                {
-                    position_text_custom = false;
-                    glm::vec2 newPosition = radar->getViewPosition() - (position - mouse_down_position);
-                    radar->setViewPosition(newPosition);
-                    if(!position_text_custom && my_spaceship)
-                        position_text->setText(getStringFromPosition(newPosition, my_spaceship->correction_x, my_spaceship->correction_y));
-                }
+            // if (mode == TargetSelection)
+            //     {
+            //         position_text_custom = false;
+            //         glm::vec2 newPosition = radar->getViewPosition() - (position - mouse_down_position);
+            //         radar->setViewPosition(newPosition);
+            //         if(!position_text_custom && my_spaceship)
+            //             position_text->setText(getStringFromPosition(newPosition, my_spaceship->correction_x, my_spaceship->correction_y));
+            //     }
             if (mode == MoveWaypoint && my_spaceship)
                 my_spaceship->commandMoveWaypoint(drag_waypoint_index, position);
         },
@@ -108,56 +109,15 @@ CicScreen::CicScreen(GuiContainer* owner, bool allow_comms)
     zoom_label = new GuiLabel(zoom_slider, "", "Zoom: " + string(max_distance / radar->getDistance(), 1.0f) + "x", 30);
     zoom_label->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);
 
-    position_text_custom = false;
-    position_text = new GuiTextEntry(view_controls, "SECTOR_NAME_TEXT", "");
-    position_text->setSize(GuiElement::GuiSizeMax, 50);
-    position_text->setTextFont(bold_font);
-    position_text->callback([this](string text){
-        position_text_custom = true;
-    });
-    position_text->validator(isValidPositionString);
-    position_text->enterCallback([this](string text){
-        position_text_custom = false;
-        if (position_text->isValid())
-        {
-            if (my_spaceship)
-            {
-                glm::vec2 pos = getPositionFromSring(text, my_spaceship->correction_x, my_spaceship->correction_y);
-                radar->setViewPosition(pos);
-            }
-        }
-    });
-    if (my_spaceship)
-        position_text->setText(getStringFromPosition(radar->getViewPosition(), my_spaceship->correction_x, my_spaceship->correction_y));
+   
+    // Option buttons for waypoints.
+    option_buttons = new GuiElement(this, "BUTTONS");
+    option_buttons->setPosition(20, 50, sp::Alignment::TopLeft)->setSize(250, GuiElement::GuiSizeMax)->setAttribute("layout", "vertical");
 
-    position_entry = new GuiElement(this, id + "_ENTRY_ELEMENT");
-    position_entry->setSize(250, 320)->setPosition(250, -50, sp::Alignment::BottomLeft);
-
-    (new GuiButton(position_entry, id + "_BUTTON_7", "7", [this]() {position_text->setText(position_text->getText() + "7");}))->setSize(50, 50)->setPosition(50, 100, sp::Alignment::TopLeft);
-    (new GuiButton(position_entry, id + "_BUTTON_8", "8", [this]() {position_text->setText(position_text->getText() + "8");}))->setSize(50, 50)->setPosition(100, 100, sp::Alignment::TopLeft);
-    (new GuiButton(position_entry, id + "_BUTTON_9", "9", [this]() {position_text->setText(position_text->getText() + "9");}))->setSize(50, 50)->setPosition(150, 100, sp::Alignment::TopLeft);
-    (new GuiButton(position_entry, id + "_BUTTON_4", "4", [this]() {position_text->setText(position_text->getText() + "4");}))->setSize(50, 50)->setPosition(50, 150, sp::Alignment::TopLeft);
-    (new GuiButton(position_entry, id + "_BUTTON_5", "5", [this]() {position_text->setText(position_text->getText() + "5");}))->setSize(50, 50)->setPosition(100, 150, sp::Alignment::TopLeft);
-    (new GuiButton(position_entry, id + "_BUTTON_6", "6", [this]() {position_text->setText(position_text->getText() + "6");}))->setSize(50, 50)->setPosition(150, 150, sp::Alignment::TopLeft);
-    (new GuiButton(position_entry, id + "_BUTTON_1", "1", [this]() {position_text->setText(position_text->getText() + "1");}))->setSize(50, 50)->setPosition(50, 200, sp::Alignment::TopLeft);
-    (new GuiButton(position_entry, id + "_BUTTON_2", "2", [this]() {position_text->setText(position_text->getText() + "2");}))->setSize(50, 50)->setPosition(100, 200, sp::Alignment::TopLeft);
-    (new GuiButton(position_entry, id + "_BUTTON_3", "3", [this]() {position_text->setText(position_text->getText() + "3");}))->setSize(50, 50)->setPosition(150, 200, sp::Alignment::TopLeft);
-    (new GuiButton(position_entry, id + "_BUTTON_Clr", "Clr", [this]() {position_text->setText("");}))->setSize(50, 50)->setPosition(50, 250, sp::Alignment::TopLeft);
-    (new GuiButton(position_entry, id + "_BUTTON_0", "0", [this]() {position_text->setText(position_text->getText() + "0");}))->setSize(50, 50)->setPosition(100, 250, sp::Alignment::TopLeft);
-
-    // Center screen
-    center_screen_button = new GuiButton(view_controls, "CENTER_SCREEN_BUTTON", "Recentrer radar", [this]() {
-        if (my_spaceship)
-        {
-            radar->setViewPosition(my_spaceship->getPosition());
-            position_text->setText(getStringFromPosition(my_spaceship->getPosition(), my_spaceship->correction_x, my_spaceship->correction_y));
-        }
-    });
-    center_screen_button->setSize(GuiElement::GuiSizeMax, 50);
-    center_screen_button->setIcon("gui/icons/lock");;
+    (new GuiLabel(option_buttons, "", " ", 30))->setSize(GuiElement::GuiSizeMax, 50);
 
     // Manage waypoints.
-    waypoints_layout = new GuiElement(view_controls, "WAYPOINTS_LAYOUT");
+    waypoints_layout = new GuiElement(option_buttons, "WAYPOINTS_LAYOUT");
     waypoints_layout -> setSize(GuiElement::GuiSizeMax, 50)->setAttribute("layout", "horizontal");;
 
     (new GuiLabel(waypoints_layout, "", tr("Place Waypoint"), 30))->setAlignment(sp::Alignment::Center)->setSize(150, 50);
@@ -175,28 +135,30 @@ CicScreen::CicScreen(GuiContainer* owner, bool allow_comms)
     });
     delete_waypoint_button->setSize(50, 50);
 
-    // Option buttons for comms, waypoints, and probes.
-    option_buttons = new GuiElement(this, "BUTTONS");
-    option_buttons->setPosition(20, 50, sp::Alignment::TopLeft)->setSize(250, GuiElement::GuiSizeMax)->setAttribute("layout", "vertical");
-
-    // Open comms button.
-    if (allow_comms == true)
-        (new GuiOpenCommsButton(option_buttons, "OPEN_COMMS_BUTTON", tr("Open Comms"), &targets))->setSize(GuiElement::GuiSizeMax, 50);
-    else
-        (new GuiOpenCommsButton(option_buttons, "OPEN_COMMS_BUTTON", tr("Link to Comms"), &targets))->setSize(GuiElement::GuiSizeMax, 50);
-
-//    (new GuiLabel(option_buttons, "LABEL_PROBES", "Sondes", 30))->setSize(GuiElement::GuiSizeMax, 50);
-    (new GuiLabel(option_buttons, "", " ", 30))->setSize(GuiElement::GuiSizeMax, 50);
-
-    // Reputation display.
-    //info_reputation = new GuiKeyValueDisplay(option_buttons, "INFO_REPUTATION", 0.4f, tr("Reputation") + ":", "");
-    //info_reputation->setSize(GuiElement::GuiSizeMax, 40);
+    // Center screen
+    center_screen_button = new GuiButton(option_buttons, "CENTER_SCREEN_BUTTON", "Recentrer radar", [this]() {
+        if (my_spaceship)
+        {
+            radar->setViewPosition(my_spaceship->getPosition());
+            //position_text->setText(getStringFromPosition(my_spaceship->getPosition(), my_spaceship->correction_x, my_spaceship->correction_y));
+        }
+    });
+    center_screen_button->setSize(GuiElement::GuiSizeMax, 50);
+    center_screen_button->setIcon("gui/icons/lock");;
 
     // Scenario clock display.
     info_clock = new GuiKeyValueDisplay(option_buttons, "INFO_CLOCK", 0.4f, tr("Clock") + ":", "");
     info_clock->setSize(GuiElement::GuiSizeMax, 40);
 
-    (new GuiAlertLevelSelect(this, ""))->setPosition(-20, -70, sp::Alignment::BottomRight)->setSize(300, GuiElement::GuiSizeMax)->setAttribute("layout", "verticalbottom");
+    nbr_squadrons = new GuiKeyValueDisplay(option_buttons, "NBR_SQUADRON", 0.4f, tr("Number of squadons") + ":", "");
+    nbr_squadrons->setSize(GuiElement::GuiSizeMax, 40);
+
+    //bp_layout = new GuiElement(this, "BLUEPRINTS_LAYOUT");
+    //bp_layout->setPosition(20, 50, sp::Alignment::TopLeft)->setSize(250, GuiElement::GuiSizeMax)->setAttribute("layout", "vertical");
+    bp_layout = new GuiBlueprintsControls(this, "BLUEPRINTS_LAYOUT", my_spaceship);
+    bp_layout->setPosition(20, -20, sp::Alignment::BottomLeft);
+
+    //(new GuiAlertLevelSelect(this, ""))->setPosition(-20, -70, sp::Alignment::BottomRight)->setSize(300, GuiElement::GuiSizeMax)->setAttribute("layout", "verticalbottom");
 
     (new GuiCustomShipFunctions(this, cagOfficer, "", my_spaceship))->setPosition(-20, 350, sp::Alignment::TopRight)->setSize(250, GuiElement::GuiSizeMax);
 
@@ -333,6 +295,11 @@ void CicScreen::onDraw(sp::RenderTarget& renderer)
         //info_reputation->setValue(string(my_spaceship->getReputationPoints(), 0)); //tsht : TODO voir si on peut reajouter
         info_clock->setValue(gameGlobalInfo->getMissionTime());
     }
+      if (my_spaceship)
+    {
+        const unsigned int total = my_spaceship->getLaunchedSquadronsCount();
+        nbr_squadrons->setValue(string(total) + " / " + string(my_spaceship->getMaximumNumberOfSquadronsInFlight()));
+    }
 
     if (targets.getWaypointIndex() >= 0)
     {
@@ -343,7 +310,7 @@ void CicScreen::onDraw(sp::RenderTarget& renderer)
     else
         delete_waypoint_button->disable();
 
-    position_entry->setVisible(position_text->isFocus());
+    //position_entry->setVisible(position_text->isFocus());
 }
 
 void CicScreen::onUpdate()

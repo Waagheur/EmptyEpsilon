@@ -207,17 +207,17 @@ public:
     //Squadrons for CiC
     struct SquadronTemplate
     {
-        string squadron_name;
         std::vector<string> ship_names;
-        bool operator<(const SquadronTemplate& rhs) const 
-        {
-            return squadron_name < rhs.squadron_name;
-        }
+        unsigned int max_created {0};
+        float construction_duration {0};
+        bool activated {false};
+        bool available {true};
     };
     
     struct Squadron
     {
-        string squadron_name;
+        string squadron_name {""};
+        string squadron_template {""};
         PVector<CpuShip> ships;    
         bool operator<(const Squadron& rhs) const 
         {
@@ -225,10 +225,12 @@ public:
         }
     };
 
-    std::set<SquadronTemplate> squadrons_compositions;
+    unsigned int max_squadrons_in_flight {8};
+    std::map<string, SquadronTemplate> squadrons_compositions;
+    std::map<string, float> delay_to_next_creation;
 
-    std::set<Squadron> launched_squadrons;
-    std::set<Squadron> waiting_squadrons;
+    std::vector<Squadron> launched_squadrons;
+    std::vector<Squadron> waiting_squadrons;
 
     string comms_target_name;
     string comms_incomming_message;
@@ -518,12 +520,47 @@ public:
         on_modifier_toggle = callback;
     }
 
-    void registerSquadronComposition(const string& name, const std::vector<string>& ship_names)
+    void setMaxSquadrons(unsigned int max) { max_squadrons_in_flight = max;}
+    void registerSquadronComposition(const string& name, const unsigned int max, const unsigned creation_duration, const std::vector<string>& ship_names)
     {
-        squadrons_compositions.insert({name, ship_names});
+        SquadronTemplate sqt;
+        sqt.max_created = max;
+        sqt.construction_duration = creation_duration;
+        sqt.ship_names = ship_names;
+        squadrons_compositions.insert({name, sqt});
+        
+        delay_to_next_creation[name] = sqt.construction_duration;
     }
 
     void instantiateSquadron(const string& identifier, const string& type);
+
+    unsigned int getLaunchedSquadronsCount() { return launched_squadrons.size(); }
+    unsigned int getWaitingSquadronsCount() { return waiting_squadrons.size(); }
+    unsigned int getSquadronCount(const string & name) 
+    { 
+        unsigned int nbr = 0; 
+        for(auto &sqt : launched_squadrons) 
+        {
+            if(sqt.squadron_template == name)
+                nbr++;
+        }
+        for(auto &sqt : waiting_squadrons) 
+        {
+            if(sqt.squadron_template == name)
+                nbr++;
+        }
+        return nbr;
+
+    }
+    unsigned int getMaximumNumberOfSquadronsInFlight() { return max_squadrons_in_flight;}
+    std::map<string, SquadronTemplate>& getSquadronCompositions()
+    {
+       return squadrons_compositions;
+    }
+    float getSquadronCreationProgression(const string &name)
+    {
+        return 1.0f - delay_to_next_creation[name] / squadrons_compositions[name].construction_duration;
+    }
     
 };
 REGISTER_MULTIPLAYER_ENUM(ECommsState);

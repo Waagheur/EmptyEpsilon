@@ -383,6 +383,7 @@ set(MAIN_SOURCES
 	  src/hardware/devices/philipsHueDevice.cpp
 	  src/shaderRegistry.cpp
     src/screens/crew6/cicScreen.cpp
+    src/screenComponents/blueprintControls.cpp
 
     src/ai/aiFactory.h
     src/ai/ai.h
@@ -540,6 +541,7 @@ set(MAIN_SOURCES
     src/threatLevelEstimate.h
     src/tutorialGame.h
     src/screens/crew6/cicScreen.h
+    src/screenComponents/blueprintControls.h
 )
 
 if (WITH_DISCORD)

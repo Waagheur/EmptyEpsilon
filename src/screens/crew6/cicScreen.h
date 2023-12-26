@@ -47,14 +47,13 @@ private:
     //GuiKeyValueDisplay* info_reputation;
     GuiKeyValueDisplay* info_clock;
     GuiElement* option_buttons;
+    GuiElement* bp_layout;
     GuiToggleButton* link_to_3D_port_button;
     GuiElement* waypoints_layout;
     GuiButton* add_waypoint_button;
     GuiButton* delete_waypoint_button;
     GuiElement* view_controls;
-    bool position_text_custom;
-    GuiTextEntry* position_text;
-    GuiElement* position_entry;
+    GuiKeyValueDisplay* nbr_squadrons;
 
     GuiSlider* zoom_slider;
     GuiLabel* zoom_label;
