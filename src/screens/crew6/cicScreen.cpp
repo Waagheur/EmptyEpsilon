@@ -70,6 +70,7 @@ CicScreen::CicScreen(GuiContainer* owner, bool allow_comms)
                     my_spaceship->commandAddWaypoint(position);
                 mode = TargetSelection;
                 option_buttons->show();
+                bp_layout->show();
                 break;
             case MoveWaypoint:
                 mode = TargetSelection;
@@ -124,6 +125,7 @@ CicScreen::CicScreen(GuiContainer* owner, bool allow_comms)
     add_waypoint_button = new GuiButton(waypoints_layout, "WAYPOINT_PLACE_BUTTON", "+", [this]() {
         mode = WaypointPlacement;
         option_buttons->hide();
+
     });
     add_waypoint_button->setSize(50, 50);
 
@@ -156,7 +158,8 @@ CicScreen::CicScreen(GuiContainer* owner, bool allow_comms)
     //bp_layout = new GuiElement(this, "BLUEPRINTS_LAYOUT");
     //bp_layout->setPosition(20, 50, sp::Alignment::TopLeft)->setSize(250, GuiElement::GuiSizeMax)->setAttribute("layout", "vertical");
     bp_layout = new GuiBlueprintsControls(this, "BLUEPRINTS_LAYOUT", my_spaceship);
-    bp_layout->setPosition(20, -20, sp::Alignment::BottomLeft);
+    //bp_layout->setPosition(20, -20, sp::Alignment::BottomLeft);
+    bp_layout->setPosition(20, 300, sp::Alignment::TopLeft)->setSize(250, GuiElement::GuiSizeMax)->setAttribute("layout", "vertical");
 
     //(new GuiAlertLevelSelect(this, ""))->setPosition(-20, -70, sp::Alignment::BottomRight)->setSize(300, GuiElement::GuiSizeMax)->setAttribute("layout", "verticalbottom");
 
@@ -430,6 +433,7 @@ void CicScreen::onUpdate()
         {
             mode = WaypointPlacement;
             option_buttons->hide();
+            bp_layout->hide();
         }
         if (keys.relay_delete_waypoint.getDown())
         {

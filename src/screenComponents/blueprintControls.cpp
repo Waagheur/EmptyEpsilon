@@ -27,22 +27,23 @@ GuiBlueprintsControls::GuiBlueprintsControls(GuiContainer* owner, string id, P<P
     {
         BlueprintRow row;
         row.layout = new GuiElement(this, id + "_ROW_" + string(n));
-        row.layout->setSize(GuiElement::GuiSizeMax, 50)->setAttribute("layout", "horizontal");
+        row.layout->setSize(GuiElement::GuiSizeMax, 40)->setAttribute("layout", "horizontal");
         row.bp_toggle_button = new GuiToggleButton(row.layout, id + "_" + string(n) + "_LOAD_BUTTON", tr("cic",name), [&sqt, this](bool value) {
             if (!target_spaceship)
                 return;
             sqt.activated = value;
         });
         row.bp_toggle_button->setValue(sqt.activated);
-        row.bp_toggle_button->setSize(130, 50);
+        row.bp_toggle_button->setSize(130, 40);
+        row.bp_toggle_button->setTextSize(30);
         
         row.loading_bar = new GuiProgressbar(row.layout, id + "_" + string(n) + "_PROGRESS", 0, 1.0, 0);
-        row.loading_bar->setColor(glm::u8vec4(128, 128, 128, 255))->setSize(200, 50);
-
+        row.loading_bar->setColor(glm::u8vec4(128, 128, 128, 255))->setSize(100, 40);
+    
         pdi = new GuiPowerDamageIndicator(row.loading_bar, id + "_" + string(n) + "_PDI", SYS_MissileSystem, sp::Alignment::CenterRight, target_spaceship);
         pdi->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);
 
-        row.loading_label = new GuiLabel(row.loading_bar, id + "_" + string(n) + "_PROGRESS_LABEL", tr("cic","In progress"), 35);
+        row.loading_label = new GuiLabel(row.loading_bar, id + "_" + string(n) + "_PROGRESS_LABEL", tr("cic",""), 25);
         row.loading_label->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);
 
         row.compo_name = name;
@@ -87,11 +88,11 @@ void GuiBlueprintsControls::onUpdate()
         {
             row.loading_bar->show();
             row.loading_bar->setValue(0);
-            row.loading_label->setText(tr("cic",tr("All available") + "(" + string(max_sq) + ")"));
+            row.loading_label->setText(tr("cic",tr("Max") + "(" + string(max_sq) + ")"));
         }
         else
         {
-            row.loading_label->setText(tr("cic",tr("In progress") + "(" + string(cur_sq) + "/" + string(max_sq) + ")"));
+            row.loading_label->setText(tr("cic","(" + string(cur_sq) + "/" + string(max_sq) + ")"));
             row.loading_bar->show();
             row.loading_bar->setValue(target_spaceship->getSquadronCreationProgression(row.compo_name));
                                                        

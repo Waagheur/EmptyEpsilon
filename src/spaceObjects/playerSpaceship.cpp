@@ -1216,6 +1216,15 @@ void PlayerSpaceship::update(float delta)
             comms_open_delay -= delta;
     }
 
+    unsigned int number_activated{0};
+    for(const auto& [name, sqt] : squadrons_compositions) //if only I had an iterator only on values I could use count if...
+    {
+        if((sqt.activated == true) && (sqt.available == true))
+        {
+            number_activated++;
+        }
+    }
+
     for(const auto& [name, sqt] : squadrons_compositions)
     {    
         
@@ -1227,7 +1236,7 @@ void PlayerSpaceship::update(float delta)
         }
         else
         {
-            delay_to_next_creation[name] -= delta * getSystemEffectiveness(SYS_Hangar);
+            delay_to_next_creation[name] -= delta * getSystemEffectiveness(SYS_Hangar) * (1.0f / number_activated);
             if (delay_to_next_creation[name] <= 0.0f)
             {
                 instantiateSquadron("toto", name);
