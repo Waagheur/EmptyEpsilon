@@ -155,7 +155,7 @@ variation:setCustomWeaponStorage("TABORD", 30)
 variation:setCustomWeaponMultiple("TABORD",1,2)
 
 
-
+--#region
 
 
 --[[Croiseur Impérial Lunar IA  ]]
