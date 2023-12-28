@@ -574,6 +574,7 @@ static const int16_t CMD_SET_SYSTEM_REPAIR_REQUEST = 0x002B;
 static const int16_t CMD_SET_ANALYSIS_LINK = 0x003A;
 static const int16_t CMD_SET_SYSTEM_POWER_PRESET = 0x003B;
 static const int16_t CMD_SET_SYSTEM_COOLANT_PRESET = 0x003C;
+static const int16_t CMD_LAUNCH_SQUADRON = 0x003D;
 
 string alertLevelToString(EAlertLevel level)
 {
@@ -1239,35 +1240,45 @@ void PlayerSpaceship::update(float delta)
             delay_to_next_creation[name] -= delta * getSystemEffectiveness(SYS_Hangar) * (1.0f / number_activated);
             if (delay_to_next_creation[name] <= 0.0f)
             {
-                instantiateSquadron("toto", name);
+                instantiateSquadron(gameGlobalInfo->getNextShipCallsign(), name);
                 delay_to_next_creation[name] = sqt.construction_duration;
             }
         }
     }
 
+    if(launch_delay > 0 && squadron_to_launch != "")
     {
-        std::vector<Squadron>::iterator iter = waiting_squadrons.begin();
-        while(iter != waiting_squadrons.end())
-        {
-            bool found = false;
-            for(P<CpuShip> cpu : iter->ships)
-            {
-                if(cpu)
-                {
-                    found = true;
-                    break;
-                }    
-            }
-            if(!found)
-            {
-                waiting_squadrons.erase(iter);
-            }
-            else
-            {
-                iter++;
-            }
-        }
+        launch_delay -= delta * getSystemEffectiveness(SYS_Hangar);
     }
+    if(launch_delay <= 0 && squadron_to_launch != "")
+    {
+        launchSquadron(squadron_to_launch);
+        squadron_to_launch = "";
+    }
+
+    // {
+    //     std::vector<Squadron>::iterator iter = waiting_squadrons.begin();
+    //     while(iter != waiting_squadrons.end())
+    //     {
+    //         bool found = false;
+    //         for(P<CpuShip> cpu : iter->ships)
+    //         {
+    //             if(cpu)
+    //             {
+    //                 found = true;
+    //                 break;
+    //             }    
+    //         }
+    //         if(!found)
+    //         {
+    //             waiting_squadrons.erase(iter);
+    //         }
+    //         else
+    //         {
+    //             iter++;
+    //         }
+    //     }
+    // }
     {
         std::vector<Squadron>::iterator iter = launched_squadrons.begin();
         while(iter != launched_squadrons.end())
@@ -2495,6 +2506,14 @@ void PlayerSpaceship::onReceiveClientCommand(int32_t client_id, sp::io::DataBuff
                 auto_repairing_system = system;
         }
         break;
+    case CMD_LAUNCH_SQUADRON:
+        //TODO : mettre ça dans un dock
+        {
+            string name;
+            packet >> name;
+            launchSquadron(name);
+        }
+        break;
     }
 }
 
@@ -2849,6 +2868,13 @@ void PlayerSpaceship::commandLaunchCargo(int index)
     sendClientCommand(packet);
 }
 
+void PlayerSpaceship::commandLaunchSquadron(string identifier)
+{
+    sp::io::DataBuffer packet;
+    packet << CMD_LAUNCH_SQUADRON << identifier;
+    sendClientCommand(packet);
+}
+
 void PlayerSpaceship::commandMoveCargo(int index)
 {
     sp::io::DataBuffer packet;
@@ -3147,11 +3173,37 @@ void PlayerSpaceship::deActivateModifier(string name)
 
 void PlayerSpaceship::instantiateSquadron(const string& identifier, const string& compo_identifier)
 {
+    if(squadrons_compositions.find(compo_identifier) != squadrons_compositions.end())
+    {
+        waiting_squadrons.insert({identifier, compo_identifier});
+    }
+    else
+    {
+        LOG(ERROR) << "Failed to find ship template for squadron : " << compo_identifier;
+    }
     
-    SquadronTemplate sqt = squadrons_compositions[compo_identifier];
+}
+
+void PlayerSpaceship::requestLaunchWaitingSquadron(const string& identifier)
+{
+    launch_delay = launch_duration;
+    squadron_to_launch = identifier;
+}
+
+void PlayerSpaceship::launchSquadron(const string& identifier)
+{
+     if(waiting_squadrons.find(identifier) == waiting_squadrons.end())
+     {
+        return;
+     }
+
+
     Squadron squadron;
     squadron.squadron_name = identifier;
-    squadron.squadron_template = compo_identifier;
+    squadron.squadron_template = waiting_squadrons[identifier];
+    
+    SquadronTemplate sqt = squadrons_compositions[squadron.squadron_template];
+    
     for(const string &template_name : sqt.ship_names)
     {
         std::vector<string> v = ShipTemplate::getAllTemplateNames();
@@ -3166,10 +3218,11 @@ void PlayerSpaceship::instantiateSquadron(const string& identifier, const string
         }
         else
         {
-            LOG(ERROR) << "Failed to find ship template for squadron creation : " << template_name << ", squadron name : " << compo_identifier;
+            LOG(ERROR) << "Failed to find ship template for squadron creation : " << template_name << ", squadron template name : " << waiting_squadrons[identifier];
         }
     }
-    waiting_squadrons.push_back(squadron);
+    waiting_squadrons.erase(identifier);
+    launched_squadrons.push_back(squadron);
 }
 
 #include "playerSpaceship.hpp"

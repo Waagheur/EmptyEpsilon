@@ -230,7 +230,11 @@ public:
     std::map<string, float> delay_to_next_creation;
 
     std::vector<Squadron> launched_squadrons;
-    std::vector<Squadron> waiting_squadrons;
+    std::map<string, string> waiting_squadrons;
+
+    float launch_duration{15};
+    float launch_delay{0};
+    string squadron_to_launch{""};
 
     string comms_target_name;
     string comms_incomming_message;
@@ -533,6 +537,9 @@ public:
     }
 
     void instantiateSquadron(const string& identifier, const string& type);
+    void requestLaunchWaitingSquadron(const string& identifier);
+    void commandLaunchSquadron(string identifier);
+    void launchSquadron(const string& identifier);
 
     unsigned int getLaunchedSquadronsCount() { return launched_squadrons.size(); }
     unsigned int getWaitingSquadronsCount() { return waiting_squadrons.size(); }
@@ -544,9 +551,9 @@ public:
             if(sqt.squadron_template == name)
                 nbr++;
         }
-        for(auto &sqt : waiting_squadrons) 
+        for(auto & [id, template_name] : waiting_squadrons) 
         {
-            if(sqt.squadron_template == name)
+            if(template_name == name)
                 nbr++;
         }
         return nbr;
@@ -557,10 +564,32 @@ public:
     {
        return squadrons_compositions;
     }
+
+    std::map<string,string>& getWaitingSquadrons()
+    {
+        return waiting_squadrons;
+    }
+    std::vector<Squadron>& getLaunchedSquadrons()
+    {
+        return launched_squadrons;
+    }
+
     float getSquadronCreationProgression(const string &name)
     {
         return 1.0f - delay_to_next_creation[name] / squadrons_compositions[name].construction_duration;
     }
+
+    bool isLaunchingSquadron()
+    {
+        return (squadron_to_launch == "") ? false : true;
+    }
+
+    float getLaunchSquadronProgression()
+    {
+        return 1.0f - launch_delay / launch_duration;
+    }
+
+    
     
 };
 REGISTER_MULTIPLAYER_ENUM(ECommsState);

@@ -166,7 +166,7 @@ RelayScreen::RelayScreen(GuiContainer* owner, bool allow_comms)
     (new GuiButton(position_entry, id + "_BUTTON_0", "0", [this]() {position_text->setText(position_text->getText() + "0");}))->setSize(50, 50)->setPosition(100, 250, sp::Alignment::TopLeft);
 
     // Center screen
-    center_screen_button = new GuiButton(view_controls, "CENTER_SCREEN_BUTTON", "Recentrer radar", [this]() {
+    center_screen_button = new GuiButton(view_controls, "CENTER_SCREEN_BUTTON", tr("Recenter radar"), [this]() {
         if (my_spaceship)
         {
             radar->setViewPosition(my_spaceship->getPosition());
