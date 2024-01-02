@@ -15,14 +15,20 @@ class GuiSquadronControls : public GuiElement
 private:
     struct SquadronRow {
         GuiElement* layout;
-        GuiButton* squadron_selector;
+        GuiButton* squadron_button;
         GuiButton* order_show_and_change;
+        GuiButton* target_show_and_change;
         GuiLabel* order_desc;
+        GuiLabel* target_desc;
+        GuiButton* validate_button;
+        GuiButton* recall_button;
         string squadron_name;
     };
     P<PlayerSpaceship> target_spaceship;
     std::vector<SquadronRow> rows;
     GuiPowerDamageIndicator* pdi;
+
+    void updateSquadronRows();
 public:
     GuiSquadronControls(GuiContainer* owner, string id, P<PlayerSpaceship> targetSpaceship);
 
