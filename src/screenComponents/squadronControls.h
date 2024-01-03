@@ -9,26 +9,26 @@ class GuiProgressbar;
 class GuiLabel;
 class GuiToggleButton;
 class GuiPowerDamageIndicator;
+class GuiKeyValueDisplay;
 
 class GuiSquadronControls : public GuiElement
 {
 private:
     struct SquadronRow {
         GuiElement* layout;
-        GuiButton* squadron_button;
+        GuiToggleButton* squadron_button;
         GuiButton* order_show_and_change;
         GuiButton* target_show_and_change;
-        GuiLabel* order_desc;
-        GuiLabel* target_desc;
+        GuiKeyValueDisplay* order_target_desc;
         GuiButton* validate_button;
         GuiButton* recall_button;
-        string squadron_name;
     };
     P<PlayerSpaceship> target_spaceship;
-    std::vector<SquadronRow> rows;
+    std::map<string, SquadronRow> name_to_rows;
     GuiPowerDamageIndicator* pdi;
 
     void updateSquadronRows();
+    void selectSquadron(const string& name);
 public:
     GuiSquadronControls(GuiContainer* owner, string id, P<PlayerSpaceship> targetSpaceship);
 

@@ -49,6 +49,7 @@ private:
     GuiElement* option_buttons;
     GuiElement* bp_layout;
     GuiElement* sqc_layout;
+    GuiElement* launched_squadron_layout;
     GuiToggleButton* link_to_3D_port_button;
     GuiElement* waypoints_layout;
     GuiButton* add_waypoint_button;

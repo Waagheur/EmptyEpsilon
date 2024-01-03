@@ -369,17 +369,17 @@ string getAIOrderString(EAIOrder order)
 {
     switch(order)
     {
-    case AI_Idle: return "Repos";
-    case AI_Roaming: return "Errant";
-    case AI_Retreat: return "Retraite";
-    case AI_StandGround: return "En place";
-    case AI_DefendLocation: return "Defend position";
-    case AI_DefendTarget: return "Defend cible";
-    case AI_FlyFormation: return "Vole en formation";
-    case AI_FlyTowards: return "Vole vers";
-    case AI_FlyTowardsBlind: return "Vole vers (sans s'arreter)";
-    case AI_Attack: return "Attaque";
-    case AI_Dock: return "Se docke";
+    case AI_Idle: return "Idle";
+    case AI_Roaming: return "Roaming";
+    case AI_Retreat: return "Retreat";
+    case AI_StandGround: return "Stand Ground";
+    case AI_DefendLocation: return "Defend Location";
+    case AI_DefendTarget: return "Defend Target";
+    case AI_FlyFormation: return "Fly in formation";
+    case AI_FlyTowards: return "Fly towards";
+    case AI_FlyTowardsBlind: return "Fly towards (ignore all)";
+    case AI_Attack: return "Attack";
+    case AI_Dock: return "Dock";
     }
     return "Unknown";
 }

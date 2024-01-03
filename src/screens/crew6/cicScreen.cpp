@@ -16,6 +16,7 @@
 #include "screenComponents/customShipFunctions.h"
 #include "screenComponents/alertLevelButton.h"
 #include "screenComponents/blueprintControls.h"
+#include "screenComponents/squadronControls.h"
 
 #include "gui/gui2_keyvaluedisplay.h"
 #include "gui/gui2_selector.h"
@@ -180,6 +181,8 @@ CicScreen::CicScreen(GuiContainer* owner, bool allow_comms)
     launch_progress->setSize(100, 50);
     launch_progress->hide();
 
+    launched_squadron_layout = new GuiSquadronControls(this, "LAUNCHED_SQUADRON_LAYOUT", my_spaceship);
+    launched_squadron_layout->setPosition(20, 600, sp::Alignment::TopLeft)->setSize(250, GuiElement::GuiSizeMax)->setAttribute("layout", "vertical");
 
     //(new GuiAlertLevelSelect(this, ""))->setPosition(-20, -70, sp::Alignment::BottomRight)->setSize(300, GuiElement::GuiSizeMax)->setAttribute("layout", "verticalbottom");
 

@@ -384,6 +384,7 @@ set(MAIN_SOURCES
 	  src/shaderRegistry.cpp
     src/screens/crew6/cicScreen.cpp
     src/screenComponents/blueprintControls.cpp
+    src/screenComponents/squadronControls.cpp
 
     src/ai/aiFactory.h
     src/ai/ai.h
@@ -542,6 +543,7 @@ set(MAIN_SOURCES
     src/tutorialGame.h
     src/screens/crew6/cicScreen.h
     src/screenComponents/blueprintControls.h
+    src/screenComponents/squadronControls.h
 )
 
 if (WITH_DISCORD)

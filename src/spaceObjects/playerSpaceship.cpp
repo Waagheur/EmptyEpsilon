@@ -1217,33 +1217,40 @@ void PlayerSpaceship::update(float delta)
             comms_open_delay -= delta;
     }
 
-    unsigned int number_activated{0};
-    for(const auto& [name, sqt] : squadrons_compositions) //if only I had an iterator only on values I could use count if...
-    {
-        if((sqt.activated == true) && (sqt.available == true))
-        {
-            number_activated++;
-        }
-    }
+    // unsigned int number_activated{0};
+    // for(const auto& [name, sqt] : squadrons_compositions) //if only I had an iterator only on values I could use count if...
+    // {
+    //     if((sqt.activated == true) && (sqt.available == true))
+    //     {
+    //         number_activated++;
+    //     }
+    // }
+
+    std::set<string> name_to_progress;
 
     for(const auto& [name, sqt] : squadrons_compositions)
     {    
         
-        if(((getWaitingSquadronsCount() + getLaunchedSquadronsCount()) >= sqt.max_created)
+        if(((getWaitingSquadronsCount(name) + getLaunchedSquadronsCount(name)) >= sqt.max_created)
         || sqt.activated == false
         || sqt.available == false)
         {
             delay_to_next_creation[name] = sqt.construction_duration;
         }
+        else if (delay_to_next_creation[name] <= 0.0f)
+        {
+            instantiateSquadron(name);
+            delay_to_next_creation[name] = sqt.construction_duration;
+        }
         else
         {
-            delay_to_next_creation[name] -= delta * getSystemEffectiveness(SYS_Hangar) * (1.0f / number_activated);
-            if (delay_to_next_creation[name] <= 0.0f)
-            {
-                instantiateSquadron(gameGlobalInfo->getNextShipCallsign(), name);
-                delay_to_next_creation[name] = sqt.construction_duration;
-            }
+            name_to_progress.insert(name);
         }
+    }
+
+    for(const string &name : name_to_progress)
+    {
+        delay_to_next_creation[name] -= delta * getSystemEffectiveness(SYS_Hangar) * (1.0f / name_to_progress.size());
     }
 
     if(launch_delay > 0 && squadron_to_launch != "")
@@ -1294,7 +1301,7 @@ void PlayerSpaceship::update(float delta)
             }
             if(!found)
             {
-                launched_squadrons.erase(iter);
+                iter = launched_squadrons.erase(iter);
             }
             else
             {
@@ -3171,11 +3178,11 @@ void PlayerSpaceship::deActivateModifier(string name)
     }
 }
 
-void PlayerSpaceship::instantiateSquadron(const string& identifier, const string& compo_identifier)
+void PlayerSpaceship::instantiateSquadron(const string& compo_identifier)
 {
     if(squadrons_compositions.find(compo_identifier) != squadrons_compositions.end())
     {
-        waiting_squadrons.insert({identifier, compo_identifier});
+        waiting_squadrons.insert({compo_identifier + "-" +gameGlobalInfo->getNextShipCallsign(), compo_identifier});
     }
     else
     {

@@ -536,13 +536,41 @@ public:
         delay_to_next_creation[name] = sqt.construction_duration;
     }
 
-    void instantiateSquadron(const string& identifier, const string& type);
+    void instantiateSquadron(const string& type);
     void requestLaunchWaitingSquadron(const string& identifier);
     void commandLaunchSquadron(string identifier);
     void launchSquadron(const string& identifier);
 
     unsigned int getLaunchedSquadronsCount() { return launched_squadrons.size(); }
     unsigned int getWaitingSquadronsCount() { return waiting_squadrons.size(); }
+
+    unsigned int getLaunchedSquadronsCount(const string &tp_name) 
+    { 
+        unsigned int n =0;
+        for (auto &squadron : launched_squadrons)
+        {
+            if(squadron.squadron_template == tp_name)
+            {
+                n++;
+            }
+        }
+        return n;
+
+        return launched_squadrons.size(); 
+    }
+    unsigned int getWaitingSquadronsCount(const string &tp_name) 
+    { 
+        unsigned int n =0;
+        for (auto &[name, template_name] : waiting_squadrons)
+        {
+            if(template_name == tp_name)
+            {
+                n++;
+            }
+        }
+        return n;
+    }
+
     unsigned int getSquadronCount(const string & name) 
     { 
         unsigned int nbr = 0; 
