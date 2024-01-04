@@ -489,13 +489,6 @@ REGISTER_SCRIPT_SUBCLASS(PlayerSpaceship, SpaceShip)
     ///three arguments callback : self (current ship), name, desired state (activate or deactivate)
     REGISTER_SCRIPT_CLASS_FUNCTION(PlayerSpaceship, onModifierToggle);
 
-    ///Registers a new squandron type
-    ///First argument registers the name of the squadron, this is an identifier (for instance "Interceptors")
-    ///Second argument is maximum number of squadrons (ex: 5)
-    ///Third argument is creation duration in seconds (ex : 30)
-    ///Other arguments register the ship class name (for instance "Light Fighter Defiant class", "Viper", ...)
-    REGISTER_SCRIPT_CLASS_FUNCTION(PlayerSpaceship, registerSquadronComposition);
-
     ///Sets maximum number of simultaneous controllable squadrons
     ///If already beyond this number, current squadrons will not be destroyed
     REGISTER_SCRIPT_CLASS_FUNCTION(PlayerSpaceship, setMaxSquadrons);
@@ -764,6 +757,11 @@ PlayerSpaceship::PlayerSpaceship()
             registerMemberReplication(&power_presets[n][o]);
             registerMemberReplication(&coolant_presets[n][o]);
         }
+    }
+
+    for(unsigned int n = 0; n < max_blueprints_count; n++)
+    {
+        registerMemberReplication(&delay_to_next_creation[n]);
     }
 
     if (game_server)
@@ -1226,33 +1224,39 @@ void PlayerSpaceship::update(float delta)
     //     }
     // }
 
-    std::set<string> name_to_progress;
+    std::set<int> to_progress;
 
-    for(const auto& [name, sqt] : squadrons_compositions)
-    {    
-        
-        if(((getWaitingSquadronsCount(name) + getLaunchedSquadronsCount(name)) >= sqt.max_created)
-        || sqt.activated == false
-        || sqt.available == false)
-        {
-            delay_to_next_creation[name] = sqt.construction_duration;
-        }
-        else if (delay_to_next_creation[name] <= 0.0f)
-        {
-            instantiateSquadron(name);
-            delay_to_next_creation[name] = sqt.construction_duration;
-        }
-        else
-        {
-            name_to_progress.insert(name);
-        }
-    }
-
-    for(const string &name : name_to_progress)
+    //Auto creation of blueprints (squadrons)
+    unsigned int n=0;
+    if(ship_template)
     {
-        delay_to_next_creation[name] -= delta * getSystemEffectiveness(SYS_Hangar) * (1.0f / name_to_progress.size());
-    }
+        for(const auto& sqt : ship_template->squadrons_compositions)
+        {    
+            
+            if(((getWaitingSquadronsCount(sqt.template_name) + getLaunchedSquadronsCount(sqt.template_name)) >= sqt.max_created)
+            || sqt.activated == false
+            || sqt.available == false)
+            {
+                delay_to_next_creation[n] = sqt.construction_duration;
+            }
+            else if (delay_to_next_creation[n] <= 0.0f)
+            {
+                instantiateSquadron(sqt.template_name);
+                delay_to_next_creation[n] = sqt.construction_duration;
+            }
+            else
+            {
+                to_progress.insert(n);
+            }
+            n++;
+        }
 
+        for(int idx : to_progress)
+        {
+            delay_to_next_creation[idx] -= delta * getSystemEffectiveness(SYS_Hangar) * (1.0f / to_progress.size());
+        }
+    }
+    //Launch of a waiting squadron
     if(launch_delay > 0 && squadron_to_launch != "")
     {
         launch_delay -= delta * getSystemEffectiveness(SYS_Hangar);
@@ -1263,29 +1267,6 @@ void PlayerSpaceship::update(float delta)
         squadron_to_launch = "";
     }
 
-    // {
-    //     std::vector<Squadron>::iterator iter = waiting_squadrons.begin();
-    //     while(iter != waiting_squadrons.end())
-    //     {
-    //         bool found = false;
-    //         for(P<CpuShip> cpu : iter->ships)
-    //         {
-    //             if(cpu)
-    //             {
-    //                 found = true;
-    //                 break;
-    //             }    
-    //         }
-    //         if(!found)
-    //         {
-    //             waiting_squadrons.erase(iter);
-    //         }
-    //         else
-    //         {
-    //             iter++;
-    //         }
-    //     }
-    // }
     {
         std::vector<Squadron>::iterator iter = launched_squadrons.begin();
         while(iter != launched_squadrons.end())
@@ -1344,6 +1325,7 @@ void PlayerSpaceship::applyTemplateValues()
         on_new_player_ship_called = true;
         gameGlobalInfo->on_new_player_ship.call<void>(P<PlayerSpaceship>(this));
     }
+
 }
 
 void PlayerSpaceship::executeJump(float distance)
@@ -3180,14 +3162,17 @@ void PlayerSpaceship::deActivateModifier(string name)
 
 void PlayerSpaceship::instantiateSquadron(const string& compo_identifier)
 {
-    if(squadrons_compositions.find(compo_identifier) != squadrons_compositions.end())
+    int n = 0;
+    for(auto &sqt : ship_template->squadrons_compositions)
     {
-        waiting_squadrons.insert({compo_identifier + "-" +gameGlobalInfo->getNextShipCallsign(), compo_identifier});
+        if(sqt.template_name == compo_identifier)
+        {
+            waiting_squadrons.insert({compo_identifier + "-" +gameGlobalInfo->getNextShipCallsign(), n});
+            return;
+        }
+        n++;
     }
-    else
-    {
-        LOG(ERROR) << "Failed to find ship template for squadron : " << compo_identifier;
-    }
+    LOG(ERROR) << "Failed to find ship template for squadron : " << compo_identifier;
     
 }
 
@@ -3207,9 +3192,8 @@ void PlayerSpaceship::launchSquadron(const string& identifier)
 
     Squadron squadron;
     squadron.squadron_name = identifier;
-    squadron.squadron_template = waiting_squadrons[identifier];
     
-    SquadronTemplate sqt = squadrons_compositions[squadron.squadron_template];
+    SquadronTemplate sqt = ship_template->squadrons_compositions[waiting_squadrons[identifier]];
     
     for(const string &template_name : sqt.ship_names)
     {
@@ -3225,7 +3209,7 @@ void PlayerSpaceship::launchSquadron(const string& identifier)
         }
         else
         {
-            LOG(ERROR) << "Failed to find ship template for squadron creation : " << template_name << ", squadron template name : " << waiting_squadrons[identifier];
+            LOG(ERROR) << "Failed to find ship template for squadron creation : " << template_name << ", squadron template name : " << ship_template->squadrons_compositions[waiting_squadrons[identifier]].template_name;
         }
     }
     waiting_squadrons.erase(identifier);

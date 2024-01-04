@@ -23,12 +23,12 @@ GuiBlueprintsControls::GuiBlueprintsControls(GuiContainer* owner, string id, P<P
 
 
     int n = 0;
-    for (auto & [name, sqt] : target_spaceship->getSquadronCompositions())
+    for (auto & sqt: target_spaceship->getSquadronCompositions())
     {
         BlueprintRow row;
         row.layout = new GuiElement(this, id + "_ROW_" + string(n));
         row.layout->setSize(GuiElement::GuiSizeMax, 40)->setAttribute("layout", "horizontal");
-        row.bp_toggle_button = new GuiToggleButton(row.layout, id + "_" + string(n) + "_LOAD_BUTTON", tr("cic",name), [&sqt, this](bool value) {
+        row.bp_toggle_button = new GuiToggleButton(row.layout, id + "_" + string(n) + "_LOAD_BUTTON", tr("cic",sqt.template_name), [&sqt, this](bool value) {
             if (!target_spaceship)
                 return;
             sqt.activated = value;
@@ -46,7 +46,7 @@ GuiBlueprintsControls::GuiBlueprintsControls(GuiContainer* owner, string id, P<P
         row.loading_label = new GuiLabel(row.loading_bar, id + "_" + string(n) + "_PROGRESS_LABEL", tr("cic",""), 25);
         row.loading_label->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);
 
-        row.compo_name = name;
+        row.compo_name = sqt.template_name;
 
         if(sqt.available == false)
         {
@@ -68,11 +68,12 @@ void GuiBlueprintsControls::onUpdate()
     if (!target_spaceship || !isVisible())
         return;
 
-    std::map<string, PlayerSpaceship::SquadronTemplate>& templates = target_spaceship->getSquadronCompositions();
+    std::vector<SquadronTemplate>& templates = target_spaceship->getSquadronCompositions();
 
+    int n =0;
     for(auto &row : rows)
     {
-        if(templates[row.compo_name].available == true)
+        if(templates[n].available == true)
         {
             row.layout->show();
         }
@@ -83,7 +84,7 @@ void GuiBlueprintsControls::onUpdate()
 
         
         unsigned int cur_sq = target_spaceship->getSquadronCount(row.compo_name);
-        unsigned int max_sq = templates[row.compo_name].max_created;
+        unsigned int max_sq = templates[n].max_created;
         if(cur_sq >= max_sq)
         {
             row.loading_bar->show();
@@ -94,9 +95,10 @@ void GuiBlueprintsControls::onUpdate()
         {
             row.loading_label->setText(tr("cic","(" + string(cur_sq) + "/" + string(max_sq) + ")"));
             row.loading_bar->show();
-            row.loading_bar->setValue(target_spaceship->getSquadronCreationProgression(row.compo_name));
+            row.loading_bar->setValue(target_spaceship->getSquadronCreationProgression(n));
                                                        
         }
+        n++;
     }
 }
 

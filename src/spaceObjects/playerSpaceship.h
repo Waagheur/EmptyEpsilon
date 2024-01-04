@@ -204,16 +204,7 @@ public:
     ScriptSimpleCallback on_probe_launch;
     float scan_probe_recharge_dock;
 
-    //Squadrons for CiC
-    struct SquadronTemplate
-    {
-        std::vector<string> ship_names;
-        unsigned int max_created {0};
-        float construction_duration {0};
-        bool activated {false};
-        bool available {true};
-    };
-    
+        
     struct Squadron
     {
         string squadron_name {""};
@@ -226,11 +217,10 @@ public:
     };
 
     unsigned int max_squadrons_in_flight {8};
-    std::map<string, SquadronTemplate> squadrons_compositions;
-    std::map<string, float> delay_to_next_creation;
-
+    float delay_to_next_creation[max_blueprints_count]{};
+    
     std::vector<Squadron> launched_squadrons;
-    std::map<string, string> waiting_squadrons;
+    std::map<string, unsigned int> waiting_squadrons;
 
     float launch_duration{15};
     float launch_delay{0};
@@ -525,16 +515,6 @@ public:
     }
 
     void setMaxSquadrons(unsigned int max) { max_squadrons_in_flight = max;}
-    void registerSquadronComposition(const string& name, const unsigned int max, const unsigned creation_duration, const std::vector<string>& ship_names)
-    {
-        SquadronTemplate sqt;
-        sqt.max_created = max;
-        sqt.construction_duration = creation_duration;
-        sqt.ship_names = ship_names;
-        squadrons_compositions.insert({name, sqt});
-        
-        delay_to_next_creation[name] = sqt.construction_duration;
-    }
 
     void instantiateSquadron(const string& type);
     void requestLaunchWaitingSquadron(const string& identifier);
@@ -561,9 +541,9 @@ public:
     unsigned int getWaitingSquadronsCount(const string &tp_name) 
     { 
         unsigned int n =0;
-        for (auto &[name, template_name] : waiting_squadrons)
+        for (auto &[name, template_idx] : waiting_squadrons)
         {
-            if(template_name == tp_name)
+            if(ship_template->squadrons_compositions[template_idx].template_name == tp_name)
             {
                 n++;
             }
@@ -579,21 +559,21 @@ public:
             if(sqt.squadron_template == name)
                 nbr++;
         }
-        for(auto & [id, template_name] : waiting_squadrons) 
+        for(auto & [id, template_idx] : waiting_squadrons) 
         {
-            if(template_name == name)
+            if(ship_template->squadrons_compositions[template_idx].template_name == name)
                 nbr++;
         }
         return nbr;
 
     }
     unsigned int getMaximumNumberOfSquadronsInFlight() { return max_squadrons_in_flight;}
-    std::map<string, SquadronTemplate>& getSquadronCompositions()
+    std::vector<SquadronTemplate>& getSquadronCompositions()
     {
-       return squadrons_compositions;
+       return ship_template->squadrons_compositions;
     }
 
-    std::map<string,string>& getWaitingSquadrons()
+    std::map<string,unsigned int>& getWaitingSquadrons()
     {
         return waiting_squadrons;
     }
@@ -602,9 +582,9 @@ public:
         return launched_squadrons;
     }
 
-    float getSquadronCreationProgression(const string &name)
+    float getSquadronCreationProgression(unsigned int idx)
     {
-        return 1.0f - delay_to_next_creation[name] / squadrons_compositions[name].construction_duration;
+        return 1.0f - delay_to_next_creation[idx] / ship_template->squadrons_compositions[idx].construction_duration;
     }
 
     bool isLaunchingSquadron()

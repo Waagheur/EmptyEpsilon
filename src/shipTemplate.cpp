@@ -349,6 +349,13 @@ REGISTER_SCRIPT_CLASS(ShipTemplate)
     /// Defaults to true.
     /// Example: template:setCanLaunchProbe(false)
     REGISTER_SCRIPT_CLASS_FUNCTION(ShipTemplate, setCanLaunchProbe);
+    ///Registers a new squandron type
+    ///First argument registers the name of the squadron, this is an identifier (for instance "Interceptors")
+    ///Second argument is maximum number of squadrons (ex: 5)
+    ///Third argument is creation duration in seconds (ex : 30)
+    ///Other arguments register the ship class name (for instance "Light Fighter Defiant class", "Viper", ...)
+    REGISTER_SCRIPT_CLASS_FUNCTION(ShipTemplate, registerSquadronComposition);
+
     /// Returns an exact copy of this ShipTemplate and sets the new copy's reference name to the given name, as ShipTemplate:setName().
     /// The copy retains all other traits of the copied ShipTemplate.
     /// Use this function to create variations of an existing ShipTemplate.
@@ -965,6 +972,8 @@ P<ShipTemplate> ShipTemplate::copy(string new_name)
     result->thermic_dock_count = thermic_dock_count;
     result->repair_dock_count = repair_dock_count;
     result->stock_dock_count = stock_dock_count;
+
+    result->squadrons_compositions = squadrons_compositions;
     return result;
 }
 
