@@ -157,6 +157,7 @@ void GuiSquadronControls::setTargetSpaceship(P<PlayerSpaceship> targetSpaceship)
     pdi->setTargetSpaceship(target_spaceship);
 }
 
+
 void GuiSquadronControls::onUpdate()
 {
     if (!target_spaceship || !isVisible())

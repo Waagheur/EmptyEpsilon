@@ -337,19 +337,24 @@ void CicScreen::onDraw(sp::RenderTarget& renderer)
         delete_waypoint_button->disable();
 
     int n = 0;
-    for(auto &[id,template_name] : my_spaceship->getWaitingSquadrons())
+    for(unsigned int nbr : my_spaceship->getNbrWaitingSquadrons())
     {
+        if(nbr <= 0)
+        {
+            continue;
+        }
         int idx;
+        string &name = my_spaceship->ship_template->squadrons_compositions[n].template_name;
         if((idx = launch_selector->indexByValue(string(n))) != -1)
         {
-            if(launch_selector->getEntryName(idx) != id)
+            if(launch_selector->getEntryName(idx) != name)
             {
                 launch_selector->removeEntry(idx);
             }
         }
         if(launch_selector->indexByValue(string(n)) == -1)
         {
-            launch_selector->addEntry(id, string(n));
+            launch_selector->addEntry(name, string(n));
         }
         n++;
     }

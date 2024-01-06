@@ -67,6 +67,8 @@ public:
     constexpr static int max_self_destruct_codes = 3;
     // Subsystem effectiveness base rates
     constexpr static int max_engineer_presets_number = 9;
+
+    constexpr static unsigned int max_number_of_waiting_squadron = 20;
     
     bool has_gravity_sensor;
     bool has_electrical_sensor;
@@ -218,13 +220,15 @@ public:
 
     unsigned int max_squadrons_in_flight {8};
     float delay_to_next_creation[max_blueprints_count]{};
+    bool bp_activated[max_blueprints_count]{false};
+    bool bp_available[max_blueprints_count]{false};
     
     std::vector<Squadron> launched_squadrons;
-    std::map<string, unsigned int> waiting_squadrons;
+    std::array<unsigned int,max_number_of_waiting_squadron> number_of_waiting_squadron_for_bp{};
 
     float launch_duration{15};
     float launch_delay{0};
-    string squadron_to_launch{""};
+    int squadron_to_launch{-1};
 
     string comms_target_name;
     string comms_incomming_message;
@@ -519,10 +523,21 @@ public:
     void instantiateSquadron(const string& type);
     void requestLaunchWaitingSquadron(const string& identifier);
     void commandLaunchSquadron(string identifier);
-    void launchSquadron(const string& identifier);
+    void commandSetBlueprintActivation(int idx, bool val);
+    void launchSquadron(int idx);
+    bool isBlueprintAvailable(int idx) { return bp_available[idx];}
+    bool isBlueprintActivated(int idx) { return bp_activated[idx];}
 
     unsigned int getLaunchedSquadronsCount() { return launched_squadrons.size(); }
-    unsigned int getWaitingSquadronsCount() { return waiting_squadrons.size(); }
+    unsigned int getWaitingSquadronsCount() 
+    { 
+        unsigned int res{0};
+        for(unsigned int nbr : number_of_waiting_squadron_for_bp)
+        {
+            res+=nbr;
+        }
+        return res; 
+    }
 
     unsigned int getLaunchedSquadronsCount(const string &tp_name) 
     { 
@@ -538,32 +553,21 @@ public:
 
         return launched_squadrons.size(); 
     }
-    unsigned int getWaitingSquadronsCount(const string &tp_name) 
+    unsigned int getWaitingSquadronsCount(unsigned int idx) 
     { 
-        unsigned int n =0;
-        for (auto &[name, template_idx] : waiting_squadrons)
-        {
-            if(ship_template->squadrons_compositions[template_idx].template_name == tp_name)
-            {
-                n++;
-            }
-        }
-        return n;
+        return number_of_waiting_squadron_for_bp[idx];
     }
 
-    unsigned int getSquadronCount(const string & name) 
+    unsigned int getSquadronCount(unsigned int idx) 
     { 
         unsigned int nbr = 0; 
+        string name = ship_template->squadrons_compositions[idx].template_name;
         for(auto &sqt : launched_squadrons) 
         {
             if(sqt.squadron_template == name)
                 nbr++;
         }
-        for(auto & [id, template_idx] : waiting_squadrons) 
-        {
-            if(ship_template->squadrons_compositions[template_idx].template_name == name)
-                nbr++;
-        }
+        nbr += number_of_waiting_squadron_for_bp[idx];
         return nbr;
 
     }
@@ -573,9 +577,9 @@ public:
        return ship_template->squadrons_compositions;
     }
 
-    std::map<string,unsigned int>& getWaitingSquadrons()
+    std::array<unsigned int,max_number_of_waiting_squadron> getNbrWaitingSquadrons()
     {
-        return waiting_squadrons;
+        return number_of_waiting_squadron_for_bp;
     }
     std::vector<Squadron>& getLaunchedSquadrons()
     {
@@ -589,15 +593,13 @@ public:
 
     bool isLaunchingSquadron()
     {
-        return (squadron_to_launch == "") ? false : true;
+        return (squadron_to_launch == -1) ? false : true;
     }
 
     float getLaunchSquadronProgression()
     {
         return 1.0f - launch_delay / launch_duration;
     }
-
-    
     
 };
 REGISTER_MULTIPLAYER_ENUM(ECommsState);

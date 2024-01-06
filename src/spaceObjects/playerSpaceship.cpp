@@ -568,6 +568,7 @@ static const int16_t CMD_SET_ANALYSIS_LINK = 0x003A;
 static const int16_t CMD_SET_SYSTEM_POWER_PRESET = 0x003B;
 static const int16_t CMD_SET_SYSTEM_COOLANT_PRESET = 0x003C;
 static const int16_t CMD_LAUNCH_SQUADRON = 0x003D;
+static const int16_t CMD_BLUEPRINT_ACTIVATION = 0x003E;
 
 string alertLevelToString(EAlertLevel level)
 {
@@ -759,9 +760,18 @@ PlayerSpaceship::PlayerSpaceship()
         }
     }
 
+    //delay_to_next_creation.reserve(max_blueprints_count);
     for(unsigned int n = 0; n < max_blueprints_count; n++)
     {
         registerMemberReplication(&delay_to_next_creation[n]);
+        registerMemberReplication(&bp_activated[n]);
+        registerMemberReplication(&bp_available[n]);
+    }
+
+    //number_of_waiting_squadron_for_bp.reserve(max_number_of_waiting_squadron);
+    for(unsigned int n = 0; n < max_blueprints_count; n++)
+    {
+        registerMemberReplication(&number_of_waiting_squadron_for_bp[n]);
     }
 
     if (game_server)
@@ -1233,9 +1243,9 @@ void PlayerSpaceship::update(float delta)
         for(const auto& sqt : ship_template->squadrons_compositions)
         {    
             
-            if(((getWaitingSquadronsCount(sqt.template_name) + getLaunchedSquadronsCount(sqt.template_name)) >= sqt.max_created)
-            || sqt.activated == false
-            || sqt.available == false)
+            if(((getWaitingSquadronsCount(n) + getLaunchedSquadronsCount(sqt.template_name)) >= sqt.max_created)
+            || bp_activated[n] == false
+            || bp_available[n] == false)
             {
                 delay_to_next_creation[n] = sqt.construction_duration;
             }
@@ -1257,14 +1267,14 @@ void PlayerSpaceship::update(float delta)
         }
     }
     //Launch of a waiting squadron
-    if(launch_delay > 0 && squadron_to_launch != "")
+    if(launch_delay > 0 && squadron_to_launch != -1)
     {
         launch_delay -= delta * getSystemEffectiveness(SYS_Hangar);
     }
-    if(launch_delay <= 0 && squadron_to_launch != "")
+    if(launch_delay <= 0 && squadron_to_launch != -1)
     {
         launchSquadron(squadron_to_launch);
-        squadron_to_launch = "";
+        squadron_to_launch = -1;
     }
 
     {
@@ -1324,6 +1334,14 @@ void PlayerSpaceship::applyTemplateValues()
     {
         on_new_player_ship_called = true;
         gameGlobalInfo->on_new_player_ship.call<void>(P<PlayerSpaceship>(this));
+    }
+
+    int n=0;
+    for(auto &sqt : ship_template->squadrons_compositions)
+    {
+        bp_activated[n] = sqt.activated;
+        bp_available[n] = sqt.available;
+        n++;
     }
 
 }
@@ -2498,9 +2516,17 @@ void PlayerSpaceship::onReceiveClientCommand(int32_t client_id, sp::io::DataBuff
     case CMD_LAUNCH_SQUADRON:
         //TODO : mettre ça dans un dock
         {
-            string name;
+            int name;
             packet >> name;
-            launchSquadron(name);
+            requestLaunchWaitingSquadron(name);
+        }
+        break;
+    case CMD_BLUEPRINT_ACTIVATION:
+        {
+            int idx;
+            bool val;
+            packet >> idx >> val;
+            bp_activated[idx] = val;
         }
         break;
     }
@@ -2864,6 +2890,13 @@ void PlayerSpaceship::commandLaunchSquadron(string identifier)
     sendClientCommand(packet);
 }
 
+void PlayerSpaceship::commandSetBlueprintActivation(int idx, bool val)
+{
+    sp::io::DataBuffer packet;
+    packet << CMD_BLUEPRINT_ACTIVATION << idx << val;
+    sendClientCommand(packet);
+}
+
 void PlayerSpaceship::commandMoveCargo(int index)
 {
     sp::io::DataBuffer packet;
@@ -3167,7 +3200,7 @@ void PlayerSpaceship::instantiateSquadron(const string& compo_identifier)
     {
         if(sqt.template_name == compo_identifier)
         {
-            waiting_squadrons.insert({compo_identifier + "-" +gameGlobalInfo->getNextShipCallsign(), n});
+            number_of_waiting_squadron_for_bp[n]++;
             return;
         }
         n++;
@@ -3179,21 +3212,29 @@ void PlayerSpaceship::instantiateSquadron(const string& compo_identifier)
 void PlayerSpaceship::requestLaunchWaitingSquadron(const string& identifier)
 {
     launch_delay = launch_duration;
-    squadron_to_launch = identifier;
+    int n =0;
+    for(auto& sqt : ship_template->squadrons_compositions)
+    {
+        if(sqt.template_name == identifier)
+        {
+            squadron_to_launch = n;
+        }
+        n++;
+    }
 }
 
-void PlayerSpaceship::launchSquadron(const string& identifier)
+void PlayerSpaceship::launchSquadron(int template_idx)
 {
-     if(waiting_squadrons.find(identifier) == waiting_squadrons.end())
+     if(number_of_waiting_squadron_for_bp[template_idx] <=0)
      {
+        LOG(WARNING) << "No more squadron to launch";
         return;
      }
 
+    SquadronTemplate sqt = ship_template->squadrons_compositions[template_idx];
 
     Squadron squadron;
-    squadron.squadron_name = identifier;
-    
-    SquadronTemplate sqt = ship_template->squadrons_compositions[waiting_squadrons[identifier]];
+    squadron.squadron_name = sqt.template_name + "-" +gameGlobalInfo->getNextShipCallsign();
     
     for(const string &template_name : sqt.ship_names)
     {
@@ -3209,10 +3250,10 @@ void PlayerSpaceship::launchSquadron(const string& identifier)
         }
         else
         {
-            LOG(ERROR) << "Failed to find ship template for squadron creation : " << template_name << ", squadron template name : " << ship_template->squadrons_compositions[waiting_squadrons[identifier]].template_name;
+            LOG(ERROR) << "Failed to find ship template for squadron creation : " << template_name << ", squadron template name : " << sqt.template_name;
         }
     }
-    waiting_squadrons.erase(identifier);
+    number_of_waiting_squadron_for_bp[template_idx]--;
     launched_squadrons.push_back(squadron);
 }
 

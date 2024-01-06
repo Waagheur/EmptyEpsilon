@@ -27,6 +27,7 @@ public:
     GuiBlueprintsControls(GuiContainer* owner, string id, P<PlayerSpaceship> targetSpaceship);
 
     virtual void onUpdate() override;
+    virtual void onDraw(sp::RenderTarget& target) override;
 
     void setTargetSpaceship(P<PlayerSpaceship> targetSpaceship);
 
