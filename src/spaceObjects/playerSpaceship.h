@@ -212,11 +212,19 @@ public:
     {
         string squadron_name {""};
         string squadron_template {""};
+
         PVector<CpuShip> ships;    
-        bool operator<(const Squadron& rhs) const 
-        {
-            return squadron_name < rhs.squadron_name;
-        }
+        // bool operator<(const Squadron& rhs) const 
+        // {
+        //     return squadron_name < rhs.squadron_name;
+        // }
+    };
+    struct SquadronClientInfos 
+    {
+        string squadron_template{""};
+        string squadron_name{""};
+        string order{""};
+        string target{""};
     };
 
 
@@ -230,8 +238,10 @@ public:
     std::array<int,max_squadron_launch> bp_of_launching_squadron{};
     std::array<float, max_squadron_launch> launch_delay{};
     //Squadrons launched
-    unsigned int max_squadrons_in_flight {8};
+    constexpr static unsigned int max_squadrons_in_flight_limit {16};
+    unsigned int max_squadrons_in_flight{8};
     std::vector<Squadron> launched_squadrons;
+    std::array<SquadronClientInfos, max_squadrons_in_flight_limit> launched_squadrons_infos;
 
     float launch_duration{15};
 
@@ -548,7 +558,18 @@ public:
         return true;
     }
 
-    unsigned int getLaunchedSquadronsCount() { return launched_squadrons.size(); }
+    unsigned int getLaunchedSquadronsCount() 
+    { 
+        unsigned int nbr{0};
+        for(auto sqi : launched_squadrons_infos)
+        {
+            if(sqi.squadron_name != "")
+            {
+                nbr++;
+            }
+        } 
+        return nbr;
+    }
     unsigned int getWaitingSquadronsCount() 
     { 
         unsigned int res{0};
@@ -580,7 +601,7 @@ public:
     unsigned int getLaunchedSquadronsCount(const string &tp_name) 
     { 
         unsigned int n =0;
-        for (auto &squadron : launched_squadrons)
+        for (auto &squadron : launched_squadrons_infos)
         {
             if(squadron.squadron_template == tp_name)
             {
@@ -610,6 +631,11 @@ public:
     std::vector<Squadron>& getLaunchedSquadrons()
     {
         return launched_squadrons;
+    }
+
+    std::array<SquadronClientInfos, max_squadrons_in_flight_limit>& getLaunchedSquadronsInfos()
+    {
+        return launched_squadrons_infos;
     }
 
     float getSquadronCreationProgression(unsigned int idx)

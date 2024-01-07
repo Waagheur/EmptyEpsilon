@@ -93,7 +93,7 @@ void GuiBlueprintsControls::onUpdate()
         }
         else
         {
-            row.loading_label->setText(tr("cic","(" + string(cur_sq) + "/" + string(max_sq) + ")"));
+            row.loading_label->setText(tr("cic","(" + string(target_spaceship->getLaunchedSquadronsCount(templates[n].template_name)) + "L/" + string(cur_sq) + "T/" + string(max_sq) + ")"));
             row.loading_bar->show();
             row.loading_bar->setValue(target_spaceship->getSquadronCreationProgression(n));
                                                        

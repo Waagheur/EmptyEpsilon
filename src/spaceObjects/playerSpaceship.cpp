@@ -780,6 +780,16 @@ PlayerSpaceship::PlayerSpaceship()
         registerMemberReplication(&launch_delay[n]);
     }
 
+    registerMemberReplication(&max_squadrons_in_flight);
+    for(unsigned int n=0; n< max_squadrons_in_flight; n++)
+    {
+        registerMemberReplication(&(launched_squadrons_infos[n].squadron_name));
+        registerMemberReplication(&(launched_squadrons_infos[n].order));
+        registerMemberReplication(&(launched_squadrons_infos[n].target));
+        registerMemberReplication(&(launched_squadrons_infos[n].squadron_template));
+        
+    }
+
     if (game_server)
     {
         if (gameGlobalInfo->insertPlayerShip(this) < 0)
@@ -1273,17 +1283,28 @@ void PlayerSpaceship::update(float delta)
         }
     }
     //Launch of a waiting squadron
+    int deck_to_launch = -1;
+    unsigned int shortest_delay = std::numeric_limits<unsigned int>::max();
     for(unsigned int deck = 0; deck< max_squadron_launch; deck++)
     {
+        //one at a time, find the deck the shortest to launch
         if(launch_delay[deck] > 0 && bp_of_launching_squadron[deck] >= 0)
         {
-            launch_delay[deck] -= delta * getSystemEffectiveness(SYS_Hangar);
-            break; //One at a time
+            if(launch_delay[deck] < shortest_delay)
+            {
+                shortest_delay = launch_delay[deck];
+                deck_to_launch = deck;
+            }
         }
+        
         if(launch_delay[deck] <= 0 && bp_of_launching_squadron[deck] >= 0)
         {
             launchSquadron(deck);
         }
+    }
+    if(deck_to_launch != -1)
+    {
+        launch_delay[(unsigned int)deck_to_launch] -= delta * getSystemEffectiveness(SYS_Hangar);
     }
 
     {
@@ -1306,6 +1327,41 @@ void PlayerSpaceship::update(float delta)
             else
             {
                 iter++;
+            }
+        }
+        if(game_server)
+        {
+            unsigned int n=0;
+            for(auto &sq : launched_squadrons)
+            {
+                launched_squadrons_infos[n].squadron_name = sq.squadron_name;
+                launched_squadrons_infos[n].squadron_template= sq.squadron_template;
+                P<CpuShip> cpu = sq.ships[0];
+                string target{""};
+                if(cpu)
+                {
+                    P<SpaceObject> spo = cpu->getOrderTarget();
+                    if(spo)
+                    {
+                        target = spo->getCallSign();
+                    }
+                    else
+                    {
+                        target = getStringFromPosition(cpu->getOrderTargetLocation());
+                    }
+                }
+                launched_squadrons_infos[n].target = target;
+                launched_squadrons_infos[n].order = getAIOrderString(cpu->getOrder());
+                n++;
+            }
+            
+            while(n < max_squadrons_in_flight_limit)
+            {
+                launched_squadrons_infos[n].squadron_name="";
+                launched_squadrons_infos[n].order="";
+                launched_squadrons_infos[n].target="";
+                launched_squadrons_infos[n].squadron_template="";
+                n++;
             }
         }
     }
@@ -3243,37 +3299,45 @@ void PlayerSpaceship::instantiateSquadron(const string& compo_identifier)
 
 void PlayerSpaceship::launchSquadron(unsigned int deck)
 {
-    int bp_idx = bp_of_launching_squadron[deck];
-     if(bp_idx < 0)
-     {
-        LOG(WARNING) << "No more squadron to launch";
-        return;
-     }
-
-    SquadronTemplate sqt = ship_template->squadrons_compositions[bp_idx];
-
-    Squadron squadron;
-    squadron.squadron_name = sqt.template_name + "-" +gameGlobalInfo->getNextShipCallsign();
-    
-    for(const string &template_name : sqt.ship_names)
+    if(game_server)
     {
-        std::vector<string> v = ShipTemplate::getAllTemplateNames();
-        if(std::find(v.begin(), v.end(), template_name) != v.end())
+        int bp_idx = bp_of_launching_squadron[deck];
+        if(bp_idx < 0)
         {
-            P<CpuShip> ship = new CpuShip();
-            ship->setTemplate(template_name);
-            ship->setPosition(getPosition());
-            ship->setFaction(getFaction());
-            ship->orderDefendTarget(this);
-            squadron.ships.push_back(ship);
+            LOG(WARNING) << "No more squadron to launch";
+            return;
         }
-        else
+
+        SquadronTemplate sqt = ship_template->squadrons_compositions[bp_idx];
+
+        Squadron squadron;
+        string squadron_callsign = gameGlobalInfo->getNextShipCallsign();
+        squadron.squadron_name = sqt.template_name + "-" +squadron_callsign;
+        squadron.squadron_template = sqt.template_name;
+        
+        unsigned int n=1;
+        for(const string &template_name : sqt.ship_names)
         {
-            LOG(ERROR) << "Failed to find ship template for squadron creation : " << template_name << ", squadron template name : " << sqt.template_name;
+            std::vector<string> v = ShipTemplate::getAllTemplateNames();
+            if(std::find(v.begin(), v.end(), template_name) != v.end())
+            {
+                P<CpuShip> ship = new CpuShip();
+                ship->setCallSign(squadron_callsign+"-"+string(n));
+                ship->setTemplate(template_name);
+                ship->setPosition(getPosition());
+                ship->setFaction(getFaction());
+                ship->orderDefendTarget(this);
+                squadron.ships.push_back(ship);
+                n++;
+            }
+            else
+            {
+                LOG(ERROR) << "Failed to find ship template for squadron creation : " << template_name << ", squadron template name : " << sqt.template_name;
+            }
         }
+        bp_of_launching_squadron[deck] = -1;
+        launched_squadrons.push_back(squadron);
     }
-    bp_of_launching_squadron[deck] = -1;
-    launched_squadrons.push_back(squadron);
 }
 
 #include "playerSpaceship.hpp"

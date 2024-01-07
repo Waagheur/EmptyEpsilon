@@ -81,14 +81,16 @@ void GuiLaunchSquadronControls::onUpdate()
         deck++;
 
         int n = 0;
+        int sq_compo = 0;
         for(unsigned int nbr : target_spaceship->getNbrWaitingSquadrons())
         {
+            string &name = target_spaceship->ship_template->squadrons_compositions[sq_compo].template_name;
+            sq_compo++;
             if(nbr <= 0)
             {
                 continue;
             }
             int idx;
-            string &name = target_spaceship->ship_template->squadrons_compositions[n].template_name;
             if((idx = row.launch_selector->indexByValue(string(n))) != -1)
             {
                 if(row.launch_selector->getEntryName(idx) != name)

@@ -34,11 +34,14 @@ void GuiSquadronControls::selectSquadron(const string &name)
 
 void GuiSquadronControls::updateSquadronRows()
 {
-
+    if(!target_spaceship)
+        return;
     std::set<string> names;
-    for (auto & sq : target_spaceship->getLaunchedSquadrons())
+    for (auto & sqi : target_spaceship->getLaunchedSquadronsInfos())
     {
-        string &squadron_name = sq.squadron_name;
+        string &squadron_name = sqi.squadron_name;
+        if(squadron_name == "")
+            continue;
         names.insert(squadron_name);
         if(name_to_rows.find(squadron_name) == name_to_rows.end())
         {
@@ -66,42 +69,8 @@ void GuiSquadronControls::updateSquadronRows()
             row.squadron_button->setSize(140,40);
             row.squadron_button->setTextSize(30);
             
-            P<CpuShip> cpu = sq.ships[0];
-            string target{""};
-            if(cpu)
-            {
-                P<SpaceObject> spo = cpu->getOrderTarget();
-                if(spo)
-                {
-                    target = spo->getCallSign();
-                }
-                else
-                {
-                    target = getStringFromPosition(cpu->getOrderTargetLocation());
-                }
-            }
-
-            row.order_target_desc = new GuiKeyValueDisplay(row.layout, squadron_name + "ORDER_AND_TARGET", 0.63, getAIOrderString(cpu->getOrder()), target);
+            row.order_target_desc = new GuiKeyValueDisplay(row.layout, squadron_name + "ORDER_AND_TARGET", 0.63, sqi.order, sqi.target);
             row.order_target_desc->setTextSize(20)->setSize(170, 40);
-            // row.bp_toggle_button = new GuiToggleButton(row.layout, "LAUNCHED_SQUADRON_ROW_" + name + "_LOAD_BUTTON", name), [&sqt, this](bool value) {
-            //     if (!target_spaceship)
-            //         return;
-            //     sqt.activated = value;
-            // });
-            // row.bp_toggle_button->setValue(sqt.activated);
-            // row.bp_toggle_button->setSize(130, 40);
-            // row.bp_toggle_button->setTextSize(30);
-            
-            // row.loading_bar = new GuiProgressbar(row.layout, id + "_" + string(n) + "_PROGRESS", 0, 1.0, 0);
-            // row.loading_bar->setColor(glm::u8vec4(128, 128, 128, 255))->setSize(100, 40);
-        
-            // pdi = new GuiPowerDamageIndicator(row.loading_bar, id + "_" + string(n) + "_PDI", SYS_MissileSystem, sp::Alignment::CenterRight, target_spaceship);
-            // pdi->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);
-
-            // row.loading_label = new GuiLabel(row.loading_bar, id + "_" + string(n) + "_PROGRESS_LABEL", tr("cic",""), 25);
-            // row.loading_label->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);
-
-            // row.compo_name = name;
             name_to_rows.insert({squadron_name, row});
         }
         //We remove squadrons which are not in space now. could be optimized but meh
@@ -118,37 +87,6 @@ void GuiSquadronControls::updateSquadronRows()
             it++;
         }
     }
-    // {
-    //     BlueprintRow row;
-    //     row.layout = new GuiElement(this, id + "_ROW_" + string(n));
-    //     row.layout->setSize(GuiElement::GuiSizeMax, 40)->setAttribute("layout", "horizontal");
-    //     row.bp_toggle_button = new GuiToggleButton(row.layout, id + "_" + string(n) + "_LOAD_BUTTON", tr("cic",name), [&sqt, this](bool value) {
-    //         if (!target_spaceship)
-    //             return;
-    //         sqt.activated = value;
-    //     });
-    //     row.bp_toggle_button->setValue(sqt.activated);
-    //     row.bp_toggle_button->setSize(130, 40);
-    //     row.bp_toggle_button->setTextSize(30);
-        
-    //     row.loading_bar = new GuiProgressbar(row.layout, id + "_" + string(n) + "_PROGRESS", 0, 1.0, 0);
-    //     row.loading_bar->setColor(glm::u8vec4(128, 128, 128, 255))->setSize(100, 40);
-    
-    //     pdi = new GuiPowerDamageIndicator(row.loading_bar, id + "_" + string(n) + "_PDI", SYS_MissileSystem, sp::Alignment::CenterRight, target_spaceship);
-    //     pdi->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);
-
-    //     row.loading_label = new GuiLabel(row.loading_bar, id + "_" + string(n) + "_PROGRESS_LABEL", tr("cic",""), 25);
-    //     row.loading_label->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);
-
-    //     row.compo_name = name;
-
-    //     if(sqt.available == false)
-    //     {
-    //         row.layout->hide();
-    //     }
-    //     rows.push_back(row);
-    //     n++;
-    // }
     
 }
 
@@ -165,35 +103,6 @@ void GuiSquadronControls::onUpdate()
 
     updateSquadronRows();
 
-    // std::map<string, PlayerSpaceship::SquadronTemplate>& templates = target_spaceship->getSquadronCompositions();
-
-    // for(auto &row : rows)
-    // {
-    //     if(templates[row.compo_name].available == true)
-    //     {
-    //         row.layout->show();
-    //     }
-    //     else
-    //     {
-    //         row.layout->hide();
-    //     }
-
-        
-    //     unsigned int cur_sq = target_spaceship->getSquadronCount(row.compo_name);
-    //     unsigned int max_sq = templates[row.compo_name].max_created;
-    //     if(cur_sq >= max_sq)
-    //     {
-    //         row.loading_bar->show();
-    //         row.loading_bar->setValue(0);
-    //         row.loading_label->setText(tr("cic",tr("Max") + "(" + string(max_sq) + ")"));
-    //     }
-    //     else
-    //     {
-    //         row.loading_label->setText(tr("cic","(" + string(cur_sq) + "/" + string(max_sq) + ")"));
-    //         row.loading_bar->show();
-    //         row.loading_bar->setValue(target_spaceship->getSquadronCreationProgression(row.compo_name));
-                                                       
-    //     }
-    // }
+    
 }
 
