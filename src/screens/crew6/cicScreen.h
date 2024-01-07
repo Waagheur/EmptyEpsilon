@@ -27,7 +27,8 @@ private:
     };
 
     EMode mode;
-    TargetsContainer targets;
+    TargetsContainer targets_squadron;
+    TargetsContainer target_for_ai;
     P<SpaceObject> target;
     int drag_waypoint_index;
     GuiRadarView* radar;
@@ -61,6 +62,7 @@ private:
     GuiLabel* zoom_label;
 
     glm::vec2 mouse_down_position;
+    sp::io::Pointer::Button button_pressed;
     const float max_distance = 10000000.0f;
     const float min_distance = 6250.0f;
     float distance;

@@ -40,7 +40,7 @@ GuiLaunchSquadronControls::GuiLaunchSquadronControls(GuiContainer* owner, string
         row.launch_button->setTextSize(30);
 
         row.launch_progress = new GuiProgressbar(row.layout, id + "_ROW_" + string(n) + "_SQUADRON_LAUNCH_PROGRESS", 0, 1.0, 0);
-        row.launch_progress->setSize(100, 50);
+        row.launch_progress->setSize(100, 40);
         row.launch_progress->hide();
     
         pdi = new GuiPowerDamageIndicator(row.launch_progress, id + "_" + string(n) + "_PDI", SYS_Hangar, sp::Alignment::CenterRight, target_spaceship);
@@ -67,7 +67,7 @@ void GuiLaunchSquadronControls::onUpdate()
         if(target_spaceship->isLaunchingSquadron(deck))
         {
             row.launch_progress->show();
-            row.launch_progress->setText(row.waiting_squadron_selected_for_launch);
+            row.launch_progress->setText(target_spaceship->ship_template->squadrons_compositions[target_spaceship->bp_of_launching_squadron[deck]].template_name);
             row.launch_progress->setValue(my_spaceship->getLaunchSquadronProgression(deck));
             row.launch_button->hide();
         }

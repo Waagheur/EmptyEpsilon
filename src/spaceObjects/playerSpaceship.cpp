@@ -569,6 +569,8 @@ static const int16_t CMD_SET_SYSTEM_POWER_PRESET = 0x003B;
 static const int16_t CMD_SET_SYSTEM_COOLANT_PRESET = 0x003C;
 static const int16_t CMD_LAUNCH_SQUADRON = 0x003D;
 static const int16_t CMD_BLUEPRINT_ACTIVATION = 0x003E;
+static const int16_t CMD_ORDER_SQUADRON_TARGET = 0x003F;
+static const int16_t CMD_ORDER_SQUADRON_POSITION = 0x0041;
 
 string alertLevelToString(EAlertLevel level)
 {
@@ -787,6 +789,7 @@ PlayerSpaceship::PlayerSpaceship()
         registerMemberReplication(&(launched_squadrons_infos[n].order));
         registerMemberReplication(&(launched_squadrons_infos[n].target));
         registerMemberReplication(&(launched_squadrons_infos[n].squadron_template));
+        registerMemberReplication(&(launched_squadrons_infos[n].leader_id));
         
     }
 
@@ -1307,13 +1310,21 @@ void PlayerSpaceship::update(float delta)
         launch_delay[(unsigned int)deck_to_launch] -= delta * getSystemEffectiveness(SYS_Hangar);
     }
 
+    if(game_server)
     {
         std::vector<Squadron>::iterator iter = launched_squadrons.begin();
         while(iter != launched_squadrons.end())
         {
+
             bool found = false;
+            unsigned int nbr_destroyed;
             for(P<CpuShip> cpu : iter->ships)
             {
+                if(cpu->isDockedWith(this))
+                {
+                    cpu->destroy();
+                    nbr_destroyed++; //TODO : give back blueprint power
+                }
                 if(cpu)
                 {
                     found = true;
@@ -1329,7 +1340,7 @@ void PlayerSpaceship::update(float delta)
                 iter++;
             }
         }
-        if(game_server)
+        
         {
             unsigned int n=0;
             for(auto &sq : launched_squadrons)
@@ -1350,6 +1361,7 @@ void PlayerSpaceship::update(float delta)
                         target = getStringFromPosition(cpu->getOrderTargetLocation());
                     }
                 }
+                launched_squadrons_infos[n].leader_id = cpu->getMultiplayerId();
                 launched_squadrons_infos[n].target = target;
                 launched_squadrons_infos[n].order = getAIOrderString(cpu->getOrder());
                 n++;
@@ -1361,6 +1373,7 @@ void PlayerSpaceship::update(float delta)
                 launched_squadrons_infos[n].order="";
                 launched_squadrons_infos[n].target="";
                 launched_squadrons_infos[n].squadron_template="";
+                launched_squadrons_infos[n].leader_id=-1;
                 n++;
             }
         }
@@ -2587,6 +2600,25 @@ void PlayerSpaceship::onReceiveClientCommand(int32_t client_id, sp::io::DataBuff
             launchWaitingSquadron(deck, name);
         }
         break;
+    case CMD_ORDER_SQUADRON_TARGET:
+        {
+            uint32_t order;
+            unsigned int idx;
+            int32_t id_obj;
+            packet >> order >> idx >> id_obj;
+            P<SpaceObject> obj = (game_server ? game_server->getObjectById(id_obj) : game_client->getObjectById(id_obj));
+            orderSquadron((EAIOrder)order, idx, obj);
+        }
+        break;
+    case CMD_ORDER_SQUADRON_POSITION:
+        {
+            uint32_t order;
+            unsigned int idx;
+            glm::vec2 pos;
+            packet >> order >> idx >> pos;
+            orderSquadron((EAIOrder)order, idx, pos);
+        }
+        break;
     case CMD_BLUEPRINT_ACTIVATION:
         {
             int idx;
@@ -2595,6 +2627,85 @@ void PlayerSpaceship::onReceiveClientCommand(int32_t client_id, sp::io::DataBuff
             bp_activated[idx] = val;
         }
         break;
+    }
+}
+
+void PlayerSpaceship::orderSquadron(EAIOrder order, unsigned int idx, P<SpaceObject> &obj)
+{
+    //attack, defendtarget dock
+
+    for(auto &lq : launched_squadrons)
+    {
+        for(auto &ship : lq.ships)
+        {
+            if(obj == ship)
+            {
+                LOG(WARNING) << "Can't put order on another ship squadron, fly towards instead";
+                orderSquadron(AI_FlyTowards, idx, obj->getPosition());
+                return;
+            }
+        }
+    }
+
+    if(idx < launched_squadrons.size())
+    {
+        for(auto & ship : launched_squadrons[idx].ships)
+        {
+            switch(EAIOrder(order))
+            {
+                case AI_Attack:
+                {
+                    ship->orderAttack(obj);
+                }
+                break;
+                case AI_DefendTarget:
+                {
+                    ship->orderDefendTarget(obj);
+                }
+                break;
+                case AI_Dock:
+                {
+                    ship->orderDock(this);
+                }
+                break;
+                default:
+                {
+                    LOG(WARNING) << "Unknown order for squadron";
+                    break;
+                }
+
+            }
+
+        }
+    }
+}
+
+void PlayerSpaceship::orderSquadron(EAIOrder order, unsigned int idx, const glm::vec2 &pos)
+{
+    //FlyTowards, FlyTowardsBlind
+    if(idx < launched_squadrons.size())
+    {
+        for(auto & ship : launched_squadrons[idx].ships)
+        {
+            switch(EAIOrder(order))
+            {
+                case AI_FlyTowards:
+                {
+                    ship->orderFlyTowards(pos);
+                }
+                break;
+                case AI_FlyTowardsBlind:
+                {
+                    ship->orderFlyTowardsBlind(pos);
+                }
+                break;
+                default:
+                {
+                    LOG(WARNING) << "Unknown order for squadron";
+                    break;
+                }
+            }
+        }
     }
 }
 
@@ -2977,6 +3088,21 @@ void PlayerSpaceship::commandLaunchSquadron(unsigned int deck, const string& ide
     sendClientCommand(packet);
 }
 
+void PlayerSpaceship::commandOrderSquadronTarget(EAIOrder order, unsigned int idx, P<SpaceObject> &obj)
+{
+    sp::io::DataBuffer packet;
+    packet << CMD_ORDER_SQUADRON_TARGET << uint32_t(order) << idx << obj->getMultiplayerId();
+    sendClientCommand(packet);
+}
+
+void PlayerSpaceship::commandOrderSquadronPosition(EAIOrder order, unsigned int idx, const glm::vec2 &pos)
+{
+    sp::io::DataBuffer packet;
+    packet << CMD_ORDER_SQUADRON_POSITION << uint32_t(order) << idx << pos;
+    sendClientCommand(packet);
+}
+
+
 void PlayerSpaceship::commandSetBlueprintActivation(int idx, bool val)
 {
     sp::io::DataBuffer packet;
@@ -3328,8 +3454,13 @@ void PlayerSpaceship::launchSquadron(unsigned int deck)
                 ship->setFaction(getFaction());
                 ship->orderDefendTarget(this);
                 squadron.ships.push_back(ship);
+                // if(n > 0)
+                // {
+                //     ship->orderFlyFormation(squadron.ships[0]);
+                // }
                 n++;
             }
+            
             else
             {
                 LOG(ERROR) << "Failed to find ship template for squadron creation : " << template_name << ", squadron template name : " << sqt.template_name;

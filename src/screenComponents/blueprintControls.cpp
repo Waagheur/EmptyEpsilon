@@ -89,7 +89,7 @@ void GuiBlueprintsControls::onUpdate()
         {
             row.loading_bar->show();
             row.loading_bar->setValue(0);
-            row.loading_label->setText(tr("cic",tr("Max") + "(" + string(max_sq) + ")"));
+            row.loading_label->setText(tr("cic",string(target_spaceship->getLaunchedSquadronsCount(templates[n].template_name)) + "L/" + tr("Max") + "(" + string(max_sq) + ")"));
         }
         else
         {

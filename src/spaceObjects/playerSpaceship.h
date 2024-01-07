@@ -225,6 +225,7 @@ public:
         string squadron_name{""};
         string order{""};
         string target{""};
+        int32_t leader_id{-1};
     };
 
 
@@ -652,6 +653,11 @@ public:
     {
         return 1.0f - launch_delay[n] / launch_duration;
     }
+
+    void commandOrderSquadronPosition(EAIOrder order, unsigned int idx, const glm::vec2& pos);
+    void commandOrderSquadronTarget(EAIOrder order, unsigned int idx, P<SpaceObject>& obj);
+    void orderSquadron(EAIOrder order, unsigned int idx, const glm::vec2& pos);
+    void orderSquadron(EAIOrder order, unsigned int idx, P<SpaceObject>& obj);
     
 };
 REGISTER_MULTIPLAYER_ENUM(ECommsState);

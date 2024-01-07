@@ -31,23 +31,24 @@
 CicScreen::CicScreen(GuiContainer* owner, bool allow_comms)
 : GuiOverlay(owner, "CIC_SCREEN", colorConfig.background), mode(TargetSelection)
 {
-    targets.setAllowWaypointSelection();
-    radar = new GuiRadarView(this, "CIC_RADAR", 50000.0f, &targets, my_spaceship);
+    target_for_ai.setAllowWaypointSelection();
+    radar = new GuiRadarView(this, "CIC_RADAR", 50000.0f, &targets_squadron, my_spaceship);
     //radar long range is only for two things : draw ship without beam arc etc. and set distance. This is hacky.
     radar->longRange()->enableWaypoints()->enableCallsigns()->setStyle(GuiRadarView::Rectangular)->setFogOfWarStyle(GuiRadarView::FriendlysShortRangeFogOfWar);
     radar->setAutoCentering(false);
     radar->setPosition(0, 0, sp::Alignment::TopLeft)->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);
     radar->setCallbacks(
         [this](sp::io::Pointer::Button button, glm::vec2 position) { //down
-            if (mode == TargetSelection && targets.getWaypointIndex() > -1 && my_spaceship)
+            if (mode == TargetSelection && target_for_ai.getWaypointIndex() > -1 && my_spaceship)
             {
-                if (glm::length(my_spaceship->waypoints[targets.getWaypointIndex()] - position) < 1000.0f)
+                if (glm::length(my_spaceship->waypoints[target_for_ai.getWaypointIndex()] - position) < 1000.0f)
                 {
                     mode = MoveWaypoint;
-                    drag_waypoint_index = targets.getWaypointIndex();
+                    drag_waypoint_index = target_for_ai.getWaypointIndex();
                 }
             }
             mouse_down_position = position;
+            button_pressed = button;
         },
         [this](glm::vec2 position) { //drag
             // if (mode == TargetSelection)
@@ -65,7 +66,86 @@ CicScreen::CicScreen(GuiContainer* owner, bool allow_comms)
             switch(mode)
             {
             case TargetSelection:
-                targets.setToClosestTo(position, 1000, TargetsContainer::Selectable, my_spaceship);
+                {
+                    P<CpuShip> sel_squadron_leader = targets_squadron.get();
+                    int squadron_index{-1};
+                    int n=0;
+                    for(auto info : my_spaceship->launched_squadrons_infos)
+                    {
+                        if(sel_squadron_leader->getMultiplayerId() == info.leader_id)
+                        {
+                            squadron_index = n;
+                            break;
+                        }
+                        n++;
+                    }
+                    if(squadron_index == -1)
+                    {
+                        return;
+                    }
+                    if(sel_squadron_leader)
+                    {
+                        if (button_pressed == sp::io::Pointer::Button::Right)
+                        {           
+                            bool shift_down = SDL_GetModState() & KMOD_SHIFT;
+                            target_for_ai.setToClosestTo(position, 1000, TargetsContainer::Targetable, sel_squadron_leader);
+                            
+                            P<SpaceObject> target  = target_for_ai.get();
+                            if(target)
+                            {
+                                if (target != sel_squadron_leader && target->canBeTargetedBy(sel_squadron_leader))
+                                {
+                                    if (sel_squadron_leader->isEnemy(target))
+                                    {
+                                        my_spaceship->commandOrderSquadronTarget(AI_Attack, squadron_index,target);
+                                    }
+                                    else if(!shift_down)
+                                    {
+                                        my_spaceship->commandOrderSquadronTarget(AI_DefendTarget, squadron_index,target);
+                                    }
+                                    else if(shift_down && (target == my_spaceship))
+                                    {
+                                        if(target->canBeDockedBy(sel_squadron_leader) != DockStyle::None)
+                                        {
+                                            my_spaceship->commandOrderSquadronTarget(AI_Dock, squadron_index,target);
+                                        }
+                                        else
+                                        {
+                                            LOG(WARNING) << "Squadron class can't dock with target ship !";
+                                            LOG(WARNING) << "Class: " << sel_squadron_leader->ship_template->getClass();
+                                            for(auto & auth : my_spaceship->ship_template->external_dock_classes)
+                                            {
+                                                LOG(WARNING) << "Authorized: " << auth;
+                                            }
+                                            
+                                        }
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                glm::vec2 upper_bound(-std::numeric_limits<float>::max(), -std::numeric_limits<float>::max());
+                                glm::vec2 lower_bound(std::numeric_limits<float>::max(), std::numeric_limits<float>::max());
+                                lower_bound.x = std::min(lower_bound.x, sel_squadron_leader->getPosition().x);
+                                lower_bound.y = std::min(lower_bound.y, sel_squadron_leader->getPosition().y);
+                                upper_bound.x = std::max(upper_bound.x, sel_squadron_leader->getPosition().x);
+                                upper_bound.y = std::max(upper_bound.y, sel_squadron_leader->getPosition().y);
+                                glm::vec2 objects_center = (upper_bound + lower_bound) / 2.0f;
+
+                                if(shift_down)
+                                {
+                                    my_spaceship->commandOrderSquadronPosition(AI_FlyTowardsBlind, squadron_index,position + (sel_squadron_leader->getPosition() - objects_center));
+                                }
+                                else
+                                {
+                                    my_spaceship->commandOrderSquadronPosition(AI_FlyTowards, squadron_index,position + (sel_squadron_leader->getPosition() - objects_center));
+                                }
+                            }
+                        }
+                    }
+
+                //target_for_ai.setToClosestTo(position, 1000, TargetsContainer::Selectable, my_spaceship);
+                }
                 break;
             case WaypointPlacement:
                 if (my_spaceship)
@@ -76,7 +156,7 @@ CicScreen::CicScreen(GuiContainer* owner, bool allow_comms)
                 break;
             case MoveWaypoint:
                 mode = TargetSelection;
-                targets.setWaypointIndex(drag_waypoint_index);
+                target_for_ai.setWaypointIndex(drag_waypoint_index);
                 break;
             }
         }
@@ -132,9 +212,9 @@ CicScreen::CicScreen(GuiContainer* owner, bool allow_comms)
     add_waypoint_button->setSize(50, 50);
 
     delete_waypoint_button = new GuiButton(waypoints_layout, "WAYPOINT_DELETE_BUTTON", "-", [this]() {
-        if (my_spaceship && targets.getWaypointIndex() >= 0)
+        if (my_spaceship && target_for_ai.getWaypointIndex() >= 0)
         {
-            my_spaceship->commandRemoveWaypoint(targets.getWaypointIndex());
+            my_spaceship->commandRemoveWaypoint(target_for_ai.getWaypointIndex());
         }
     });
     delete_waypoint_button->setSize(50, 50);
@@ -151,10 +231,10 @@ CicScreen::CicScreen(GuiContainer* owner, bool allow_comms)
     center_screen_button->setIcon("gui/icons/lock");;
 
     // Scenario clock display.
-    info_clock = new GuiKeyValueDisplay(option_buttons, "INFO_CLOCK", 0.4f, tr("Clock") + ":", "");
+    info_clock = new GuiKeyValueDisplay(option_buttons, "INFO_CLOCK", 0.67f, tr("Clock") + ":", "");
     info_clock->setSize(GuiElement::GuiSizeMax, 40);
 
-    nbr_squadrons = new GuiKeyValueDisplay(option_buttons, "NBR_SQUADRON", 0.4f, tr("cic","Number of squadons") + ":", "");
+    nbr_squadrons = new GuiKeyValueDisplay(option_buttons, "NBR_SQUADRON", 0.67f, tr("cic","In flight") + ":", "");
     nbr_squadrons->setSize(GuiElement::GuiSizeMax, 40);
 
     //bp_layout = new GuiElement(this, "BLUEPRINTS_LAYOUT");
@@ -164,8 +244,8 @@ CicScreen::CicScreen(GuiContainer* owner, bool allow_comms)
     sqc_layout = new GuiLaunchSquadronControls(this, "SQUADRON_CONTROL", my_spaceship);
     sqc_layout->setPosition(20, 500, sp::Alignment::TopLeft)->setSize(250, GuiElement::GuiSizeMax)->setAttribute("layout", "vertical");
 
-    launched_squadron_layout = new GuiSquadronControls(this, "LAUNCHED_SQUADRON_LAYOUT", my_spaceship);
-    launched_squadron_layout->setPosition(20, 650, sp::Alignment::TopLeft)->setSize(250, GuiElement::GuiSizeMax)->setAttribute("layout", "vertical");
+    launched_squadron_layout = new GuiSquadronControls(this, "LAUNCHED_SQUADRON_LAYOUT", my_spaceship, radar, targets_squadron);
+    launched_squadron_layout->setPosition(-120, 300, sp::Alignment::TopRight)->setSize(250, GuiElement::GuiSizeMax)->setAttribute("layout", "vertical");
 
     //(new GuiAlertLevelSelect(this, ""))->setPosition(-20, -70, sp::Alignment::BottomRight)->setSize(300, GuiElement::GuiSizeMax)->setAttribute("layout", "verticalbottom");
 
@@ -216,11 +296,11 @@ void CicScreen::onDraw(sp::RenderTarget& renderer)
     }
 
     info_faction->setValue("-");
-    if (targets.get() && my_spaceship)
+    if (target_for_ai.get() && my_spaceship)
     {
         // Check each object to determine whether the target is still within
         // shared radar range of a friendly object.
-        P<SpaceObject> target = targets.get();
+        P<SpaceObject> target = target_for_ai.get();
         bool near_friendly = false;
 
         // For each SpaceObject on the map...
@@ -249,6 +329,8 @@ void CicScreen::onDraw(sp::RenderTarget& renderer)
                 }
             }
 
+            //On ne peut sélectionner que des vaisseaux qui sont dans la liste des escadres
+            
             // Set the targetable radius to getShortRangeRadarRange() if the
             // object's a ShipTemplateBasedObject. Otherwise, default to 5U.
             float r = stb_obj ? stb_obj->getShortRangeRadarRange() : 5000.0f;
@@ -266,13 +348,13 @@ void CicScreen::onDraw(sp::RenderTarget& renderer)
         {
             // If the target is no longer near a friendly object, unset it as
             // the target.
-            targets.clear();
+            target_for_ai.clear();
         }
     }
 
-    if (targets.get() && my_spaceship)
+    if (target_for_ai.get() && my_spaceship)
     {
-        P<SpaceObject> obj = targets.get();
+        P<SpaceObject> obj = target_for_ai.get();
         P<SpaceShip> ship = obj;
         P<SpaceStation> station = obj;
         P<ScanProbe> probe = obj;
@@ -310,10 +392,10 @@ void CicScreen::onDraw(sp::RenderTarget& renderer)
         nbr_squadrons->setValue(string(total) + " / " + string(my_spaceship->getMaximumNumberOfSquadronsInFlight()));
     }
 
-    if (targets.getWaypointIndex() >= 0)
+    if (target_for_ai.getWaypointIndex() >= 0)
     {
         delete_waypoint_button->enable();
-        distance = glm::length(my_spaceship->waypoints[targets.getWaypointIndex()] - my_spaceship->getPosition()) / 1000.0f;
+        distance = glm::length(my_spaceship->waypoints[target_for_ai.getWaypointIndex()] - my_spaceship->getPosition()) / 1000.0f;
         info_distance -> setValue(string(distance, 1.0f) + " U");
     }
     else
@@ -328,113 +410,7 @@ void CicScreen::onUpdate()
     {
         float radar_range = my_spaceship->getShortRangeRadarRange();
 
-        if (keys.relay_next_enemy.getDown())
-        {
-            bool current_found = false;
-            foreach(SpaceObject, obj, space_object_list)
-            {
-                if (obj == targets.get())
-                {
-                    current_found = true;
-                    continue;
-                }
-                if (current_found && glm::length(obj->getPosition() - my_spaceship->getPosition()) < radar->getDistance() && my_spaceship->isEnemy(obj) && my_spaceship->getScannedStateFor(obj) >= SS_FriendOrFoeIdentified && obj->canBeTargetedBy(my_spaceship))
-                {
-                    targets.set(obj);
-                    // my_spaceship->commandSetTarget(targets.get());
-                    return;
-                }
-            }
-            foreach(SpaceObject, obj, space_object_list)
-            {
-                if (obj == targets.get())
-                {
-                    continue;
-                }
-                if (my_spaceship->isEnemy(obj) && glm::length(obj->getPosition() - my_spaceship->getPosition()) < radar->getDistance() && my_spaceship->getScannedStateFor(obj) >= SS_FriendOrFoeIdentified && obj->canBeTargetedBy(my_spaceship))
-                {
-                    targets.set(obj);
-                    // my_spaceship->commandSetTarget(targets.get());
-                    return;
-                }
-            }
-        }
-        if (keys.relay_next.getDown())
-        {
-            bool current_found = false;
-            PVector<SpaceObject> list_range;
-            PVector<SpaceObject> list_range_obj_relai;
-
-            list_range = my_spaceship->getObjectsInRange(radar_range);
-            foreach(SpaceObject, obj, list_range)
-            {
-                if (obj == targets.get())
-                {
-                    current_found = true;
-                    continue;
-                }
-                if (obj == my_spaceship)
-                    continue;
-                if (current_found && glm::length(obj->getPosition() - my_spaceship->getPosition()) < radar->getDistance() && obj->canBeTargetedBy(my_spaceship))
-                {
-                    targets.set(obj);
-                    return;
-                }
-            }
-            foreach(SpaceObject, obj_relai, space_object_list)
-            {
-                // P<ScanProbe> test = obj_relai;
-                if(obj_relai->isFriendly(my_spaceship))
-                {
-                    list_range_obj_relai = obj_relai->getObjectsInRange(radar_range);
-                    foreach(SpaceObject, obj, list_range_obj_relai)
-                    {
-                        if (obj == targets.get())
-                        {
-                            current_found = true;
-                            continue;
-                        }
-                        if (obj == my_spaceship)
-                            continue;
-                        if (current_found && glm::length(obj->getPosition() - obj_relai->getPosition()) < radar->getDistance() && obj->canBeTargetedBy(my_spaceship))
-                        {
-                            targets.set(obj);
-                            return;
-                        }
-                    }
-                }
-            }
-
-            list_range = my_spaceship->getObjectsInRange(radar_range);
-            foreach(SpaceObject, obj, list_range)
-            {
-                if (obj == targets.get()  || obj == my_spaceship)
-                    continue;
-                if (glm::length(obj->getPosition() - my_spaceship->getPosition()) < radar->getDistance() && obj->canBeTargetedBy(my_spaceship))
-                {
-                    targets.set(obj);
-                    return;
-                }
-            }
-            foreach(SpaceObject, obj_relai, space_object_list)
-            {
-                // P<ScanProbe> test = probe;
-                if(obj_relai->isFriendly(my_spaceship))
-                {
-                    list_range_obj_relai = obj_relai->getObjectsInRange(radar_range);
-                    foreach(SpaceObject, obj, list_range_obj_relai)
-                    {
-                        if (obj == targets.get() || obj == my_spaceship)
-                            continue;
-                        if (glm::length(obj->getPosition() - obj_relai->getPosition()) < radar->getDistance() && obj->canBeTargetedBy(my_spaceship))
-                        {
-                            targets.set(obj);
-                            return;
-                        }
-                    }
-                }
-            }
-        }
+        
         if (keys.relay_add_waypoint.getDown())
         {
             mode = WaypointPlacement;
@@ -443,8 +419,8 @@ void CicScreen::onUpdate()
         }
         if (keys.relay_delete_waypoint.getDown())
         {
-            if (targets.getWaypointIndex() >= 0)
-                my_spaceship->commandRemoveWaypoint(targets.getWaypointIndex());
+            if (target_for_ai.getWaypointIndex() >= 0)
+                my_spaceship->commandRemoveWaypoint(target_for_ai.getWaypointIndex());
         }
         //TODO check
         // if (key.hotkey == "INCREASE_ZOOM")

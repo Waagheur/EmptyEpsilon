@@ -248,11 +248,6 @@ variation:setTubeDirection(1, 1)
 variation:setTubeSize(0,"Small")
 variation:setTubeSize(1,"Small")
 
-variation:registerSquadronComposition("TestSq", 5, 15, "Chasseur Mk2", "Chasseur", "Chasseur","Chasseur")
-variation:registerSquadronComposition("TestSq2", 5, 15, "Chasseur Mk2", "Chasseur", "Chasseur","Chasseur")
-variation:registerSquadronComposition("TestSq3", 5, 15, "Chasseur Mk2", "Chasseur", "Chasseur","Chasseur")
-variation:registerSquadronComposition("TestSq4", 5, 15, "Chasseur Mk2", "Chasseur", "Chasseur","Chasseur")
-
 -- PJ
 variation:setCombatManeuver(600, 350)
 variation:setEnergyStorage(400)

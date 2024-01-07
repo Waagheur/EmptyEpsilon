@@ -606,66 +606,8 @@ void GameMasterScreen::onMouseUp(glm::vec2 position)
         {
             //Right click
             bool shift_down = SDL_GetModState() & KMOD_SHIFT;
-            gameMasterActions->commandContextualGoTo(position, shift_down, targets.getTargets());
-            //New daid gm screen... TODO test
-            // P<SpaceObject> target;
-            // PVector<Collisionable> list = CollisionManager::queryArea(position, position);
-            // foreach(Collisionable, collisionable, list)
-            // {
-            //     P<SpaceObject> space_object = collisionable;
-            //     if (space_object)
-            //     {
-            //         if (!target || glm::length(position - space_object->getPosition()) < glm::length(position - target->getPosition()))
-            //             target = space_object;
-            //     }
-            // }
-
-            // glm::vec2 upper_bound(-std::numeric_limits<float>::max(), -std::numeric_limits<float>::max());
-            // glm::vec2 lower_bound(std::numeric_limits<float>::max(), std::numeric_limits<float>::max());
-            // for(P<SpaceObject> obj : targets.getTargets())
-            // {
-            //     P<CpuShip> cpu_ship = obj;
-            //     if (!cpu_ship)
-            //         continue;
-
-            //     lower_bound.x = std::min(lower_bound.x, obj->getPosition().x);
-            //     lower_bound.y = std::min(lower_bound.y, obj->getPosition().y);
-            //     upper_bound.x = std::max(upper_bound.x, obj->getPosition().x);
-            //     upper_bound.y = std::max(upper_bound.y, obj->getPosition().y);
-            // }
-            // glm::vec2 objects_center = (upper_bound + lower_bound) / 2.0f;
-
-            // for(P<SpaceObject> obj : targets.getTargets())
-            // {
-            //     P<CpuShip> cpu_ship = obj;
-            //     P<WormHole> wormhole = obj;
-            //     if (cpu_ship)
-            //     {
-            //         if (target && target != obj && target->canBeTargetedBy(obj))
-            //         {
-            //             if (obj->isEnemy(target))
-            //             {
-            //                 cpu_ship->orderAttack(target);
-            //             }else{
-            //                 if (!shift_down && target->canBeDockedBy(cpu_ship) != DockStyle::None)
-            //                     cpu_ship->orderDock(target);
-            //                 else
-            //                     cpu_ship->orderDefendTarget(target);
-            //             }
-            //         }else{
-            //             if (shift_down)
-            //                 cpu_ship->orderFlyTowardsBlind(position + (obj->getPosition() - objects_center));
-            //             else
-            //                 cpu_ship->orderFlyTowards(position + (obj->getPosition() - objects_center));
-            //         }
-            //     }
-            //     else if (wormhole)
-            //     {
-            //         wormhole->setTargetPosition(position);
-            //     }
-
-
-            // }
+            gameMasterActions->commandContextualGoTo(position, shift_down, targets.getTargets()); //for ai, order attack etc.
+           
         }
         break;
     case CD_BoxSelect:
