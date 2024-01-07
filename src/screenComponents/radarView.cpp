@@ -176,11 +176,12 @@ void GuiRadarView::onDraw(sp::RenderTarget& renderer)
         glStencilFunc(GL_EQUAL, as_mask(RadarStencil::RadarBounds), as_mask(RadarStencil::RadarBounds));
         drawNebulaBlockedAreas(renderer);
     }
-    else if (fog_style == FriendlysShortRangeFogOfWar)
+    else if (fog_style == FriendlysShortRangeFogOfWar || fog_style == FriendlysLongRangeFogOfWar)
     {
         // Draws the *visible* areas.
         // Add the visible states to anything that's in friendly sight (and still in bounds)
         glStencilFunc(GL_EQUAL, as_mask(RadarStencil::InBoundsAndVisible), as_mask(RadarStencil::RadarBounds));
+        // LongRangeFogOfWar -> friendly short range is still used for friends
         drawNoneFriendlyBlockedAreas(renderer);
     }
     // Stencil is setup!
@@ -291,9 +292,15 @@ void GuiRadarView::drawNoneFriendlyBlockedAreas(sp::RenderTarget& renderer)
             
             P<ShipTemplateBasedObject> stb_obj = obj;
             
-            if (obj == my_spaceship || (stb_obj && (obj->faction_id == my_spaceship->faction_id || obj->personality_id == 1)))
+            if (obj == my_spaceship)
             {
-                float r_stb = gameGlobalInfo->use_long_range_for_relay ? stb_obj->getLongRangeRadarRange() : stb_obj->getShortRangeRadarRange();
+                float r_stb = (fog_style == FriendlysLongRangeFogOfWar) ? stb_obj->getLongRangeRadarRange() : stb_obj->getShortRangeRadarRange();
+                r_stb *= getScale();
+                renderer.fillCircle(worldToScreen(obj->getPosition()), r_stb, glm::u8vec4{ 20, 20, 20, background_alpha });
+            }
+            if ((stb_obj && (obj->faction_id == my_spaceship->faction_id || obj->personality_id == 1)))
+            {
+                float r_stb = stb_obj->getShortRangeRadarRange();
                 r_stb *= getScale();
                 renderer.fillCircle(worldToScreen(obj->getPosition()), r_stb, glm::u8vec4{ 20, 20, 20, background_alpha });
             }
@@ -537,6 +544,8 @@ void GuiRadarView::drawObjects(sp::RenderTarget& renderer)
             visible_objects.emplace(*obj);
         }
         break;
+    
+    case FriendlysLongRangeFogOfWar:
     case FriendlysShortRangeFogOfWar:
         // Reveal objects if they are within short-range radar range (or 5U) of
         // a friendly ship, station, or scan probe.
@@ -585,10 +594,9 @@ void GuiRadarView::drawObjects(sp::RenderTarget& renderer)
             {
                 radar_range = my_spaceship->getProbeRangeRadarRange();
             } 
-            else if(target_spaceship == obj) //we already checked we shared same faction
+            else if(my_spaceship == obj) 
             {
-                //TODO FIXME verifier pourquoi c'est que moi et pas les autres de ma faction
-                radar_range = gameGlobalInfo->use_long_range_for_relay ? target_spaceship->getLongRangeRadarRange() : target_spaceship->getShortRangeRadarRange();
+                radar_range = (fog_style == FriendlysLongRangeFogOfWar) ? target_spaceship->getLongRangeRadarRange() : target_spaceship->getShortRangeRadarRange();
             }     
 
             // Query for objects within short-range radar/5U of this object.

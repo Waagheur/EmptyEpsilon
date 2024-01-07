@@ -382,6 +382,10 @@ set(MAIN_SOURCES
 	  src/hardware/devices/virtualOutputDevice.cpp
 	  src/hardware/devices/philipsHueDevice.cpp
 	  src/shaderRegistry.cpp
+    src/screens/crew6/cicScreen.cpp
+    src/screenComponents/blueprintControls.cpp
+    src/screenComponents/launchSquadronControls.cpp
+    src/screenComponents/squadronControls.cpp
 
     src/ai/aiFactory.h
     src/ai/ai.h
@@ -538,6 +542,10 @@ set(MAIN_SOURCES
     src/spaceObjects/zone.h
     src/threatLevelEstimate.h
     src/tutorialGame.h
+    src/screens/crew6/cicScreen.h
+    src/screenComponents/blueprintControls.h
+    src/screenComponents/launchSquadronControls.h
+    src/screenComponents/squadronControls.h
 )
 
 if (WITH_DISCORD)

@@ -55,3 +55,4 @@ build*/
 _build*/
 cmake/_win32/
 cmake/android/
+scripts/scenario_test.lua

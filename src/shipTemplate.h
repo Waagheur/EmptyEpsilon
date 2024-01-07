@@ -17,6 +17,7 @@ constexpr static int max_beam_weapons = 16;
 constexpr static int max_weapon_tubes = 16;
 constexpr static int max_shield_count = 8;
 constexpr static int max_docks_count = 16;
+constexpr static int max_blueprints_count = 16;
 
 enum ESystem
 {
@@ -63,6 +64,17 @@ public:
     bool horizontal;
 
     ShipDoorTemplate(glm::ivec2 position, bool horizontal) : position(position), horizontal(horizontal) {}
+};
+
+//Squadrons for CiC
+struct SquadronTemplate
+{
+    string template_name;
+    std::vector<string> ship_names;
+    unsigned int max_created {0};
+    float construction_duration {0};
+    bool activated {false};
+    bool available {false};
 };
 
 class SpaceObject;
@@ -172,6 +184,7 @@ public:
     std::vector<ShipRoomTemplate> rooms;
     std::vector<ShipDoorTemplate> doors;
     std::vector<DroneTemplate> drones;
+    std::vector<SquadronTemplate> squadrons_compositions;
 
     ShipTemplate();
 
@@ -260,6 +273,18 @@ public:
     ESystem getSystemAtRoom(glm::ivec2 position);
 
     void setCollisionData(P<SpaceObject> object);
+
+    void registerSquadronComposition(const string& name, const unsigned int max, const unsigned creation_duration, const std::vector<string>& ship_names)
+    {
+        SquadronTemplate sqt;
+        sqt.max_created = max;
+        sqt.construction_duration = creation_duration;
+        sqt.ship_names = ship_names;
+        sqt.template_name = name;
+        sqt.available = true;
+        squadrons_compositions.push_back(sqt);
+    }
+
 public:
     static P<ShipTemplate> getTemplate(string name);
     static std::vector<string> getAllTemplateNames();

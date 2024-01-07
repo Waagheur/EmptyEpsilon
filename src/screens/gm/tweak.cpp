@@ -2118,6 +2118,10 @@ GuiShipTweakMessages::GuiShipTweakMessages(GuiContainer* owner)
         if(target)
             target->addCustomMessage(relayOfficer,"relay_message", message);
     }))->setSize(GuiElement::GuiSizeMax, 30);
+    (new GuiButton(right_col, "", tr("station","Cic"), [this]() {
+        if(target)
+            target->addCustomMessage(cagOfficer,"cic_message", message);
+    }))->setSize(GuiElement::GuiSizeMax, 30);
     (new GuiButton(right_col, "", tr("Docks"), [this]() {
         if(target)
             target->addCustomMessage(dockMaster,"docks_message", message);
@@ -2139,6 +2143,7 @@ GuiShipTweakMessages::GuiShipTweakMessages(GuiContainer* owner)
             target->removeCustom("engineering_message");
             target->removeCustom("science_message");
             target->removeCustom("relay_message");
+            target->removeCustom("cic_message");
             target->removeCustom("docks_message");
             target->removeCustom("drone_message");
             target->removeCustom("single_message");

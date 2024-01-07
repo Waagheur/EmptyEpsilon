@@ -6,8 +6,10 @@
 #include "commsScriptInterface.h"
 #include "playerInfo.h"
 #include "spaceshipParts/dock.h"
+#include "spaceObjects/cpuShip.h"
 #include <iostream>
 #include <map>
+#include <set>
 
 class ScanProbe;
 
@@ -65,6 +67,9 @@ public:
     constexpr static int max_self_destruct_codes = 3;
     // Subsystem effectiveness base rates
     constexpr static int max_engineer_presets_number = 9;
+
+    constexpr static unsigned int max_number_of_waiting_squadron = 20;
+    constexpr static unsigned int max_squadron_launch = 3; //should then be number of flight decks (see dock view)
     
     bool has_gravity_sensor;
     bool has_electrical_sensor;
@@ -201,6 +206,45 @@ public:
     float scan_probe_recharge = 0.0;
     ScriptSimpleCallback on_probe_launch;
     float scan_probe_recharge_dock;
+
+        
+    struct Squadron
+    {
+        string squadron_name {""};
+        string squadron_template {""};
+
+        PVector<CpuShip> ships;    
+        // bool operator<(const Squadron& rhs) const 
+        // {
+        //     return squadron_name < rhs.squadron_name;
+        // }
+    };
+    struct SquadronClientInfos 
+    {
+        string squadron_template{""};
+        string squadron_name{""};
+        string order{""};
+        string target{""};
+        int32_t leader_id{-1};
+    };
+
+
+    //Blueprints which are activated (by player), available (set by GM), and delay to creation
+    float delay_to_next_creation[max_blueprints_count]{};
+    bool bp_activated[max_blueprints_count]{false};
+    bool bp_available[max_blueprints_count]{false};
+    //Squadrons available to launch
+    std::array<unsigned int,max_number_of_waiting_squadron> number_of_waiting_squadron_for_bp{};
+    //Squadrons being launched
+    std::array<int,max_squadron_launch> bp_of_launching_squadron{};
+    std::array<float, max_squadron_launch> launch_delay{};
+    //Squadrons launched
+    constexpr static unsigned int max_squadrons_in_flight_limit {16};
+    unsigned int max_squadrons_in_flight{8};
+    std::vector<Squadron> launched_squadrons;
+    std::array<SquadronClientInfos, max_squadrons_in_flight_limit> launched_squadrons_infos;
+
+    float launch_duration{15};
 
     string comms_target_name;
     string comms_incomming_message;
@@ -489,6 +533,132 @@ public:
     {
         on_modifier_toggle = callback;
     }
+
+    void setMaxSquadrons(unsigned int max) { max_squadrons_in_flight = max;}
+
+    void instantiateSquadron(const string& type);
+    void launchWaitingSquadron(unsigned int deck, const string& identifier);
+    void commandLaunchSquadron(unsigned int deck, const string& identifier);
+    void commandSetBlueprintActivation(int idx, bool val);
+    void launchSquadron(unsigned int deck);
+    bool isBlueprintAvailable(int idx) { return bp_available[idx];}
+    bool isBlueprintActivated(int idx) { return bp_activated[idx];}
+    bool canLaunchSquadron() 
+    {
+        unsigned int total_nbr_launching{0};
+        for(int bp_launching : bp_of_launching_squadron)
+        {
+            if(bp_launching != -1)
+            total_nbr_launching ++;
+        }
+        if(total_nbr_launching >= max_squadron_launch)
+        {
+            return false;
+        }
+        //TODO effectiveness of system
+        return true;
+    }
+
+    unsigned int getLaunchedSquadronsCount() 
+    { 
+        unsigned int nbr{0};
+        for(auto sqi : launched_squadrons_infos)
+        {
+            if(sqi.squadron_name != "")
+            {
+                nbr++;
+            }
+        } 
+        return nbr;
+    }
+    unsigned int getWaitingSquadronsCount() 
+    { 
+        unsigned int res{0};
+        for(unsigned int nbr : number_of_waiting_squadron_for_bp)
+        {
+            res+=nbr;
+        }
+        return res; 
+    }
+
+    unsigned int getWaitingSquadronsCount(unsigned int idx) 
+    { 
+        return number_of_waiting_squadron_for_bp[idx];
+    }
+
+    unsigned int getLaunchingSquadronCount(unsigned int idx)
+    {
+        unsigned int nbr{0};
+        for(int launching : bp_of_launching_squadron)
+        {
+            if(launching == (int)idx)
+            {
+                nbr++;
+            }
+        }
+        return nbr;
+    }
+    
+    unsigned int getLaunchedSquadronsCount(const string &tp_name) 
+    { 
+        unsigned int n =0;
+        for (auto &squadron : launched_squadrons_infos)
+        {
+            if(squadron.squadron_template == tp_name)
+            {
+                n++;
+            }
+        }
+        return n;
+    }
+
+    unsigned int getSquadronCount(unsigned int idx) 
+    { 
+        string name = ship_template->squadrons_compositions[idx].template_name;
+       
+        return getWaitingSquadronsCount(idx) + getLaunchingSquadronCount(idx) + getLaunchedSquadronsCount(name);
+
+    }
+    unsigned int getMaximumNumberOfSquadronsInFlight() { return max_squadrons_in_flight;}
+    std::vector<SquadronTemplate>& getSquadronCompositions()
+    {
+       return ship_template->squadrons_compositions;
+    }
+
+    std::array<unsigned int,max_number_of_waiting_squadron> getNbrWaitingSquadrons()
+    {
+        return number_of_waiting_squadron_for_bp;
+    }
+    std::vector<Squadron>& getLaunchedSquadrons()
+    {
+        return launched_squadrons;
+    }
+
+    std::array<SquadronClientInfos, max_squadrons_in_flight_limit>& getLaunchedSquadronsInfos()
+    {
+        return launched_squadrons_infos;
+    }
+
+    float getSquadronCreationProgression(unsigned int idx)
+    {
+        return 1.0f - delay_to_next_creation[idx] / ship_template->squadrons_compositions[idx].construction_duration;
+    }
+
+    bool isLaunchingSquadron(int n)
+    {
+        return (bp_of_launching_squadron[n] != -1) ? true : false;
+    }
+
+    float getLaunchSquadronProgression(int n)
+    {
+        return 1.0f - launch_delay[n] / launch_duration;
+    }
+
+    void commandOrderSquadronPosition(EAIOrder order, unsigned int idx, const glm::vec2& pos);
+    void commandOrderSquadronTarget(EAIOrder order, unsigned int idx, P<SpaceObject>& obj);
+    void orderSquadron(EAIOrder order, unsigned int idx, const glm::vec2& pos);
+    void orderSquadron(EAIOrder order, unsigned int idx, P<SpaceObject>& obj);
+    
 };
 REGISTER_MULTIPLAYER_ENUM(ECommsState);
 template<> int convert<EAlertLevel>::returnType(lua_State* L, EAlertLevel l);

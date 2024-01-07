@@ -32,7 +32,17 @@ RelayScreen::RelayScreen(GuiContainer* owner, bool allow_comms)
 {
     targets.setAllowWaypointSelection();
     radar = new GuiRadarView(this, "RELAY_RADAR", 50000.0f, &targets, my_spaceship);
-    radar->longRange()->enableWaypoints()->enableCallsigns()->setStyle(GuiRadarView::Rectangular)->setFogOfWarStyle(GuiRadarView::FriendlysShortRangeFogOfWar);
+    //radar long range is only for two things : draw ship without beam arc etc. and set distance. This is hacky.
+    radar->longRange()->enableWaypoints()->enableCallsigns()->setStyle(GuiRadarView::Rectangular);
+    if(gameGlobalInfo->use_long_range_for_relay)
+    {
+        radar->setFogOfWarStyle(GuiRadarView::FriendlysLongRangeFogOfWar);
+    }
+    else
+    {
+        radar->setFogOfWarStyle(GuiRadarView::FriendlysShortRangeFogOfWar);
+    }
+
     radar->setAutoCentering(false);
     radar->setPosition(0, 0, sp::Alignment::TopLeft)->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);
     radar->setCallbacks(
@@ -156,7 +166,7 @@ RelayScreen::RelayScreen(GuiContainer* owner, bool allow_comms)
     (new GuiButton(position_entry, id + "_BUTTON_0", "0", [this]() {position_text->setText(position_text->getText() + "0");}))->setSize(50, 50)->setPosition(100, 250, sp::Alignment::TopLeft);
 
     // Center screen
-    center_screen_button = new GuiButton(view_controls, "CENTER_SCREEN_BUTTON", "Recentrer radar", [this]() {
+    center_screen_button = new GuiButton(view_controls, "CENTER_SCREEN_BUTTON", tr("Recenter radar"), [this]() {
         if (my_spaceship)
         {
             radar->setViewPosition(my_spaceship->getPosition());
@@ -283,7 +293,7 @@ void RelayScreen::onDraw(sp::RenderTarget& renderer)
     float radar_range = 5000.0;
     if (my_spaceship)
     {
-        radar_range = my_spaceship->getShortRangeRadarRange();
+        radar_range = my_spaceship->getLongRangeRadarRange();
         info_radar_range -> setValue(string(radar_range / 1000.0f, 1.0f) + " U");
     }
 
@@ -291,8 +301,8 @@ void RelayScreen::onDraw(sp::RenderTarget& renderer)
     if (my_spaceship)
     {
         float ratio_screen = radar->getRect().size.x / radar->getRect().size.y;
-        float distance_width = radar->getDistance() * 2.f * ratio_screen / 1000.0f;
-        float distance_height = radar->getDistance() * 2.f / 1000.0f;
+        float distance_width = radar->getDistance() /** 2.f*/ * ratio_screen / 1000.0f;
+        float distance_height = radar->getDistance() /** 2.f*/ / 1000.0f;
         if (distance_width < 100)
             info_distance -> setValue(string(distance_width, 1.0f) + " U / " + string(distance_height, 1.0f) + " U");
         else

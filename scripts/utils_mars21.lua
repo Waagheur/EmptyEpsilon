@@ -94,7 +94,7 @@ function checkAndMakeDerelict(ship, hullDamage, derelict_faction)
 			x, y = ship:getPosition()
 			explodeDerelict(x,y,2000)
 		end
-		
+		print("Make derelict",ship:getName())
 		return true
 	end
 	return false
@@ -199,6 +199,8 @@ ship:setShieldRechargeRate(0.6)
 end
 
 function doOnNewPlayerShip(pc)
+	pc:setFaction("Imperium")
+	print("New player ship faction :",pc:getFaction())
 	pc.popWarpJammer = function()
 			popWarpJammer(pc)
 	end
@@ -210,7 +212,6 @@ function doOnNewPlayerShip(pc)
 	pc:setMaxCoolant(10)
 	pc:setCanDock(true)
 	pc:setRepairCrewCount(3)
---	pc:setFaction("Imperium")
 	
 	if (pc:getClass() ~= "Chasseur" ) 
 	then

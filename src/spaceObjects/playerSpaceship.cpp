@@ -488,6 +488,26 @@ REGISTER_SCRIPT_SUBCLASS(PlayerSpaceship, SpaceShip)
     ///deactivate if the action is to deactivate the modifier
     ///three arguments callback : self (current ship), name, desired state (activate or deactivate)
     REGISTER_SCRIPT_CLASS_FUNCTION(PlayerSpaceship, onModifierToggle);
+
+    ///Sets maximum number of simultaneous controllable squadrons
+    ///If already beyond this number, current squadrons will not be destroyed
+    REGISTER_SCRIPT_CLASS_FUNCTION(PlayerSpaceship, setMaxSquadrons);
+
+    ///Creates a squadron ships, needs a name and a type, if under max squadrons number.
+    ///First argument is its name/identifier ("Rogue Squadron 42")
+    ///Second mandatory argument is it composition identifier ("Interceptors")
+    REGISTER_SCRIPT_CLASS_FUNCTION(PlayerSpaceship, instantiateSquadron);
+    
+    ///Destroys squadron specifiing its name/identifier
+    //REGISTER_SCRIPT_CLASS_FUNCTION(PlayerSpaceship, destroySquadron);
+
+    ///Launch a squadron specifying its name
+    //REGISTER_SCRIPT_CLASS_FUNCTION(PlayerSpaceship, launchSquadron);
+    ///Recalls a squadron specifying its name. 
+    ///If not at range, launch an order to go to based ship
+    ///If at range, land the squadron.
+    //REGISTER_SCRIPT_CLASS_FUNCTION(PlayerSpaceship, recallSquadron);
+
 }
 
 static const int16_t CMD_TARGET_ROTATION = 0x0001;
@@ -547,6 +567,10 @@ static const int16_t CMD_SET_SYSTEM_REPAIR_REQUEST = 0x002B;
 static const int16_t CMD_SET_ANALYSIS_LINK = 0x003A;
 static const int16_t CMD_SET_SYSTEM_POWER_PRESET = 0x003B;
 static const int16_t CMD_SET_SYSTEM_COOLANT_PRESET = 0x003C;
+static const int16_t CMD_LAUNCH_SQUADRON = 0x003D;
+static const int16_t CMD_BLUEPRINT_ACTIVATION = 0x003E;
+static const int16_t CMD_ORDER_SQUADRON_TARGET = 0x003F;
+static const int16_t CMD_ORDER_SQUADRON_POSITION = 0x0041;
 
 string alertLevelToString(EAlertLevel level)
 {
@@ -736,6 +760,37 @@ PlayerSpaceship::PlayerSpaceship()
             registerMemberReplication(&power_presets[n][o]);
             registerMemberReplication(&coolant_presets[n][o]);
         }
+    }
+
+    //delay_to_next_creation.reserve(max_blueprints_count);
+    for(unsigned int n = 0; n < max_blueprints_count; n++)
+    {
+        registerMemberReplication(&delay_to_next_creation[n]);
+        registerMemberReplication(&bp_activated[n]);
+        registerMemberReplication(&bp_available[n]);
+    }
+
+    //number_of_waiting_squadron_for_bp.reserve(max_number_of_waiting_squadron);
+    for(unsigned int n = 0; n < max_blueprints_count; n++)
+    {
+        registerMemberReplication(&number_of_waiting_squadron_for_bp[n]);
+    }
+    for(unsigned int n=0; n< max_squadron_launch; n++)
+    {
+        bp_of_launching_squadron[n] = -1;
+        registerMemberReplication(&bp_of_launching_squadron[n]);
+        registerMemberReplication(&launch_delay[n]);
+    }
+
+    registerMemberReplication(&max_squadrons_in_flight);
+    for(unsigned int n=0; n< max_squadrons_in_flight; n++)
+    {
+        registerMemberReplication(&(launched_squadrons_infos[n].squadron_name));
+        registerMemberReplication(&(launched_squadrons_infos[n].order));
+        registerMemberReplication(&(launched_squadrons_infos[n].target));
+        registerMemberReplication(&(launched_squadrons_infos[n].squadron_template));
+        registerMemberReplication(&(launched_squadrons_infos[n].leader_id));
+        
     }
 
     if (game_server)
@@ -1189,6 +1244,141 @@ void PlayerSpaceship::update(float delta)
             comms_open_delay -= delta;
     }
 
+    // unsigned int number_activated{0};
+    // for(const auto& [name, sqt] : squadrons_compositions) //if only I had an iterator only on values I could use count if...
+    // {
+    //     if((sqt.activated == true) && (sqt.available == true))
+    //     {
+    //         number_activated++;
+    //     }
+    // }
+
+    std::set<int> to_progress;
+
+    //Auto creation of blueprints (squadrons)
+    unsigned int n=0;
+    if(ship_template)
+    {
+        for(const auto& sqt : ship_template->squadrons_compositions)
+        {    
+            
+            if((getSquadronCount(n) >= sqt.max_created)
+            || bp_activated[n] == false
+            || bp_available[n] == false)
+            {
+                delay_to_next_creation[n] = sqt.construction_duration;
+            }
+            else if (delay_to_next_creation[n] <= 0.0f)
+            {
+                instantiateSquadron(sqt.template_name);
+                delay_to_next_creation[n] = sqt.construction_duration;
+            }
+            else
+            {
+                to_progress.insert(n);
+            }
+            n++;
+        }
+
+        for(int idx : to_progress)
+        {
+            delay_to_next_creation[idx] -= delta * getSystemEffectiveness(SYS_Hangar) * (1.0f / to_progress.size());
+        }
+    }
+    //Launch of a waiting squadron
+    int deck_to_launch = -1;
+    unsigned int shortest_delay = std::numeric_limits<unsigned int>::max();
+    for(unsigned int deck = 0; deck< max_squadron_launch; deck++)
+    {
+        //one at a time, find the deck the shortest to launch
+        if(launch_delay[deck] > 0 && bp_of_launching_squadron[deck] >= 0)
+        {
+            if(launch_delay[deck] < shortest_delay)
+            {
+                shortest_delay = launch_delay[deck];
+                deck_to_launch = deck;
+            }
+        }
+        
+        if(launch_delay[deck] <= 0 && bp_of_launching_squadron[deck] >= 0)
+        {
+            launchSquadron(deck);
+        }
+    }
+    if(deck_to_launch != -1)
+    {
+        launch_delay[(unsigned int)deck_to_launch] -= delta * getSystemEffectiveness(SYS_Hangar);
+    }
+
+    if(game_server)
+    {
+        std::vector<Squadron>::iterator iter = launched_squadrons.begin();
+        while(iter != launched_squadrons.end())
+        {
+
+            bool found = false;
+            unsigned int nbr_destroyed;
+            for(P<CpuShip> cpu : iter->ships)
+            {
+                if(cpu->isDockedWith(this))
+                {
+                    cpu->destroy();
+                    nbr_destroyed++; //TODO : give back blueprint power
+                }
+                if(cpu)
+                {
+                    found = true;
+                    break;
+                }    
+            }
+            if(!found)
+            {
+                iter = launched_squadrons.erase(iter);
+            }
+            else
+            {
+                iter++;
+            }
+        }
+        
+        {
+            unsigned int n=0;
+            for(auto &sq : launched_squadrons)
+            {
+                launched_squadrons_infos[n].squadron_name = sq.squadron_name;
+                launched_squadrons_infos[n].squadron_template= sq.squadron_template;
+                P<CpuShip> cpu = sq.ships[0];
+                string target{""};
+                if(cpu)
+                {
+                    P<SpaceObject> spo = cpu->getOrderTarget();
+                    if(spo)
+                    {
+                        target = spo->getCallSign();
+                    }
+                    else
+                    {
+                        target = getStringFromPosition(cpu->getOrderTargetLocation());
+                    }
+                }
+                launched_squadrons_infos[n].leader_id = cpu->getMultiplayerId();
+                launched_squadrons_infos[n].target = target;
+                launched_squadrons_infos[n].order = getAIOrderString(cpu->getOrder());
+                n++;
+            }
+            
+            while(n < max_squadrons_in_flight_limit)
+            {
+                launched_squadrons_infos[n].squadron_name="";
+                launched_squadrons_infos[n].order="";
+                launched_squadrons_infos[n].target="";
+                launched_squadrons_infos[n].squadron_template="";
+                launched_squadrons_infos[n].leader_id=-1;
+                n++;
+            }
+        }
+    }
+
     // Perform all other ship update actions.
     SpaceShip::update(delta);
 
@@ -1223,6 +1413,15 @@ void PlayerSpaceship::applyTemplateValues()
         on_new_player_ship_called = true;
         gameGlobalInfo->on_new_player_ship.call<void>(P<PlayerSpaceship>(this));
     }
+
+    int n=0;
+    for(auto &sqt : ship_template->squadrons_compositions)
+    {
+        bp_activated[n] = sqt.activated;
+        bp_available[n] = sqt.available;
+        n++;
+    }
+
 }
 
 void PlayerSpaceship::executeJump(float distance)
@@ -2188,7 +2387,7 @@ void PlayerSpaceship::onReceiveClientCommand(int32_t client_id, sp::io::DataBuff
             self_destruct_code_entry_position[n] = max_crew_positions;
             while(self_destruct_code_entry_position[n] == max_crew_positions)
             {
-                self_destruct_code_entry_position[n] = ECrewPosition(irandom(0, relayOfficer));
+                self_destruct_code_entry_position[n] = ECrewPosition(irandom(0, cagOfficer));
                 for(int i=0; i<n; i++)
                     if (self_destruct_code_entry_position[n] == self_destruct_code_entry_position[i])
                         self_destruct_code_entry_position[n] = max_crew_positions;
@@ -2196,7 +2395,7 @@ void PlayerSpaceship::onReceiveClientCommand(int32_t client_id, sp::io::DataBuff
             self_destruct_code_show_position[n] = max_crew_positions;
             while(self_destruct_code_show_position[n] == max_crew_positions)
             {
-                self_destruct_code_show_position[n] = ECrewPosition(irandom(0, relayOfficer));
+                self_destruct_code_show_position[n] = ECrewPosition(irandom(0, cagOfficer));
                 if (self_destruct_code_show_position[n] == self_destruct_code_entry_position[n])
                     self_destruct_code_show_position[n] = max_crew_positions;
                 for(int i=0; i<n; i++)
@@ -2392,8 +2591,144 @@ void PlayerSpaceship::onReceiveClientCommand(int32_t client_id, sp::io::DataBuff
                 auto_repairing_system = system;
         }
         break;
+    case CMD_LAUNCH_SQUADRON:
+        //TODO : mettre ça dans un dock
+        {
+            unsigned int deck;
+            string name;
+            packet >> deck >> name;
+            launchWaitingSquadron(deck, name);
+        }
+        break;
+    case CMD_ORDER_SQUADRON_TARGET:
+        {
+            uint32_t order;
+            unsigned int idx;
+            int32_t id_obj;
+            packet >> order >> idx >> id_obj;
+            P<SpaceObject> obj = (game_server ? game_server->getObjectById(id_obj) : game_client->getObjectById(id_obj));
+            orderSquadron((EAIOrder)order, idx, obj);
+        }
+        break;
+    case CMD_ORDER_SQUADRON_POSITION:
+        {
+            uint32_t order;
+            unsigned int idx;
+            glm::vec2 pos;
+            packet >> order >> idx >> pos;
+            orderSquadron((EAIOrder)order, idx, pos);
+        }
+        break;
+    case CMD_BLUEPRINT_ACTIVATION:
+        {
+            int idx;
+            bool val;
+            packet >> idx >> val;
+            bp_activated[idx] = val;
+        }
+        break;
     }
 }
+
+void PlayerSpaceship::orderSquadron(EAIOrder order, unsigned int idx, P<SpaceObject> &obj)
+{
+    //attack, defendtarget dock
+
+    for(auto &lq : launched_squadrons)
+    {
+        for(auto &ship : lq.ships)
+        {
+            if(obj == ship)
+            {
+                LOG(WARNING) << "Can't put order on another ship squadron, fly towards instead";
+                orderSquadron(AI_FlyTowards, idx, obj->getPosition());
+                return;
+            }
+        }
+    }
+
+    if(idx < launched_squadrons.size())
+    {
+        for(auto & ship : launched_squadrons[idx].ships)
+        {
+            switch(EAIOrder(order))
+            {
+                case AI_Attack:
+                {
+                    ship->orderAttack(obj);
+                }
+                break;
+                case AI_DefendTarget:
+                {
+                    ship->orderDefendTarget(obj);
+                }
+                break;
+                case AI_Dock:
+                {
+                    ship->orderDock(this);
+                }
+                break;
+                default:
+                {
+                    LOG(WARNING) << "Unknown order for squadron";
+                    break;
+                }
+
+            }
+
+        }
+    }
+}
+
+void PlayerSpaceship::orderSquadron(EAIOrder order, unsigned int idx, const glm::vec2 &pos)
+{
+    //FlyTowards, FlyTowardsBlind
+    if(idx < launched_squadrons.size())
+    {
+        for(auto & ship : launched_squadrons[idx].ships)
+        {
+            switch(EAIOrder(order))
+            {
+                case AI_FlyTowards:
+                {
+                    ship->orderFlyTowards(pos);
+                }
+                break;
+                case AI_FlyTowardsBlind:
+                {
+                    ship->orderFlyTowardsBlind(pos);
+                }
+                break;
+                default:
+                {
+                    LOG(WARNING) << "Unknown order for squadron";
+                    break;
+                }
+            }
+        }
+    }
+}
+
+void PlayerSpaceship::launchWaitingSquadron(unsigned int deck, const string &template_name)
+{
+    int n =0;
+    for(auto& sqt : ship_template->squadrons_compositions)
+    {
+        if(sqt.template_name == template_name)
+        {
+            if((number_of_waiting_squadron_for_bp[n] > 0)
+            &&(canLaunchSquadron()))
+            {
+                number_of_waiting_squadron_for_bp[n]--;
+                bp_of_launching_squadron[deck] = n;
+                launch_delay[deck] = launch_duration;
+            }
+            break;
+        }
+        n++;
+    }
+}
+
 
 // Client-side functions to send a command to the server.
 void PlayerSpaceship::commandTargetRotation(float target)
@@ -2746,6 +3081,35 @@ void PlayerSpaceship::commandLaunchCargo(int index)
     sendClientCommand(packet);
 }
 
+void PlayerSpaceship::commandLaunchSquadron(unsigned int deck, const string& identifier)
+{
+    sp::io::DataBuffer packet;
+    packet << CMD_LAUNCH_SQUADRON << deck << identifier;
+    sendClientCommand(packet);
+}
+
+void PlayerSpaceship::commandOrderSquadronTarget(EAIOrder order, unsigned int idx, P<SpaceObject> &obj)
+{
+    sp::io::DataBuffer packet;
+    packet << CMD_ORDER_SQUADRON_TARGET << uint32_t(order) << idx << obj->getMultiplayerId();
+    sendClientCommand(packet);
+}
+
+void PlayerSpaceship::commandOrderSquadronPosition(EAIOrder order, unsigned int idx, const glm::vec2 &pos)
+{
+    sp::io::DataBuffer packet;
+    packet << CMD_ORDER_SQUADRON_POSITION << uint32_t(order) << idx << pos;
+    sendClientCommand(packet);
+}
+
+
+void PlayerSpaceship::commandSetBlueprintActivation(int idx, bool val)
+{
+    sp::io::DataBuffer packet;
+    packet << CMD_BLUEPRINT_ACTIVATION << idx << val;
+    sendClientCommand(packet);
+}
+
 void PlayerSpaceship::commandMoveCargo(int index)
 {
     sp::io::DataBuffer packet;
@@ -3039,6 +3403,71 @@ void PlayerSpaceship::deActivateModifier(string name)
     {
         search->second.activated = false;
         on_modifier_toggle.call<void>(P<PlayerSpaceship>(this), name, string("deactivated"));
+    }
+}
+
+void PlayerSpaceship::instantiateSquadron(const string& compo_identifier)
+{
+    int n = 0;
+    for(auto &sqt : ship_template->squadrons_compositions)
+    {
+        if(sqt.template_name == compo_identifier)
+        {
+            number_of_waiting_squadron_for_bp[n]++;
+            return;
+        }
+        n++;
+    }
+    LOG(ERROR) << "Failed to find ship template for squadron : " << compo_identifier;
+    
+}
+
+
+void PlayerSpaceship::launchSquadron(unsigned int deck)
+{
+    if(game_server)
+    {
+        int bp_idx = bp_of_launching_squadron[deck];
+        if(bp_idx < 0)
+        {
+            LOG(WARNING) << "No more squadron to launch";
+            return;
+        }
+
+        SquadronTemplate sqt = ship_template->squadrons_compositions[bp_idx];
+
+        Squadron squadron;
+        string squadron_callsign = gameGlobalInfo->getNextShipCallsign();
+        squadron.squadron_name = sqt.template_name + "-" +squadron_callsign;
+        squadron.squadron_template = sqt.template_name;
+        
+        unsigned int n=1;
+        for(const string &template_name : sqt.ship_names)
+        {
+            std::vector<string> v = ShipTemplate::getAllTemplateNames();
+            if(std::find(v.begin(), v.end(), template_name) != v.end())
+            {
+                P<CpuShip> ship = new CpuShip();
+                ship->setCallSign(squadron_callsign+"-"+string(n));
+                ship->setTemplate(template_name);
+                ship->setPosition(getPosition());
+                ship->setFaction(getFaction());
+                ship->orderDefendTarget(this);
+                squadron.ships.push_back(ship);
+                // if(n > 0)
+                // {
+                //     ship->orderFlyFormation(squadron.ships[0]);
+                // }
+                n++;
+            }
+            
+            else
+            {
+                LOG(ERROR) << "Failed to find ship template for squadron creation : " << template_name << ", squadron template name : " << sqt.template_name;
+            }
+        }
+        bp_of_launching_squadron[deck] = -1;
+        launched_squadrons.push_back(squadron);
     }
 }
 
