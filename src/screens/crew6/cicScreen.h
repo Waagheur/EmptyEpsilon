@@ -60,12 +60,6 @@ private:
     GuiSlider* zoom_slider;
     GuiLabel* zoom_label;
 
-    GuiSelector *launch_selector{nullptr};
-    GuiButton *launch_button;
-    GuiProgressbar *launch_progress;
-
-    string waiting_squadron_selected_for_launch{""};
-
     glm::vec2 mouse_down_position;
     const float max_distance = 10000000.0f;
     const float min_distance = 6250.0f;

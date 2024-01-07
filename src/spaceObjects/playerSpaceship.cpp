@@ -773,6 +773,12 @@ PlayerSpaceship::PlayerSpaceship()
     {
         registerMemberReplication(&number_of_waiting_squadron_for_bp[n]);
     }
+    for(unsigned int n=0; n< max_squadron_launch; n++)
+    {
+        bp_of_launching_squadron[n] = -1;
+        registerMemberReplication(&bp_of_launching_squadron[n]);
+        registerMemberReplication(&launch_delay[n]);
+    }
 
     if (game_server)
     {
@@ -1243,7 +1249,7 @@ void PlayerSpaceship::update(float delta)
         for(const auto& sqt : ship_template->squadrons_compositions)
         {    
             
-            if(((getWaitingSquadronsCount(n) + getLaunchedSquadronsCount(sqt.template_name)) >= sqt.max_created)
+            if((getSquadronCount(n) >= sqt.max_created)
             || bp_activated[n] == false
             || bp_available[n] == false)
             {
@@ -1267,14 +1273,17 @@ void PlayerSpaceship::update(float delta)
         }
     }
     //Launch of a waiting squadron
-    if(launch_delay > 0 && squadron_to_launch != -1)
+    for(unsigned int deck = 0; deck< max_squadron_launch; deck++)
     {
-        launch_delay -= delta * getSystemEffectiveness(SYS_Hangar);
-    }
-    if(launch_delay <= 0 && squadron_to_launch != -1)
-    {
-        launchSquadron(squadron_to_launch);
-        squadron_to_launch = -1;
+        if(launch_delay[deck] > 0 && bp_of_launching_squadron[deck] >= 0)
+        {
+            launch_delay[deck] -= delta * getSystemEffectiveness(SYS_Hangar);
+            break; //One at a time
+        }
+        if(launch_delay[deck] <= 0 && bp_of_launching_squadron[deck] >= 0)
+        {
+            launchSquadron(deck);
+        }
     }
 
     {
@@ -2516,9 +2525,10 @@ void PlayerSpaceship::onReceiveClientCommand(int32_t client_id, sp::io::DataBuff
     case CMD_LAUNCH_SQUADRON:
         //TODO : mettre ça dans un dock
         {
-            int name;
-            packet >> name;
-            requestLaunchWaitingSquadron(name);
+            unsigned int deck;
+            string name;
+            packet >> deck >> name;
+            launchWaitingSquadron(deck, name);
         }
         break;
     case CMD_BLUEPRINT_ACTIVATION:
@@ -2531,6 +2541,27 @@ void PlayerSpaceship::onReceiveClientCommand(int32_t client_id, sp::io::DataBuff
         break;
     }
 }
+
+void PlayerSpaceship::launchWaitingSquadron(unsigned int deck, const string &template_name)
+{
+    int n =0;
+    for(auto& sqt : ship_template->squadrons_compositions)
+    {
+        if(sqt.template_name == template_name)
+        {
+            if((number_of_waiting_squadron_for_bp[n] > 0)
+            &&(canLaunchSquadron()))
+            {
+                number_of_waiting_squadron_for_bp[n]--;
+                bp_of_launching_squadron[deck] = n;
+                launch_delay[deck] = launch_duration;
+            }
+            break;
+        }
+        n++;
+    }
+}
+
 
 // Client-side functions to send a command to the server.
 void PlayerSpaceship::commandTargetRotation(float target)
@@ -2883,10 +2914,10 @@ void PlayerSpaceship::commandLaunchCargo(int index)
     sendClientCommand(packet);
 }
 
-void PlayerSpaceship::commandLaunchSquadron(string identifier)
+void PlayerSpaceship::commandLaunchSquadron(unsigned int deck, const string& identifier)
 {
     sp::io::DataBuffer packet;
-    packet << CMD_LAUNCH_SQUADRON << identifier;
+    packet << CMD_LAUNCH_SQUADRON << deck << identifier;
     sendClientCommand(packet);
 }
 
@@ -3209,29 +3240,17 @@ void PlayerSpaceship::instantiateSquadron(const string& compo_identifier)
     
 }
 
-void PlayerSpaceship::requestLaunchWaitingSquadron(const string& identifier)
-{
-    launch_delay = launch_duration;
-    int n =0;
-    for(auto& sqt : ship_template->squadrons_compositions)
-    {
-        if(sqt.template_name == identifier)
-        {
-            squadron_to_launch = n;
-        }
-        n++;
-    }
-}
 
-void PlayerSpaceship::launchSquadron(int template_idx)
+void PlayerSpaceship::launchSquadron(unsigned int deck)
 {
-     if(number_of_waiting_squadron_for_bp[template_idx] <=0)
+    int bp_idx = bp_of_launching_squadron[deck];
+     if(bp_idx < 0)
      {
         LOG(WARNING) << "No more squadron to launch";
         return;
      }
 
-    SquadronTemplate sqt = ship_template->squadrons_compositions[template_idx];
+    SquadronTemplate sqt = ship_template->squadrons_compositions[bp_idx];
 
     Squadron squadron;
     squadron.squadron_name = sqt.template_name + "-" +gameGlobalInfo->getNextShipCallsign();
@@ -3253,7 +3272,7 @@ void PlayerSpaceship::launchSquadron(int template_idx)
             LOG(ERROR) << "Failed to find ship template for squadron creation : " << template_name << ", squadron template name : " << sqt.template_name;
         }
     }
-    number_of_waiting_squadron_for_bp[template_idx]--;
+    bp_of_launching_squadron[deck] = -1;
     launched_squadrons.push_back(squadron);
 }
 

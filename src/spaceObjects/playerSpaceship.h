@@ -69,6 +69,7 @@ public:
     constexpr static int max_engineer_presets_number = 9;
 
     constexpr static unsigned int max_number_of_waiting_squadron = 20;
+    constexpr static unsigned int max_squadron_launch = 3; //should then be number of flight decks (see dock view)
     
     bool has_gravity_sensor;
     bool has_electrical_sensor;
@@ -218,17 +219,21 @@ public:
         }
     };
 
-    unsigned int max_squadrons_in_flight {8};
+
+    //Blueprints which are activated (by player), available (set by GM), and delay to creation
     float delay_to_next_creation[max_blueprints_count]{};
     bool bp_activated[max_blueprints_count]{false};
     bool bp_available[max_blueprints_count]{false};
-    
-    std::vector<Squadron> launched_squadrons;
+    //Squadrons available to launch
     std::array<unsigned int,max_number_of_waiting_squadron> number_of_waiting_squadron_for_bp{};
+    //Squadrons being launched
+    std::array<int,max_squadron_launch> bp_of_launching_squadron{};
+    std::array<float, max_squadron_launch> launch_delay{};
+    //Squadrons launched
+    unsigned int max_squadrons_in_flight {8};
+    std::vector<Squadron> launched_squadrons;
 
     float launch_duration{15};
-    float launch_delay{0};
-    int squadron_to_launch{-1};
 
     string comms_target_name;
     string comms_incomming_message;
@@ -521,12 +526,27 @@ public:
     void setMaxSquadrons(unsigned int max) { max_squadrons_in_flight = max;}
 
     void instantiateSquadron(const string& type);
-    void requestLaunchWaitingSquadron(const string& identifier);
-    void commandLaunchSquadron(string identifier);
+    void launchWaitingSquadron(unsigned int deck, const string& identifier);
+    void commandLaunchSquadron(unsigned int deck, const string& identifier);
     void commandSetBlueprintActivation(int idx, bool val);
-    void launchSquadron(int idx);
+    void launchSquadron(unsigned int deck);
     bool isBlueprintAvailable(int idx) { return bp_available[idx];}
     bool isBlueprintActivated(int idx) { return bp_activated[idx];}
+    bool canLaunchSquadron() 
+    {
+        unsigned int total_nbr_launching{0};
+        for(int bp_launching : bp_of_launching_squadron)
+        {
+            if(bp_launching != -1)
+            total_nbr_launching ++;
+        }
+        if(total_nbr_launching >= max_squadron_launch)
+        {
+            return false;
+        }
+        //TODO effectiveness of system
+        return true;
+    }
 
     unsigned int getLaunchedSquadronsCount() { return launched_squadrons.size(); }
     unsigned int getWaitingSquadronsCount() 
@@ -539,6 +559,24 @@ public:
         return res; 
     }
 
+    unsigned int getWaitingSquadronsCount(unsigned int idx) 
+    { 
+        return number_of_waiting_squadron_for_bp[idx];
+    }
+
+    unsigned int getLaunchingSquadronCount(unsigned int idx)
+    {
+        unsigned int nbr{0};
+        for(int launching : bp_of_launching_squadron)
+        {
+            if(launching == (int)idx)
+            {
+                nbr++;
+            }
+        }
+        return nbr;
+    }
+    
     unsigned int getLaunchedSquadronsCount(const string &tp_name) 
     { 
         unsigned int n =0;
@@ -550,25 +588,13 @@ public:
             }
         }
         return n;
-
-        return launched_squadrons.size(); 
-    }
-    unsigned int getWaitingSquadronsCount(unsigned int idx) 
-    { 
-        return number_of_waiting_squadron_for_bp[idx];
     }
 
     unsigned int getSquadronCount(unsigned int idx) 
     { 
-        unsigned int nbr = 0; 
         string name = ship_template->squadrons_compositions[idx].template_name;
-        for(auto &sqt : launched_squadrons) 
-        {
-            if(sqt.squadron_template == name)
-                nbr++;
-        }
-        nbr += number_of_waiting_squadron_for_bp[idx];
-        return nbr;
+       
+        return getWaitingSquadronsCount(idx) + getLaunchingSquadronCount(idx) + getLaunchedSquadronsCount(name);
 
     }
     unsigned int getMaximumNumberOfSquadronsInFlight() { return max_squadrons_in_flight;}
@@ -591,14 +617,14 @@ public:
         return 1.0f - delay_to_next_creation[idx] / ship_template->squadrons_compositions[idx].construction_duration;
     }
 
-    bool isLaunchingSquadron()
+    bool isLaunchingSquadron(int n)
     {
-        return (squadron_to_launch == -1) ? false : true;
+        return (bp_of_launching_squadron[n] != -1) ? true : false;
     }
 
-    float getLaunchSquadronProgression()
+    float getLaunchSquadronProgression(int n)
     {
-        return 1.0f - launch_delay / launch_duration;
+        return 1.0f - launch_delay[n] / launch_duration;
     }
     
 };

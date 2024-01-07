@@ -384,6 +384,7 @@ set(MAIN_SOURCES
 	  src/shaderRegistry.cpp
     src/screens/crew6/cicScreen.cpp
     src/screenComponents/blueprintControls.cpp
+    src/screenComponents/launchSquadronControls.cpp
     src/screenComponents/squadronControls.cpp
 
     src/ai/aiFactory.h
@@ -543,6 +544,7 @@ set(MAIN_SOURCES
     src/tutorialGame.h
     src/screens/crew6/cicScreen.h
     src/screenComponents/blueprintControls.h
+    src/screenComponents/launchSquadronControls.h
     src/screenComponents/squadronControls.h
 )
 

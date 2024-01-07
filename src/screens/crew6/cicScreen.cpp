@@ -17,6 +17,7 @@
 #include "screenComponents/alertLevelButton.h"
 #include "screenComponents/blueprintControls.h"
 #include "screenComponents/squadronControls.h"
+#include "screenComponents/launchSquadronControls.h"
 
 #include "gui/gui2_keyvaluedisplay.h"
 #include "gui/gui2_selector.h"
@@ -160,29 +161,11 @@ CicScreen::CicScreen(GuiContainer* owner, bool allow_comms)
     bp_layout = new GuiBlueprintsControls(this, "BLUEPRINTS_LAYOUT", my_spaceship);
     bp_layout->setPosition(20, 300, sp::Alignment::TopLeft)->setSize(250, GuiElement::GuiSizeMax)->setAttribute("layout", "vertical");
 
-    sqc_layout = new GuiElement(this, "SQUADRON_CONTROL");
-    sqc_layout->setPosition(20, 500, sp::Alignment::TopLeft)->setSize(250, GuiElement::GuiSizeMax)->setAttribute("layout", "horizontal");
-
-    launch_selector = new GuiSelector(sqc_layout, "SQUADRON_LAUNCH_SELECTOR", [this](int index, string value)
-    {
-        waiting_squadron_selected_for_launch = launch_selector->getEntryName(index);
-    });
-    launch_selector->setSize(200, 50);
-    launch_button = new GuiButton(sqc_layout, "SQUADRON_LAUNCH_BUTTON", tr("cic","Launch"), [this]() {
-        if(my_spaceship)
-        {
-             my_spaceship->requestLaunchWaitingSquadron(waiting_squadron_selected_for_launch);
-        }
-
-    });
-    launch_button->setSize(100, 50);
-
-    launch_progress = new GuiProgressbar(sqc_layout, "SQUADRON_LAUNCH_PROGRESS", 0, 1.0, 0);
-    launch_progress->setSize(100, 50);
-    launch_progress->hide();
+    sqc_layout = new GuiLaunchSquadronControls(this, "SQUADRON_CONTROL", my_spaceship);
+    sqc_layout->setPosition(20, 500, sp::Alignment::TopLeft)->setSize(250, GuiElement::GuiSizeMax)->setAttribute("layout", "vertical");
 
     launched_squadron_layout = new GuiSquadronControls(this, "LAUNCHED_SQUADRON_LAYOUT", my_spaceship);
-    launched_squadron_layout->setPosition(20, 600, sp::Alignment::TopLeft)->setSize(250, GuiElement::GuiSizeMax)->setAttribute("layout", "vertical");
+    launched_squadron_layout->setPosition(20, 650, sp::Alignment::TopLeft)->setSize(250, GuiElement::GuiSizeMax)->setAttribute("layout", "vertical");
 
     //(new GuiAlertLevelSelect(this, ""))->setPosition(-20, -70, sp::Alignment::BottomRight)->setSize(300, GuiElement::GuiSizeMax)->setAttribute("layout", "verticalbottom");
 
@@ -336,46 +319,7 @@ void CicScreen::onDraw(sp::RenderTarget& renderer)
     else
         delete_waypoint_button->disable();
 
-    int n = 0;
-    for(unsigned int nbr : my_spaceship->getNbrWaitingSquadrons())
-    {
-        if(nbr <= 0)
-        {
-            continue;
-        }
-        int idx;
-        string &name = my_spaceship->ship_template->squadrons_compositions[n].template_name;
-        if((idx = launch_selector->indexByValue(string(n))) != -1)
-        {
-            if(launch_selector->getEntryName(idx) != name)
-            {
-                launch_selector->removeEntry(idx);
-            }
-        }
-        if(launch_selector->indexByValue(string(n)) == -1)
-        {
-            launch_selector->addEntry(name, string(n));
-        }
-        n++;
-    }
-    while(n <= launch_selector->entryCount())
-    {
-        launch_selector->removeEntry(n);
-        n++;
-    }
-    //position_entry->setVisible(position_text->isFocus());
-
-    if(my_spaceship->isLaunchingSquadron())
-    {
-        launch_progress->show();
-        launch_progress->setValue(my_spaceship->getLaunchSquadronProgression());
-        launch_button->hide();
-    }
-    else
-    {
-        launch_progress->hide();
-        launch_button->show();
-    }
+  
 }
 
 void CicScreen::onUpdate()
