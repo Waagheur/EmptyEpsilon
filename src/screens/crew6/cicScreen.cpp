@@ -68,6 +68,10 @@ CicScreen::CicScreen(GuiContainer* owner, bool allow_comms)
             case TargetSelection:
                 {
                     P<CpuShip> sel_squadron_leader = targets_squadron.get();
+                    if(!sel_squadron_leader)
+                    {
+                        return;
+                    }
                     int squadron_index{-1};
                     int n=0;
                     for(auto info : my_spaceship->launched_squadrons_infos)
