@@ -155,7 +155,7 @@ variation:setCustomWeaponStorage("TABORD", 30)
 variation:setCustomWeaponMultiple("TABORD",1,2)
 
 
-
+--#region
 
 
 --[[Croiseur Impérial Lunar IA  ]]
@@ -834,7 +834,7 @@ template:setTubes(8, 12.0)
 template:setTubeDirection(0, 1)template:setTubeSize(0, "small"):weaponTubeDisallowCustomMissile(0,"MCANMK3"):weaponTubeDisallowCustomMissile(0,"MAGMCAN")
 template:setTubeDirection(1, -1)template:setTubeSize(1, "small"):weaponTubeDisallowCustomMissile(1,"MCANMK3"):weaponTubeDisallowCustomMissile(1,"MAGMCAN")
 template:setTubeLoadTime(0, 45)
-template:setTubeLoadTime(1, 45)	
+template:setTubeLoadTime(1, 45)
 template:setTubeDirection(2, 90):weaponTubeDisallowCustomMissile(2,"SEEKMK2"):weaponTubeDisallowCustomMissile(2,"MAGSEEK"):weaponTubeDisallowCustomMissile(2,"XSEEK"):weaponTubeDisallowCustomMissile(2,"TABORD")
 template:setTubeDirection(3, -90):weaponTubeDisallowCustomMissile(3,"SEEKMK2"):weaponTubeDisallowCustomMissile(3,"MAGSEEK"):weaponTubeDisallowCustomMissile(3,"XSEEK"):weaponTubeDisallowCustomMissile(3,"TABORD")
 template:setTubeDirection(4, 90):weaponTubeDisallowCustomMissile(4,"SEEKMK2"):weaponTubeDisallowCustomMissile(4,"MAGSEEK"):weaponTubeDisallowCustomMissile(4,"XSEEK"):weaponTubeDisallowCustomMissile(4,"TABORD")
@@ -958,3 +958,153 @@ template:setCustomWeaponMultiple("XSEEK",1,2)
 template:setDefaultAI('default')
 template:setDockClasses("Drone","Vaisseau leger","Fregate","destroyer")
 
+
+
+
+--[[Croiseur Impérial Mars + nova / jouable + torp et laser frontal ]]
+template = ShipTemplate():setName("Croiseur Mars MK2"):setClass("Croiseur", "Artillerie"):setModel("Navy_Battleship_Mars"):setType("playership")
+template:setRadarTrace("battleship.png")
+template:setDescription([[ ** wip ** ]])
+
+template:setHull(2000)
+template:setShields(1200, 1200) -- recharge rate
+template:setSpeed(85, 6, 8, 40, 8)
+----template:setReverseSpeed(40,10)
+template:setSystemDamageRatio(0.8)
+template:setSystemDamageHullThreshold(0.80)
+template:setCombatManeuver(600, 250) -- si nerf, penser a donner une upgrade
+--                  Arc, Dir, Range, CycleTime, Dmg
+--template:setBeam(0, 45, 0, 100.0, 30.0, 10) -- a remplacer
+template:setBeam(1, 90, 90, 3000.0, 14.0, 30)
+template:setBeam(2, 90, -90, 3000.0, 14.0, 30)
+template:setBeam(3, 90, 90, 2000, 3, 11)
+template:setBeam(4, 90,-90, 2000, 3, 11) -- template mais pas variation 
+template:setBeam(5, 90, 90, 2000, 3, 11)
+template:setBeam(6, 90,-90, 2000, 3, 11)
+template:setBeamWeaponEnergyPerFire(1, 1)
+template:setBeamWeaponEnergyPerFire(2, 1)
+template:setBeamWeaponHeatPerFire(1, 0.01)
+template:setBeamWeaponHeatPerFire(2, 0.01)
+
+
+
+--Tourelles de défense
+--Axe de tir (N° d'arme, arc de tir, Orientation, portée, délais de tir, dégâts)
+template:setBeamWeapon(0, 10, 0, 3000, 14, 45)
+template:setBeamWeaponTurret(0, 30, 0, 15)
+--Ajustement de la consommation d'énergie des tirs
+template:setBeamWeaponEnergyPerFire(0, 1)
+--Ajustement de la surchauffe engendrée par les tirs
+template:setBeamWeaponHeatPerFire(0, 0.01)
+template:setShortRangeRadarRange(7500)
+--template:setBeam(0, 30, 0, 4000.0, 30.0, 150)
+--exemple firestorm : template:setBeam(2,30, 0, 5000.0, 40.0, 200) 
+--200.0
+
+--template:setSystemDamageRatio(0.9)
+--template:setSystemDamageHullThreshold(0.85)
+template:setCanHack(false)
+template:setJumpDrive(true)
+--template:setRepairCrewCount(2)
+--[[template:addRoomSystem(0, 0, 1, 4, "RearShield")
+template:addRoom(1, 0, 1, 1)
+template:addRoomSystem(1, 1, 3, 2, "MissileSystem")
+template:addRoom(1, 3, 1, 1)
+template:addRoomSystem(2, 0, 2, 1, "Beamweapons")
+template:addRoomSystem(2, 3, 2, 1, "Maneuver")
+template:addRoomSystem(4, 0, 2, 1, "Warp")
+template:addRoomSystem(4, 3, 2, 1, "JumpDrive")
+template:addRoomSystem(5, 1, 1, 2, "Reactor")
+template:addRoom(6, 0, 1, 1)
+template:addRoomSystem(6, 1, 1, 2, "Impulse")
+template:addRoom(6, 3, 1, 1)
+template:addRoomSystem(7, 0, 1, 4, "FrontShield")
+template:addDoor(1, 0, false)
+template:addDoor(2, 0, false)
+template:addDoor(4, 0, false)
+template:addDoor(6, 0, false)
+template:addDoor(7, 0, false)
+template:addDoor(1, 1, true)
+template:addDoor(1, 3, true)
+template:addDoor(6, 1, true)
+template:addDoor(6, 2, false)
+template:addDoor(6, 3, true)
+template:addDoor(1, 3, false)
+template:addDoor(2, 3, false)
+template:addDoor(4, 3, false)
+template:addDoor(6, 3, false)
+template:addDoor(7, 3, false)
+--]]
+template:setShortRangeRadarRange(7500) -- a tester face a 4500
+
+template:setTubes(7, 12.0)
+template:setTubeDirection(0, 0)
+template:setTubeSize(0, "large")
+--Canon nova
+template:setCustomWeapon("Nuke", "NOVAMK2", 3, 2200.0, "Kinetic", 20) -- 3 = facteur de degats face au commun
+template:setCustomWeaponColor("NOVAMK2", 0, 204, 255)
+template:setCustomWeaponStorage("NOVAMK2", 6)
+
+template:setTubeLoadTime(0, 80):setWeaponTubeExclusiveForCustom(0,'NOVAMK2')
+
+
+template:setTubeDirection(1, 90)
+template:setTubeDirection(2, -90)
+template:setTubeDirection(3, 90)
+template:setTubeDirection(4, -90)
+template:setTubeLoadTime(1, 12):weaponTubeDisallowCustomMissile(1,'NOVAMK2'):weaponTubeDisallowCustomMissile(1,'SEEKMK2'):weaponTubeDisallowCustomMissile(1,'MAGSEEK')
+template:setTubeLoadTime(2, 12):weaponTubeDisallowCustomMissile(2,'NOVAMK2'):weaponTubeDisallowCustomMissile(2,'SEEKMK2'):weaponTubeDisallowCustomMissile(2,'MAGSEEK')
+template:setTubeLoadTime(3, 12):weaponTubeDisallowCustomMissile(3,'NOVAMK2'):weaponTubeDisallowCustomMissile(3,'SEEKMK2'):weaponTubeDisallowCustomMissile(3,'MAGSEEK')
+template:setTubeLoadTime(4, 12):weaponTubeDisallowCustomMissile(4,'NOVAMK2'):weaponTubeDisallowCustomMissile(4,'SEEKMK2'):weaponTubeDisallowCustomMissile(4,'MAGSEEK')
+--:weaponTubeAllowMissile(4,"MCANMK3"):weaponTubeAllowMissile(4,"MAGMCAN")
+--:weaponTubeAllowMissile(5,"SEEKMK2"):weaponTubeAllowMissile(5,"MAGSEEK")
+--Torpille
+template:setTubeDirection(5, 1)
+template:setTubeLoadTime(5, 20):weaponTubeDisallowCustomMissile(5,'NOVAMK2'):weaponTubeDisallowCustomMissile(5,'MCANMK3'):weaponTubeDisallowCustomMissile(5,'MAGMCAN')
+template:setTubeSize(5,"small")
+template:setCustomWeapon("Nuke", "SEEKMK2", 2, 400.0, "Kinetic", 60)
+template:setCustomWeaponColor("SEEKMK2", 255, 204, 0)
+template:setCustomWeaponStorage("SEEKMK2", 16)
+template:setCustomWeaponMultiple("SEEKMK2",1,2)
+-- Torpille EMP 
+template:setTubeDirection(6, -1)
+template:setTubeSize(6, "small")
+template:setTubeLoadTime(6, 20):weaponTubeDisallowCustomMissile(6,'NOVAMK2'):weaponTubeDisallowCustomMissile(6,'MCANMK3'):weaponTubeDisallowCustomMissile(6,'MAGMCAN')
+template:setCustomWeapon("EMP", "MAGSEEK", 0.5, 400.0, "EMP", 30)
+template:setCustomWeaponColor("MAGSEEK", 0, 204, 255)
+template:setCustomWeaponStorage("MAGSEEK", 4)
+template:setCustomWeaponMultiple("MAGSEEK",1,2)
+
+-- attention aux homing missiles
+-- macro canon EMP 
+template:setCustomWeapon("HVLI", "MAGMCAN", 1, 1000.0, "EMP", 25)
+template:setCustomWeaponMultiple("MAGMCAN",1,4)
+template:setCustomWeaponColor("MAGMCAN", 51, 51, 255)
+template:setCustomWeaponStorage("MAGMCAN", 20)
+
+-- macro canon kinetic
+template:setCustomWeapon("HVLI", "MCANMK3", 4, 1500.0, "Kinetic", 25)
+template:setCustomWeaponMultiple("MCANMK3",1,4)
+template:setCustomWeaponColor("MCANMK3", 255, 150, 103)
+template:setCustomWeaponStorage("MCANMK3", 120)
+
+--variation:setDockClasses("Drone","Vaisseau leger","Fregate","destroyer")  A TESTER
+template:setDockClasses("Drone","Vaisseau leger","Fregate","destroyer","Chasseur")
+
+template:setCanDock(true)
+template:setCanHack(false)
+
+template:registerSquadronComposition("Ch", 5, 15, "Chasseur Mk2", "Chasseur", "Chasseur","Chasseur")
+template:registerSquadronComposition("Ch2", 5, 15, "Chasseur Mk2", "Chasseur", "Chasseur","Chasseur")
+template:registerSquadronComposition("Ch3", 5, 15, "Chasseur Mk2", "Chasseur", "Chasseur","Chasseur")
+template:registerSquadronComposition("Ch4", 5, 15, "Chasseur Mk2", "Chasseur", "Chasseur","Chasseur")
+
+--Dock/balise de renfort de la marine
+
+--template:addDrones("Fregate sword",1)
+--template:addDrones("Fregate Firestorm",1)
+--template:addDrones("Vaisseau d'abordage Shark Mk2",2)
+--template:addDrones("Destroyer widowmaker MK2",1)
+--template:setDocks(3, 0, 0, 0, 6, 7)
+
+-- mettre deux sword / deux firestorm en possibilité de summon

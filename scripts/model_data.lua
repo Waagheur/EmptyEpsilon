@@ -178,9 +178,24 @@ model:setScale(8)
 --model:setRadius(250)
 model:setRadius(350)
 -- Visual positions of the beams/missiletubes (blender: -X, Y, Z)
-
 model:addEngineEmitter(-25, -2.1500, 0.3,  0.2, 0.2, 1.0, 3.0)
 model:addEngineEmitter(-25,  2.1500, 0.3,  0.2, 0.2, 1.0, 3.0)
+
+--[[Croiseur mars]]
+model = ModelData()
+model:setName("Navy_Battleship_Mars")
+model:setMesh("model3d/Navy_Battleship.obj")
+model:setTexture("textures/Navy_Battleship_Full.png")
+model:setSpecular("")
+model:setIllumination("textures/Navy_Battleship_Full.png")
+model:setScale(8)
+model:setRadius(400)
+model:setCollisionBox(2000, 600)
+-- Visual positions of the beams/missiletubes (blender: -X, Y, Z)
+
+-- Engin emitter to do 
+--model:addEngineEmitter(-180, -30, 1.2,  0.2, 0.2, 1.0, 30.0)
+--model:addEngineEmitter(-180,  30, 1.2,  0.2, 0.2, 1.0, 30.0)
 
 
 --[[Croiseur Inquisitoriale]]
@@ -210,7 +225,7 @@ model:setScale(8)
 model:setRadius(300)
 -- Visual positions of the beams/missiletubes (blender: -X, Y, Z)
 
-model:addEngineEmitter(-5,  0, 0.3,  0.2, 0.2, 1.0, 2.5)
+model:addEngineEmitter(-5, 0, 0.3, 0.2, 0.2, 1.0, 2.5)
 
 --[[Croiseur du Chaos Carnage]]
 model = ModelData()
