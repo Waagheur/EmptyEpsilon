@@ -1320,12 +1320,13 @@ void PlayerSpaceship::update(float delta)
             unsigned int nbr_destroyed;
             for(P<CpuShip> cpu : iter->ships)
             {
-                if(cpu->isDockedWith(this))
+
+                if(cpu && cpu->isDockedWith(this))
                 {
                     cpu->destroy();
                     nbr_destroyed++; //TODO : give back blueprint power
                 }
-                if(cpu)
+                else if(cpu)
                 {
                     found = true;
                     break;
@@ -1345,12 +1346,14 @@ void PlayerSpaceship::update(float delta)
             unsigned int n=0;
             for(auto &sq : launched_squadrons)
             {
-                launched_squadrons_infos[n].squadron_name = sq.squadron_name;
-                launched_squadrons_infos[n].squadron_template= sq.squadron_template;
                 P<CpuShip> cpu = sq.ships[0];
-                string target{""};
                 if(cpu)
                 {
+                
+                    launched_squadrons_infos[n].squadron_name = sq.squadron_name;
+                    launched_squadrons_infos[n].squadron_template= sq.squadron_template;
+                    
+                    string target{""};
                     P<SpaceObject> spo = cpu->getOrderTarget();
                     if(spo)
                     {
@@ -1360,10 +1363,11 @@ void PlayerSpaceship::update(float delta)
                     {
                         target = getStringFromPosition(cpu->getOrderTargetLocation());
                     }
+                    
+                    launched_squadrons_infos[n].leader_id = cpu->getMultiplayerId();
+                    launched_squadrons_infos[n].target = target;
+                    launched_squadrons_infos[n].order = getAIOrderString(cpu->getOrder());
                 }
-                launched_squadrons_infos[n].leader_id = cpu->getMultiplayerId();
-                launched_squadrons_infos[n].target = target;
-                launched_squadrons_infos[n].order = getAIOrderString(cpu->getOrder());
                 n++;
             }
             
