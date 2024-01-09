@@ -981,12 +981,17 @@ template:setBeam(3, 90, 90, 2000, 3, 11)
 template:setBeam(4, 90,-90, 2000, 3, 11) -- template mais pas variation 
 template:setBeam(5, 90, 90, 2000, 3, 11)
 template:setBeam(6, 90,-90, 2000, 3, 11)
+template:setBeamWeaponEnergyPerFire(1, 1)
+template:setBeamWeaponEnergyPerFire(2, 1)
+template:setBeamWeaponHeatPerFire(1, 0.01)
+template:setBeamWeaponHeatPerFire(2, 0.01)
+
 
 
 --Tourelles de défense
 --Axe de tir (N° d'arme, arc de tir, Orientation, portée, délais de tir, dégâts)
-template:setBeamWeapon(0, 60, 0, 3000, 14, 45)
-template:setBeamWeaponTurret(0, 360, 0, 15)
+template:setBeamWeapon(0, 10, 0, 3000, 14, 45)
+template:setBeamWeaponTurret(0, 30, 0, 15)
 --Ajustement de la consommation d'énergie des tirs
 template:setBeamWeaponEnergyPerFire(0, 1)
 --Ajustement de la surchauffe engendrée par les tirs
