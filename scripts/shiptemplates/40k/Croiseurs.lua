@@ -1089,9 +1089,15 @@ template:setCustomWeaponColor("MCANMK3", 255, 150, 103)
 template:setCustomWeaponStorage("MCANMK3", 120)
 
 --variation:setDockClasses("Drone","Vaisseau leger","Fregate","destroyer")  A TESTER
+template:setDockClasses("Drone","Vaisseau leger","Fregate","destroyer","Chasseur")
 
 template:setCanDock(true)
 template:setCanHack(false)
+
+template:registerSquadronComposition("Ch", 5, 15, "Chasseur Mk2", "Chasseur", "Chasseur","Chasseur")
+template:registerSquadronComposition("Ch2", 5, 15, "Chasseur Mk2", "Chasseur", "Chasseur","Chasseur")
+template:registerSquadronComposition("Ch3", 5, 15, "Chasseur Mk2", "Chasseur", "Chasseur","Chasseur")
+template:registerSquadronComposition("Ch4", 5, 15, "Chasseur Mk2", "Chasseur", "Chasseur","Chasseur")
 
 --Dock/balise de renfort de la marine
 

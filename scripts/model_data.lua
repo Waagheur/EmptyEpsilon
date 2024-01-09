@@ -178,6 +178,8 @@ model:setScale(8)
 --model:setRadius(250)
 model:setRadius(350)
 -- Visual positions of the beams/missiletubes (blender: -X, Y, Z)
+model:addEngineEmitter(-25, -2.1500, 0.3,  0.2, 0.2, 1.0, 3.0)
+model:addEngineEmitter(-25,  2.1500, 0.3,  0.2, 0.2, 1.0, 3.0)
 
 --[[Croiseur mars]]
 model = ModelData()
