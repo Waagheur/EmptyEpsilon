@@ -1005,8 +1005,8 @@ template:setShortRangeRadarRange(7500)
 --template:setSystemDamageHullThreshold(0.85)
 template:setCanHack(false)
 template:setJumpDrive(true)
---template:setRepairCrewCount(2)
-template:addRoomSystem(0, 0, 1, 4, "RearShield")
+template:setRepairCrewCount(2)
+--[[template:addRoomSystem(0, 0, 1, 4, "RearShield")
 template:addRoom(1, 0, 1, 1)
 template:addRoomSystem(1, 1, 3, 2, "MissileSystem")
 template:addRoom(1, 3, 1, 1)
@@ -1034,6 +1034,7 @@ template:addDoor(2, 3, false)
 template:addDoor(4, 3, false)
 template:addDoor(6, 3, false)
 template:addDoor(7, 3, false)
+--]]
 template:setShortRangeRadarRange(7500) -- a tester face a 4500
 
 template:setTubes(7, 12.0)
@@ -1087,7 +1088,8 @@ template:setCustomWeaponMultiple("MCANMK3",1,4)
 template:setCustomWeaponColor("MCANMK3", 255, 150, 103)
 template:setCustomWeaponStorage("MCANMK3", 120)
 
---variation:setDockClasses("Drone","Vaisseau leger","Fregate","destroyer")
+--variation:setDockClasses("Drone","Vaisseau leger","Fregate","destroyer")  A TESTER
+
 template:setCanDock(true)
 template:setCanHack(false)
 
