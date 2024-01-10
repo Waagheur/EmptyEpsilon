@@ -1070,6 +1070,7 @@ void SpaceShip::drawOnRadar(sp::RenderTarget& renderer, glm::vec2 position, floa
     {
         object_sprite = "radar/blip.png";
         color = glm::u8vec4(192, 192, 192, 255);
+        sprite_scale = 4.0f;
     }
     else
     {

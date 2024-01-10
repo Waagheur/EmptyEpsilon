@@ -46,6 +46,7 @@ void SpaceStation::drawOnRadar(sp::RenderTarget& renderer, glm::vec2 position, f
     {
         color = glm::u8vec4(192, 192, 192, 255);
         object_sprite = "radar/blip.png";
+        sprite_scale = 4.0f;
     }
     else
     {
