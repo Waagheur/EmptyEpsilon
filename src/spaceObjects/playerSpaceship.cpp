@@ -3457,6 +3457,7 @@ void PlayerSpaceship::launchSquadron(unsigned int deck)
                 ship->setPosition(getPosition());
                 ship->setFaction(getFaction());
                 ship->orderDefendTarget(this);
+                ship->setScannedByFaction(getFaction(), true);
                 squadron.ships.push_back(ship);
                 // if(n > 0)
                 // {
