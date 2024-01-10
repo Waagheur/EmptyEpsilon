@@ -33,11 +33,9 @@ private:
     int drag_waypoint_index;
     GuiRadarView* radar;
 
-    GuiKeyValueDisplay* info_distance;
-    GuiKeyValueDisplay* info_radar_range;
     GuiKeyValueDisplay* info_callsign;
-    GuiKeyValueDisplay* info_faction;
-    GuiKeyValueDisplay* info_probe;
+    GuiKeyValueDisplay* info_distance_to_ship;
+    GuiKeyValueDisplay* info_bearing_to_ship;
 
     //GuiKeyValueDisplay* info_reputation;
     GuiButton* center_screen_button;
@@ -65,7 +63,6 @@ private:
     sp::io::Pointer::Button button_pressed;
     const float max_distance = 10000000.0f;
     const float min_distance = 6250.0f;
-    float distance;
 public:
     CicScreen(GuiContainer* owner, bool allow_comms);
 

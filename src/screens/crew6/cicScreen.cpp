@@ -172,17 +172,12 @@ CicScreen::CicScreen(GuiContainer* owner, bool allow_comms)
     auto sidebar = new GuiElement(this, "SIDE_BAR");
     sidebar->setPosition(-20, 150, sp::Alignment::TopRight)->setSize(250, GuiElement::GuiSizeMax)->setAttribute("layout", "vertical");
 
-    info_distance = new GuiKeyValueDisplay(sidebar, "DISTANCE", 0.4, tr("Distance"), "");
-    info_distance->setSize(GuiElement::GuiSizeMax, 30);
-
-    info_radar_range = new GuiKeyValueDisplay(sidebar, "RADAR_RANGE", 0.4, tr("Radar range"), "");
-    info_radar_range->setSize(GuiElement::GuiSizeMax, 30);
-
-    info_callsign = new GuiKeyValueDisplay(sidebar, "SCIENCE_CALLSIGN", 0.4, tr("Callsign"), "");
+    info_callsign = new GuiKeyValueDisplay(sidebar, "CIC_CALLSIGN", 0.5, tr("Callsign"), "");
     info_callsign->setSize(GuiElement::GuiSizeMax, 30);
-
-    info_faction = new GuiKeyValueDisplay(sidebar, "SCIENCE_FACTION", 0.4, tr("Faction"), "");
-    info_faction->setSize(GuiElement::GuiSizeMax, 30);
+    info_distance_to_ship = new GuiKeyValueDisplay(sidebar, "CIC_DISTANCE", 0.5, tr("Distance to ship"), "");
+    info_distance_to_ship->setSize(GuiElement::GuiSizeMax, 30);
+    info_bearing_to_ship = new GuiKeyValueDisplay(sidebar, "CIC_BEARING", 0.5, tr("Bearing to ship"), "");
+    info_bearing_to_ship->setSize(GuiElement::GuiSizeMax, 30);
 
     // Controls for the radar view
     view_controls = new GuiElement(this, "VIEW_CONTROLS");
@@ -278,112 +273,103 @@ void CicScreen::onDraw(sp::RenderTarget& renderer)
 
     GuiOverlay::onDraw(renderer);
 
-    // TODO revoir ce que c'est que tous ces trucs avant targets.get
-    // Info range radar
-    float radar_range = 5000.0;
-    if (my_spaceship)
-    {
-        radar_range = my_spaceship->getShortRangeRadarRange();
-        info_radar_range -> setValue(string(radar_range / 1000.0f, 1.0f) + " U");
-    }
+    // if (target_for_ai.get() && my_spaceship)
+    // {
+    //     // Check each object to determine whether the target is still within
+    //     // shared radar range of a friendly object.
+    //     P<SpaceObject> target = target_for_ai.get();
+    //     bool near_friendly = false;
 
-    // Info Distance
-    if (my_spaceship)
-    {
-        float ratio_screen = radar->getRect().size.x / radar->getRect().size.y;
-        float distance_width = radar->getDistance() /** 2.f*/ * ratio_screen / 1000.0f;
-        float distance_height = radar->getDistance() /** 2.f*/ / 1000.0f;
-        if (distance_width < 100)
-            info_distance -> setValue(string(distance_width, 1.0f) + " U / " + string(distance_height, 1.0f) + " U");
-        else
-            info_distance -> setValue(string(distance_width, 0.0f) + " U / " + string(distance_height, 0.0f) + " U");
-    }
+    //     // For each SpaceObject on the map...
+    //     foreach(SpaceObject, obj, space_object_list)
+    //     {
+    //         // POUR DAID VERSION
+    //         // Consider the object only if it is:
+    //         // - Any ShipTemplateBasedObject (ship or station)
+    //         // - A SpaceObject belonging to a friendly faction
+    //         // - The player's ship
+    //         // - A scan probe owned by the player's ship
+    //         // This check is duplicated from GuiRadarView::drawObjects.
 
-    info_faction->setValue("-");
-    if (target_for_ai.get() && my_spaceship)
-    {
-        // Check each object to determine whether the target is still within
-        // shared radar range of a friendly object.
-        P<SpaceObject> target = target_for_ai.get();
-        bool near_friendly = false;
+    //         // C'est different ici 
 
-        // For each SpaceObject on the map...
-        foreach(SpaceObject, obj, space_object_list)
-        {
-            // POUR DAID VERSION
-            // Consider the object only if it is:
-            // - Any ShipTemplateBasedObject (ship or station)
-            // - A SpaceObject belonging to a friendly faction
-            // - The player's ship
-            // - A scan probe owned by the player's ship
-            // This check is duplicated from GuiRadarView::drawObjects.
+    //         P<ShipTemplateBasedObject> stb_obj = obj;
 
-            // C'est different ici 
+    //         if ((!stb_obj && !P<WormHole>(obj) && !P<Planet>(obj)) 
+    //             || (!obj->isFriendly(my_spaceship) && obj != my_spaceship))
+    //         {
+    //             P<ScanProbe> sp = obj;
 
-            P<ShipTemplateBasedObject> stb_obj = obj;
+    //             if (!sp || sp->owner_id != my_spaceship->getMultiplayerId())
+    //             {
+    //                 continue;
+    //             }
+    //         }
 
-            if ((!stb_obj && !P<WormHole>(obj) && !P<Planet>(obj)) 
-                || (!obj->isFriendly(my_spaceship) && obj != my_spaceship))
-            {
-                P<ScanProbe> sp = obj;
-
-                if (!sp || sp->owner_id != my_spaceship->getMultiplayerId())
-                {
-                    continue;
-                }
-            }
-
-            //On ne peut sélectionner que des vaisseaux qui sont dans la liste des escadres
+    //         //On ne peut sélectionner que des vaisseaux qui sont dans la liste des escadres
             
-            // Set the targetable radius to getShortRangeRadarRange() if the
-            // object's a ShipTemplateBasedObject. Otherwise, default to 5U.
-            float r = stb_obj ? stb_obj->getShortRangeRadarRange() : 5000.0f;
+    //         // Set the targetable radius to getShortRangeRadarRange() if the
+    //         // object's a ShipTemplateBasedObject. Otherwise, default to 5U.
+    //         float r = stb_obj ? stb_obj->getShortRangeRadarRange() : 5000.0f;
 
-            // If the target is within the short-range radar range/5U of the
-            // object, consider it near a friendly object.
-            if (glm::length2(obj->getPosition() - target->getPosition()) < r * r)
-            {
-                near_friendly = true;
-                break;
-            }
-        }
+    //         // If the target is within the short-range radar range/5U of the
+    //         // object, consider it near a friendly object.
+    //         if (glm::length2(obj->getPosition() - target->getPosition()) < r * r)
+    //         {
+    //             near_friendly = true;
+    //             break;
+    //         }
+    //     }
 
-        if (!near_friendly)
-        {
-            // If the target is no longer near a friendly object, unset it as
-            // the target.
-            target_for_ai.clear();
-        }
-    }
+    //     if (!near_friendly)
+    //     {
+    //         // If the target is no longer near a friendly object, unset it as
+    //         // the target.
+    //         target_for_ai.clear();
+    //     }
+    // }
 
-    if (target_for_ai.get() && my_spaceship)
+    // if (target_for_ai.get() && my_spaceship)
+    // {
+    //     P<SpaceObject> obj = target_for_ai.get();
+    //     P<SpaceShip> ship = obj;
+    //     P<SpaceStation> station = obj;
+    //     P<ScanProbe> probe = obj;
+
+    //     distance = glm::length(obj->getPosition() - my_spaceship->getPosition()) / 1000.0f;
+    //     info_distance -> setValue(string(distance, 1.0f) + " U");
+
+    //     info_callsign->setValue(obj->getCallSign());
+
+    //     if (factionInfo[obj->getFactionId()]) {
+    //         if (ship)
+    //         {
+    //             if (ship->getScannedStateFor(my_spaceship) >= SS_SimpleScan)
+    //             {
+    //                 info_faction->setValue(factionInfo[obj->getFactionId()]->getLocaleName());
+    //             }
+    //         }else{
+    //             info_faction->setValue(factionInfo[obj->getFactionId()]->getLocaleName());
+    //         }
+    //     }
+
+    // }
+    // else
+    P<CpuShip> sel_squadron_leader = targets_squadron.get();
+    if(sel_squadron_leader)
     {
-        P<SpaceObject> obj = target_for_ai.get();
-        P<SpaceShip> ship = obj;
-        P<SpaceStation> station = obj;
-        P<ScanProbe> probe = obj;
-
-        distance = glm::length(obj->getPosition() - my_spaceship->getPosition()) / 1000.0f;
-        info_distance -> setValue(string(distance, 1.0f) + " U");
-
-        info_callsign->setValue(obj->getCallSign());
-
-        if (factionInfo[obj->getFactionId()]) {
-            if (ship)
-            {
-                if (ship->getScannedStateFor(my_spaceship) >= SS_SimpleScan)
-                {
-                    info_faction->setValue(factionInfo[obj->getFactionId()]->getLocaleName());
-                }
-            }else{
-                info_faction->setValue(factionInfo[obj->getFactionId()]->getLocaleName());
-            }
-        }
-
+        info_callsign->setValue(sel_squadron_leader->getCallSign());
+        float distance = glm::length(sel_squadron_leader->getPosition() - my_spaceship->getPosition()) / 1000.0f;
+        info_distance_to_ship->setValue(string(distance, 1.0f) + " U");
+        float heading = vec2ToAngle(sel_squadron_leader->getPosition() - my_spaceship->getPosition()) - 90;
+        while(heading < 0) heading += 360;
+        info_bearing_to_ship->setValue(int(heading));
     }
     else
     {
         info_callsign->setValue("-");
+        info_distance_to_ship->setValue("-");
+        info_bearing_to_ship->setValue("-");
     }
     if (my_spaceship)
     {
@@ -399,8 +385,8 @@ void CicScreen::onDraw(sp::RenderTarget& renderer)
     if (target_for_ai.getWaypointIndex() >= 0)
     {
         delete_waypoint_button->enable();
-        distance = glm::length(my_spaceship->waypoints[target_for_ai.getWaypointIndex()] - my_spaceship->getPosition()) / 1000.0f;
-        info_distance -> setValue(string(distance, 1.0f) + " U");
+        //distance = glm::length(my_spaceship->waypoints[target_for_ai.getWaypointIndex()] - my_spaceship->getPosition()) / 1000.0f;
+        //info_distance -> setValue(string(distance, 1.0f) + " U");
     }
     else
         delete_waypoint_button->disable();
