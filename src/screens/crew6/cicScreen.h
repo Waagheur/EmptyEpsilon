@@ -61,7 +61,7 @@ private:
 
     glm::vec2 mouse_down_position;
     sp::io::Pointer::Button button_pressed;
-    const float max_distance = 10000000.0f;
+    const float max_distance = 50000.0f;
     const float min_distance = 6250.0f;
 public:
     CicScreen(GuiContainer* owner, bool allow_comms);
