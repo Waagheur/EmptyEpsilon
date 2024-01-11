@@ -625,15 +625,6 @@ public:
        return ship_template->squadrons_compositions;
     }
 
-    SquadronTemplate& getSquadronTemplate(const string &name)
-    {
-        for(auto &sqt : getSquadronCompositions())
-        {
-            if(name == sqt.template_name)
-                return sqt;
-        }
-    }
-
     std::array<unsigned int,max_number_of_waiting_squadron> getNbrWaitingSquadrons()
     {
         return number_of_waiting_squadron_for_bp;
