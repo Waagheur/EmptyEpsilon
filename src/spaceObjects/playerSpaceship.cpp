@@ -2655,6 +2655,10 @@ void PlayerSpaceship::orderSquadron(EAIOrder order, unsigned int idx, P<SpaceObj
     {
         for(auto & ship : launched_squadrons[idx].ships)
         {
+            if(!ship)
+            {
+                continue;
+            }
             switch(EAIOrder(order))
             {
                 case AI_Attack:
@@ -2691,6 +2695,10 @@ void PlayerSpaceship::orderSquadron(EAIOrder order, unsigned int idx, const glm:
     {
         for(auto & ship : launched_squadrons[idx].ships)
         {
+            if(!ship)
+            {
+                continue;
+            }
             switch(EAIOrder(order))
             {
                 case AI_FlyTowards:
