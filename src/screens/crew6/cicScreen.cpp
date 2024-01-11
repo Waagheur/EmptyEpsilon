@@ -398,8 +398,6 @@ void CicScreen::onUpdate()
 {
     if (my_spaceship)
     {
-        float radar_range = my_spaceship->getShortRangeRadarRange();
-
         
         if (keys.relay_add_waypoint.getDown())
         {

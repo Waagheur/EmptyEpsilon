@@ -1263,7 +1263,6 @@ void PlayerSpaceship::update(float delta)
         {    
             
             if((getSquadronCount(n) >= sqt.max_created)
-            || bp_activated[n] == false
             || bp_available[n] == false)
             {
                 delay_to_next_creation[n] = sqt.construction_duration;
@@ -1271,9 +1270,9 @@ void PlayerSpaceship::update(float delta)
             else if (delay_to_next_creation[n] <= 0.0f)
             {
                 instantiateSquadron(sqt.template_name);
-                delay_to_next_creation[n] = sqt.construction_duration;
+                delay_to_next_creation[n] += sqt.construction_duration;
             }
-            else
+            else if(bp_activated[n] == true)
             {
                 to_progress.insert(n);
             }
@@ -1315,9 +1314,9 @@ void PlayerSpaceship::update(float delta)
         std::vector<Squadron>::iterator iter = launched_squadrons.begin();
         while(iter != launched_squadrons.end())
         {
-
+            string template_name = iter->squadron_template_name;
             bool found = false;
-            unsigned int nbr_destroyed;
+            unsigned int nbr_destroyed{0};
             for(P<CpuShip> cpu : iter->ships)
             {
 
@@ -1340,6 +1339,22 @@ void PlayerSpaceship::update(float delta)
             {
                 iter++;
             }
+
+            if(nbr_destroyed > 0)
+            {
+                int n=0;
+                for(auto &sqt : getSquadronCompositions())
+                {
+                    if(template_name == sqt.template_name)
+                    {
+                        float recall_ratio = (float)nbr_destroyed / sqt.ship_names.size();
+                        float time_gained = recall_ratio * sqt.construction_duration;
+                        delay_to_next_creation[n] -= time_gained;
+                    }
+                    n++;
+                }
+            }
+
         }
         
         {
@@ -1351,7 +1366,7 @@ void PlayerSpaceship::update(float delta)
                 {
                 
                     launched_squadrons_infos[n].squadron_name = sq.squadron_name;
-                    launched_squadrons_infos[n].squadron_template= sq.squadron_template;
+                    launched_squadrons_infos[n].squadron_template= sq.squadron_template_name;
                     
                     string target{""};
                     P<SpaceObject> spo = cpu->getOrderTarget();
@@ -1423,8 +1438,11 @@ void PlayerSpaceship::applyTemplateValues()
     {
         bp_activated[n] = sqt.activated;
         bp_available[n] = sqt.available;
+        delay_to_next_creation[n] = sqt.construction_duration;
         n++;
     }
+
+    
 
 }
 
@@ -2629,6 +2647,10 @@ void PlayerSpaceship::onReceiveClientCommand(int32_t client_id, sp::io::DataBuff
             bool val;
             packet >> idx >> val;
             bp_activated[idx] = val;
+            if(val == false)
+            {
+                delay_to_next_creation[idx] = ship_template->squadrons_compositions[idx].construction_duration;
+            }
         }
         break;
     }
@@ -3451,7 +3473,7 @@ void PlayerSpaceship::launchSquadron(unsigned int deck)
         Squadron squadron;
         string squadron_callsign = gameGlobalInfo->getNextShipCallsign();
         squadron.squadron_name = sqt.template_name + "-" +squadron_callsign;
-        squadron.squadron_template = sqt.template_name;
+        squadron.squadron_template_name = sqt.template_name;
         
         unsigned int n=1;
         for(const string &template_name : sqt.ship_names)

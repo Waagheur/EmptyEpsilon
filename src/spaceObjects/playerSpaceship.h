@@ -211,7 +211,7 @@ public:
     struct Squadron
     {
         string squadron_name {""};
-        string squadron_template {""};
+        string squadron_template_name {""};
 
         PVector<CpuShip> ships;    
         // bool operator<(const Squadron& rhs) const 
@@ -623,6 +623,15 @@ public:
     std::vector<SquadronTemplate>& getSquadronCompositions()
     {
        return ship_template->squadrons_compositions;
+    }
+
+    SquadronTemplate& getSquadronTemplate(const string &name)
+    {
+        for(auto &sqt : getSquadronCompositions())
+        {
+            if(name == sqt.template_name)
+                return sqt;
+        }
     }
 
     std::array<unsigned int,max_number_of_waiting_squadron> getNbrWaitingSquadrons()
