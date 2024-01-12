@@ -73,14 +73,14 @@ void GuiBlueprintsControls::onUpdate()
     int n =0;
     for(auto &row : rows)
     {
-        if(target_spaceship->isBlueprintAvailable(n) == true)
-        {
-            row.layout->show();
-        }
-        else
-        {
-            row.layout->hide();
-        }
+        // if(target_spaceship->isBlueprintAvailable(n) == true)
+        // {
+        //     row.layout->show();
+        // }
+        // else
+        // {
+        //     row.layout->hide();
+        // }
 
         
         unsigned int cur_sq = target_spaceship->getSquadronCount(n);
@@ -110,6 +110,14 @@ void GuiBlueprintsControls::onDraw(sp::RenderTarget& target)
     int n =0;
     for(auto &row : rows)
     {
+        if(target_spaceship->isBlueprintAvailable(n) == false)
+        {
+            row.layout->hide();
+        }
+        else
+        {
+            row.layout->show();
+        }
         row.bp_toggle_button->setValue(target_spaceship->isBlueprintActivated(n));
         n++;
     }

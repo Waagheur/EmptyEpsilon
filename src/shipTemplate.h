@@ -281,7 +281,7 @@ public:
         sqt.construction_duration = creation_duration;
         sqt.ship_names = ship_names;
         sqt.template_name = name;
-        sqt.available = true;
+        sqt.available = false;
         squadrons_compositions.push_back(sqt);
     }
 

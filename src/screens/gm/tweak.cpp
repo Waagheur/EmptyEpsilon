@@ -103,6 +103,9 @@ GuiObjectTweak::GuiObjectTweak(GuiContainer* owner, ETweakType tweak_type)
 
         pages.push_back(new GuiModifierTweak(this));
         list->addEntry(tr("tab", "Modifiers"), "");
+
+        pages.push_back(new GuiBlueprintTweak(this));
+        list->addEntry(tr("tab", "Blueprints"), "");
     }
 
     if (tweak_type == TW_Planet)
@@ -2426,6 +2429,69 @@ void GuiModifierTweak::open(P<SpaceObject> target)
 }
 
 void GuiModifierTweak::onDraw(sp::RenderTarget& renderer)
+{
+
+}
+
+GuiBlueprintTweak::GuiBlueprintTweak(GuiContainer* owner)
+    : GuiTweakPage(owner)
+{
+    // Add four columns.
+    bp_available_col = new GuiElement(this, "LAYOUT_1");
+    bp_available_col->setPosition(50, 25, sp::Alignment::TopLeft)->setSize(150, GuiElement::GuiSizeMax)->setAttribute("layout", "vertical");
+    bp_cur_col = new GuiElement(this, "LAYOUT_2");
+    bp_cur_col->setPosition(210, 25, sp::Alignment::TopLeft)->setSize(100, GuiElement::GuiSizeMax)->setAttribute("layout", "vertical");
+    bp_max_col = new GuiElement(this, "LAYOUT_3");
+    bp_max_col->setPosition(320, 25, sp::Alignment::TopLeft)->setSize(100, GuiElement::GuiSizeMax)->setAttribute("layout", "vertical");
+    bp_duration_col = new GuiElement(this, "LAYOUT_4");
+    bp_duration_col->setPosition(430, 25, sp::Alignment::TopLeft)->setSize(100, GuiElement::GuiSizeMax)->setAttribute("layout", "vertical");
+    
+    (new GuiLabel(bp_available_col, "", tr("Blueprint availability"), 20))->setSize(GuiElement::GuiSizeMax, 30);
+    (new GuiLabel(bp_cur_col, "", tr("Current produced"), 20))->setSize(GuiElement::GuiSizeMax, 30);
+    (new GuiLabel(bp_max_col, "", tr("Max"), 20))->setSize(GuiElement::GuiSizeMax, 30);
+    (new GuiLabel(bp_duration_col, "", tr("Time to finish"), 20))->setSize(GuiElement::GuiSizeMax, 30);
+}
+
+void GuiBlueprintTweak::open(P<SpaceObject> target)
+{
+    if(!target)
+        return;
+    if(this->target)
+        return;
+    P<PlayerSpaceship> ship = target;
+    this->target = ship;
+
+    int n=0;
+    for(auto &sqt : ship->ship_template->squadrons_compositions)
+    {
+        GuiToggleButton* sq_blueprint = new GuiToggleButton(bp_available_col, "", tr("cic",sqt.template_name), [n, this](bool value) {
+            if (!this->target)
+                return;
+            this->target->bp_available[n] = value;});
+        sq_blueprint->setValue(this->target->bp_available[n]);
+        sq_blueprint->setSize(130, 40);
+        sq_blueprint->setTextSize(30);
+
+        bp_available.push_back(sq_blueprint);
+
+        GuiSlider* bp_cur_number = new GuiSlider(bp_cur_col, "", 0, sqt.max_created, 0, [this, n](int value) {
+            if(this->target)
+            {
+                this->target->number_of_waiting_squadron_for_bp[n] = value;
+            }
+        });
+        bp_cur_number->addOverlay()->setSize(GuiElement::GuiSizeMax, 40);
+        
+
+        bp_cur_instances.push_back(bp_cur_number);
+
+
+        n++;
+    }
+
+}
+
+void GuiBlueprintTweak::onDraw(sp::RenderTarget& renderer)
 {
 
 }

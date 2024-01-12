@@ -465,6 +465,28 @@ public:
     virtual void open(P<SpaceObject> target) override;
 };
 
+class GuiBlueprintTweak : public GuiTweakPage
+{
+private:
+    P<PlayerSpaceship> target;
+
+    std::vector<GuiToggleButton*> bp_available{nullptr};
+    std::vector<GuiSlider*> bp_cur_instances{nullptr};
+    std::vector<GuiSlider*> bp_max_instances{nullptr};
+    std::vector<GuiSlider*> bp_duration{nullptr};
+    
+    GuiElement* bp_available_col{nullptr};
+    GuiElement* bp_cur_col{nullptr};
+    GuiElement* bp_max_col{nullptr};
+    GuiElement* bp_duration_col{nullptr};
+public:
+    GuiBlueprintTweak(GuiContainer* owner);
+
+    virtual void onDraw(sp::RenderTarget& renderer) override;
+
+    virtual void open(P<SpaceObject> target) override;
+};
+
 
 
 #endif//TWEAK_H
