@@ -99,31 +99,45 @@ CicScreen::CicScreen(GuiContainer* owner, bool allow_comms)
                             {
                                 if (target != sel_squadron_leader && target->canBeTargetedBy(sel_squadron_leader))
                                 {
-                                    if (sel_squadron_leader->isEnemy(target) || ((target->getScannedStateFor(my_spaceship) == SS_NotScanned) && !shift_down))
+                                    EAIOrder order = AI_Idle;
+                                    if (sel_squadron_leader->isEnemy(target) || ((target->getScannedStateFor(my_spaceship) == SS_NotScanned)))
                                     {
-                                        my_spaceship->commandOrderSquadronTarget(AI_Attack, squadron_index,target);
-                                    }
-                                    else if(!shift_down || ((target->getScannedStateFor(my_spaceship) == SS_NotScanned) && shift_down))
-                                    {
-                                        my_spaceship->commandOrderSquadronTarget(AI_DefendTarget, squadron_index,target);
-                                    }
-                                    else if(shift_down && (target == my_spaceship))
-                                    {
-                                        if(target->canBeDockedBy(sel_squadron_leader) != DockStyle::None)
+                                        order = AI_Attack;
+                                        if(shift_down)
                                         {
-                                            my_spaceship->commandOrderSquadronTarget(AI_Dock, squadron_index,target);
+                                            order = AI_DefendTarget;
                                         }
-                                        else
+                                    }
+                                    else
+                                    {
+                                        order = AI_DefendTarget;
+                                        if(shift_down)
                                         {
-                                            LOG(WARNING) << "Squadron class can't dock with target ship !";
-                                            LOG(WARNING) << "Class: " << sel_squadron_leader->ship_template->getClass();
-                                            for(auto & auth : my_spaceship->ship_template->external_dock_classes)
+                                            if(target == my_spaceship)
                                             {
-                                                LOG(WARNING) << "Authorized: " << auth;
+                                                if(target->canBeDockedBy(sel_squadron_leader) != DockStyle::None)
+                                                {
+                                                    order = AI_Dock;
+                                                }
+                                                else
+                                                {
+                                                    LOG(WARNING) << "Squadron class can't dock with target ship !";
+                                                    LOG(WARNING) << "Class: " << sel_squadron_leader->ship_template->getClass();
+                                                    for(auto & auth : my_spaceship->ship_template->external_dock_classes)
+                                                    {
+                                                        LOG(WARNING) << "Authorized: " << auth;
+                                                    }
+                                                    //Still defend order
+                                                }
                                             }
-                                            
+                                            else
+                                            {
+                                                order = AI_Attack;
+                                            }
                                         }
                                     }
+                                    
+                                    my_spaceship->commandOrderSquadronTarget(order, squadron_index,target);
                                 }
                             }
                             else
