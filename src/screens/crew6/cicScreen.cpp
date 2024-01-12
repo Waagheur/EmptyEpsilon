@@ -99,11 +99,11 @@ CicScreen::CicScreen(GuiContainer* owner, bool allow_comms)
                             {
                                 if (target != sel_squadron_leader && target->canBeTargetedBy(sel_squadron_leader))
                                 {
-                                    if (sel_squadron_leader->isEnemy(target))
+                                    if (sel_squadron_leader->isEnemy(target) || ((target->getScannedStateFor(my_spaceship) == SS_NotScanned) && !shift_down))
                                     {
                                         my_spaceship->commandOrderSquadronTarget(AI_Attack, squadron_index,target);
                                     }
-                                    else if(!shift_down)
+                                    else if(!shift_down || ((target->getScannedStateFor(my_spaceship) == SS_NotScanned) && shift_down))
                                     {
                                         my_spaceship->commandOrderSquadronTarget(AI_DefendTarget, squadron_index,target);
                                     }

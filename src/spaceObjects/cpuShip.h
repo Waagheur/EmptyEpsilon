@@ -32,6 +32,7 @@ class CpuShip : public SpaceShip
     ShipAI* ai;
 
     string new_ai_name;
+    bool allow_attack_ally{false};
 public:
     CpuShip();
     virtual ~CpuShip();
@@ -52,6 +53,7 @@ public:
     void orderFlyTowardsBlind(glm::vec2 target);
     void orderAttack(P<SpaceObject> object);
     void orderDock(P<SpaceObject> object);
+    void setAllowAttackAlly() { allow_attack_ally = true;}
 
     EAIOrder getOrder() { return orders; }
     glm::vec2 getOrderTargetLocation() { return order_target_location; }

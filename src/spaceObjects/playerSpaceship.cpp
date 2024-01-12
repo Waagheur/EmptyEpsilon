@@ -3488,6 +3488,7 @@ void PlayerSpaceship::launchSquadron(unsigned int deck)
                 ship->setFaction(getFaction());
                 ship->orderDefendTarget(this);
                 ship->setScannedByFaction(getFaction(), true);
+                ship->setAllowAttackAlly();
                 squadron.ships.push_back(ship);
                 // if(n > 0)
                 // {

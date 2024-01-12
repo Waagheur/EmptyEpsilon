@@ -296,7 +296,7 @@ void CpuShip::orderAttack(P<SpaceObject> object)
     
     // Attack only if the target is hostile.
     // Otherwise we just chase the target without firing on it.
-    if (this->isEnemy(object))
+    if (this->isEnemy(object) || allow_attack_ally)
     {
         orders = AI_Attack;
         order_target = object;
