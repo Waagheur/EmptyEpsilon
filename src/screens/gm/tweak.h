@@ -470,13 +470,17 @@ class GuiBlueprintTweak : public GuiTweakPage
 private:
     P<PlayerSpaceship> target;
 
-    std::vector<GuiToggleButton*> bp_available{nullptr};
-    std::vector<GuiSlider*> bp_cur_instances{nullptr};
-    std::vector<GuiSlider*> bp_max_instances{nullptr};
-    std::vector<GuiSlider*> bp_duration{nullptr};
+    std::vector<GuiToggleButton*> bp_available;
+    std::vector<GuiLabel*> bp_in_use;
+    std::vector<GuiSlider*> bp_wait_instances;
+    std::vector<GuiSlider*> bp_max_instances;
+    std::vector<GuiLabel*> bp_duration;
+
+    GuiSlider* bp_delay_factor;
     
     GuiElement* bp_available_col{nullptr};
-    GuiElement* bp_cur_col{nullptr};
+    GuiElement* bp_in_use_col{nullptr};
+    GuiElement* bp_wait_col{nullptr};
     GuiElement* bp_max_col{nullptr};
     GuiElement* bp_duration_col{nullptr};
 public:

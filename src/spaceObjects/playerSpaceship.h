@@ -233,6 +233,9 @@ public:
     float delay_to_next_creation[max_blueprints_count]{};
     bool bp_activated[max_blueprints_count]{false};
     bool bp_available[max_blueprints_count]{false};
+    unsigned int bp_max_created[max_blueprints_count]{};
+    float bp_delay_factor{1};
+
     //Squadrons available to launch
     std::array<unsigned int,max_number_of_waiting_squadron> number_of_waiting_squadron_for_bp{};
     //Squadrons being launched

@@ -1182,7 +1182,7 @@ GuiShipTweakSystems::GuiShipTweakSystems(GuiContainer* owner)
     col_3->setPosition(320, 25, sp::Alignment::TopLeft)->setSize(100, GuiElement::GuiSizeMax)->setAttribute("layout", "vertical");
     auto col_4 = new GuiElement(this, "LAYOUT_4");
     col_4->setPosition(430, 25, sp::Alignment::TopLeft)->setSize(100, GuiElement::GuiSizeMax)->setAttribute("layout", "vertical");
-    auto col_5 = new GuiElement(this, "LAYOUT_4");
+    auto col_5 = new GuiElement(this, "LAYOUT_5");
     col_5->setPosition(540, 25, sp::Alignment::TopLeft)->setSize(100, GuiElement::GuiSizeMax)->setAttribute("layout", "vertical");
 
     (new GuiLabel(col_1, "", tr("State"), 20))->setSize(GuiElement::GuiSizeMax, 30);
@@ -2438,16 +2438,32 @@ GuiBlueprintTweak::GuiBlueprintTweak(GuiContainer* owner)
 {
     // Add four columns.
     bp_available_col = new GuiElement(this, "LAYOUT_1");
-    bp_available_col->setPosition(50, 25, sp::Alignment::TopLeft)->setSize(150, GuiElement::GuiSizeMax)->setAttribute("layout", "vertical");
-    bp_cur_col = new GuiElement(this, "LAYOUT_2");
-    bp_cur_col->setPosition(210, 25, sp::Alignment::TopLeft)->setSize(100, GuiElement::GuiSizeMax)->setAttribute("layout", "vertical");
-    bp_max_col = new GuiElement(this, "LAYOUT_3");
-    bp_max_col->setPosition(320, 25, sp::Alignment::TopLeft)->setSize(100, GuiElement::GuiSizeMax)->setAttribute("layout", "vertical");
-    bp_duration_col = new GuiElement(this, "LAYOUT_4");
-    bp_duration_col->setPosition(430, 25, sp::Alignment::TopLeft)->setSize(100, GuiElement::GuiSizeMax)->setAttribute("layout", "vertical");
+    bp_available_col->setPosition(50, 75, sp::Alignment::TopLeft)->setSize(150, GuiElement::GuiSizeMax)->setAttribute("layout", "vertical");
+    bp_in_use_col = new GuiElement(this, "LAYOUT_2");
+    bp_in_use_col->setPosition(210, 75, sp::Alignment::TopLeft)->setSize(100, GuiElement::GuiSizeMax)->setAttribute("layout", "vertical");
+    bp_wait_col = new GuiElement(this, "LAYOUT_3");
+    bp_wait_col->setPosition(320, 75, sp::Alignment::TopLeft)->setSize(100, GuiElement::GuiSizeMax)->setAttribute("layout", "vertical");
+    bp_max_col = new GuiElement(this, "LAYOUT_4");
+    bp_max_col->setPosition(430, 75, sp::Alignment::TopLeft)->setSize(100, GuiElement::GuiSizeMax)->setAttribute("layout", "vertical");
+    bp_duration_col = new GuiElement(this, "LAYOUT_5");
+    bp_duration_col->setPosition(540, 75, sp::Alignment::TopLeft)->setSize(100, GuiElement::GuiSizeMax)->setAttribute("layout", "vertical");
     
+    (new GuiLabel(this, "", tr("Delay ratio"), 20))->setSize(GuiElement::GuiSizeMax, 30);
+
+    bp_delay_factor = new GuiSlider(this, "", 0.0f, 200.0f, 100.0f, [this](float value) {
+            if(this->target)
+            {
+                this->target->bp_delay_factor = value / 100.0f;
+            }
+    });
+    bp_delay_factor->setPosition(50, 25, sp::Alignment::TopLeft);
+    bp_delay_factor->addOverlay()->setSize(GuiElement::GuiSizeMax, 40);
+    bp_delay_factor->addSnapValue(100, 0.05);
+
+
     (new GuiLabel(bp_available_col, "", tr("Blueprint availability"), 20))->setSize(GuiElement::GuiSizeMax, 30);
-    (new GuiLabel(bp_cur_col, "", tr("Current produced"), 20))->setSize(GuiElement::GuiSizeMax, 30);
+    (new GuiLabel(bp_in_use_col, "", tr("Current in use"), 20))->setSize(GuiElement::GuiSizeMax, 30);
+    (new GuiLabel(bp_wait_col, "", tr("Current waiting"), 20))->setSize(GuiElement::GuiSizeMax, 30);
     (new GuiLabel(bp_max_col, "", tr("Max"), 20))->setSize(GuiElement::GuiSizeMax, 30);
     (new GuiLabel(bp_duration_col, "", tr("Time to finish"), 20))->setSize(GuiElement::GuiSizeMax, 30);
 }
@@ -2460,9 +2476,10 @@ void GuiBlueprintTweak::open(P<SpaceObject> target)
         return;
     P<PlayerSpaceship> ship = target;
     this->target = ship;
+    bp_delay_factor->setValue(this->target->bp_delay_factor * 100.0f);
 
     int n=0;
-    for(auto &sqt : ship->ship_template->squadrons_compositions)
+    for(auto &sqt : ship->getSquadronCompositions())
     {
         GuiToggleButton* sq_blueprint = new GuiToggleButton(bp_available_col, "", tr("cic",sqt.template_name), [n, this](bool value) {
             if (!this->target)
@@ -2474,17 +2491,36 @@ void GuiBlueprintTweak::open(P<SpaceObject> target)
 
         bp_available.push_back(sq_blueprint);
 
-        GuiSlider* bp_cur_number = new GuiSlider(bp_cur_col, "", 0, sqt.max_created, 0, [this, n](int value) {
+        GuiLabel* in_use = new GuiLabel(bp_in_use_col, "", this->target->getLaunchedSquadronsCount(sqt.template_name), 30);
+        in_use->setSize(GuiElement::GuiSizeMax, 40);
+
+        bp_in_use.push_back(in_use);
+
+        GuiSlider* wait_instances = new GuiSlider(bp_wait_col, "", 0, sqt.max_created - this->target->getLaunchedSquadronsCount(sqt.template_name), 0, [this, n](int value) {
             if(this->target)
             {
                 this->target->number_of_waiting_squadron_for_bp[n] = value;
             }
         });
-        bp_cur_number->addOverlay()->setSize(GuiElement::GuiSizeMax, 40);
+        wait_instances->addOverlay()->setSize(GuiElement::GuiSizeMax, 40);
+        bp_wait_instances.push_back(wait_instances);
+
+        GuiSlider* max_instances = new GuiSlider(bp_max_col, "", 0, sqt.max_created *5, 0, [this, n](int value) {
+            if(this->target)
+            {
+                this->target->bp_max_created[n] = value;
+            }
+        });
+        max_instances->setValue(sqt.max_created);
+        max_instances->addOverlay()->setSize(GuiElement::GuiSizeMax, 40);
+        max_instances->addSnapValue(sqt.max_created, 0.25);
         
+        bp_max_instances.push_back(max_instances);
 
-        bp_cur_instances.push_back(bp_cur_number);
+        GuiLabel* duration = new GuiLabel(bp_duration_col, "", sqt.construction_duration, 30);
+        duration->setSize(GuiElement::GuiSizeMax, 40);
 
+        bp_duration.push_back(duration);
 
         n++;
     }
@@ -2493,5 +2529,15 @@ void GuiBlueprintTweak::open(P<SpaceObject> target)
 
 void GuiBlueprintTweak::onDraw(sp::RenderTarget& renderer)
 {
-
+    if(!this->target)
+        return;
+    for(size_t n = 0; n< bp_available.size() ; n++)
+    {
+        auto& sqt = this->target->getSquadronCompositions()[n];
+        bp_in_use[n]->setText(this->target->getLaunchedSquadronsCount(sqt.template_name));
+        bp_wait_instances[n]->setRange(0, std::max(this->target->bp_max_created[n] - this->target->getLaunchedSquadronsCount(sqt.template_name), this->target->number_of_waiting_squadron_for_bp[n]));
+        bp_wait_instances[n]->setValue(this->target->number_of_waiting_squadron_for_bp[n]);
+        bp_max_instances[n]->setValue(this->target->bp_max_created[n]);
+        bp_delay_factor->setValue(this->target->bp_delay_factor * 100.0f);
+    }
 }

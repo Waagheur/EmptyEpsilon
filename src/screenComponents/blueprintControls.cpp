@@ -38,7 +38,7 @@ GuiBlueprintsControls::GuiBlueprintsControls(GuiContainer* owner, string id, P<P
         row.bp_toggle_button->setTextSize(30);
         
         row.loading_bar = new GuiProgressbar(row.layout, id + "_" + string(n) + "_PROGRESS", 0, 1.0, 0);
-        row.loading_bar->setColor(glm::u8vec4(128, 128, 128, 255))->setSize(100, 40);
+        row.loading_bar->setColor(glm::u8vec4(128, 128, 128, 255))->setSize(110, 40);
     
         pdi = new GuiPowerDamageIndicator(row.loading_bar, id + "_" + string(n) + "_PDI", SYS_Hangar, sp::Alignment::CenterRight, target_spaceship);
         pdi->setSize(GuiElement::GuiSizeMax, GuiElement::GuiSizeMax);
@@ -84,12 +84,19 @@ void GuiBlueprintsControls::onUpdate()
 
         
         unsigned int cur_sq = target_spaceship->getSquadronCount(n);
-        unsigned int max_sq = templates[n].max_created;
+        unsigned int max_sq = target_spaceship->bp_max_created[n];
         if(cur_sq >= max_sq)
         {
             row.loading_bar->show();
             row.loading_bar->setValue(0);
-            row.loading_label->setText(tr("cic",string(target_spaceship->getLaunchedSquadronsCount(templates[n].template_name)) + "L/" + tr("Max") + "(" + string(max_sq) + ")"));
+            if(cur_sq > max_sq) //could happen with tweaks
+            {
+                row.loading_label->setText(tr("cic",string(target_spaceship->getLaunchedSquadronsCount(templates[n].template_name)) + "L/" + string(cur_sq) + "T/" + tr("Max") +"(" + string(max_sq) + ")"));
+            }
+            else //equal
+            {
+                row.loading_label->setText(tr("cic",string(target_spaceship->getLaunchedSquadronsCount(templates[n].template_name)) + "L/" + tr("Max") +"(" + string(max_sq) + ")"));
+            }
         }
         else
         {

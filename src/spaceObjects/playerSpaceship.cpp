@@ -768,7 +768,9 @@ PlayerSpaceship::PlayerSpaceship()
         registerMemberReplication(&delay_to_next_creation[n]);
         registerMemberReplication(&bp_activated[n]);
         registerMemberReplication(&bp_available[n]);
+        registerMemberReplication(&bp_max_created[n]);
     }
+    registerMemberReplication(&bp_delay_factor);
 
     //number_of_waiting_squadron_for_bp.reserve(max_number_of_waiting_squadron);
     for(unsigned int n = 0; n < max_blueprints_count; n++)
@@ -1262,7 +1264,7 @@ void PlayerSpaceship::update(float delta)
         for(const auto& sqt : ship_template->squadrons_compositions)
         {    
             
-            if((getSquadronCount(n) >= sqt.max_created)
+            if((getSquadronCount(n) >= bp_max_created[n])
             || bp_available[n] == false)
             {
                 delay_to_next_creation[n] = sqt.construction_duration;
@@ -1281,7 +1283,7 @@ void PlayerSpaceship::update(float delta)
 
         for(int idx : to_progress)
         {
-            delay_to_next_creation[idx] -= delta * getSystemEffectiveness(SYS_Hangar) * (1.0f / to_progress.size());
+            delay_to_next_creation[idx] -= delta * getSystemEffectiveness(SYS_Hangar) * (1.0f / to_progress.size() * bp_delay_factor);
         }
     }
     //Launch of a waiting squadron
@@ -1317,6 +1319,7 @@ void PlayerSpaceship::update(float delta)
             string template_name = iter->squadron_template_name;
             bool found = false;
             unsigned int nbr_destroyed{0};
+
             for(P<CpuShip> cpu : iter->ships)
             {
 
@@ -1325,11 +1328,10 @@ void PlayerSpaceship::update(float delta)
                     cpu->destroy();
                     nbr_destroyed++; //TODO : give back blueprint power
                 }
-                else if(cpu)
+                if(cpu)
                 {
                     found = true;
-                    break;
-                }    
+                }
             }
             if(!found)
             {
@@ -1439,8 +1441,10 @@ void PlayerSpaceship::applyTemplateValues()
         bp_activated[n] = sqt.activated;
         bp_available[n] = sqt.available;
         delay_to_next_creation[n] = sqt.construction_duration;
+        bp_max_created[n] = sqt.max_created;
         n++;
     }
+    
 
     
 
