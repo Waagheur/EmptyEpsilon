@@ -1264,9 +1264,11 @@ void PlayerSpaceship::update(float delta)
         for(const auto& sqt : ship_template->squadrons_compositions)
         {    
             
-            if((getSquadronCount(n) >= bp_max_created[n])
+            if((getSquadronCount(n) > bp_max_created[n]) 
             || bp_available[n] == false)
             {
+                //Strictement superieur : si la derniere escadre est en train de rentrer, il faut tout de meme 
+                //ajuster le delay pour ne pas tout perdre a la destruction
                 delay_to_next_creation[n] = sqt.construction_duration;
             }
             else if (delay_to_next_creation[n] <= 0.0f)
@@ -1274,7 +1276,7 @@ void PlayerSpaceship::update(float delta)
                 instantiateSquadron(sqt.template_name);
                 delay_to_next_creation[n] += sqt.construction_duration;
             }
-            else if(bp_activated[n] == true)
+            else if((bp_activated[n] == true) && (getSquadronCount(n) < bp_max_created[n]))
             {
                 to_progress.insert(n);
             }
