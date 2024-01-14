@@ -349,12 +349,16 @@ REGISTER_SCRIPT_CLASS(ShipTemplate)
     /// Defaults to true.
     /// Example: template:setCanLaunchProbe(false)
     REGISTER_SCRIPT_CLASS_FUNCTION(ShipTemplate, setCanLaunchProbe);
-    ///Registers a new squandron type
+    ///Registers a new squandron type (this is a kind of Blueprint)
     ///First argument registers the name of the squadron, this is an identifier (for instance "Interceptors")
     ///Second argument is maximum number of squadrons (ex: 5)
     ///Third argument is creation duration in seconds (ex : 30)
     ///Other arguments register the ship class name (for instance "Light Fighter Defiant class", "Viper", ...)
     REGISTER_SCRIPT_CLASS_FUNCTION(ShipTemplate, registerSquadronComposition);
+    ///Sets a blueprint available. By default, all blueprints are deactivated and not available for player
+    ///You can specify a SquadronComposition name here, or any list.
+    ///ex : setBlueprintAvailable("Ch", "Ch1", "Interceptors")
+    REGISTER_SCRIPT_CLASS_FUNCTION(ShipTemplate, setBlueprintAvailable);
 
     /// Returns an exact copy of this ShipTemplate and sets the new copy's reference name to the given name, as ShipTemplate:setName().
     /// The copy retains all other traits of the copied ShipTemplate.

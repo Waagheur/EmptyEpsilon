@@ -1098,6 +1098,7 @@ template:registerSquadronComposition("Ch", 5, 15, "Chasseur Mk2", "Chasseur", "C
 template:registerSquadronComposition("Ch2", 5, 15, "Chasseur Mk2", "Chasseur", "Chasseur","Chasseur")
 template:registerSquadronComposition("Ch3", 5, 15, "Chasseur Mk2", "Chasseur", "Chasseur","Chasseur")
 template:registerSquadronComposition("Ch4", 5, 15, "Chasseur Mk2", "Chasseur", "Chasseur","Chasseur")
+template:setBlueprintAvailable("Ch", "Ch3")
 
 --Dock/balise de renfort de la marine
 

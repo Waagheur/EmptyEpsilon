@@ -285,6 +285,19 @@ public:
         squadrons_compositions.push_back(sqt);
     }
 
+    void setBlueprintAvailable(const std::vector<string>& squadron_name)
+    {
+        std::unordered_set<string> template_names(squadron_name.begin(), squadron_name.end());
+        for(auto &sqt : squadrons_compositions)
+        {
+            if(template_names.find(sqt.template_name) != template_names.end())
+            {
+                sqt.available = true;
+                template_names.erase(sqt.template_name);
+            }
+        }
+    }
+
 public:
     static P<ShipTemplate> getTemplate(string name);
     static std::vector<string> getAllTemplateNames();
