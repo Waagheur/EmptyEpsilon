@@ -77,7 +77,7 @@ void GuiLaunchSquadronControls::onUpdate()
             row.launch_progress->setText("");
             row.launch_progress->setValue(0);
             row.launch_button->show();
-            row.launch_button->setEnable(my_spaceship->canLaunchSquadron());
+            row.launch_button->setEnable((my_spaceship->canLaunchSquadron()) && (my_spaceship->getWaitingSquadronsCount() > 0));
         }
         deck++;
 
