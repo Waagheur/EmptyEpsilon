@@ -347,7 +347,7 @@ string getCrewPositionIcon(ECrewPosition position)
     case relayRadar: return "";
     //ajouts Tdelc Larp
     case targetAnalysisScreen: return "";
-    case cagOfficer: return "";
+    case cagOfficer: return "gui/icons/station-cic";
     default: return "ErrUnk: " + string(position);
     }
 }

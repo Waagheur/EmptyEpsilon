@@ -558,6 +558,10 @@ public:
         {
             return false;
         }
+        if((total_nbr_launching + getLaunchedSquadronsCount())>= getMaximumNumberOfSquadronsInFlight())
+        {
+            return false;
+        }
         //TODO effectiveness of system
         return true;
     }
