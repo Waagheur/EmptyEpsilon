@@ -133,22 +133,24 @@ void Artifact::setOrbitDistance(float orbit_distance)
 
 void Artifact::drawOnRadar(sp::RenderTarget& renderer, glm::vec2 position, float scale, float rotation, bool long_range)
 {
-    // radar trace scaling, via script or automatically
-    float size;
-    if (radar_trace_scale > 0)
-    {
-        if (long_range)
-            size = radar_trace_scale * 0.7f;
-        else
-            size = radar_trace_scale;
-    }
-    else
-    {
-        size = getRadius() * scale / 16;
-        if (size < 0.2f)
-            size = 0.2f;
-    }
-    renderer.drawRotatedSprite(radar_trace_icon, position, size * 32.0f, getRotation() - rotation, radar_trace_color);
+	if (scale * getRadius() > 0.1f) {
+		// radar trace scaling, via script or automatically
+		float size;
+		if (radar_trace_scale > 0)
+		{
+			if (long_range)
+				size = radar_trace_scale * 0.7f;
+			else
+				size = radar_trace_scale;
+		}
+		else
+		{
+			size = getRadius() * scale / 16;
+			if (size < 0.2f)
+				size = 0.2f;
+		}
+		renderer.drawRotatedSprite(radar_trace_icon, position, size * 32.0f, getRotation() - rotation, radar_trace_color);
+	}
 }
 
 void Artifact::collide(Collisionable* target, float force)

@@ -222,30 +222,34 @@ void ScanProbe::takeDamage(float damage_amount, DamageInfo info)
 
 void ScanProbe::drawOnRadar(sp::RenderTarget& renderer, glm::vec2 position, float scale, float rotation, bool long_range)
 {
-    // All probes use the same green icon on radar.
-    renderer.drawSprite("radar/probe.png", position, 10, glm::u8vec4(96, 192, 128, 255));
+	if (scale * getRadius() > 0.2f) {
+		// All probes use the same green icon on radar.
+		renderer.drawSprite("radar/probe.png", position, 10, glm::u8vec4(96, 192, 128, 255));
 
-    if (long_range && !has_arrived)
-    {
-        float distance = glm::length(position - glm::vec2(target_position.x, target_position.y));
-        if (distance > 1000.f)
-        {
-                renderer.drawLine(position, position + glm::vec2(target_position.x, target_position.y) - glm::vec2(getPosition().x, getPosition().y)*scale, glm::u8vec4(255, 255, 255, 32));
-        }
-    }
+		if (long_range && !has_arrived)
+		{
+			float distance = glm::length(position - glm::vec2(target_position.x, target_position.y));
+			if (distance > 1000.f)
+			{
+					renderer.drawLine(position, position + glm::vec2(target_position.x, target_position.y) - glm::vec2(getPosition().x, getPosition().y)*scale, glm::u8vec4(255, 255, 255, 32));
+			}
+		}
+	}
 }
 
 void ScanProbe::drawOnGMRadar(sp::RenderTarget& renderer, glm::vec2 position, float scale, float rotation, bool long_range)
 {
-    SpaceObject::drawOnGMRadar(renderer, position, scale, rotation, long_range);
-    if (long_range)
-    {
-        P<PlayerSpaceship> player = owner;
-        if(player)
-        {
-            renderer.drawCircleOutline(position, player->getProbeRangeRadarRange()*scale, 3.0, glm::u8vec4(255, 255, 255, 64));
-        }
-    }
+	if (scale * getRadius() > 0.2f) {
+		SpaceObject::drawOnGMRadar(renderer, position, scale, rotation, long_range);
+		if (long_range)
+		{
+			P<PlayerSpaceship> player = owner;
+			if(player)
+			{
+				renderer.drawCircleOutline(position, player->getProbeRangeRadarRange()*scale, 3.0, glm::u8vec4(255, 255, 255, 64));
+			}
+		}
+	}
 }
 
 void ScanProbe::setOwner(P<SpaceObject> owner)

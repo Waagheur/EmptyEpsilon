@@ -42,10 +42,12 @@ SupplyDrop::SupplyDrop()
 
 void SupplyDrop::drawOnRadar(sp::RenderTarget& renderer, glm::vec2 position, float scale, float rotation, bool long_range)
 {
-    glm::u8vec4 color(100, 200, 255, 255);
-    if (my_spaceship && !my_spaceship->isFriendly(this))
-        color = glm::u8vec4(200, 50, 50, 255);
-    renderer.drawSprite("radar/blip.png", position, 8, color);
+	if (scale * getRadius() > 0.2f) {
+		glm::u8vec4 color(100, 200, 255, 255);
+		if (my_spaceship && !my_spaceship->isFriendly(this))
+			color = glm::u8vec4(200, 50, 50, 255);
+		renderer.drawSprite("radar/blip.png", position, 8, color);
+	}
 }
 
 void SupplyDrop::collide(Collisionable* target, float force)

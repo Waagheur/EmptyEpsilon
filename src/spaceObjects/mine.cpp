@@ -62,12 +62,16 @@ void Mine::draw3DTransparent()
 
 void Mine::drawOnRadar(sp::RenderTarget& renderer, glm::vec2 position, float scale, float rotation, bool long_range)
 {
-    renderer.drawSprite("radar/blip.png", position, 0.3 * 32);
+	if (scale * getRadius() > 0.2f) {
+		renderer.drawSprite("radar/blip.png", position, 0.3 * 32);
+	}
 }
 
 void Mine::drawOnGMRadar(sp::RenderTarget& renderer, glm::vec2 position, float scale, float rotation, bool long_range)
 {
-    renderer.drawCircleOutline(position, trigger_range * scale, 3.0, triggered ? glm::u8vec4(255, 0, 0, 128) : glm::u8vec4(255, 255, 255, 128));
+	if (scale * getRadius() > 0.2f) {
+		renderer.drawCircleOutline(position, trigger_range * scale, 3.0, triggered ? glm::u8vec4(255, 0, 0, 128) : glm::u8vec4(255, 255, 255, 128));
+	}
 }
 
 void Mine::update(float delta)

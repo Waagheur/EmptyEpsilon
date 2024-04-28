@@ -39,7 +39,9 @@ void ShipAI::drawOnGMRadar(sp::RenderTarget& renderer, glm::vec2 draw_position, 
     if (target)
     {
         auto v = target->getPosition() - world_position;
-        renderer.drawLine(draw_position, draw_position + v * scale, glm::u8vec4(255, 128, 128, 64));
+		if (glm::length(v)*scale > 0.2f) {
+			renderer.drawLine(draw_position, draw_position + v * scale, glm::u8vec4(255, 128, 128, 64));
+		}
     }
 
     auto p0 = draw_position;

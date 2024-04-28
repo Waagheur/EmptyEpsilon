@@ -54,14 +54,16 @@ void AnimatedObject::draw3D()
 
 void AnimatedObject::drawOnRadar(sp::RenderTarget& renderer, sf::Vector2f position, float scale, bool long_range)
 {
-    if (size != getRadius())
-        setRadius(size);
+	if (scale * getRadius() > 0.1f) {
+		if (size != getRadius())
+			setRadius(size);
 
-//    object_sprite.setColor(glm::u8vec4(255, 200, 100));
-    float size = getRadius() * scale / object_sprite.getTextureRect().width * 2;
-    if (size < 0.2)
-        size = 0.2;
-    renderer.drawRotatedSprite("astero-1.png", position, size, getRotation());
+	//    object_sprite.setColor(glm::u8vec4(255, 200, 100));
+		float size = getRadius() * scale / object_sprite.getTextureRect().width * 2;
+		if (size < 0.2)
+			size = 0.2;
+		renderer.drawRotatedSprite("astero-1.png", position, size, getRotation());
+	}
 }
 
 void AnimatedObject::collide(Collisionable* target, float force)

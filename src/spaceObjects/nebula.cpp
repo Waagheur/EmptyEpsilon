@@ -104,12 +104,16 @@ void Nebula::draw3DTransparent()
 
 void Nebula::drawOnRadar(sp::RenderTarget& renderer, glm::vec2 position, float scale, float rotation, bool long_range)
 {
-    renderer.drawRotatedSpriteBlendAdd("Nebula" + string(radar_visual) + ".png", position, getRadius() * scale * 3.0f, getRotation()-rotation);
+	if (scale * getRadius() > 4.0f) {
+		renderer.drawRotatedSpriteBlendAdd("Nebula" + string(radar_visual) + ".png", position, getRadius() * scale * 3.0f, getRotation()-rotation);
+	}
 }
 
 void Nebula::drawOnGMRadar(sp::RenderTarget& renderer, glm::vec2 position, float scale, float rotation, bool long_range)
 {
-    renderer.drawCircleOutline(position, getRadius() * scale, 2.0, glm::u8vec4(255, 255, 255, 64));
+	if (scale * getRadius() > 4.0f) {
+		renderer.drawCircleOutline(position, getRadius() * scale, 2.0, glm::u8vec4(255, 255, 255, 64));
+	}
 }
 
 bool Nebula::inNebula(glm::vec2 position)

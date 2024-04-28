@@ -79,12 +79,16 @@ void Asteroid::draw3D()
     glActiveTexture(GL_TEXTURE0);
 }
 
+#include <iostream>
 void Asteroid::drawOnRadar(sp::RenderTarget& renderer, glm::vec2 position, float scale, float rotation, bool long_range)
 {
-    if (size != getRadius())
-        setRadius(size);
-
-    renderer.drawSprite("radar/astero-" + string(model_number) + ".png", position, std::max(6.0f, (getRadius() * 2.0f) * scale), glm::u8vec4(255, 200, 100, 255));
+	if (scale * getRadius() > 0.2f) {
+		if (size != getRadius()) {
+			setRadius(size);
+		}
+		
+		renderer.drawSprite("radar/astero-" + string(model_number) + ".png", position, std::max(6.0f, (getRadius() * 2.0f) * scale), glm::u8vec4(255, 200, 100, 255));
+	}
 }
 
 void Asteroid::collide(Collisionable* target, float force)
