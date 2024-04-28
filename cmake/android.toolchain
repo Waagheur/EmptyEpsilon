@@ -23,8 +23,8 @@ set(ANDROID_ABI "armeabi-v7a" CACHE STRING "Target ABI")
 # Signing key to use to sign the APK. You can generate one with:
 #       keytool -genkey -alias ${ANDROID_SIGN_KEY_NAME} -keyalg RSA -keysize 2048 -validity 10000
 set(ANDROID_SIGN_KEYSTORE "~/.keystore" CACHE STRING "Path to keystore")
-set(ANDROID_SIGN_KEY_NAME "Android" CACHE STRING "Which key to use to sign the final APK for android")
-set(ANDROID_SIGN_KEY_PASSWORD "password" CACHE STRING "Password that is used to protect the key. NOTE: This is stored in the cache, so readable for anyone with access to the drive where you run this.")
+set(ANDROID_SIGN_KEY_NAME "gethobuilder" CACHE STRING "Which key to use to sign the final APK for android")
+set(ANDROID_SIGN_KEY_PASSWORD "unixexe" CACHE STRING "Password that is used to protect the key. NOTE: This is stored in the cache, so readable for anyone with access to the drive where you run this.")
 
 
 #################################################################################

@@ -1,3 +1,7 @@
+set(CMAKE_C_FLAGS_RELEASE "-O3")
+
+set(CMAKE_CXX_FLAGS_RELEASE "-O3")
+
 # Set minimum target macOS version: https://cmake.org/cmake/help/v3.8/variable/CMAKE_OSX_DEPLOYMENT_TARGET.html#variable:CMAKE_OSX_DEPLOYMENT_TARGET
 # SDL2 targets 10.5, however EE targets C++17 features only available in 10.15+ (Catalina, June 2019).
 # Must be first!
