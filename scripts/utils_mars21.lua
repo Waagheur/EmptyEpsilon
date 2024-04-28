@@ -94,7 +94,7 @@ function checkAndMakeDerelict(ship, hullDamage, derelict_faction)
 			x, y = ship:getPosition()
 			explodeDerelict(x,y,2000)
 		end
-		print("Make derelict",ship:getName())
+		
 		return true
 	end
 	return false
@@ -132,7 +132,7 @@ end
 
 function doOnNewShip(ship)
 --recharge X2 sur tout les vaisseaux
-ship:setShieldRechargeRate(0.6)
+--ship:setShieldRechargeRate(1.2)
 	-- ATTENTION MODIFIER ICI SI ON NE VEUT PAS QUE TOUS LES VAISSEAUX SOIENT TRANSFORMABLES EN EPAVE
 		if (ship:getClass() ~= "Chasseur" and ship:getClass() ~= "Destroyer") then ship:addInfos(12,"Peut_Epave", 1) end
 		-- FIN DE MODIFICATION
@@ -199,8 +199,6 @@ ship:setShieldRechargeRate(0.6)
 end
 
 function doOnNewPlayerShip(pc)
-	pc:setFaction("Imperium")
-	print("New player ship faction :",pc:getFaction())
 	pc.popWarpJammer = function()
 			popWarpJammer(pc)
 	end
@@ -212,6 +210,7 @@ function doOnNewPlayerShip(pc)
 	pc:setMaxCoolant(10)
 	pc:setCanDock(true)
 	pc:setRepairCrewCount(3)
+--	pc:setFaction("Imperium")
 	
 	if (pc:getClass() ~= "Chasseur" ) 
 	then
@@ -225,7 +224,7 @@ function doOnNewPlayerShip(pc)
 	if (pc:getClass() ~= "Experimental" and pc:getClass() ~= "Croiseur Marchand") 
 	then
 		pc:setJumpDriveEnergy(5)
-		pc:setJumpDriveChargeTime(60)
+		pc:setJumpDriveChargeTime(300)
 	end 
 --	PC:setJumpDriveCharge(50000)
 	if pc:hasJumpDrive() then
@@ -263,7 +262,7 @@ function doOnNewPlayerShip(pc)
 		pc.cancelNormalJump = function()
 			cancelNormalJump(pc)
 		end
-		pc:addCustomButton("Helms","normalJumpButton","Saut warp", pc.normalJump)
+		--pc:addCustomButton("Helms","normalJumpButton","Saut warp", pc.normalJump)
 		
 	end
 	
@@ -333,25 +332,25 @@ function doInit()
 end
 
 function doUpdateUtils(delta)
-	doUpdateShips(delta)
+	--doUpdateShips(delta)
 	updateEmergencyJump(delta)
-	updateNormalJump(delta)
+	--updateNormalJump(delta)
 end
 
 -- Attention a ne pas trop surcharger cette methode
-function doUpdateShips(delta)
-	for pidx=1,32 do
-		p = getPlayerShip(pidx)
-			if p ~= nil and p:isValid() then
+--function doUpdateShips(delta)
+	--for pidx=1,32 do
+		--p = getPlayerShip(pidx)
+			--if p ~= nil and p:isValid() then
 				-- Mise a jour du stock du warp jammer
-				if p:getInfosValue(11) ~= list_info_value_warpjam[pidx] then
-					list_info_value_warpjam[pidx] = p:getInfosValue(11)
-					if(tonumber(p:getInfosValue(11)) > 0) then
-						popWarpJammerButton = "popWarpjammerButton"
-						p:addCustomButton("Relay",popWarpJammerButton,string.format("Deployer antiwarp (%i)", tonumber(p:getInfosValue(11))),p.popWarpJammer)
-					end
-				end
-			end 
-		end 
+				--if p:getInfosValue(11) ~= list_info_value_warpjam[pidx] then
+					--list_info_value_warpjam[pidx] = p:getInfosValue(11)
+					--if(tonumber(p:getInfosValue(11)) > 0) then
+						--popWarpJammerButton = "popWarpjammerButton"
+						--p:addCustomButton("Relay",popWarpJammerButton,string.format("Deployer antiwarp (%i)", tonumber(p:getInfosValue(11))),p.popWarpJammer)
+					--end
+				--end
+			--end 
+		--end 
 
-end
+--end

@@ -36,14 +36,6 @@ onNewPlayerShip(
 
 )
 
-
---- Initialize scenario.
-function init()
-	doInit()
-	
-
-end
-
 --- Update.
 --
 -- @tparam number delta the time delta (in seconds)

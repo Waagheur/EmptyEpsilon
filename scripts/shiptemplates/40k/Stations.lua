@@ -1,222 +1,482 @@
---[[                  Stations
-Rappel des categories : 
-Vaisseau leger : 1 a 3 places ; aucun moteur Warp ou Jump possible ; shiptemplates_VaisseauxLegers.lua ;
-Fregate : 4 a 9 places ; shiptemplates_Fregates.lua ;
-Destroyer : 10 a 50 places ; shiptemplates_Escorteurs.lua ;
-Croiseur Leger : 50 a 100 places ; shiptemplates_CroiseursLegers.lua ;
-Croiseur : 100 a 250 places ; shiptemplates_Croiseurs.lua ;
-Cuirasse : 250 a 500 places ;
-Stations;
+--[[Fichier de templates permettant la création des Stations.]]
 
-Les Stations apporte un soutien aux vaisseaux de combat et sert d'atelier de reparations.
-----------------------------------------------------------]]
+--[[Le terme station spatiale recouvre un grand nombre d’installations orbitales pouvant aller des chantiers navals militaires ou commerciaux,
+aux bases de recherche de l’Adeptus Mechanicus, en passant par des quartiers généraux de la Flotte, voire des habitations civiles.
+Les plus grandes peuvent accueillir plusieurs vaisseaux de ligne militaires, tandis que les plus petites ne peuvent héberger qu’un croiseur ou un escadron d’escorteurs à la fois.
+La plupart des ports sont contrôlés par la Flotte Impériale ou l’Adeptus Mechanicus,
+bien que certains mondes soient responsables de leurs propres stations suite à un ancien accord.
+Les stations spatiales sont imposantes, bien armées, et peuvent généralement assurer leur propre défense contre de petites flottes de pillards
+en supportant le gros des combats autour de leur système.
+Lors d’une guerre, le contrôle des stations capables de réparer et de réarmer des vaisseaux de guerre est d’une importance capitale,
+et celles-ci deviennent rapidement le point de concentration de nombreuses offensives.]]
 
-	
-template = ShipTemplate():setName("Petite Station"):setModel("space_station_4"):setType("station"):setClass(_("Installation Fixe"), _("subclass", "Support"))
-template:setDescription([[ Petite station spatiale, elle sert pour le ravitaillement en espace profond]])
-template:setHull(150)
-template:setShields(300)
-template:setRadarTrace("smallstation.png")
-template:setDockClasses("Drone","Vaisseau leger","Fregate","destroyer","Croiseur leger",'croiseur','Cuirasse','Vaisseau-Mere')
+-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+--Création de la Station
+function DockSpatial()
 
-template:setSharesEnergyWithDocked(true)
-template:setRepairDocked(true)
-template:setRestocksScanProbes(true)
+--Définition du vaisseau PNJ
+function DockSpatialPNJ()
 
-template = ShipTemplate():setName("Station Moyenne"):setModel("space_station_3"):setType("station"):setClass(_("Installation Fixe"), _("subclass", "Support"))
-template:setDescription([[Station de taille moyenne, bien equipe, servant au ravitaillement et au commerce en espace profond]])
-template:setHull(400)
-template:setShields(800)
+function DockSpatialCoque()
+--Description, définition du modèle et de l'icone radar
+template = ShipTemplate():setName("Dock Spatial"):setLocaleName(_("ship", "Dock Spatial")):setClass(_("class", "Station"), _("subclass", "Dock")):setModel("Navy_Station")
+template:setDescription(_([[Dock Spatial de grande taille.]]))
+--template:setScale(3000)
+template:setRadarTrace("hugestation.png")
+--Endommagement des systèmes
+template:setSystemDamageHullThreshold(0.025)
+template:setSystemDamageRatio(0.7)
+--Coque
+template:setHull(5000)
+--Boucliers (plusieurs valeurs pour plusieurs boucliers)
+template:setShields(500)
+--Valeur de recharge des boucliers
+template:setShieldRechargeRate(3.6)
+--Energie
+template:setEnergyStorage(5000)
+--Vitesse (vitesse avant max, rotation, accélération, vitesse arrière max, rotation)
+template:setSpeed(100, 5, 50, 100, 5)
+--Manoeuvre de Combat (vitesse avant, vitesse latérale)
+template:setCanHack(false)
+--Sondes
+template:setCanLaunchProbe(false)
+--Recharge les vaisseaux dockés en énergie
+template:setSharesEnergyWithDocked(false)
+--Répare les vaisseaux dockés
+template:setRepairDocked(false)
+--Recharge en missiles les vaisseaux dockés
+template:setRestocksMissilesDocked(false)
+--Dockage autorisé
+template:setCanDock(false)
+template:setLongRangeRadarRange(24000):setShortRangeRadarRange(24000)
+
+end
+
+DockSpatialCoque()
+
+function DockSpatialTourelles()
+
+--Tourelles de défense
+--Axe de tir (N° d'arme, arc de tir, Orientation, portée, délais de tir, dégâts)
+template:setBeamWeapon(0, 360, 180, 10000, 0.01, 1)
+--Ajustement de la consommation d'énergie des tirs
+template:setBeamWeaponEnergyPerFire(0, 1)
+--Ajustement de la surchauffe engendrée par les tirs
+template:setBeamWeaponHeatPerFire(0, 0.01)
+
+--Tourelle Dorsale 1
+--Axe de tir (N° d'arme, arc de tir, Orientation, portée, délais de tir, dégâts)
+template:setBeamWeapon(1, 360, 0, 10000, 10, 20)
+--Paramètres de tourelle (N°d'arme, Arc de tir, orientation, vitesse de rotation)
+--template:setBeamWeaponTurret(1, 360, 0, 0.5)
+--Ajustement de la consommation d'énergie des tirs
+template:setBeamWeaponEnergyPerFire(1, 20)
+--Ajustement de la surchauffe engendrée par les tirs
+template:setBeamWeaponHeatPerFire(1, 0.05)
+
+--Tourelle Dorsale 2
+--Axe de tir (N° d'arme, arc de tir, Orientation, portée, délais de tir, dégâts)
+template:setBeamWeapon(2, 360, 0, 10000, 10, 20)
+--Paramètres de tourelle (N°d'arme, Arc de tir, orientation, vitesse de rotation)
+--template:setBeamWeaponTurret(2, 360, 0, 0.5)
+--Ajustement de la consommation d'énergie des tirs
+template:setBeamWeaponEnergyPerFire(2, 20)
+--Ajustement de la surchauffe engendrée par les tirs
+template:setBeamWeaponHeatPerFire(2, 0.05)
+
+--Tourelle Dorsale 3
+--Axe de tir (N° d'arme, arc de tir, Orientation, portée, délais de tir, dégâts)
+--template:setBeamWeapon(3, 360, 0, 7000, 10, 40)
+--Paramètres de tourelle (N°d'arme, Arc de tir, orientation, vitesse de rotation)
+template:setBeamWeaponTurret(3, 360, 0, 0.5)
+--Ajustement de la consommation d'énergie des tirs
+template:setBeamWeaponEnergyPerFire(3, 40)
+--Ajustement de la surchauffe engendrée par les tirs
+template:setBeamWeaponHeatPerFire(3, 0.1)
+
+--Tourelle Dorsale 4
+--Axe de tir (N° d'arme, arc de tir, Orientation, portée, délais de tir, dégâts)
+template:setBeamWeapon(4, 360, 0, 7000, 10, 40)
+--Paramètres de tourelle (N°d'arme, Arc de tir, orientation, vitesse de rotation)
+--template:setBeamWeaponTurret(4, 360, 0, 0.5)
+--Ajustement de la consommation d'énergie des tirs
+template:setBeamWeaponEnergyPerFire(4, 40)
+--Ajustement de la surchauffe engendrée par les tirs
+template:setBeamWeaponHeatPerFire(4, 0.1)
+
+end
+
+DockSpatialTourelles()
+
+end
+
+--Appel de la fonction créant le vaisseau PNJ
+DockSpatialPNJ()
+
+end
+
+--Appel de la fonction créant la station PNJ
+DockSpatial()
+
+--Création de la Station
+function StationWayfarer()
+
+--Définition du vaisseau PNJ
+function StationWayfarerPNJ()
+
+function StationWayfarerCoque()
+--Description, définition du modèle et de l'icone radar
+template = ShipTemplate():setName("Station Wayfarer"):setLocaleName(_("ship", "Station Wayfarer")):setClass(_("class", "Station"), _("subclass", "Wayfarer")):setModel("space_station_3")
+template:setDescription(_([[Un modèle de petites stations spatiales conçues pour pouvoir fonctionner en autarcie quasi-complète à la frontière. Privées de contacts réguliers avec l'Imperium, beaucoup d'entre elles ont évolué en communautés commerciales indépendantes ou en dépôts de ravitaillement en carburant.]]))
+--template:setScale(250)
 template:setRadarTrace("mediumstation.png")
-template:setDockClasses("Drone","Vaisseau leger","Fregate","destroyer","Croiseur leger",'croiseur','Cuirasse','Vaisseau-Mere')
-template:setSharesEnergyWithDocked(true)
-template:setRepairDocked(true)
-template:setRestocksScanProbes(true)
-
-template = ShipTemplate():setName("Grande Station"):setModel("space_station_2"):setType("station"):setClass(_("Installation Fixe"), _("subclass", "Support"))
-template:setDescription([[De la taille d'une ville tentaculaire, les stations de cette echelle representent le centre de la puissance spatiale de cette region. Elles remplissent plusieurs fonctions a la fois et representent un investissement considerable en temps, en argent et en main d'oeuvre. Les boucliers et l'epaisse coque d'une enorme station peuvent la maintenir intacte assez longtemps pour que des renforts arrivent, même en cas de siege ou d'assaut massif parfaitement coordonne.]])
-template:setHull(500)
-template:setShields(1000, 1000, 1000)
-template:setRadarTrace("largestation.png")
-template:setDockClasses("Drone","Vaisseau leger","Fregate","destroyer","Croiseur leger",'croiseur','Cuirasse','Vaisseau-Mere')
-
-
-
-template:setSharesEnergyWithDocked(true)
-template:setRepairDocked(true)
-template:setRestocksScanProbes(true)
-
-template = ShipTemplate():setName("Immense Station"):setModel("space_station_1"):setType("station"):setClass(_("Installation Fixe"), _("subclass", "Support"))
-template:setDescription([[De la taille d'une ville tentaculaire, les stations de cette echelle representent le centre de la puissance spatiale de cette region. Elles remplissent plusieurs fonctions a la fois et representent un investissement considerable en temps, en argent et en main d'oeuvre. Les boucliers et l'epaisse coque d'une enorme station peuvent la maintenir intacte assez longtemps pour que des renforts arrivent, même en cas de siege ou d'assaut massif parfaitement coordonne.]])
-template:setHull(800)
-template:setShields(1200, 1200, 1200, 1200)
-template:setRadarTrace("hugestation.png")
-template:setDockClasses("Drone","Vaisseau leger","Fregate","destroyer","Croiseur leger",'croiseur','Cuirasse','Vaisseau-Mere')
-
-
-template:setSharesEnergyWithDocked(true)
-template:setRepairDocked(true)
-template:setRestocksScanProbes(true)
-
-
-
-
-
---[[Grande station Imperial]]
-template = ShipTemplate():setName("Grande station Imperial"):setModel("Navy_Station"):setType("station"):setClass(_("Installation Fixe"), _("subclass", "Support"))
-template:setDescription([[De la taille d'une ville tentaculaire, les stations de cette echelle representent le centre de la puissance spatiale de cette region. Elles remplissent plusieurs fonctions a la fois et representent un investissement considerable en temps, en argent et en main d'oeuvre. Les boucliers et l'epaisse coque d'une enorme station peuvent la maintenir intacte assez longtemps pour que des renforts arrivent, même en cas de siege ou d'assaut massif parfaitement coordonne.]])
-template:setHull(3000)
-template:setShields(1000, 1000, 1000, 1000)
-template:setRadarTrace("hugestation.png")
---                  Arc, Dir, Range, CycleTime, Dmg
-template:setBeam(0, 100, 1, 100.0, 30.0, 175)
-template:setBeam(1, 100, 180, 100.0, 30.0, 175)
-template:setBeam(2, 100, 90, 100.0, 30.0, 175)
-template:setBeam(3, 100, -90, 100.0, 30.0, 175)
-template:setBeam(4, 100, 45, 2000.0, 7.0, 25)
-template:setBeam(5, 100, -45, 2000.0, 7.0, 25)
-template:setBeam(6, 100, 135, 2000.0, 7.0, 25)
-template:setBeam(7, 100, -135, 2000.0, 7.0, 25)
-template:setBeam(8, 100, 42, 2000.0, 1.5, 6)
-template:setBeam(9, 100, -42, 2000.0, 1.5, 6)
-template:setBeam(10, 100, 48, 2000.0, 1.5, 6)
-template:setBeam(11, 100,-48, 2000.0, 1.5, 6)
-template:setBeam(12, 100, 132, 2000.0, 1.5, 6)
-template:setBeam(13, 100,-132, 2000.0, 1.5, 6)
-template:setBeam(14, 100, 138, 2000.0, 1.5, 6)
-template:setBeam(15, 100,-138, 2000.0, 1.5, 6)
-template:setDockClasses("Drone","Vaisseau leger","Fregate","Destroyer","Croiseur leger","Croiseur","Cuirasse","Vaisseau-Mere","Alpha")
-template:setCanDock(true)
-
-
-template:setRestocksMissilesDocked(true)
-template:setSharesEnergyWithDocked(true)
-template:setRepairDocked(true)
-template:setRestocksScanProbes(true)
-
-
-
---                              Arc, Dir, Rotate speed
-
---       Tubes
-template:setTubes(10, 12.0)
-template:setTubeDirection(0, 1)
-template:setTubeDirection(1, -1)
-template:setTubeDirection(2, 90)
-template:setTubeDirection(3, -90)
-template:setTubeDirection(4, 90)
-template:setTubeDirection(5, -90)
-template:setTubeDirection(6, 90)
-template:setTubeDirection(7, -90)
-template:setTubeDirection(8, 90)
-template:setTubeDirection(9, -90)
---TG Seeker (homing) 
---template:setCustomWeapon("Homing", "SEEK", 1.5, 800.0, "Kinetic", -1)
---template:setCustomWeaponColor("SEEK", 255, 204, 0)
---template:setCustomWeaponStorage("SEEK", 60)
---template:setCustomWeaponMultiple("SEEK",1,4)
-
---Macro-canon : (rafale, non homing) 
---template:setCustomWeapon("HVLI", "MCANMK3", 6, 1500.0, "Kinetic", 25)
---template:setCustomWeaponMultiple("MCANMK3",1,4)
---template:setCustomWeaponColor("MCANMK3", 255, 150, 103)
---template:setCustomWeaponStorage("MCANMK3", 90)
---MGAA Flakburst (nuke faible dommage) 
-template:setCustomWeapon("Nuke", "FLAK", 0.5, 500.0, "Kinetic", -1)
-template:setCustomWeaponColor("FLAK", 220, 87, 20)
-template:setCustomWeaponStorage("FLAK", 6)
-
-
-
-
-
--- The weapons-platform is a stationary platform with beam-weapons. It's extremely slow to turn, but it's beam weapons do a huge amount of damage.
--- Smaller ships can dock to this platform to re-supply.
-template = ShipTemplate():setName("Plateforme de defense"):setLocaleName(_("Plateforme de defense")):setClass(_("Installation Fixe"), _("subclass", "Support")):setModel("space_station_4")
-template:setDescription(_([[Stations de defense rotative standard.]]))
-template:setRadarTrace("smallstation.png")
+--Endommagement des systèmes
+template:setSystemDamageHullThreshold(0.015)
+template:setSystemDamageRatio(0.7)
+--Coque
 template:setHull(600)
-template:setShields(400, 400, 400, 400, 400, 400)
-template:setSpeed(0, 0.5, 0)	
-template:setDockClasses("Drone","Vaisseau leger","Fregate","Destroyer","Croiseur leger","Croiseur","Cuirasse","Vaisseau-Mere","Alpha")
+--Boucliers (plusieurs valeurs pour plusieurs boucliers)
+template:setShields(50)
+--Valeur de recharge des boucliers
+template:setShieldRechargeRate(3.6)
+--Energie
+template:setEnergyStorage(2000)
+--Vitesse (vitesse avant max, rotation, accélération, vitesse arrière max, rotation)
+template:setSpeed(100, 5, 50, 100, 5)
+--Manoeuvre de Combat (vitesse avant, vitesse latérale)
+template:setCanHack(false)
+--Sondes
+template:setCanLaunchProbe(false)
+--Recharge les vaisseaux dockés en énergie
+template:setSharesEnergyWithDocked(false)
+--Répare les vaisseaux dockés
+template:setRepairDocked(false)
+--Recharge en missiles les vaisseaux dockés
+template:setRestocksMissilesDocked(false)
+--Dockage autorisé
+template:setCanDock(false)
+template:setLongRangeRadarRange(24000):setShortRangeRadarRange(24000)
 
---               Arc, Dir, Range, CycleTime, Dmg
-template:setBeam(0, 30,   0, 5000.0, 1.5, 50)
-template:setBeam(1, 30,  60, 5000.0, 1.5, 50)
-template:setBeam(2, 30, 120, 5000.0, 1.5, 50)
-template:setBeam(3, 30, 180, 5000.0, 1.5, 50)
-template:setBeam(4, 30, 240, 5000.0, 1.5, 50)
-template:setBeam(5, 30, 300, 5000.0, 1.5, 50)
+end
 
+StationWayfarerCoque()
 
+function StationWayfarerTourelles()
 
-template:setRestocksMissilesDocked(true)
-template:setSharesEnergyWithDocked(true)
-template:setRepairDocked(true)
-template:setRestocksScanProbes(true)
+--Tourelles de défense
+--Axe de tir (N° d'arme, arc de tir, Orientation, portée, délais de tir, dégâts)
+template:setBeamWeapon(0, 360, 180, 10000, 0.1, 1)
+--Ajustement de la consommation d'énergie des tirs
+template:setBeamWeaponEnergyPerFire(0, 1)
+--Ajustement de la surchauffe engendrée par les tirs
+template:setBeamWeaponHeatPerFire(0, 0.01)
 
--- The weapons-platform is a stationary platform with beam-weapons. It's extremely slow to turn, but it's beam weapons do a huge amount of damage.
--- Smaller ships can dock to this platform to re-supply.
-template = ShipTemplate():setName("Laser de defense planetaire"):setLocaleName(_("laser planetaire")):setClass(_("defense"), _("subclass", "Support")):setModel("space_station_4")
-template:setDescription(_([[Laser de defense standard.]]))
+--Tourelle Dorsale 1
+--Axe de tir (N° d'arme, arc de tir, Orientation, portée, délais de tir, dégâts)
+template:setBeamWeapon(1, 360, 0, 10000, 10, 20)
+--Paramètres de tourelle (N°d'arme, Arc de tir, orientation, vitesse de rotation)
+--template:setBeamWeaponTurret(1, 360, 0, 0.5)
+--Ajustement de la consommation d'énergie des tirs
+template:setBeamWeaponEnergyPerFire(1, 20)
+--Ajustement de la surchauffe engendrée par les tirs
+template:setBeamWeaponHeatPerFire(1, 0.05)
+
+--Tourelle Dorsale 2
+--Axe de tir (N° d'arme, arc de tir, Orientation, portée, délais de tir, dégâts)
+template:setBeamWeapon(2, 360, 0, 10000, 10, 20)
+--Paramètres de tourelle (N°d'arme, Arc de tir, orientation, vitesse de rotation)
+--template:setBeamWeaponTurret(2, 360, 0, 0.5)
+--Ajustement de la consommation d'énergie des tirs
+template:setBeamWeaponEnergyPerFire(2, 20)
+--Ajustement de la surchauffe engendrée par les tirs
+template:setBeamWeaponHeatPerFire(2, 0.05)
+
+--Tourelle Dorsale 3
+--Axe de tir (N° d'arme, arc de tir, Orientation, portée, délais de tir, dégâts)
+template:setBeamWeapon(3, 360, 0, 10000, 10, 40)
+--Paramètres de tourelle (N°d'arme, Arc de tir, orientation, vitesse de rotation)
+--template:setBeamWeaponTurret(3, 360, 0, 0.5)
+--Ajustement de la consommation d'énergie des tirs
+template:setBeamWeaponEnergyPerFire(3, 40)
+--Ajustement de la surchauffe engendrée par les tirs
+template:setBeamWeaponHeatPerFire(3, 0.1)
+
+end
+
+StationWayfarerTourelles()
+
+end
+
+--Appel de la fonction créant le vaisseau PNJ
+StationWayfarerPNJ()
+
+end
+
+--Appel de la fonction créant la station PNJ
+StationWayfarer()
+
+--Création de la Station
+function StationRelais()
+
+--Définition du vaisseau PNJ
+function StationRelaisPNJ()
+
+function StationRelaisCoque()
+--Description, définition du modèle et de l'icone radar
+template = ShipTemplate():setName("Station Relais"):setLocaleName(_("ship", "Station Relais")):setClass(_("class", "Station"), _("subclass", "Relais")):setModel("space_station_4")
+template:setDescription(_([[Les station Relai sont de petites stations spatiales à la fonction très importante, car elles aident à la navigation en émettant un signal local, reconnaissable par les vaisseaux de la zone. Elles enregistrent également le passage des vaisseaux, en recevant et en relayant toutes les informations relatives à leur taille, leur trajectoire et leur signal d’immatriculation. En cas d’urgence, elles peuvent servir de radeau de sauvetage spatial et permettre à l’équipage d’un vaisseau en perdition de survivre jusqu’à ce qu’il soit possible de le secourir. Ces stations-balises possèdent ordinairement un petit équipage, mais certaines sont entièrement automatisées.]]))
+--template:setScale(300)
 template:setRadarTrace("smallstation.png")
-template:setHull(1000)
-template:setShields(1200, 1200, 1200, 1200, 1200, 1200)
-template:setSpeed(0, 0.5, 0)
+--Endommagement des systèmes
+template:setSystemDamageHullThreshold(0.01)
+template:setSystemDamageRatio(0.7)
+--Coque
+template:setHull(100)
+--Boucliers (plusieurs valeurs pour plusieurs boucliers)
+template:setShields(50)
+--Valeur de recharge des boucliers
+template:setShieldRechargeRate(1.2)
+--Energie
+template:setEnergyStorage(200)
+--Vitesse (vitesse avant max, rotation, accélération, vitesse arrière max, rotation)
+template:setSpeed(0, 5, 50, 0, 5)
+--Manoeuvre de Combat (vitesse avant, vitesse latérale)
+template:setCanHack(false)
+--Sondes
+template:setCanLaunchProbe(false)
+--Recharge les vaisseaux dockés en énergie
+template:setSharesEnergyWithDocked(false)
+--Répare les vaisseaux dockés
+template:setRepairDocked(false)
+--Recharge en missiles les vaisseaux dockés
+template:setRestocksMissilesDocked(false)
+--Dockage autorisé
+template:setCanDock(false)
+template:setLongRangeRadarRange(24000):setShortRangeRadarRange(24000)
 
-template:setDockClasses("Drone","Vaisseau leger","Fregate","Destroyer","Croiseur leger","Croiseur","Cuirasse","Vaisseau-Mere","Alpha")
---               Arc, Dir, Range, CycleTime, Dmg
-template:setBeam(0, 30,   0, 7000.0, 10, 150)
-template:setBeam(1, 30,  60, 7000.0, 10, 150)
-template:setBeam(2, 30, 120, 7000.0, 10, 150)
-template:setBeam(3, 30, 180, 7000.0, 10, 150)
-template:setBeam(4, 30, 240, 7000.0, 10, 150)
-template:setBeam(5, 30, 300, 7000.0, 10, 150)
+end
 
+StationRelaisCoque()
 
+end
 
+--Appel de la fonction créant le vaisseau PNJ
+StationRelaisPNJ()
 
+end
 
---[[Réappro imperial ]]
-template = ShipTemplate():setName("Plateforme logistique militaire"):setModel("Navy_Station"):setClass(_("Installation Fixe"), _("subclass", "Support"))
-template:setDescription([[De la taille d'une ville tentaculaire, les stations de cette echelle representent le centre de la puissance spatiale de cette region. Elles remplissent plusieurs fonctions a la fois et representent un investissement considerable en temps, en argent et en main d'oeuvre. Les boucliers, les armes et l'epaisse coque d'une enorme station peuvent la maintenir intacte assez longtemps pour que des renforts arrivent, même en cas de siege ou d'assaut massif parfaitement coordonne.]])
-template:setHull(2000)
-template:setShields(700, 700, 700,700)
-template:setSpeed(0, 0.5, 0)
-template:setRadarTrace("hugestation.png")
---                  Arc, Dir, Range, CycleTime, Dmg
+--Appel de la fonction créant la station PNJ
+StationRelais()
 
-template:setCustomWeapon("HVLI", "XLAC", 8, 2200.0, "Kinetic", -1)
-template:setCustomWeaponMultiple("XLAC",4,2)
-template:setCustomWeaponColor("XLAC", 255, 51, 0)
-template:setCustomWeaponStorage("XLAC", 180)
+--Création de la Station
+function StationDefenseArcheotech()
 
-template:setCustomWeapon("Nuke", "FLAK", 0.25, 1000.0, "Kinetic", -1)
-template:setCustomWeaponColor("FLAK", 220, 87, 20)
-template:setCustomWeaponStorage("FLAK", 12)	
+--Définition du vaisseau PNJ
+function StationDefenseArcheotechPNJ()
 
-template:setTubes(6, 6.0)
+function StationDefenseArcheotechCoque()
+--Description, définition du modèle et de l'icone radar
+template = ShipTemplate():setName("Station de Defense Archeotech"):setLocaleName(_("ship", "Station de Defense Archeotech")):setClass(_("class", "Station"), _("subclass", "Defense")):setModel("small_frigate_3")
+template:setDescription(_([[Certaines stations de défenses de la région sont incroyablement anciennes, mais elles demeurent redoutables.]]))
+template:setSecret(true)
+--template:setScale(200)
+template:setRadarTrace("")
+--Endommagement des systèmes
+template:setSystemDamageHullThreshold(0.01)
+template:setSystemDamageRatio(0.7)
+--Coque
+template:setHull(100)
+--Energie
+template:setEnergyStorage(200)
+--Vitesse (vitesse avant max, rotation, accélération, vitesse arrière max, rotation)
+template:setSpeed(0, 5, 0, 0, 5)
+--Manoeuvre de Combat (vitesse avant, vitesse latérale)
+template:setCanHack(false)
+--Sondes
+template:setCanLaunchProbe(false)
+--Recharge les vaisseaux dockés en énergie
+template:setSharesEnergyWithDocked(false)
+--Répare les vaisseaux dockés
+template:setRepairDocked(false)
+--Recharge en missiles les vaisseaux dockés
+template:setRestocksMissilesDocked(false)
+--Dockage autorisé
+template:setCanDock(false)
+template:setLongRangeRadarRange(24000):setShortRangeRadarRange(24000)
+
+end
+
+StationDefenseArcheotechCoque()
+
+function StationDefenseArcheotechTourelles()
+
+--Tourelle Dorsale 1
+--Axe de tir (N° d'arme, arc de tir, Orientation, portée, délais de tir, dégâts)
+template:setBeamWeapon(0, 1, 0, 20000, 10, 20)
+--Ajustement de la consommation d'énergie des tirs
+template:setBeamWeaponEnergyPerFire(0, 20)
+--Ajustement de la surchauffe engendrée par les tirs
+template:setBeamWeaponHeatPerFire(0, 0.05)
+
+end
+
+StationDefenseArcheotechTourelles()
+
+end
+
+--Appel de la fonction créant le vaisseau PNJ
+StationDefenseArcheotechPNJ()
+
+end
+
+--Appel de la fonction créant la station PNJ
+StationDefenseArcheotech()
+
+--Création de la Station
+function StationDefenseMacrocanon()
+
+--Définition du vaisseau PNJ
+function StationDefenseMacrocanonPNJ()
+
+function StationDefenseMacrocanonCoque()
+--Description, définition du modèle et de l'icone radar
+template = ShipTemplate():setName("Station de Defense a Macrocanon"):setLocaleName(_("ship", "Station de Defense a Macrocanon")):setClass(_("class", "Station"), _("subclass", "Defense")):setModel("small_frigate_3")
+template:setDescription(_([[Les station de défense à Macrocanon sont un classique de la défense orbitale. Bien que relativement faibles, elles peuvent maintenir, avec un équipage minimum, un feu suffisamment nourri pour décourager tout vaisseau d'une classe inférieure aux croiseurs. Elles demandent cependant a être correctement approvisionnées en munitions.]]))
+--template:setScale(200)
+template:setRadarTrace("exuari_5.png")
+--Endommagement des systèmes
+template:setSystemDamageHullThreshold(0.01)
+template:setSystemDamageRatio(0.7)
+--Coque
+template:setHull(100)
+--Boucliers (plusieurs valeurs pour plusieurs boucliers)
+template:setShields(50)
+--Valeur de recharge des boucliers
+template:setShieldRechargeRate(1.2)
+--Energie
+template:setEnergyStorage(200)
+--Vitesse (vitesse avant max, rotation, accélération, vitesse arrière max, rotation)
+template:setSpeed(0, 5, 0, 0, 5)
+--Manoeuvre de Combat (vitesse avant, vitesse latérale)
+template:setCanHack(false)
+--Sondes
+template:setCanLaunchProbe(false)
+--Recharge les vaisseaux dockés en énergie
+template:setSharesEnergyWithDocked(false)
+--Répare les vaisseaux dockés
+template:setRepairDocked(false)
+--Recharge en missiles les vaisseaux dockés
+template:setRestocksMissilesDocked(false)
+--Dockage autorisé
+template:setCanDock(false)
+template:setLongRangeRadarRange(24000):setShortRangeRadarRange(24000)
+
+end
+
+StationDefenseMacrocanonCoque()
+
+function StationDefenseMacrocanonMissiles()
+--Définition des lance missiles
+
+--Nombre de tubes et temps de chargement
+template:setTubes(1, 6)
+
+--Macrocanons
+--Direction (Index,Direction)
 template:setTubeDirection(0, 0)
-template:setTubeDirection(1, 60)
-template:setTubeDirection(2, 120)
-template:setTubeDirection(3, 180)
-template:setTubeDirection(4, 240)
-template:setTubeDirection(5, 300)
+--Temps de chargement (Index, Temps)
+template:setTubeLoadTime(0, 6)	
+--Taille des obus (Index, Taille)
+template:setTubeSize(0, "medium")
 
-template:setTubeSize(0, "large")
-template:setTubeSize(1, "large")
-template:setTubeSize(2, "large")
-template:setTubeSize(3, "large")
-template:setTubeSize(4, "large")
-template:setTubeSize(5, "large")
+--Définition des macrocanons
+--Définition des macrocanons (Type, Nom, Multiplicateur de dégâts, Vitesse, Type de dégâts, Temps de vie)
+template:setCustomWeapon("HVLI", "MCANMK0", 6, 4000, "Kinetic", 20)
+--Définition de la couleur de l'obus
+template:setCustomWeaponColor("MCANMK0", 255, 255, 103)
+--Définition du montant stocké (Nom, Stock maximum)
+template:setCustomWeaponStorage("MCANMK0", 200)
+--Définition de la salve (Nom, nombre de salves, nombre d'objets par salve)
+template:setCustomWeaponMultiple("MCANMK0", 1, 1)
 
+end
 
+StationDefenseMacrocanonMissiles()
 
+end
 
-template:setDockClasses("Drone","Vaisseau leger","Fregate","Destroyer","Croiseur leger","Croiseur","Cuirasse","Vaisseau-Mere","Alpha")
-template:setCanDock(true)
-template:setRestocksMissilesDocked(true)
-template:setSharesEnergyWithDocked(true)
-template:setRepairDocked(true)
-template:setRestocksScanProbes(true)
+--Appel de la fonction créant le vaisseau PNJ
+StationDefenseMacrocanonPNJ()
 
+end
+
+--Appel de la fonction créant la station PNJ
+StationDefenseMacrocanon()
+
+--Création de la Station
+function StationDefenseLance()
+
+--Définition du vaisseau PNJ
+function StationDefenseLancePNJ()
+
+function StationDefenseLanceCoque()
+--Description, définition du modèle et de l'icone radar
+template = ShipTemplate():setName("Station de Defense a Lance Siderale"):setLocaleName(_("ship", "Station de Defense a Lance Siderale")):setClass(_("class", "Station"), _("subclass", "Defense")):setModel("small_frigate_3")
+template:setDescription(_([[Les station de défense à Lance Sidérale est une version supérieure, bien que plus fragile et coûteuse, de son homologue à Macrocanon. La station à Lance peut déployer un feu plus concentré suffisant pour endommager les boucliers et attaquer le blindage des Croiseurs, et ce sans ravitailler grâce au réacteur alimentant leurs armes. Cependant, elles nécessitent un entretien constant et ont besoin d'un soutien pour déployer toute leur efficacité, ce qui fait qu'on ne les retrouve généralement qu'au milieu des stations à Macrocanon, les deux modèles combinant feu nourri et puissance d'impact forte.]]))
+--template:setScale(200)
+template:setRadarTrace("exuari_5.png")
+--Endommagement des systèmes
+template:setSystemDamageHullThreshold(0.01)
+template:setSystemDamageRatio(0.7)
+--Coque
+template:setHull(100)
+--Boucliers (plusieurs valeurs pour plusieurs boucliers)
+template:setShields(50)
+--Valeur de recharge des boucliers
+template:setShieldRechargeRate(1.2)
+--Energie
+template:setEnergyStorage(200)
+--Vitesse (vitesse avant max, rotation, accélération, vitesse arrière max, rotation)
+template:setSpeed(0, 5, 0, 0, 5)
+--Manoeuvre de Combat (vitesse avant, vitesse latérale)
+template:setCanHack(false)
+--Sondes
+template:setCanLaunchProbe(false)
+--Recharge les vaisseaux dockés en énergie
+template:setSharesEnergyWithDocked(false)
+--Répare les vaisseaux dockés
+template:setRepairDocked(false)
+--Recharge en missiles les vaisseaux dockés
+template:setRestocksMissilesDocked(false)
+--Dockage autorisé
+template:setCanDock(false)
+template:setLongRangeRadarRange(24000):setShortRangeRadarRange(24000)
+
+end
+
+StationDefenseLanceCoque()
+
+function StationDefenseLanceTourelles()
+
+--Tourelle Dorsale 1
+--Axe de tir (N° d'arme, arc de tir, Orientation, portée, délais de tir, dégâts)
+template:setBeamWeapon(0, 1, 0, 15000, 10, 20)
+--Ajustement de la consommation d'énergie des tirs
+template:setBeamWeaponEnergyPerFire(0, 20)
+--Ajustement de la surchauffe engendrée par les tirs
+template:setBeamWeaponHeatPerFire(0, 0.05)
+
+end
+
+StationDefenseLanceTourelles()
+
+end
+
+--Appel de la fonction créant le vaisseau PNJ
+StationDefenseLancePNJ()
+
+end
+
+--Appel de la fonction créant la station PNJ
+StationDefenseLance()
+-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

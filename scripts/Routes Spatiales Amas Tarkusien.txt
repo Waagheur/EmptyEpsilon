@@ -1,0 +1,44 @@
+Tarkus-->		Gisperion : 	L6A-->		72°,77U
+Tarkus-->		Merinita : 	L6A-->		159°,79U
+Tarkus-->		Misthos : 	L6A-->		158°,37U
+Tarkus-->		Triticum : 	D10A-->		108°,123U
+Gisperion-->		Tarkus : 	GJ182D-->	213°,56U
+Gisperion-->		Merinita : 	GJ182D-->	159°,79U
+Gisperion-->		Misthos : 	GJ182D-->	158°,37U
+Gisperion-->		Fractarius : 	GDI190D-->	125°,43U
+Merinita-->		Tarkus : 	FI353B-->	213°,56U
+Merinita-->		Gisperion : 	FI353B-->	72°,77U
+Merinita-->		Misthos : 	FI353B-->	158°,37U
+Merinita-->		Juno : 		FD360B-->	322°,74U
+Juno-->			Merinita : 	QV515A-->	268°,32U
+Juno-->			Triticum : 	OR507A-->	186°,116U
+Juno-->			Purusca : 	ON513A-->	122°,122U
+Triticum-->		Tarkus : 	EH280A-->	330°,95U
+Triticum-->		Lascarios : 	EG281A-->	319°,35U
+Triticum-->		Juno : 		ED283A-->	320°,39U
+Fractarius-->		Gisperion : 	LG625C-->	298°,105U
+Fractarius-->		Ultra Semptor : LH636C-->	47°,42U
+Fractarius-->		Agmenos : 	KX636C-->	137°,49U
+Fractarius-->		Acadia : 	KX636C-->	303°,65U
+Fractarius-->		Misthos : 	KX636C-->	273°,65U
+Ultra Semptor-->	Fractarius : 	AH676A-->	310°,46U
+Ultra Semptor-->	Lascarios : 	AP679A-->	90°,85U
+Ultra Semptor-->	Purusca : 	AO667A-->	162°,47U
+Lascarios-->		Ultra Semptor : HD571A-->	357°,46U
+Lascarios-->		Triticum : 	HI582A-->	181°,32U
+Purusca-->		Juno : 		OR790A-->	170°,63U
+Purusca-->		Ultra Semptor : PD793A-->	36°,62U
+Purusca-->		Acadia : 	OV784A-->	342°,66U
+Acadia-->		Purusca : 	DK916A-->	97°,51U
+Acadia-->		Fractarius : 	DP924A-->	358°,43U
+Acadia-->		Agmenos : 	DP924A-->	137°,49U
+Acadia-->		Misthos : 	DP924A-->	273°,65U
+Agmenos-->		Fractarius : 	IT943C-->	358°,43U
+Agmenos-->		Acadia : 	IT943C-->	303°,65U
+Agmenos-->		Misthos : 	IT943C-->	273°,65U
+Misthos-->		Tarkus :	SB410C-->	213°,56U
+Misthos-->		Gisperion :	SB410C-->	72°,77U
+Misthos-->		Merinita :	SB410C-->	159°,79U
+Misthos-->		Acadia : 	RU402C-->	303°,65U
+Misthos-->		Fractarius : 	RU402C-->	358°,43U
+Misthos-->		Agmenos : 	RU402C-->	137°,65U

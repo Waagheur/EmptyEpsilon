@@ -1,44 +1,386 @@
--- A ModelData object contains 3D appearance and SeriousProton physics collision details.
--- This file is loaded when EmptyEpsilon is launched.
--- For details, see the ModelData class in the scripting reference.
-
---[[
-40K Model3D
---]]
 
 -- Radiious/ Chasseur : 30-40 fregate/destroyer 160
+-- Valeurs à modifier
 
---[[Chasseur Corsair]]
+--MODELES 40K
+
+function Imperium()
+
+--[[Frégate Firestorm]]
+function Firestorm()
 model = ModelData()
+model:setName("Navy_Frigate")
+model:setMesh("model3d/Navy_Frigate.obj")
+model:setTexture("textures/Navy_Frigate_Full.jpg")
+model:setSpecular("")
+model:setIllumination("textures/Navy_Frigate_Full.jpg")
+model:setScale(4)
+model:setRadius(100)
+-- Positions visuelles des faisceaux/lance missiles (position : -X, Y, Z)
+
+model:addEngineEmitter(-0.75, 0.2,-0.03,  0.5, 0.5, 1.0, 0.2)
+model:addEngineEmitter(-0.75,-0.2,-0.03,  0.5, 0.5, 1.0, 0.2)
+model:addEngineEmitter(-8,  0, 0.3,  0.2, 0.2, 1.0, 2.0)
+
+end
+
+--[[Transport Leger Civil]]
+function Transport()
+model = ModelData()
+model:setName("Civilian_Transport_Ship")
+model:setMesh("model3d/Civilian_Transport_Ship.obj")
+model:setTexture("textures/Civilian_Transport_Ship_Full.jpg")
+model:setSpecular("")
+model:setIllumination("textures/Civilian_Transport_Ship_Full.jpg")
+model:setScale(4)
+model:setRadius(100)
+-- Positions visuelles des faisceaux/lance missiles (position : -X, Y, Z)
+
+--model:addEngineEmitter(-0.75, 0.2,-0.03,  0.5, 0.5, 1.0, 0.2)
+--model:addEngineEmitter(-0.75,-0.2,-0.03,  0.5, 0.5, 1.0, 0.2)
+model:addEngineEmitter(-10,  0, 0.3,  0.2, 0.2, 1.0, 3.0)
+
+end
+
+--[[Croiseur Marchand Civil]]
+function Marchand()
+model = ModelData()
+model:setName("Civilian_Transport_Cruiser")
+model:setMesh("model3d/Civilian_Transport_Cruiser.obj")
+model:setTexture("textures/Civilian_Transport_Cruiser_Full.jpg")
+model:setSpecular("") 
+model:setIllumination("textures/Civilian_Transport_Cruiser_Full.jpg")
+model:setScale(6)
+model:setRadius(200)
+-- Positions visuelles des faisceaux/lance missiles (position : -X, Y, Z)
+
+--model:addEngineEmitter(-30, -2.1500, 0.3,  0.2, 0.2, 1.0, 3.0)
+--model:addEngineEmitter(-30,  2.1500, 0.3,  0.2, 0.2, 1.0, 3.0)
+
+end
+
+--[[Destroyer Imperial Cobra]]
+function Cobra()
+model = ModelData()
+model:setName("Navy_Destroyer")
+model:setMesh("model3d/Navy_Destroyer.obj")
+model:setTexture("textures/Navy_Destroyer_Full.jpg")
+model:setSpecular("")
+model:setIllumination("textures/Navy_Destroyer_Full.jpg")
+model:setScale(4)
+model:setRadius(100)
+-- Positions visuelles des faisceaux/lance missiles (position : -X, Y, Z)
+
+--model:addEngineEmitter(-0.75, 0.2,-0.03,  0.5, 0.5, 1.0, 0.2)
+--model:addEngineEmitter(-0.75,-0.2,-0.03,  0.5, 0.5, 1.0, 0.2)
+model:addEngineEmitter(-8, -2.1500, 0.3,  0.2, 0.2, 1.0, 2.0)
+model:addEngineEmitter(-8,  2.1500, 0.3,  0.2, 0.2, 1.0, 2.0)
+
+end
+
+--[[Destroyer du chaos Iconoclast]]
+function Iconoclast()
+model = ModelData()
+model:setName("Chaos_Destroyer")
+model:setMesh("model3d/Chaos_Destroyer.obj")
+model:setTexture("textures/Chaos_Destroyer_Full.jpg")
+model:setSpecular("")
+model:setIllumination("textures/Chaos_Destroyer_Full.jpg")
+model:setScale(4)
+model:setRadius(100)
+-- Positions visuelles des faisceaux/lance missiles (position : -X, Y, Z)
+
+--model:addEngineEmitter(-0.75, 0.2,-0.03,  0.5, 0.5, 1.0, 3.0)
+--model:addEngineEmitter(-0.75,-0.2,-0.03,  0.5, 0.5, 1.0, 3.0)
+
+model:addEngineEmitter(-8, -2.1500, 0.3,  1, 0.2, 0.2, 2.0)
+model:addEngineEmitter(-8,  2.1500, 0.3,  1, 0.2, 0.2, 2.0)
+
+end
+
+--[[Croiseur leger Dauntless]]
+function Dauntless()
+model = ModelData()
+model:setName("Navy_Light_Cruiser")
+model:setMesh("model3d/Navy_Light_Cruiser.obj")
+model:setTexture("textures/Navy_Light_Cruiser_Full.png")
+model:setSpecular("")
+model:setIllumination("textures/Navy_Light_Cruiser_Full.png")
+model:setScale(6)
+model:setRadius(200)
+-- Positions visuelles des faisceaux/lance missiles (position : -X, Y, Z)
+
+--model:addEngineEmitter(-0.75, 0.2,-0.03,  0.5, 0.5, 1.0, 0.2)
+--model:addEngineEmitter(-0.75,-0.2,-0.03,  0.5, 0.5, 1.0, 0.2)
+model:addEngineEmitter(-25, -2.1500, 0.3,  0.2, 0.2, 1.0, 3.0)
+model:addEngineEmitter(-25,  2.1500, 0.3,  0.2, 0.2, 1.0, 3.0)
+
+end
+
+--[[Croiseur Gothic]]
+function Gothic()
+model = ModelData()
+model:setName("Navy_Cruiser")
+model:setMesh("model3d/Navy_Cruiser.obj")
+model:setTexture("textures/Navy_Cruiser_Full.png")
+model:setSpecular("")
+model:setIllumination("textures/Navy_Cruiser_Full.png")
+model:setScale(7)
+model:setRadius(250)
+-- Positions visuelles des faisceaux/lance missiles (position : -X, Y, Z)
+
+model:addEngineEmitter(-25, -2.1500, 0.3,  0.2, 0.2, 1.0, 3.0)
+model:addEngineEmitter(-25,  2.1500, 0.3,  0.2, 0.2, 1.0, 3.0)
+
+end
+
+--[[Croiseur Inquisitorial]]
+function Inquisitorial()
+model = ModelData()
+model:setName("Inquisitorial_Cruiser")
+model:setMesh("model3d/Inquisitorial_Cruiser.obj")
+model:setTexture("textures/Inquisitorial_Cruiser_Full.jpg")
+model:setSpecular("")
+model:setIllumination("textures/Inquisitorial_Cruiser_Full.jpg")
+model:setScale(8)
+model:setRadius(350)
+-- Positions visuelles des faisceaux/lance missiles (position : -X, Y, Z)
+
+model:addEngineEmitter(-25, -2.1500, 0.3,  0.2, 0.2, 1.0, 3.0)
+model:addEngineEmitter(-25,  2.1500, 0.3,  0.2, 0.2, 1.0, 3.0)
+
+end
+
+--[[cuirasse Imperial Emperor]]
+function Emperor()
+model = ModelData()
+model:setName("Navy_Battleship")
+model:setMesh("model3d/Navy_Battleship.obj")
+model:setTexture("textures/Navy_Battleship_Full.png")
+model:setSpecular("")
+model:setIllumination("textures/Navy_Battleship_Full.png")
+model:setScale(10)
+model:setRadius(485)
+model:setCollisionBox(2000, 600)
+-- Positions visuelles des faisceaux/lance missiles (position : -X, Y, Z)
+
+-- Engin emitter to do 
+--model:addEngineEmitter(-180, -30, 1.2,  0.2, 0.2, 1.0, 30.0)
+--model:addEngineEmitter(-180,  30, 1.2,  0.2, 0.2, 1.0, 30.0)
+
+end
+
+--[[Croiseur Marchand Rogue]]
+function Rogue()
+model = ModelData()
+model:setName("Rogue_Trader_Cruiser")
+model:setMesh("model3d/Rogue_Trader_Cruiser.obj")
+model:setTexture("textures/Rogue_Trader_Cruiser_Full.jpg")
+model:setSpecular("")
+model:setIllumination("textures/Rogue_Trader_Cruiser_Full.jpg")
+model:setScale(8)
+model:setRadius(370)
+-- Positions visuelles des faisceaux/lance missiles (position : -X, Y, Z)
+
+model:addEngineEmitter(-15, -2.1500, 0.3,  0.2, 0.2, 1.0, 3.0)
+model:addEngineEmitter(-15,  2.1500, 0.3,  0.2, 0.2, 1.0, 3.0)
+
+end
+
+--[[Arche Mechanicus]]
+function Mechanicus1()
+model = ModelData()
+model:setName("Adeptus_Mechanicus_Battleship")
+model:setMesh("model3d/Adeptus_Mechanicus_Battleship.obj")
+model:setTexture("textures/Adeptus_Mechanicus_Battleship_Full.jpg")
+model:setSpecular("")
+model:setIllumination("textures/Adeptus_Mechanicus_Battleship_Full.jpg")
+model:setScale(12)
+model:setRadius(850)
+model:setCollisionBox(2000, 600)
+-- Positions visuelles des faisceaux/lance missiles (position : -X, Y, Z)
+
+model:addEngineEmitter(-30, -30, 1.2,  0.2, 0.2, 1.0, 30.0)
+model:addEngineEmitter(-30,  30, 1.2,  0.2, 0.2, 1.0, 30.0)
+
+end
+
+--[[Arche Mechanicus  croiseur ]]
+function Mechanicus2()
+model = ModelData()
+model:setName("Adeptus_Mechanicus_cruiser")
+model:setMesh("model3d/Adeptus_Mechanicus_Battleship.obj")
+model:setTexture("textures/Adeptus_Mechanicus_Battleship_Full.jpg")
+model:setSpecular("")
+model:setIllumination("textures/Adeptus_Mechanicus_Battleship_Full.jpg")
+model:setScale(7)
+model:setRadius(250)
+model:setCollisionBox(1200, 300)
+-- Positions visuelles des faisceaux/lance missiles (position : -X, Y, Z)
+
+--model:addEngineEmitter(-30, -30, 1.2,  0.2, 0.2, 1.0, 30.0)
+--model:addEngineEmitter(-30,  30, 1.2,  0.2, 0.2, 1.0, 30.0)
+
+end
+
+--[[Barge de Bataille]]
+function Barge()
+model = ModelData()
+model:setName("Eternal_Crusader_Battlebarge")
+model:setMesh("model3d/Eternal_Crusader_Battlebarge.obj")
+model:setTexture("textures/Eternal_Crusader_Battlebarge_Full.jpg")
+model:setSpecular("")
+model:setIllumination("textures/Eternal_Crusader_Battlebarge_Full.jpg")
+model:setScale(10)
+model:setRadius(485)
+model:setCollisionBox(2000, 600)
+-- Positions visuelles des faisceaux/lance missiles (position : -X, Y, Z)
+
+--model:addEngineEmitter(-180, -30, 1.2,  0.2, 0.2, 1.0, 30.0)
+--model:addEngineEmitter(-180,  30, 1.2,  0.2, 0.2, 1.0, 30.0)
+
+end
+
+--[[Grande station Imperial]]
+function Station()
+model = ModelData()
+model:setName("Navy_Station")
+model:setMesh("model3d/Navy_Station.obj")
+model:setTexture("textures/Navy_Station_Full.jpg")
+model:setSpecular("")
+model:setIllumination("textures/Navy_Station_Full.jpg")
+model:setRenderOffset(0, 0, 3)
+--model:setRenderOffset(0, 0, 5)
+--Taille visuelle de l'objet
+model:setScale(35)
+--Taille de la hitbox
+model:setRadius(1500)
+--model:setCollisionBox(1800, 1800)
+
+end
+
+Firestorm()
+Transport()
+Marchand()
+Cobra()
+Iconoclast()
+Dauntless()
+Gothic()
+--Inquisitorial()
+Emperor()
+Rogue()
+Mechanicus1()
+Mechanicus2()
+Barge()
+Station()
+
+end
+
+function Chaos()
+
+--[[Croiseur leger du chaos Slaughter]]
+function Slaughter()
+model = ModelData()
+model:setName("Chaos_Light_Cruiser")
+model:setMesh("model3d/Chaos_Light_Cruiser.obj")
+model:setTexture("textures/Chaos_Light_Cruiser_Full.jpg")
+model:setSpecular("")
+model:setIllumination("textures/Chaos_Light_Cruiser_Full.jpg")
+model:setScale(7)
+model:setRadius(250)
+-- Positions visuelles des faisceaux/lance missiles (position : -X, Y, Z)
+
+--model:addEngineEmitter(-0.75, 0.2,-0.03,  0.5, 0.5, 1.0, 0.2)
+--model:addEngineEmitter(-0.75,-0.2,-0.03,  0.5, 0.5, 1.0, 0.2)
+model:addEngineEmitter(-20, -2.1500, 0.3,  1, 0.2, 0.2, 3.0)
+model:addEngineEmitter(-20,  2.1500, 0.3,  1, 0.2, 0.2, 3.0)
+
+end
+
+--[[Croiseur du Chaos Carnage]]
+function Carnage()
+model = ModelData()
+model:setName("Chaos_Cruiser")
+model:setMesh("model3d/Chaos_Cruiser.obj")
+model:setTexture("textures/Chaos_Cruiser_Full.jpg")
+model:setSpecular("")
+model:setIllumination("textures/Chaos_Cruiser_Full.jpg")
+model:setScale(7)
+model:setRadius(250)
+-- Positions visuelles des faisceaux/lance missiles (position : -X, Y, Z)
+
+--model:addEngineEmitter(-25, -2.1500, 0.3,  1.0, 0.2, 0.1, 3.0)
+--model:addEngineEmitter(-25,  2.1500, 0.3,  1.0, 0.2, 0.1, 3.0)
+model:addEngineEmitter(-20, -2.1500, 0.3,  1, 0.2, 0.2, 3.0)
+model:addEngineEmitter(-20,  2.1500, 0.3,  1, 0.2, 0.2, 3.0)
+--1.0, 0.2, 0.1, 17.0)
+
+end
+
+--[[Cuirassé du Chaos Despoiler]]
+function Despoiler()
+model = ModelData()
+model:setName("Chaos_Heavy_Carrier")
+model:setMesh("model3d/Chaos_Heavy_Carrier.obj")
+model:setTexture("textures/Chaos_Heavy_Carrier_Full.jpg")
+model:setSpecular("")
+model:setIllumination("textures/Chaos_Heavy_Carrier_Full.jpg")
+model:setScale(10)
+model:setRadius(485)
+model:setCollisionBox(2000, 600)
+-- Positions visuelles des faisceaux/lance missiles (position : -X, Y, Z)
+
+--model:addEngineEmitter(-30, -30, 1.2,  1, 0.2, 0.2, 30.0)
+--model:addEngineEmitter(-30,  30, 1.2,  1, 0.2, 0.2, 30.0)
+
+end
+
+Slaughter()
+Carnage()
+Despoiler()
+
+end
+
+function Xenos()
+--[[Chasseur Eldar Corsair]]
+function ChasseurEldar()
+model = ModelData()
+--Nom de la texture
 model:setName("Eldar_Corsair_Fighter")
 model:setMesh("model3d/Eldar_Corsair_Fighter.obj")
 model:setTexture("textures/Eldar_Corsair_Fighter_Full.jpg")
 model:setSpecular("")
 model:setIllumination("textures/Eldar_Corsair_Fighter_Full.jpg")
-model:setScale(20)
-model:setRadius(30)
--- Visual positions of the beams/missiletubes (blender: -X, Y, Z)
---model:addBeamPosition(21, -28.2, -2)
---model:addBeamPosition(21,  28.2, -2)
+--Taille visuelle de l'objet
+model:setScale(40)
+--Taille de la hitbox
+model:setRadius(70)
+-- Positions visuelles des faisceaux/lance missiles (position : -X, Y, Z)
+model:addBeamPosition(1.8, 0, 0.03)
 model:addEngineEmitter(-1.5, 0.42, -0.13,  0.5, 0.5, 1.0, 0.5)
 model:addEngineEmitter(-1.5,-0.42, -0.13,  0.5, 0.5, 1.0, 0.5)
 model:addEngineEmitter(-1.5, 0.42, 0.33,  0.5, 0.5, 1.0, 0.5)
 model:addEngineEmitter(-1.5,-0.42, 0.33,  0.5, 0.5, 1.0, 0.5)
 
---model:addEngineEmitter(-28, -1.5, -5,  1.0, 0.2, 0.2, 3.0)
---model:addEngineEmitter(-28,  1.5, -5,  1.0, 0.2, 0.2, 3.0)
+model:addEngineEmitter(-28, -1.5, -5,  1.0, 0.2, 0.2, 3.0)
+model:addEngineEmitter(-28,  1.5, -5,  1.0, 0.2, 0.2, 3.0)
 
+end
 
---[[Bombardier Corsair]]
+--[[Bombardier Eldar Corsair]]
+function BombardierEldar()
 model = ModelData()
+--Nom de la texture
 model:setName("Eldar_Corsair_Bomber")
 model:setMesh("model3d/Eldar_Corsair_Bomber.obj")
 model:setTexture("textures/Eldar_Corsair_Bomber_Full.jpg")
 model:setSpecular("")
 model:setIllumination("textures/Eldar_Corsair_Bomber_Full.jpg")
-model:setScale(20)
-model:setRadius(30)
--- Visual positions of the beams/missiletubes (blender: -X, Y, Z)
+--Taille visuelle de l'objet
+model:setScale(30)
+--Taille de la hitbox
+model:setRadius(40)
+-- Positions visuelles des faisceaux/lance missiles (position : -X, Y, Z)
 model:addBeamPosition(1.8, 0, 0.03)
 model:addBeamPosition(1.8, 0.13, 0.03)
 model:addBeamPosition(1.8,-0.13, 0.03)
@@ -48,101 +390,19 @@ model:addEngineEmitter(-1.5,-0.42, -0.13,  0.5, 0.5, 1.0, 0.5)
 model:addEngineEmitter(-1.5, 0.42, 0.33,  0.5, 0.5, 1.0, 0.5)
 model:addEngineEmitter(-1.5,-0.42, 0.33,  0.5, 0.5, 1.0, 0.5)
 
+end
 
---[[Frégate Firestorm]]
-model = ModelData()
-model:setName("Navy_Frigate")
-model:setMesh("model3d/Navy_Frigate.obj")
-model:setTexture("textures/Navy_Frigate_Full.jpg")
-model:setSpecular("")
-model:setIllumination("textures/Navy_Frigate_Full.jpg")
-model:setScale(8)
-model:setRadius(200)
--- Visual positions of the beams/missiletubes (blender: -X, Y, Z)
-
-model:addEngineEmitter(-0.75, 0.2,-0.03,  0.5, 0.5, 1.0, 0.2)
-model:addEngineEmitter(-0.75,-0.2,-0.03,  0.5, 0.5, 1.0, 0.2)
-model:addEngineEmitter(-8,  0, 0.3,  0.2, 0.2, 1.0, 2.0)
-
---[[Transport Leger Civil]]
-model = ModelData()
-model:setName("Civilian_Transport_Ship")
-model:setMesh("model3d/Civilian_Transport_Ship.obj")
-model:setTexture("textures/Civilian_Transport_Ship_Full.jpg")
-model:setSpecular("")
-model:setIllumination("textures/Civilian_Transport_Ship_Full.jpg")
-model:setScale(8)
---model:setRadius(60)
-model:setRadius(180)
--- Visual positions of the beams/missiletubes (blender: -X, Y, Z)
-
-
---model:addEngineEmitter(-0.75, 0.2,-0.03,  0.5, 0.5, 1.0, 0.2)
---model:addEngineEmitter(-0.75,-0.2,-0.03,  0.5, 0.5, 1.0, 0.2)
-model:addEngineEmitter(-10,  0, 0.3,  0.2, 0.2, 1.0, 3.0)
-
---[[Destroyer Imperial Cobra]]
-model = ModelData()
-model:setName("Navy_Destroyer")
-model:setMesh("model3d/Navy_Destroyer.obj")
-model:setTexture("textures/Navy_Destroyer_Full.jpg")
-model:setSpecular("")
-model:setIllumination("textures/Navy_Destroyer_Full.jpg")
-model:setScale(8)
---model:setRadius(100)
-model:setRadius(200)
--- Visual positions of the beams/missiletubes (blender: -X, Y, Z)
-
---model:addEngineEmitter(-0.75, 0.2,-0.03,  0.5, 0.5, 1.0, 0.2)
---model:addEngineEmitter(-0.75,-0.2,-0.03,  0.5, 0.5, 1.0, 0.2)
-model:addEngineEmitter(-8, -2.1500, 0.3,  0.2, 0.2, 1.0, 2.0)
-model:addEngineEmitter(-8,  2.1500, 0.3,  0.2, 0.2, 1.0, 2.0)
-
---[[Destroyer du chaos Iconoclast]]
-model = ModelData()
-model:setName("Chaos_Destroyer")
-model:setMesh("model3d/Chaos_Destroyer.obj")
-model:setTexture("textures/Chaos_Destroyer_Full.jpg")
-model:setSpecular("")
-model:setIllumination("textures/Chaos_Destroyer_Full.jpg")
-model:setScale(8)
-
---model:setRadius(100)
-model:setRadius(200)
--- Visual positions of the beams/missiletubes (blender: -X, Y, Z)
-
---model:addEngineEmitter(-0.75, 0.2,-0.03,  0.5, 0.5, 1.0, 3.0)
---model:addEngineEmitter(-0.75,-0.2,-0.03,  0.5, 0.5, 1.0, 3.0)
-
-model:addEngineEmitter(-8, -2.1500, 0.3,  1, 0.2, 0.2, 2.0)
-model:addEngineEmitter(-8,  2.1500, 0.3,  1, 0.2, 0.2, 2.0)
-
---[[Croiseur leger Dauntless]]
-model = ModelData()
-model:setName("Navy_Light_Cruiser")
-model:setMesh("model3d/Navy_Light_Cruiser.obj")
-model:setTexture("textures/Navy_Light_Cruiser_Full.png")
-model:setSpecular("")
-model:setIllumination("textures/Navy_Light_Cruiser_Full.png")
-model:setScale(8)
---model:setRadius(150)
-model:setRadius(220)
--- Visual positions of the beams/missiletubes (blender: -X, Y, Z)
-
---model:addEngineEmitter(-0.75, 0.2,-0.03,  0.5, 0.5, 1.0, 0.2)
---model:addEngineEmitter(-0.75,-0.2,-0.03,  0.5, 0.5, 1.0, 0.2)
-model:addEngineEmitter(-25, -2.1500, 0.3,  0.2, 0.2, 1.0, 3.0)
-model:addEngineEmitter(-25,  2.1500, 0.3,  0.2, 0.2, 1.0, 3.0)
---[[Croiseur leger Corsaire]]
+--[[Croiseur leger Eldar Corsaire]]
+function CroiseurLegerEldar()
 model = ModelData()
 model:setName("Eldar_Corsair_Light_Cruiser")
 model:setMesh("model3d/Eldar_Corsair_Light_Cruiser.obj")
 model:setTexture("textures/Eldar_Corsair_Light_Cruiser_Full.jpg")
 model:setSpecular("")
 model:setIllumination("textures/Eldar_Corsair_Light_Cruiser_Full.jpg")
-model:setScale(10)
-model:setRadius(180)
--- Visual positions of the beams/missiletubes (blender: -X, Y, Z)
+model:setScale(5)
+model:setRadius(170)
+-- Positions visuelles des faisceaux/lance missiles (position : -X, Y, Z)
 
 --model:addEngineEmitter(-0.75, 0.2,-0.03,  0.5, 0.5, 1.0, 0.2)
 --model:addEngineEmitter(-0.75,-0.2,-0.03,  0.5, 0.5, 1.0, 0.2)
@@ -150,71 +410,10 @@ model:addEngineEmitter(-5,  0, 0.3,  0.2, 0.2, 1.0, 2.0)
 --model:addEngineEmitter(-25, -2.1500, 0.3,  0.2, 0.2, 1.0, 3.0)
 --model:addEngineEmitter(-25,  2.1500, 0.3,  0.2, 0.2, 1.0, 3.0)
 
---[[Croiseur leger du chaos Slaughter]]
-model = ModelData()
-model:setName("Chaos_Light_Cruiser")
-model:setMesh("model3d/Chaos_Light_Cruiser.obj")
-model:setTexture("textures/Chaos_Light_Cruiser_Full.jpg")
-model:setSpecular("")
-model:setIllumination("textures/Chaos_Light_Cruiser_Full.jpg")
-model:setScale(8)
-model:setRadius(220)
--- Visual positions of the beams/missiletubes (blender: -X, Y, Z)
+end
 
---model:addEngineEmitter(-0.75, 0.2,-0.03,  0.5, 0.5, 1.0, 0.2)
---model:addEngineEmitter(-0.75,-0.2,-0.03,  0.5, 0.5, 1.0, 0.2)
-model:addEngineEmitter(-20, -2.1500, 0.3,  1, 0.2, 0.2, 3.0)
-model:addEngineEmitter(-20,  2.1500, 0.3,  1, 0.2, 0.2, 3.0)
-
-
---[[Croiseur Gothic]]
-model = ModelData()
-model:setName("Navy_Cruiser")
-model:setMesh("model3d/Navy_Cruiser.obj")
-model:setTexture("textures/Navy_Cruiser_Full.png")
-model:setSpecular("")
-model:setIllumination("textures/Navy_Cruiser_Full.png")
-model:setScale(8)
---model:setRadius(250)
-model:setRadius(350)
--- Visual positions of the beams/missiletubes (blender: -X, Y, Z)
-model:addEngineEmitter(-25, -2.1500, 0.3,  0.2, 0.2, 1.0, 3.0)
-model:addEngineEmitter(-25,  2.1500, 0.3,  0.2, 0.2, 1.0, 3.0)
-
---[[Croiseur mars]]
-model = ModelData()
-model:setName("Navy_Battleship_Mars")
-model:setMesh("model3d/Navy_Battleship.obj")
-model:setTexture("textures/Navy_Battleship_Full.png")
-model:setSpecular("")
-model:setIllumination("textures/Navy_Battleship_Full.png")
-model:setScale(8)
-model:setRadius(400)
-model:setCollisionBox(2000, 600)
--- Visual positions of the beams/missiletubes (blender: -X, Y, Z)
-
--- Engin emitter to do 
---model:addEngineEmitter(-180, -30, 1.2,  0.2, 0.2, 1.0, 30.0)
---model:addEngineEmitter(-180,  30, 1.2,  0.2, 0.2, 1.0, 30.0)
-
-
---[[Croiseur Inquisitoriale]]
-model = ModelData()
-model:setName("Inquisitorial_Cruiser")
-model:setMesh("model3d/Inquisitorial_Cruiser.obj")
-model:setTexture("textures/Inquisitorial_Cruiser_Full.jpg")
-model:setSpecular("")
-model:setIllumination("textures/Inquisitorial_Cruiser_Full.jpg")
-model:setScale(8)
-model:setRadius(350)
--- Visual positions of the beams/missiletubes (blender: -X, Y, Z)
-
-model:addEngineEmitter(-25, -2.1500, 0.3,  0.2, 0.2, 1.0, 3.0)
-model:addEngineEmitter(-25,  2.1500, 0.3,  0.2, 0.2, 1.0, 3.0)
-
-
-
---[[Croiseur Corsair Torture]]
+--[[Croiseur Corsair Eldar Torture]]
+function Torture()
 model = ModelData()
 model:setName("Eldar_Corsair_Cruiser")
 model:setMesh("model3d/Eldar_Corsair_Cruiser.obj")
@@ -222,61 +421,15 @@ model:setTexture("textures/Eldar_Corsair_Cruiser_Full.jpg")
 model:setSpecular("")
 model:setIllumination("textures/Eldar_Corsair_Cruiser_Full.jpg")
 model:setScale(8)
-model:setRadius(300)
--- Visual positions of the beams/missiletubes (blender: -X, Y, Z)
+model:setRadius(235)
+-- Positions visuelles des faisceaux/lance missiles (position : -X, Y, Z)
 
-model:addEngineEmitter(-5, 0, 0.3, 0.2, 0.2, 1.0, 2.5)
+model:addEngineEmitter(-5,  0, 0.3,  0.2, 0.2, 1.0, 2.5)
 
---[[Croiseur du Chaos Carnage]]
-model = ModelData()
-model:setName("Chaos_Cruiser")
-model:setMesh("model3d/Chaos_Cruiser.obj")
-model:setTexture("textures/Chaos_Cruiser_Full.jpg")
-model:setSpecular("")
-model:setIllumination("textures/Chaos_Cruiser_Full.jpg")
-model:setScale(8)
-model:setRadius(350)
--- Visual positions of the beams/missiletubes (blender: -X, Y, Z)
-
---model:addEngineEmitter(-25, -2.1500, 0.3,  1.0, 0.2, 0.1, 3.0)
---model:addEngineEmitter(-25,  2.1500, 0.3,  1.0, 0.2, 0.1, 3.0)
-model:addEngineEmitter(-20, -2.1500, 0.3,  1, 0.2, 0.2, 3.0)
-model:addEngineEmitter(-20,  2.1500, 0.3,  1, 0.2, 0.2, 3.0)
---1.0, 0.2, 0.1, 17.0)
-
-
-
---[[Croiseur Marchand Civil]]
-model = ModelData()
-model:setName("Civilian_Transport_Cruiser")
-model:setMesh("model3d/Civilian_Transport_Cruiser.obj")
-model:setTexture("textures/Civilian_Transport_Cruiser_Full.jpg")
-model:setSpecular("") 
-model:setIllumination("textures/Civilian_Transport_Cruiser_Full.jpg")
-model:setScale(8)
-model:setRadius(300)
--- Visual positions of the beams/missiletubes (blender: -X, Y, Z)
-
---model:addEngineEmitter(-30, -2.1500, 0.3,  0.2, 0.2, 1.0, 3.0)
---model:addEngineEmitter(-30,  2.1500, 0.3,  0.2, 0.2, 1.0, 3.0)
-
-
---[[Croiseur Marchand Rogue]]
-model = ModelData()
-model:setName("Rogue_Trader_Cruiser")
-model:setMesh("model3d/Rogue_Trader_Cruiser.obj")
-model:setTexture("textures/Rogue_Trader_Cruiser_Full.jpg")
-model:setSpecular("")
-model:setIllumination("textures/Rogue_Trader_Cruiser_Full.jpg")
-model:setScale(8)
-model:setRadius(500)
--- Visual positions of the beams/missiletubes (blender: -X, Y, Z)
-
-model:addEngineEmitter(-15, -2.1500, 0.3,  0.2, 0.2, 1.0, 3.0)
-model:addEngineEmitter(-15,  2.1500, 0.3,  0.2, 0.2, 1.0, 3.0)
-
+end
 
 --[[Croiseur Marchand Il'porrui]]
+function Tau()
 model = ModelData()
 model:setName("Tau_Merchant_Cruiser")
 model:setMesh("model3d/Tau_Merchant_Cruiser.obj")
@@ -284,110 +437,71 @@ model:setTexture("textures/Tau_Merchant_Cruiser_Full.jpg")
 model:setSpecular("")
 model:setIllumination("textures/Tau_Merchant_Cruiser_Full.jpg")
 model:setScale(8)
-model:setRadius(450)
--- Visual positions of the beams/missiletubes (blender: -X, Y, Z)
-
-model:addEngineEmitter(-30, -2.1500, 0.3,  0.2, 0.2, 1.0, 3.0)
-model:addEngineEmitter(-30,  2.1500, 0.3,  0.2, 0.2, 1.0, 3.0)
-
-
---[[cuirasse Imperial Emperor]]
-model = ModelData()
-model:setName("Navy_Battleship")
-model:setMesh("model3d/Navy_Battleship.obj")
-model:setTexture("textures/Navy_Battleship_Full.png")
-model:setSpecular("")
-model:setIllumination("textures/Navy_Battleship_Full.png")
-model:setScale(10)
-model:setRadius(650)
-model:setCollisionBox(2000, 600)
--- Visual positions of the beams/missiletubes (blender: -X, Y, Z)
-
--- Engin emitter to do 
---model:addEngineEmitter(-180, -30, 1.2,  0.2, 0.2, 1.0, 30.0)
---model:addEngineEmitter(-180,  30, 1.2,  0.2, 0.2, 1.0, 30.0)
-
-
---[[Cuirassé du Chaos Despoiler]]
-model = ModelData()
-model:setName("Chaos_Heavy_Carrier")
-model:setMesh("model3d/Chaos_Heavy_Carrier.obj")
-model:setTexture("textures/Chaos_Heavy_Carrier_Full.jpg")
-model:setSpecular("")
-model:setIllumination("textures/Chaos_Heavy_Carrier_Full.jpg")
-model:setScale(12)
-model:setRadius(650)
-model:setCollisionBox(2000, 600)
--- Visual positions of the beams/missiletubes (blender: -X, Y, Z)
-
---model:addEngineEmitter(-30, -30, 1.2,  1, 0.2, 0.2, 30.0)
---model:addEngineEmitter(-30,  30, 1.2,  1, 0.2, 0.2, 30.0)
-
-
---[[Arche Mechanicus]]
-model = ModelData()
-model:setName("Adeptus_Mechanicus_Battleship")
-model:setMesh("model3d/Adeptus_Mechanicus_Battleship.obj")
-model:setTexture("textures/Adeptus_Mechanicus_Battleship_Full.jpg")
-model:setSpecular("")
-model:setIllumination("textures/Adeptus_Mechanicus_Battleship_Full.jpg")
-model:setScale(12)
-model:setRadius(650)
-model:setCollisionBox(2000, 600)
--- Visual positions of the beams/missiletubes (blender: -X, Y, Z)
-
---model:addEngineEmitter(-30, -30, 1.2,  0.2, 0.2, 1.0, 30.0)
---model:addEngineEmitter(-30,  30, 1.2,  0.2, 0.2, 1.0, 30.0)
-
---[[Arche Mechanicus  croiseur ]]
-model = ModelData()
-model:setName("Adeptus_Mechanicus_cruiser")
-model:setMesh("model3d/Adeptus_Mechanicus_Battleship.obj")
-model:setTexture("textures/Adeptus_Mechanicus_Battleship_Full.jpg")
-model:setSpecular("")
-model:setIllumination("textures/Adeptus_Mechanicus_Battleship_Full.jpg")
-model:setScale(6)
 model:setRadius(350)
-model:setCollisionBox(1200, 300)
--- Visual positions of the beams/missiletubes (blender: -X, Y, Z)
+-- Positions visuelles des faisceaux/lance missiles (position : -X, Y, Z)
 
---model:addEngineEmitter(-30, -30, 1.2,  0.2, 0.2, 1.0, 30.0)
---model:addEngineEmitter(-30,  30, 1.2,  0.2, 0.2, 1.0, 30.0)
+--model:addEngineEmitter(-30, -2.1500, 0.3,  0.2, 0.2, 1.0, 3.0)
+--model:addEngineEmitter(-30,  2.1500, 0.3,  0.2, 0.2, 1.0, 3.0)
 
+end
 
---[[Barge de Bataille]]
+ChasseurEldar()
+BombardierEldar()
+CroiseurLegerEldar()
+Torture()
+Tau()
+
+end
+
+--ANCIENS MODELES
+
+function Non40KUtilise()
+
+function Alien()
 model = ModelData()
-model:setName("Eternal_Crusader_Battlebarge")
-model:setMesh("model3d/Eternal_Crusader_Battlebarge.obj")
-model:setTexture("textures/Eternal_Crusader_Battlebarge_Full.jpg")
-model:setSpecular("")
-model:setIllumination("textures/Eternal_Crusader_Battlebarge_Full.jpg")
-model:setScale(15)
-model:setRadius(600)
-model:setCollisionBox(2000, 600)
--- Visual positions of the beams/missiletubes (blender: -X, Y, Z)
+model:setName("sci_fi_alien_ship_6")
+model:setMesh("sci_fi_alien_ship_6/sci_fi_alien_ship_6.model")
+model:setTexture("sci_fi_alien_ship_6/sci_fi_alien_ship_6_color.jpg")
+model:setSpecular("sci_fi_alien_ship_6/sci_fi_alien_ship_6_specular.jpg")
+model:setIllumination("sci_fi_alien_ship_6/sci_fi_alien_ship_6_illumination.jpg")
+model:setScale(3)
+model:setRadius(150)
 
---model:addEngineEmitter(-180, -30, 1.2,  0.2, 0.2, 1.0, 30.0)
---model:addEngineEmitter(-180,  30, 1.2,  0.2, 0.2, 1.0, 30.0)
+end
 
-
---[[Grande station Imperial]]
+function Frigate()
 model = ModelData()
-model:setName("Navy_Station")
-model:setMesh("model3d/Navy_Station.obj")
-model:setTexture("textures/Navy_Station_Full.jpg")
-model:setSpecular("")
-model:setIllumination("textures/Navy_Station_Full.jpg")
-model:setRenderOffset(0, 0, 3)
---model:setRenderOffset(0, 0, 5)
+model:setName("small_frigate_3")
+model:setMesh("small_frigate_3/small_frigate_3.model")
+model:setTexture("small_frigate_3/small_frigate_3_color.png")
+model:setSpecular("small_frigate_3/small_frigate_3_specular.png")
+model:setIllumination("small_frigate_3/small_frigate_3_illumination.png")
+model:setScale(0.4)
+model:setRadius(150)
+
+model:addEngineEmitter(-91, 32,-4,  0.2, 0.2, 1.0, 8.0)
+model:addEngineEmitter(-95, 32,-17,  0.2, 0.2, 1.0, 8.0)
+model:addEngineEmitter(-91,-32,-4,  0.2, 0.2, 1.0, 8.0)
+model:addEngineEmitter(-95,-32,-17,  0.2, 0.2, 1.0, 8.0)
+
+end
+
+function Station3()
+
+model = ModelData()
+model:setName("space_station_3")
+model:setMesh("space_station_3/space_station_3.model")
+model:setTexture("space_station_3/space_station_3_color.jpg")
+model:setSpecular("space_station_3/space_station_3_specular.jpg")
+model:setIllumination("space_station_3/space_station_3_illumination.jpg")
+model:setRenderOffset(10, 0, 5)
 model:setScale(20)
-model:setRadius(1500)
-model:setCollisionBox(2000, 1800)
+model:setRadius(1000)
+model:setCollisionBox(1200, 1000)
 
+end
 
---[[
-OLD Model3D
---]]
+function Station4()
 
 model = ModelData()
 model:setName("space_station_4")
@@ -400,16 +514,17 @@ model:setScale(10)
 model:setRadius(300)
 model:setCollisionBox(400, 400)
 
-model = ModelData()
-model:setName("space_station_3")
-model:setMesh("space_station_3/space_station_3.model")
-model:setTexture("space_station_3/space_station_3_color.jpg")
-model:setSpecular("space_station_3/space_station_3_specular.jpg")
-model:setIllumination("space_station_3/space_station_3_illumination.jpg")
-model:setRenderOffset(10, 0, 5)
-model:setScale(20)
-model:setRadius(1000)
-model:setCollisionBox(1200, 1000)
+end
+
+
+Alien()
+Frigate()
+Station3()
+Station4()
+
+end
+
+function Non40K()
 
 model = ModelData()
 model:setName("space_station_2")
@@ -442,22 +557,22 @@ model:setIllumination("small_fighter_1_illumination.jpg")
 model:setScale(3)
 model:setRadius(40)
 
--- Visual positions of the beams/missiletubes (blender: -X, Y, Z)
+-- Positions visuelles des faisceaux/lance missiles (position : -X, Y, Z)
 model:addBeamPosition(23, 0, -1.8)
 model:addEngineEmitter(-8, 0, 0.5,  1.0, 0.2, 0.2, 1.5)
 
 
-model = ModelData()
-model:setName("space_tug")
-model:setMesh("space_tug.model")
-model:setTexture("space_tug_color.jpg")
+--model = ModelData()
+--model:setName("space_tug")
+--model:setMesh("space_tug.model")
+--model:setTexture("space_tug_color.jpg")
 --model:setSpecular("space_tug_illumination.jpg")
-model:setIllumination("space_tug_illumination.jpg")
-model:setScale(6)
-model:setRadius(80)
+--model:setIllumination("space_tug_illumination.jpg")
+--model:setScale(6)
+--model:setRadius(80)
 
-model:addEngineEmitter(-13, -2.1500, 0.3,  0.2, 0.2, 1.0, 3.0)
-model:addEngineEmitter(-13,  2.1500, 0.3,  0.2, 0.2, 1.0, 3.0)
+--model:addEngineEmitter(-13, -2.1500, 0.3,  0.2, 0.2, 1.0, 3.0)
+--model:addEngineEmitter(-13,  2.1500, 0.3,  0.2, 0.2, 1.0, 3.0)
 
 
 
@@ -469,7 +584,7 @@ model:setSpecular("space_frigate_6_specular.png")
 model:setIllumination("space_frigate_6_illumination.png")
 model:setScale(6)
 model:setRadius(100)
--- Visual positions of the beams/missiletubes (blender: -X, Y, Z)
+-- Positions visuelles des faisceaux/lance missiles (position : -X, Y, Z)
 model:addBeamPosition(-1.6, -8, -2)
 model:addBeamPosition(-1.6,  8, -2)
 model:addTubePosition(18, 0, -3.5)
@@ -485,7 +600,7 @@ model:setTexture("space_cruiser_4_color.jpg")
 model:setIllumination("space_cruiser_4_illumination.jpg")
 model:setScale(8)
 model:setRadius(100)
--- Visual positions of the beams/missiletubes (blender: -X, Y, Z)
+-- Positions visuelles des faisceaux/lance missiles (position : -X, Y, Z)
 model:addTubePosition(2, -10, -2.3)
 model:addTubePosition(2,  10, -2.3)
 model:addEngineEmitter(-13, -2.1500, 0.3,  0.2, 0.2, 1.0, 3.0)
@@ -499,7 +614,7 @@ model:setSpecular("dark_fighter_6_specular.png")
 model:setIllumination("dark_fighter_6_illumination.png")
 model:setScale(1)
 model:setRadius(60)
--- Visual positions of the beams/missiletubes (blender: -X, Y, Z)
+-- Positions visuelles des faisceaux/lance missiles (position : -X, Y, Z)
 model:addBeamPosition(21, -28.2, -2)
 model:addBeamPosition(21,  28.2, -2)
 model:addEngineEmitter(-28, -1.5, -5,  1.0, 0.2, 0.2, 3.0)
@@ -514,7 +629,7 @@ model:setSpecular("battleship_destroyer_1_upgraded/battleship_destroyer_1_upgrad
 model:setIllumination("battleship_destroyer_1_upgraded/battleship_destroyer_1_upgraded_illumination.jpg")
 model:setScale(4)
 model:setRadius(200)
--- Visual positions of the beams/missiletubes (blender: -X, Y, Z)
+-- Positions visuelles des faisceaux/lance missiles (position : -X, Y, Z)
 model:addBeamPosition(34, -17, -7)
 model:addBeamPosition(34,  17, -7)
 model:addBeamPosition(-5, -33, -1)
@@ -535,7 +650,7 @@ model:setSpecular("battleship_destroyer_2_upgraded/battleship_destroyer_2_upgrad
 model:setIllumination("battleship_destroyer_2_upgraded/battleship_destroyer_2_upgraded_illumination.jpg")
 model:setScale(4)
 model:setRadius(200)
--- Visual positions of the beams/missiletubes (blender: -X, Y, Z)
+-- Positions visuelles des faisceaux/lance missiles (position : -X, Y, Z)
 model:addBeamPosition(37, -14.5, -3.5)
 model:addBeamPosition(37,  14.5, -3.5)
 model:addBeamPosition(10, -12, -15)
@@ -554,7 +669,7 @@ model:setSpecular("battleship_destroyer_3_upgraded/battleship_destroyer_3_upgrad
 model:setIllumination("battleship_destroyer_3_upgraded/battleship_destroyer_3_upgraded_illumination.jpg")
 model:setScale(4)
 model:setRadius(200)
--- Visual positions of the beams/missiletubes (blender: -X, Y, Z)
+-- Positions visuelles des faisceaux/lance missiles (position : -X, Y, Z)
 model:addBeamPosition(22,  22, -4.5)
 model:addBeamPosition(22, -22, -4.5)
 model:addBeamPosition(12,  22, -4.5)
@@ -572,7 +687,7 @@ model:setSpecular("battleship_destroyer_4_upgraded/battleship_destroyer_4_upgrad
 model:setIllumination("battleship_destroyer_4_upgraded/battleship_destroyer_4_upgraded_illumination.jpg")
 model:setScale(4)
 model:setRadius(200)
--- Visual positions of the beams/missiletubes (blender: -X, Y, Z)
+-- Positions visuelles des faisceaux/lance missiles (position : -X, Y, Z)
 model:addBeamPosition(4, -27, -0.5)
 model:addBeamPosition(4,  27, -0.5)
 model:addTubePosition(30, -11, -0.5)
@@ -592,7 +707,7 @@ model:setIllumination("battleship_destroyer_5_upgraded/battleship_destroyer_5_up
 model:setScale(4)
 model:setRadius(200)
 
--- Visual positions of the beams/missiletubes (blender: -X, Y, Z)
+-- Positions visuelles des faisceaux/lance missiles (position : -X, Y, Z)
 model:addBeamPosition(4, -27, -0.5)
 model:addBeamPosition(4,  27, -0.5)
 model:addTubePosition(27, 0, -0.5)
@@ -606,14 +721,14 @@ model:addEngineEmitter(-27,-24, 0,  1.0, 0.2, 0.1, 5.0)
 
 model = ModelData()
 model:setName("Ender Battlecruiser")
-model:setMesh("mesh/ship/Ender Battlecruiser.obj")
-model:setTexture("mesh/ship/Ender Battlecruiser.png")
-model:setSpecular("mesh/ship/Ender Battlecruiser_illumination.png")
-model:setIllumination("mesh/ship/Ender Battlecruiser_illumination.png")
+model:setMesh("Ender Battlecruiser.obj")
+model:setTexture("Ender Battlecruiser.png")
+model:setSpecular("Ender Battlecruiser_illumination.png")
+model:setIllumination("Ender Battlecruiser_illumination.png")
 model:setScale(5)
 model:setRadius(1000)
 model:setCollisionBox(2000, 600)
--- Visual positions of the beams/missiletubes (blender: -X, Y, Z)
+-- Positions visuelles des faisceaux/lance missiles (position : -X, Y, Z)
 model:addBeamPosition(66, -71, 12)
 model:addBeamPosition(66, -71, -12)
 model:addBeamPosition(66,  71, 12)
@@ -676,15 +791,6 @@ model:setScale(3)
 model:setRadius(150)
 
 model = ModelData()
-model:setName("sci_fi_alien_ship_6")
-model:setMesh("sci_fi_alien_ship_6/sci_fi_alien_ship_6.model")
-model:setTexture("sci_fi_alien_ship_6/sci_fi_alien_ship_6_color.jpg")
-model:setSpecular("sci_fi_alien_ship_6/sci_fi_alien_ship_6_specular.jpg")
-model:setIllumination("sci_fi_alien_ship_6/sci_fi_alien_ship_6_illumination.jpg")
-model:setScale(3)
-model:setRadius(150)
-
-model = ModelData()
 model:setName("sci_fi_alien_ship_7")
 model:setMesh("sci_fi_alien_ship_7/sci_fi_alien_ship_7.model")
 model:setTexture("sci_fi_alien_ship_7/sci_fi_alien_ship_7_color.jpg")
@@ -705,18 +811,18 @@ model:setRadius(350)
 model = ModelData()
 model:setName("ammo_box")
 model:setRadius(50)
-model:setMesh("mesh/ammo_box.obj")
-model:setTexture("mesh/ammo_box.png")
-model:setSpecular("mesh/ammo_box_specular.png")
-model:setIllumination("mesh/ammo_box_illumination.png")
+model:setMesh("ammo_box.obj")
+model:setTexture("ammo_box.png")
+model:setSpecular("ammo_box_specular.png")
+model:setIllumination("ammo_box_illumination.png")
 
 model = ModelData()
 model:setName("shield_generator")
 model:setRadius(150)
 model:setScale(3)
-model:setMesh("mesh/various/Shield bubble generator.obj")
-model:setTexture("mesh/various/Shield bubble generator.jpg")
-model:setSpecular("mesh/various/Shield bubble generator specular.jpg")
+model:setMesh("Shield bubble generator.obj")
+model:setTexture("Shield bubble generator.jpg")
+model:setSpecular("Shield bubble generator specular.jpg")
 
 model = ModelData()
 model:setName("small_frigate_1")
@@ -743,20 +849,6 @@ model:setRadius(80)
 
 model:addEngineEmitter(-75, 53,-27,  0.2, 0.2, 1.0, 8.0)
 model:addEngineEmitter(-75,-53,-27,  0.2, 0.2, 1.0, 8.0)
-
-model = ModelData()
-model:setName("small_frigate_3")
-model:setMesh("small_frigate_3/small_frigate_3.model")
-model:setTexture("small_frigate_3/small_frigate_3_color.png")
-model:setSpecular("small_frigate_3/small_frigate_3_specular.png")
-model:setIllumination("small_frigate_3/small_frigate_3_illumination.png")
-model:setScale(0.4)
-model:setRadius(60)
-
-model:addEngineEmitter(-91, 32,-4,  0.2, 0.2, 1.0, 8.0)
-model:addEngineEmitter(-95, 32,-17,  0.2, 0.2, 1.0, 8.0)
-model:addEngineEmitter(-91,-32,-4,  0.2, 0.2, 1.0, 8.0)
-model:addEngineEmitter(-95,-32,-17,  0.2, 0.2, 1.0, 8.0)
 
 model = ModelData()
 model:setName("small_frigate_4")
@@ -787,181 +879,19 @@ model:addEngineEmitter(-95,-30, 8,  0.2, 0.2, 1.0, 5.0)
 model:addEngineEmitter(-95,-30, 0,  0.2, 0.2, 1.0, 5.0)
 model:addEngineEmitter(-95,-30,-8,  0.2, 0.2, 1.0, 5.0)
 
-for idx, color in ipairs({"Blue", "Green", "Grey", "Red", "White", "Yellow"}) do
-    model = ModelData()
-    model:setName("AdlerLongRangeScout" .. color)
-    model:setMesh("AdlerLongRangeScout/AdlerLongRangeSoutHull.model")
-    model:setTexture("AdlerLongRangeScout/AlbedoAO/AdlerLongRangeScout"..color.."AlbedoAO.png")
-    model:setSpecular("AdlerLongRangeScout/AdlerLongRangeScoutPBRSpecular.png")
-    model:setIllumination("AdlerLongRangeScout/AdlerLongRangeScoutIllumination.png")
-    model:setScale(20)
-    model:setRadius(30)
-    -- Visual positions of the beams/missiletubes (blender: -X, Y, Z)
-    model:addBeamPosition(1.8, 0, 0.03)
-    model:addBeamPosition(1.8, 0.13, 0.03)
-    model:addBeamPosition(1.8,-0.13, 0.03)
-    model:addTubePosition(1.8, 0, 0.03)
-    model:addEngineEmitter(-1.5, 0.42, -0.13,  0.5, 0.5, 1.0, 0.5)
-    model:addEngineEmitter(-1.5,-0.42, -0.13,  0.5, 0.5, 1.0, 0.5)
-    model:addEngineEmitter(-1.5, 0.42, 0.33,  0.5, 0.5, 1.0, 0.5)
-    model:addEngineEmitter(-1.5,-0.42, 0.33,  0.5, 0.5, 1.0, 0.5)
 
-    model = ModelData()
-    model:setName("AtlasHeavyFighter" .. color)
-    model:setMesh("AtlasHeavyFighter/AtlasHeavyFighterHull.model")
-    model:setTexture("AtlasHeavyFighter/AlbedoAO/AtlasHeavyFighter"..color.."AlbedoAO.png")
-    model:setSpecular("AtlasHeavyFighter/AtlasHeavyFighterPBRSpecular.png")
-    model:setIllumination("AtlasHeavyFighter/AtlasHeavyFighterIllumination.png")
-    model:setScale(50)
-    model:setRadius(80)
+ModelData():setName("artifact1"):setScale(3):setRadius(50):setMesh("Artifact1.obj"):setTexture("electric_sphere_texture.png")
+ModelData():setName("artifact2"):setScale(3):setRadius(50):setMesh("Artifact2.obj"):setTexture("electric_sphere_texture.png")
+ModelData():setName("artifact3"):setScale(3):setRadius(50):setMesh("Artifact3.obj"):setTexture("electric_sphere_texture.png")
+ModelData():setName("artifact4"):setScale(3):setRadius(50):setMesh("Artifact4.obj"):setTexture("electric_sphere_texture.png")
+ModelData():setName("artifact5"):setScale(3):setRadius(50):setMesh("Artifact5.obj"):setTexture("electric_sphere_texture.png")
+ModelData():setName("artifact6"):setScale(3):setRadius(50):setMesh("Artifact6.obj"):setTexture("electric_sphere_texture.png")
+ModelData():setName("artifact7"):setScale(3):setRadius(50):setMesh("Artifact7.obj"):setTexture("electric_sphere_texture.png")
+ModelData():setName("artifact8"):setScale(3):setRadius(50):setMesh("Artifact8.obj"):setTexture("electric_sphere_texture.png")
 
-    -- Visual positions of the beams/missiletubes (blender: -X, Y, Z)
-    model:addBeamPosition(2.4, 0.1, -0.25)
-    model:addBeamPosition(2.4,-0.1, -0.25)
-    model:addTubePosition(1, 0.4, 0)
-    model:addTubePosition(1,-0.4, 0)
-    model:addTubePosition(-1, 0, 0) --Mine 
-    model:addEngineEmitter(-1.1, 0.7, 0.0,  0.5, 0.5, 1.0, 0.4)
-    model:addEngineEmitter(-1.1, 1.05, 0.0,  0.5, 0.5, 1.0, 0.4)
-    model:addEngineEmitter(-1.1,-0.7, 0.0,  0.5, 0.5, 1.0, 0.4)
-    model:addEngineEmitter(-1.1,-1.05, 0.0,  0.5, 0.5, 1.0, 0.4)
-
-    model = ModelData()
-    model:setName("LindwurmFighter" .. color)
-    model:setMesh("LindwurmFighter/LindwurmFighterHull.model")
-    model:setTexture("LindwurmFighter/AlbedoAO/LindwurmFighter"..color.."AlbedoAO.png")
-    model:setSpecular("LindwurmFighter/LindwurmFighterPBRSpecular.png")
-    model:setIllumination("LindwurmFighter/LindwurmFighterIllumination.png")
-    model:setScale(20)
-    model:setRadius(30)
-    model:addTubePosition(1.4, 0, 0.06)
-    model:addTubePosition(0.3, 0.5, 0.06)
-    model:addTubePosition(0.3,-0.5, 0.06)
-    model:addEngineEmitter(-1, 0.54, 0.0,  0.5, 0.5, 1.0, 0.4)
-    model:addEngineEmitter(-1,-0.54, 0.0,  0.5, 0.5, 1.0, 0.4)
-
-    model = ModelData()
-    model:setName("WespeScout" .. color)
-    model:setMesh("WespeScout/WespeScoutHull.model")
-    model:setTexture("WespeScout/AlbedoAO/WespeScout"..color.."AlbedoAO.png")
-    model:setSpecular("WespeScout/WespeScoutPBRSpecular.png")
-    model:setIllumination("WespeScout/WespeScoutIllumination.png")
-    model:setScale(20)
-    model:setRadius(30)
-    model:addBeamPosition(1.15, 0.13, -0.03)
-    model:addBeamPosition(1.15,-0.13, -0.03)
-    model:addEngineEmitter(-0.2, 0.44, -0.03,  0.5, 0.5, 1.0, 0.4)
-    model:addEngineEmitter(-0.2,-0.44, -0.03,  0.5, 0.5, 1.0, 0.4)
-
-    model = ModelData()
-    model:setName("HeavyCorvette" .. color)
-    model:setMesh("HeavyCorvette/HeavyCorvette.model")
-    model:setTexture("HeavyCorvette/AlbedoAO/HeavyCorvette"..color.."AlbedoAO.png")
-    model:setSpecular("HeavyCorvette/HeavyCorvettePBRSpecular.png")
-    model:setIllumination("HeavyCorvette/HeavyCorvetteIllumination.png")
-    model:setScale(50)
-    model:setRadius(80)
-
-    model:addEngineEmitter(-1.4, 0.4, 0.0,  0.5, 0.5, 1.0, 0.6)
-    model:addEngineEmitter(-1.4, 0.0, 0.0,  0.5, 0.5, 1.0, 0.6)
-    model:addEngineEmitter(-1.4,-0.4, 0.0,  0.5, 0.5, 1.0, 0.6)
-
-    model = ModelData()
-    model:setName("LaserCorvette" .. color)
-    model:setMesh("LaserCorvette/LaserCorvette.model")
-    model:setTexture("LaserCorvette/AlbedoAO/LaserCorvette"..color.."AlbedoAO.png")
-    model:setSpecular("LaserCorvette/LaserCorvettePBRSpecular.png")
-    model:setIllumination("LaserCorvette/LaserCorvetteIllumination.png")
-    model:setScale(50)
-    model:setRadius(80)
-
-    model:addEngineEmitter(-1.67, 0.1, 0.0,  0.5, 0.5, 1.0, 0.2)
-    model:addEngineEmitter(-1.67,-0.1, 0.0,  0.5, 0.5, 1.0, 0.2)
-
-    model = ModelData()
-    model:setName("LightCorvette" .. color)
-    model:setMesh("LightCorvette/LightCorvette.model")
-    model:setTexture("LightCorvette/AlbedoAO/LightCorvette"..color.."AlbedoAO.png")
-    model:setSpecular("LightCorvette/LightCorvettePBRSpecular.png")
-    model:setIllumination("LightCorvette/LightCorvetteIllumination.png")
-    model:setScale(50)
-    model:setRadius(80)
-
-    model:addEngineEmitter(-1.3, 0.22, 0.15,  0.5, 0.5, 1.0, 0.3)
-    model:addEngineEmitter(-1.3, 0.00, 0.15,  0.5, 0.5, 1.0, 0.3)
-    model:addEngineEmitter(-1.3,-0.22, 0.15,  0.5, 0.5, 1.0, 0.3)
-
-    model = ModelData()
-    model:setName("MineLayerCorvette" .. color)
-    model:setMesh("MineLayerCorvette/MineLayerCorvette.model")
-    model:setTexture("MineLayerCorvette/AlbedoAO/MineLayerCorvette"..color.."AlbedoAO.png")
-    model:setSpecular("MineLayerCorvette/MineLayerCorvettePBRSpecular.png")
-    model:setIllumination("MineLayerCorvette/MineLayerCorvetteIllumination.png")
-    model:setScale(50)
-    model:setRadius(80)
-
-    model:addEngineEmitter(-0.65, 0.70, 0.0,  0.5, 0.5, 1.0, 0.2)
-    model:addEngineEmitter(-0.65,-0.70, 0.0,  0.5, 0.5, 1.0, 0.2)
-
-    model = ModelData()
-    model:setName("MissileCorvette" .. color)
-    model:setMesh("MissileCorvette/MissileCorvette.model")
-    model:setTexture("MissileCorvette/AlbedoAO/MissileCorvette"..color.."AlbedoAO.png")
-    model:setSpecular("MissileCorvette/MissileCorvettePBRSpecular.png")
-    model:setIllumination("MissileCorvette/MissileCorvetteIllumination.png")
-    model:setScale(50)
-    model:setRadius(80)
-
-    model:addEngineEmitter(-0.75, 0.24,-0.1,  0.5, 0.5, 1.0, 0.2)
-    model:addEngineEmitter(-0.75, 0.00,-0.1,  0.5, 0.5, 1.0, 0.2)
-    model:addEngineEmitter(-0.75,-0.24,-0.1,  0.5, 0.5, 1.0, 0.2)
-
-    model = ModelData()
-    model:setName("MultiGunCorvette" .. color)
-    model:setMesh("MultiGunCorvette/MultiGunCorvette.model")
-    model:setTexture("MultiGunCorvette/AlbedoAO/MultiGunCorvette"..color.."AlbedoAO.png")
-    model:setSpecular("MultiGunCorvette/MultiGunCorvettePBRSpecular.png")
-    model:setIllumination("MultiGunCorvette/MultiGunCorvetteIllumination.png")
-    model:setScale(50)
-    model:setRadius(80)
-
-    model:addEngineEmitter(-0.75, 0.2,-0.03,  0.5, 0.5, 1.0, 0.2)
-    model:addEngineEmitter(-0.75, 0.0,-0.03,  0.5, 0.5, 1.0, 0.2)
-    model:addEngineEmitter(-0.75,-0.2,-0.03,  0.5, 0.5, 1.0, 0.2)
 end
 
-model = ModelData()
-model:setName("SensorBuoyMKI")
-model:setMesh("SensorBuoy/SensorBuoyMKI.model")
-model:setTexture("SensorBuoy/SensorBuoyAlbedoAO.png")
-model:setSpecular("SensorBuoy/SensorBuoyPBRSpecular.png")
-model:setScale(300)
-model:setRadius(15)
-
-model = ModelData()
-model:setName("SensorBuoyMKII")
-model:setMesh("SensorBuoy/SensorBuoyMKII.model")
-model:setTexture("SensorBuoy/SensorBuoyAlbedoAO.png")
-model:setSpecular("SensorBuoy/SensorBuoyPBRSpecular.png")
-model:setScale(300)
-model:setRadius(15)
-
-model = ModelData()
-model:setName("SensorBuoyMKIII")
-model:setMesh("SensorBuoy/SensorBuoyMKIII.model")
-model:setTexture("SensorBuoy/SensorBuoyAlbedoAO.png")
-model:setSpecular("SensorBuoy/SensorBuoyPBRSpecular.png")
-model:setScale(300)
-model:setRadius(15)
-
-ModelData():setName("artifact1"):setScale(3):setRadius(50):setMesh("mesh/Artifact1.obj"):setTexture("texture/electric_sphere_texture.png")
-ModelData():setName("artifact2"):setScale(3):setRadius(50):setMesh("mesh/Artifact2.obj"):setTexture("texture/electric_sphere_texture.png")
-ModelData():setName("artifact3"):setScale(3):setRadius(50):setMesh("mesh/Artifact3.obj"):setTexture("texture/electric_sphere_texture.png")
-ModelData():setName("artifact4"):setScale(3):setRadius(50):setMesh("mesh/Artifact4.obj"):setTexture("texture/electric_sphere_texture.png")
-ModelData():setName("artifact5"):setScale(3):setRadius(50):setMesh("mesh/Artifact5.obj"):setTexture("texture/electric_sphere_texture.png")
-ModelData():setName("artifact6"):setScale(3):setRadius(50):setMesh("mesh/Artifact6.obj"):setTexture("texture/electric_sphere_texture.png")
-ModelData():setName("artifact7"):setScale(3):setRadius(50):setMesh("mesh/Artifact7.obj"):setTexture("texture/electric_sphere_texture.png")
-ModelData():setName("artifact8"):setScale(3):setRadius(50):setMesh("mesh/Artifact8.obj"):setTexture("texture/electric_sphere_texture.png")
+function transports()
 
 for type=1,5 do
     for cnt=1,5 do
@@ -976,45 +906,11 @@ for type=1,5 do
     end
 end
 
--------- Civil cuboid satellite
+end
 
-model = ModelData()
-model:setName("cubesat")
-model:setMesh("mesh/various/cubesat.obj")
-model:setTexture("mesh/various/cubesat.png")
-model:setSpecular("mesh/various/cubesat-specular.png")
-model:setScale(10)
-model:setRadius(100)
-
-model:addEngineEmitter(.7, -.35, 0,  0.2, 0.2, 0.7, 0.5)
-model:addEngineEmitter(.7,  .35, 0,  0.2, 0.2, 0.7, 0.5)
-
--------- Military satellite
-
-model = ModelData()
-model:setName("combatsat")
-model:setMesh("mesh/various/combatsat.obj")
-model:setTexture("mesh/various/combatsat.png")
-model:setSpecular("mesh/various/combatsat-specular.png")
-model:setScale(10)
-model:setRadius(55)
--- Visual positions of the beams/missiletubes (blender: -X, Y, Z)
-model:addBeamPosition(2.7,-0.5,0)
-model:addBeamPosition(2.7, 0.5,0)
-model:addEngineEmitter(-1.5, -.4, 0,  0.2, 0.2, 0.7, 0.5)
-model:addEngineEmitter(-1.5,  .4, 0,  0.2, 0.2, 0.7, 0.5)
-
--------- Debris
-
-model = ModelData()
-model:setName("debris-cubesat")
-model:setMesh("mesh/various/debris-cubesat.obj")
-model:setTexture("mesh/various/cubesat.png")
-model:setScale(10)
-model:setRadius(100)
-
-model = ModelData():setName("debris-blob")
-model:setScale(2):setRadius(100)
-model:setMesh("mesh/various/debris-blob.obj")
-model:setTexture("mesh/various/debris-blob.jpg")
-model:setSpecular("mesh/various/debris-blob-specular.jpg")
+Imperium()
+Chaos()
+Xenos()
+Non40KUtilise()
+--Non40K()
+--transports()

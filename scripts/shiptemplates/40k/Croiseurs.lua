@@ -1,1111 +1,1484 @@
---[[                  Croiseurs
-Rappel des catégories : 
-Vaisseau léger : 1 à 3 places ; aucun moteur Warp ou Jump possible ; shipTemplates_VaisseauxLegers.lua ;
-Frégate : 4 à 9 places ; shipTemplates_Fregates.lua ;
-Destroyer : 10 à 50 places ; shipTemplates_Escorteurs.lua ;
-Croiseur Léger : 50 à 100 places ; shipTemplates_CroiseursLegers.lua ;
-Croiseur : 100 à 250 places ; shipTemplates_Croiseurs.lua ;
-Cuirassé : 250 à 500 places ; shipTemplates_Cuirasse.lua ;
-Porte-Vaisseaux : plus de 500 places; shipTemplates_Capitaux.lua ;
-Drones et Créatures : N.C ; shipTemplates_Autres.lua ;
-Stations;
+--[[Fichier de templates permettant la création des Croiseurs.]]
 
-Le croiseur est un puissant vaisseau d'attaque lourdement blindé et armé.
-----------------------------------------------------------]]
+--[[Relativement maniables, bien armés, en mesure d’opérer loin de leur base durant de longues périodes, un Croiseur est un vaisseau de guerre, point à ligne.
+Ces bâtiments forment la colonne vertébrale de toute flotte de combat et participent aux engagements navals majeurs.
+Il en est donc fait un usage intensif lors des patrouilles prolongées, des blocus et des raids en espace sidéral ennemi.
+Lors des batailles majeures, les croiseurs soutiennent les escorteurs dans la protection de la flotte et forment la ligne de front une fois les hostilités engagées.
+Ces vaisseaux sont rares : la construction d’un Croiseur prend des siècles et demande un savoir et une technologie remontant à l’Age d’Or de l’Humanité
+dont seuls les plus puissants Magos disposent.
+Mais chacun de ces vaisseaux, qui mesurent généralement plus de cinq kilomètres de long,
+embarque une puissance de feu capable de réduire en cendres une planète entière.
+Ils sont conçus pour gagner des guerres et la Marine Impériale veille sur eux avec un soin jaloux. Acheter un croiseur est donc généralement impossible.
 
-function couleur(template,name,model)
-	for _, color in ipairs({"Blue", "Green", "Grey", "Red", "White", "Yellow"}) do
-		variation = template:copy(name .. " " .. color):setModel(model .. color):setSecret(true)
-	end
+Les Croiseurs sont équipés de puissantes batteries d’armes et d’un blindage lourd.
+Ils ont de gigantesques moteurs mais leur vitesse et leur manœuvrabilité sont loin d’être spectaculaires à cause de leur taille.
+Ce qui est salutaire pour les adversaires plus petits, car leur seule chance face à ces mastodontes est de prendre la fuite.
+De fait, les Croiseurs sont conçus pour affronter d’autres Croiseurs et embarquent des armes puissantes destinées à détruire ce type de cibles.]]
+
+
+-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+--Création du vaisseau
+function CroiseurLunar()
+
+--Définition du vaisseau PNJ
+function CroiseurLunarPNJ()
+
+function CroiseurLunarCoque()
+--Description, définition du modèle et de l'icone radar
+template = ShipTemplate():setName("Croiseur Lunar"):setLocaleName(_("ship", "Croiseur Lunar")):setClass(_("class", "Croiseur"), _("subclass", "Lunar")):setModel("Navy_Cruiser")
+template:setDescription(_([[Les Croiseurs de Classe Lunar forment l’ossature des Flotte de Guerre, plus de six cents d’entre eux opérant à travers l’ensemble du Segmentum Obscurus, dont une vingtaine ayant pris part à la Guerre Gothique. Son armement varié de batteries, de lances sidérales et de torpilles en fait un combattant polyvalent et un adversaire dangereux. Les Libres-Marchands qui arrivent à s’en offrir un enlèvent généralement les tubes lance-torpilles pour gagner de l’espace cargo. La conception (relativement) simple du Croiseur de classe Lunar remontant à l’aube de l’Imperium assure leur durabilité et permet leur construction dans les Mondes-Ruches ou industriels normalement incapables de fabriquer un vaisseau de ligne.]]))
+--template:setScale(250)
+template:setRadarTrace("cruiser.png")
+--Endommagement des systèmes
+template:setSystemDamageHullThreshold(0.02)
+template:setSystemDamageRatio(0.7)
+--Coque
+template:setHull(700)
+--Boucliers (plusieurs valeurs pour plusieurs boucliers)
+template:setShields(100)
+--Valeur de recharge des boucliers
+template:setShieldRechargeRate(2.4)
+--Energie
+template:setEnergyStorage(1000)
+--Vitesse (vitesse avant max, rotation, accélération, vitesse arrière max, rotation)
+template:setSpeed(125, 5.6, 2.5, 15.625, 5.6)
+--Manoeuvre de Combat (vitesse avant, vitesse latérale)
+template:setCombatManeuver(400, 250)
+--Capacité de hack
+template:setCanHack(false)
+--Sondes
+template:setCanLaunchProbe(false)
+--Définition du comportement IA
+template:setDefaultAI("missilevolley")
+
 end
 
-function PZ(template,name,model)
-	for _, color in ipairs({"-IMP-","-CHAOS-","-ELDAR-","-TAU-","-TRADE-","-MECH-"}) do
-		variation = template:copy(name .. " " .. color):setModel(model .. color):setSecret(true)
-	end
-end
+CroiseurLunarCoque()
 
-
---[[Croiseur Impérial Gothic]]
-template = ShipTemplate():setName("Croiseur Imperial Gothic"):setClass("Croiseur", "Combat"):setModel("Navy_Cruiser")
-template:setRadarTrace("battleship.png")
-template:setDescription([[Les croiseurs de classe Gothic furent un type de vaisseaux tres repandus a travers l'ensemble de l'Imperium.
-La puissance de feu des vaisseaux de ce type permet d'engager et de detruire des vaisseaux ennemis de toutes taille, faisant du croiseur Gothic un adversaire dangereux.
-Toutefois, les premiers engagements de ce type de vaisseaux lors de la Guerre Gothique revelerent les lacunes des croiseurs Gothic, leur puissance de feu ne pouvant que difficilement rivaliser avec la mobilite de leurs adversaires.]])
-
-template:setHull(1600)
-template:setEnergyStorage(1500)
-template:setShields(750, 750)
-template:setSpeed(85, 6, 8, 45, 8)
-template:setCombatManeuver(300, 250)
-template:setShortRangeRadarRange(7500)
-template:setEnergyConsumptionRatio(0.8)
---                  Arc, Dir, Range, CycleTime, Dmg
-template:setBeam(0, 45, 0, 100.0, 30.0, 10)
-template:setBeam(1, 90, 90, 3000.0, 14.0, 35)
-template:setBeam(2, 90, -90, 3000.0, 14.0, 35)
-template:setBeam(3, 90, 90, 3000, 14, 35)
-template:setBeam(4, 90,-90, 3000, 14, 35)
-template:setBeam(5, 90, 90, 2000, 3, 12)
-template:setBeam(6, 90,-90, 2000, 3, 12)
---                              Arc, Dir, Rotate speed
---template:setBeamWeaponTurret(1, 100,  90, 5)
---template:setBeamWeaponTurret(2, 100, -90, 5)
---template:setBeamWeaponTurret(3, 150,  90, 5)
---template:setBeamWeaponTurret(4, 150, -90, 5)
---template:setBeamWeaponTurret(5, 150,  90, 5)
---template:setBeamWeaponTurret(6, 150, -90, 5)
---       Tubes
-template:setTubes(3, 12.0)
-template:setTubeDirection(0, 1)
-template:setTubeSize(0, "small"):weaponTubeDisallowCustomMissile(0,"MCANMK3"):weaponTubeDisallowCustomMissile(0,"MAGMCAN")
-template:setTubeDirection(1, -1)
-template:setTubeSize(1, "small"):weaponTubeDisallowCustomMissile(1,"MCANMK3"):weaponTubeDisallowCustomMissile(1,"MAGMCAN")
-template:setTubeDirection(2, 0)
-template:setTubeSize(2, "small")
-template:setTubeLoadTime(0, 45)
-template:setTubeLoadTime(1, 45)
-template:setTubeLoadTime(2, 45)
-
-
---Torpille
-template:setCustomWeapon("Nuke", "SEEKMK2", 2, 400.0, "Kinetic", 60)
-template:setCustomWeaponColor("SEEKMK2", 255, 204, 0)
-template:setCustomWeaponStorage("SEEKMK2", 12)
-template:setCustomWeaponMultiple("SEEKMK2",1,2)
--- Torpille EMP 
-template:setCustomWeapon("EMP", "MAGSEEK", 0.5, 400.0, "EMP", 30)
-template:setCustomWeaponColor("MAGSEEK", 0, 204, 255)
-template:setCustomWeaponStorage("MAGSEEK", 1)
-template:setCustomWeaponMultiple("MAGSEEK",1,2)
-template:setDefaultAI('default')
-template:setDockClasses("Drone","Vaisseau leger","Fregate","destroyer")
-template:setCanHack(false)
-
-
---DockClasses
-template:setDockClasses("Drone","Vaisseau leger","Fregate","destroyer")
-template:setDefaultAI('default')
-
---[[Croiseur Gothic]]
-variation = template:copy("Croiseur Gothic"):setType("playership")
-variation:setLocaleName("Croiseur Gothic")
-variation:setSpeed(85, 10, 12, 45, 10)
-variation:setSystemDamageRatio(0.9)
-variation:setSystemDamageHullThreshold(0.85)
--- PJ
-variation:setCombatManeuver(300, 250)
-variation:setJumpDrive(true)
---variation:setRepairCrewCount(2)
-variation:addRoomSystem(0, 0, 1, 4, "RearShield")
-variation:addRoom(1, 0, 1, 1)
-variation:addRoomSystem(1, 1, 3, 2, "MissileSystem")
-variation:addRoom(1, 3, 1, 1)
-variation:addRoomSystem(2, 0, 2, 1, "Beamweapons")
-variation:addRoomSystem(2, 3, 2, 1, "Maneuver")
-variation:addRoomSystem(4, 0, 2, 1, "Warp")
-variation:addRoomSystem(4, 3, 2, 1, "JumpDrive")
-variation:addRoomSystem(5, 1, 1, 2, "Reactor")
-variation:addRoom(6, 0, 1, 1)
-variation:addRoomSystem(6, 1, 1, 2, "Impulse")
-variation:addRoom(6, 3, 1, 1)
-variation:addRoomSystem(7, 0, 1, 4, "FrontShield")
-variation:addDoor(1, 0, false)
-variation:addDoor(2, 0, false)
-variation:addDoor(4, 0, false)
-variation:addDoor(6, 0, false)
-variation:addDoor(7, 0, false)
-variation:addDoor(1, 1, true)
-variation:addDoor(1, 3, true)
-variation:addDoor(6, 1, true)
-variation:addDoor(6, 2, false)
-variation:addDoor(6, 3, true)
-variation:addDoor(1, 3, false)
-variation:addDoor(2, 3, false)
-variation:addDoor(4, 3, false)
-variation:addDoor(6, 3, false)
-variation:addDoor(7, 3, false)
-
-
-variation:setTubes(3, 12.0)
-variation:setTubeDirection(0, 1)
-variation:setTubeSize(0, "small")
-variation:setTubeDirection(1, -1)
-variation:setTubeSize(1, "small")
-variation:setTubeDirection(2, 0)
-variation:setTubeSize(2, "small")
-variation:setShortRangeRadarRange(7500)
-
-
---Torpille
-variation:setCustomWeapon("Nuke", "SEEKMK2", 2, 400.0, "Kinetic", 60)
-variation:setCustomWeaponColor("SEEKMK2", 255, 204, 0)
-variation:setCustomWeaponStorage("SEEKMK2", 16)
-variation:setCustomWeaponMultiple("SEEKMK2",1,2)
--- Torpille EMP 
-variation:setCustomWeapon("EMP", "MAGSEEK", 0.5, 400.0, "EMP", 30)
-variation:setCustomWeaponColor("MAGSEEK", 0, 204, 255)
-variation:setCustomWeaponStorage("MAGSEEK", 4)
-variation:setCustomWeaponMultiple("MAGSEEK",1,2)
-
-
-variation:setCustomWeapon("Homing", "TABORD", 0.5, 400.0, "EMP", 60)
-variation:setCustomWeaponColor("TABORD", 57, 142, 55)
-variation:setCustomWeaponStorage("TABORD", 30)
-variation:setCustomWeaponMultiple("TABORD",1,2)
-
-
---#region
-
-
---[[Croiseur Impérial Lunar IA  ]]
-template = ShipTemplate():setName("Croiseur Lunar"):setClass("Croiseur", "Artillerie"):setModel("Navy_Cruiser")
-template:setRadarTrace("battleship.png")
-template:setDescription([[ Concu pour remplacer l'ancien Croiseur Murder, le croiseur de classe Lunar est un vaisseau de conception simple et robuste pouvant etre produit par pratiquement tous les mondes imperiaux, y compris ceux incapables de produire des cuirasses ou des croiseurs.
-Cette facilite de production a fait du croiseur Lunar l'epine dorsale de l'ensemble de la Flotte Imperiale. La Flotte Obscuras comprend, par exemple, près de 600 vaisseaux de cette classe repartis dans les secteurs du Segmentum Obscurus, dont une vingtaine rien que dans le Secteur Gothique. 1
-De même, près d'un tiers des vaisseaux ayant participe à la Troisième Guerre d'Armageddon sous les ordres de l'Amiral Parol furent des croiseurs Lunar. 3
-
-Alliant la portee de ses Lance-Torpilles avec la puissance de ses Batteries d'armes et Pièces d'artillerie navale, le croiseur Lunar est arme pour remplir aussi bien des rôles d'escorte, de patrouille ou d'assaut. 
-La variante MK2 remplace son lance torpille par un canon nova ]])
-
-template:setHull(1600)
-template:setShields(700, 700)
-template:setSpeed(85, 6, 8)
-
-----template:setReverseSpeed(40,10)
-template:setSystemDamageRatio(0.9)
-template:setSystemDamageHullThreshold(0.85)
-template:setCombatManeuver(300, 250)
---                  Arc, Dir, Range, CycleTime, Dmg
-template:setBeam(0, 45, 0, 100.0, 30.0, 10)
-template:setBeam(1, 90, 90, 3000.0, 14.0, 35)
-template:setBeam(2, 90, -90, 3000.0, 14.0, 35)
-template:setBeam(3, 90, 90, 2000, 3, 12)
-template:setBeam(4, 90,-90, 2000, 3, 12)
-template:setBeam(5, 90, 90, 2000, 3, 12)
-template:setBeam(6, 90,-90, 2000, 3, 12)
-
-template:setSystemDamageRatio(0.9)
-template:setSystemDamageHullThreshold(0.85)
-template:setCanHack(false)
-template:setJumpDrive(false)
-template:setShortRangeRadarRange(7500)
-
-
---MCAN et Torpille
-template:setCustomWeapon("HVLI", "MCANMK3", 4, 1500.0, "Kinetic", 25)
-template:setCustomWeaponMultiple("MCANMK3",1,4)
-template:setCustomWeaponColor("MCANMK3", 255, 150, 103)
-template:setCustomWeaponStorage("MCANMK3", 120)
-
-template:setCustomWeapon("Nuke", "SEEKMK2", 2, 400.0, "Kinetic", 60)
-template:setCustomWeaponColor("SEEKMK2", 255, 204, 0)
-template:setCustomWeaponStorage("SEEKMK2", 12)
-template:setCustomWeaponMultiple("SEEKMK2",1,2)
-
-
-template:setTubes(7, 12.0)
-
-template:setTubeDirection(0, 1)
-template:setTubeSize(0, "small"):weaponTubeDisallowCustomMissile(0,"MCANMK3"):weaponTubeDisallowCustomMissile(0,"MAGMCAN")
-template:setTubeDirection(1, -1)
-template:setTubeSize(1, "small"):weaponTubeDisallowCustomMissile(1,"MCANMK3"):weaponTubeDisallowCustomMissile(1,"MAGMCAN")
-template:setTubeDirection(2, 0)
-template:setTubeSize(2, "small")
-
-
-
-
-template:setTubeDirection(3, 90):weaponTubeDisallowCustomMissile(1,'SEEKMK2')
-template:setTubeDirection(4, -90):weaponTubeDisallowCustomMissile(2,'SEEKMK2')
-template:setTubeDirection(5, 90):weaponTubeDisallowCustomMissile(3,'SEEKMK2')
-template:setTubeDirection(6, -90):weaponTubeDisallowCustomMissile(4,'SEEKMK2')
-
-
-
-
-
-
---[[Croiseur Impérial Lunar + nova / jouable  ]]
-template = ShipTemplate():setName("Croiseur Lunar MK2"):setClass("Croiseur", "Artillerie"):setModel("Navy_Cruiser"):setType("playership")
-template:setRadarTrace("battleship.png")
-template:setDescription([[ Concu pour remplacer l'ancien Croiseur Murder, le croiseur de classe Lunar est un vaisseau de conception simple et robuste pouvant etre produit par pratiquement tous les mondes imperiaux, y compris ceux incapables de produire des cuirasses ou des croiseurs.
-Cette facilite de production a fait du croiseur Lunar l'epine dorsale de l'ensemble de la Flotte Imperiale. La Flotte Obscuras comprend, par exemple, près de 600 vaisseaux de cette classe repartis dans les secteurs du Segmentum Obscurus, dont une vingtaine rien que dans le Secteur Gothique. 1
-De même, près d'un tiers des vaisseaux ayant participe à la Troisième Guerre d'Armageddon sous les ordres de l'Amiral Parol furent des croiseurs Lunar. 3
-
-Alliant la portee de ses Lance-Torpilles avec la puissance de ses Batteries d'armes et Pièces d'artillerie navale, le croiseur Lunar est arme pour remplir aussi bien des rôles d'escorte, de patrouille ou d'assaut. 
-La variante MK2 remplace son lance torpille par un canon nova ]])
-
-template:setHull(1600)
-template:setShields(700, 700)
-template:setSpeed(85, 6, 8, 40, 8)
-----template:setReverseSpeed(40,10)
-template:setSystemDamageRatio(0.9)
-template:setSystemDamageHullThreshold(0.85)
-template:setCombatManeuver(300, 250)
---                  Arc, Dir, Range, CycleTime, Dmg
-template:setBeam(0, 45, 0, 100.0, 30.0, 10)
-template:setBeam(1, 90, 90, 3000.0, 14.0, 35)
-template:setBeam(2, 90, -90, 3000.0, 14.0, 35)
-template:setBeam(3, 90, 90, 2000, 3, 12)
-template:setBeam(4, 90,-90, 2000, 3, 12)
-template:setBeam(5, 90, 90, 2000, 3, 12)
-template:setBeam(6, 90,-90, 2000, 3, 12)
-
-template:setSystemDamageRatio(0.9)
-template:setSystemDamageHullThreshold(0.85)
-template:setCanHack(false)
-template:setJumpDrive(true)
---template:setRepairCrewCount(2)
-template:addRoomSystem(0, 0, 1, 4, "RearShield")
-template:addRoom(1, 0, 1, 1)
-template:addRoomSystem(1, 1, 3, 2, "MissileSystem")
-template:addRoom(1, 3, 1, 1)
-template:addRoomSystem(2, 0, 2, 1, "Beamweapons")
-template:addRoomSystem(2, 3, 2, 1, "Maneuver")
-template:addRoomSystem(4, 0, 2, 1, "Warp")
-template:addRoomSystem(4, 3, 2, 1, "JumpDrive")
-template:addRoomSystem(5, 1, 1, 2, "Reactor")
-template:addRoom(6, 0, 1, 1)
-template:addRoomSystem(6, 1, 1, 2, "Impulse")
-template:addRoom(6, 3, 1, 1)
-template:addRoomSystem(7, 0, 1, 4, "FrontShield")
-template:addDoor(1, 0, false)
-template:addDoor(2, 0, false)
-template:addDoor(4, 0, false)
-template:addDoor(6, 0, false)
-template:addDoor(7, 0, false)
-template:addDoor(1, 1, true)
-template:addDoor(1, 3, true)
-template:addDoor(6, 1, true)
-template:addDoor(6, 2, false)
-template:addDoor(6, 3, true)
-template:addDoor(1, 3, false)
-template:addDoor(2, 3, false)
-template:addDoor(4, 3, false)
-template:addDoor(6, 3, false)
-template:addDoor(7, 3, false)
-template:setShortRangeRadarRange(7500)
-
-template:setTubes(5, 12.0)
-template:setTubeDirection(0, 0)
-template:setTubeSize(0, "large")
-
---Canon nova
-template:setCustomWeapon("Nuke", "NOVAMK2", 3, 2200.0, "Kinetic", 20)
-template:setCustomWeaponColor("NOVAMK2", 0, 204, 255)
-template:setCustomWeaponStorage("NOVAMK2", 6)
-
-template:setTubeLoadTime(0, 80):setWeaponTubeExclusiveForCustom(0,'NOVAMK2')
-
-
-template:setTubeDirection(1, 90):weaponTubeDisallowCustomMissile(1,'NOVAMK2')
-template:setTubeDirection(2, -90):weaponTubeDisallowCustomMissile(2,'NOVAMK2')
-template:setTubeDirection(3, 90):weaponTubeDisallowCustomMissile(3,'NOVAMK2')
-template:setTubeDirection(4, -90):weaponTubeDisallowCustomMissile(4,'NOVAMK2')
-
-template:setCustomWeapon("HVLI", "MAGMCAN", 1, 1000.0, "EMP", 25)
-template:setCustomWeaponMultiple("MAGMCAN",1,4)
-template:setCustomWeaponColor("MAGMCAN", 51, 51, 255)
-template:setCustomWeaponStorage("MAGMCAN", 20)
-
-
--- macro canon EMP 
-template:setCustomWeapon("HVLI", "MCANMK3", 4, 1500.0, "Kinetic", 25)
-template:setCustomWeaponMultiple("MCANMK3",1,4)
-template:setCustomWeaponColor("MCANMK3", 255, 150, 103)
-template:setCustomWeaponStorage("MCANMK3", 120)
-template:setDockClasses("Drone","Vaisseau leger","Fregate","destroyer")
-template:setCanDock(true)
-template:setCanHack(false)
-
-
-
-
---[[Croiseur admech lunar admech + nova / jouable  ]]
-template = ShipTemplate():setName("Croiseur Lunar Admech"):setClass("Croiseur", "Explorator"):setModel("Adeptus_Mechanicus_cruiser"):setType("playership")
-template:setRadarTrace("battleship.png")
-template:setDescription([[ Concu pour remplacer l'ancien Croiseur Murder, le croiseur de classe Lunar est un vaisseau de conception simple et robuste pouvant etre produit par pratiquement tous les mondes imperiaux, y compris ceux incapables de produire des cuirasses ou des croiseurs.
-Cette facilite de production a fait du croiseur Lunar l'epine dorsale de l'ensemble de la Flotte Imperiale. La Flotte Obscuras comprend, par exemple, près de 600 vaisseaux de cette classe repartis dans les secteurs du Segmentum Obscurus, dont une vingtaine rien que dans le Secteur Gothique. 1
-De même, près d'un tiers des vaisseaux ayant participe à la Troisième Guerre d'Armageddon sous les ordres de l'Amiral Parol furent des croiseurs Lunar. 3
-
-Alliant la portee de ses Lance-Torpilles avec la puissance de ses Batteries d'armes et Pièces d'artillerie navale, le croiseur Lunar est arme pour remplir aussi bien des rôles d'escorte, de patrouille ou d'assaut. 
-La variante MK3 utilise par l'adeptus mechanicus remplace son lance torpille par un canon nova a graviton ]])
-
-template:setHull(1500)
-template:setShields(800, 800)
-template:setSpeed(95, 6, 8, 45, 10)
-template:setCombatManeuver(350, 200)
---                  Arc, Dir, Range, CycleTime, Dmg
-template:setBeam(0, 30, 0, 4000.0, 30.0, 150)
-template:setBeam(1, 90, 90, 3000.0, 14.0, 35)
-template:setBeam(2, 90, -90, 3000.0, 14.0, 35)
-template:setBeam(3, 90, 90, 3000, 14, 25)
-template:setBeam(4, 90,-90, 3000, 14, 25)
-template:setBeam(5, 90, 90, 2000, 3, 12)
-template:setBeam(6, 90,-90, 2000, 3, 12)
-template:setEnergyConsumptionRatio(0.92)
-template:setSystemDamageRatio(0.95)
-template:setSystemDamageHullThreshold(0.9)
-
-template:setCanHack(true)
-template:setJumpDrive(true)
---template:setRepairCrewCount(2)
-template:addRoomSystem(0, 0, 1, 4, "RearShield")
-template:addRoom(1, 0, 1, 1)
-template:addRoomSystem(1, 1, 3, 2, "MissileSystem")
-template:addRoom(1, 3, 1, 1)
-template:addRoomSystem(2, 0, 2, 1, "Beamweapons")
-template:addRoomSystem(2, 3, 2, 1, "Maneuver")
-template:addRoomSystem(4, 0, 2, 1, "Warp")
-template:addRoomSystem(4, 3, 2, 1, "JumpDrive")
-template:addRoomSystem(5, 1, 1, 2, "Reactor")
-template:addRoom(6, 0, 1, 1)
-template:addRoomSystem(6, 1, 1, 2, "Impulse")
-template:addRoom(6, 3, 1, 1)
-template:addRoomSystem(7, 0, 1, 4, "FrontShield")
-template:addDoor(1, 0, false)
-template:addDoor(2, 0, false)
-template:addDoor(4, 0, false)
-template:addDoor(6, 0, false)
-template:addDoor(7, 0, false)
-template:addDoor(1, 1, true)
-template:addDoor(1, 3, true)
-template:addDoor(6, 1, true)
-template:addDoor(6, 2, false)
-template:addDoor(6, 3, true)
-template:addDoor(1, 3, false)
-template:addDoor(2, 3, false)
-template:addDoor(4, 3, false)
-template:addDoor(6, 3, false)
-template:addDoor(7, 3, false)
-template:setShortRangeRadarRange(7500)
-template:setLongRangeRadarRange(45000)
-template:setTubes(5, 12.0)
-template:setTubeDirection(0, 0)
-template:setTubeSize(0, "large")
-
---Canon nova to add effet grav 
-template:setCustomWeapon("Emp", "NOVAGRAV", 3, 2200.0, "EMP", 20)
-template:setCustomWeaponColor("NOVAGRAV", 0, 204, 255)
-template:setCustomWeaponStorage("NOVAGRAV", 6)
-
-template:setCustomWeapon("Emp", "XGRAV", 1.5, 2200.0, "Emp", 5)
-template:setCustomWeaponColor("XGRAV", 0, 255, 0)
-
-template:onCustomWeaponDetonation("XGRAV", function(self, typeOfDetonation, hitObject)
-    print(typeOfDetonation)
-    if typeOfDetonation == "HitShip" or typeOfDetonation == "Expired" then
-        local posx, posy = self:getPosition()
-        Script():setVariable("posx", posx):setVariable("posy", posy):setVariable("runtime", 20):run("weapon_wormhole.lua")
-    end
-    end)
-template:setCustomWeaponStorage("XGRAV", 3)
-
-
-template:setTubeLoadTime(0, 60)--:setWeaponTubeExclusiveForCustom(0,'NOVAGRAV'):setWeaponTubeExclusiveForCustom(0,'XNOVAGRAV')
-
-
-template:setTubeDirection(1, 90):weaponTubeDisallowCustomMissile(1,'NOVAGRAV'):weaponTubeDisallowCustomMissile(1,'XGRAV')
-template:setTubeDirection(2, -90):weaponTubeDisallowCustomMissile(2,'NOVAGRAV'):weaponTubeDisallowCustomMissile(2,'XGRAV')
-template:setTubeDirection(3, 90):weaponTubeDisallowCustomMissile(3,'NOVAGRAV'):weaponTubeDisallowCustomMissile(3,'XGRAV')
-template:setTubeDirection(4, -90):weaponTubeDisallowCustomMissile(4,'NOVAGRAV'):weaponTubeDisallowCustomMissile(4,'XGRAV')
-
-template:setCustomWeapon("HVLI", "MAGMCAN", 1, 1000.0, "EMP", 25)
-template:setCustomWeaponMultiple("MAGMCAN",1,4)
-template:setCustomWeaponColor("MAGMCAN", 51, 51, 255)
-template:setCustomWeaponStorage("MAGMCAN", 20)
-
-
-
--- macro canon EMP 
-template:setCustomWeapon("HVLI", "MCANMK3", 4, 1500.0, "Kinetic", 25)
-template:setCustomWeaponMultiple("MCANMK3",1,4)
-template:setCustomWeaponColor("MCANMK3", 255, 150, 103)
-template:setCustomWeaponStorage("MCANMK3", 120)
-template:setDockClasses("Drone","Vaisseau leger","Fregate","destroyer")
-template:setCanDock(true)
---template:setCanHack(false)
-
-
---[[Croiseur Inquisitoriale]]
-template = ShipTemplate():setName("Croiseur Inquisitorial"):setClass("Croiseur", "Combat"):setModel("Inquisitorial_Cruiser")
-template:setRadarTrace("battleship.png")
-template:setDescription([[Les croiseurs inquisitoires sont des navires de classe Croiseur utilises par l'Inquisition. Ces navires sont specialement construits pour l'Inquisition et utilisent une technologie et des armes disponibles uniquement pour les flottes de Mars elles-memes.
-En consequence, ils sont plus rapides, mieux armes et mieux proteges que les navires de meme classe chez l'Imperium. Bien que quelques modeles standard soient utilises par l'Inquisition, ils sont tout aussi souvent concus a cet effet et optimises pour des roles specifiques.
-Ces navires sont generalement utilises par les inquisiteurs en mission avant d'etre transferes, bien qu'il ne soit pas rare que des inquisiteurs aient des croiseurs permanents attaches a leurs noms. ]])
-template:setHull(1600)
-template:setShields(750, 750)
-template:setSpeed(95, 6, 8, 45, 10)
---                  Arc, Dir, Range, CycleTime, Dmg
-template:setBeam(0, 45, 0, 100.0, 30.0, 100)
-template:setBeam(1, 90, 90, 3000.0, 14.0, 35)
-template:setBeam(2, 90, -90, 3000.0, 14.0, 35)
-template:setBeam(3, 90, 90, 2000.0, 3, 9)
-template:setBeam(4, 90,-90, 2000.0, 3, 9)
-template:setBeam(5, 90, 90, 2000.0, 3, 9)
-template:setBeam(6, 90,-90, 2000.0, 3, 9)
---                              Arc, Dir, Rotate speed
---template:setBeamWeaponTurret(1, 100,  90, 5)
---template:setBeamWeaponTurret(2, 100, -90, 5)
---template:setBeamWeaponTurret(3, 150,  90, 5)
---template:setBeamWeaponTurret(4, 150, -90, 5)
---template:setBeamWeaponTurret(5, 150,  90, 5)
---template:setBeamWeaponTurret(6, 150, -90, 5)
---       Tubes
-template:setTubes(8, 12.0)
-template:setTubeDirection(0, 1)template:setTubeSize(0, "small"):weaponTubeDisallowCustomMissile(0,"MCANMK3"):weaponTubeDisallowCustomMissile(0,"MAGMCAN")
-template:setTubeDirection(1, -1)template:setTubeSize(1, "small"):weaponTubeDisallowCustomMissile(1,"MCANMK3"):weaponTubeDisallowCustomMissile(1,"MAGMCAN")
-template:setTubeLoadTime(0, 45)
-template:setTubeLoadTime(1, 45)
-template:setTubeDirection(2, 90):weaponTubeDisallowCustomMissile(2,"SEEKMK2"):weaponTubeDisallowCustomMissile(2,"MAGSEEK")
-template:setTubeDirection(3, -90):weaponTubeDisallowCustomMissile(3,"SEEKMK2"):weaponTubeDisallowCustomMissile(3,"MAGSEEK")
-template:setTubeDirection(4, 90):weaponTubeDisallowCustomMissile(4,"SEEKMK2"):weaponTubeDisallowCustomMissile(4,"MAGSEEK")
-template:setTubeDirection(5, -90):weaponTubeDisallowCustomMissile(5,"SEEKMK2"):weaponTubeDisallowCustomMissile(5,"MAGSEEK")
-template:setTubeDirection(6, 90):weaponTubeDisallowCustomMissile(6,"SEEKMK2"):weaponTubeDisallowCustomMissile(6,"MAGSEEK")
-template:setTubeDirection(7, -90):weaponTubeDisallowCustomMissile(7,"SEEKMK2"):weaponTubeDisallowCustomMissile(7,"MAGSEEK")
-
-template:setDefaultAI('default')
---MGAA Skyreaper (homing tres rapide) fregrate et plus
---Torpille
-template:setCustomWeapon("Nuke", "SEEKMK2", 2, 400.0, "Kinetic", 60)
-template:setCustomWeaponColor("SEEKMK2", 255, 204, 0)
-template:setCustomWeaponStorage("SEEKMK2", 16)
-template:setCustomWeaponMultiple("SEEKMK2",1,2)
--- Torpille EMP 
-template:setCustomWeapon("EMP", "MAGSEEK", 0.5, 400.0, "EMP", 30)
-template:setCustomWeaponColor("MAGSEEK", 0, 204, 255)
-template:setCustomWeaponStorage("MAGSEEK", 4)
-template:setCustomWeaponMultiple("MAGSEEK",1,2)
--- macro canon 4 
-template:setCustomWeapon("HVLI", "MCANMK3", 4, 1500.0, "Kinetic", 25)
-template:setCustomWeaponMultiple("MCANMK3",1,4)
-template:setCustomWeaponColor("MCANMK3", 255, 150, 103)
-template:setCustomWeaponStorage("MCANMK3", 120)
--- macro canon EMP
-template:setCustomWeapon("HVLI", "MAGMCAN", 1, 1000.0, "EMP", 25)
-template:setCustomWeaponMultiple("MAGMCAN",1,4)
-template:setCustomWeaponColor("MAGMCAN", 51, 51, 255)
-template:setCustomWeaponStorage("MAGMCAN", 20)
-template:setShortRangeRadarRange(7500)
-
---DockClasses
-template:setDefaultAI('default')
-template:setDockClasses("Drone","Vaisseau leger","Fregate","destroyer")
-template:setCanHack(false)
-
-
---[[Croiseur Inquisitoriale PJ ]]
-template = ShipTemplate():setName("Croiseur Inquisitorial MK2"):setClass("Croiseur", "Furtif"):setModel("Inquisitorial_Cruiser"):setType("playership")
-template:setRadarTrace("battleship.png")
-template:setDescription([[Les croiseurs inquisitoires sont des navires de classe Croiseur utilises par l'Inquisition. Ces navires sont specialement construits pour l'Inquisition et utilisent une technologie et des armes disponibles uniquement pour les flottes de Mars elles-memes.
-En consequence, ils sont plus rapides, mieux armes et mieux proteges que les navires de meme classe chez l'Imperium. Bien que quelques modeles standard soient utilises par l'Inquisition, ils sont tout aussi souvent concus a cet effet et optimises pour des roles specifiques.
-Ces navires sont generalement utilises par les inquisiteurs en mission avant d'etre transferes, bien qu'il ne soit pas rare que des inquisiteurs aient des croiseurs permanents attaches a leurs noms. ]])
-
-
-
-template:setHull(1600)
-template:setEnergyStorage(1500)
-template:setShields(750, 750)
-template:setSpeed(100, 6, 8, 45, 10)
---template:setReverseSpeed(45,10)
-template:setCombatManeuver(300, 250)
-template:setShortRangeRadarRange(7500)
-template:setEnergyConsumptionRatio(1)
---                  Arc, Dir, Range, CycleTime, Dmg
-template:setBeam(0, 20, 0, 5000.0, 30.0, 300)
-template:setBeam(1, 90, 90, 3000.0, 7.0, 25)
-template:setBeam(2, 90, -90, 3000.0, 7.0, 25)
-template:setBeam(3, 90, 90, 2000, 3, 12)
-template:setBeam(4, 90,-90, 2000, 3, 12)
---                              Arc, Dir, Rotate speed
---template:setBeamWeaponTurret(1, 100,  90, 5)
---template:setBeamWeaponTurret(2, 100, -90, 5)
---template:setBeamWeaponTurret(3, 150,  90, 5)
---template:setBeamWeaponTurret(4, 150, -90, 5)
---template:setBeamWeaponTurret(5, 150,  90, 5)
---template:setBeamWeaponTurret(6, 150, -90, 5)
---       Tubes
-template:setTubes(6, 12.0)
---template:setTubeDirection(0, 1)template:setTubeSize(0, "small"):weaponTubeDisallowCustomMissile(0,"MCANMK3"):weaponTubeDisallowCustomMissile(0,"MAGMCAN")
---template:setTubeDirection(1, -1)template:setTubeSize(1, "small"):weaponTubeDisallowCustomMissile(1,"MCANMK3"):weaponTubeDisallowCustomMissile(1,"MAGMCAN")
---template:setTubeLoadTime(0, 45)
---template:setTubeLoadTime(1, 45)
-template:setTubeDirection(0, 90):weaponTubeDisallowCustomMissile(2,"SEEKMK2"):weaponTubeDisallowCustomMissile(2,"MAGSEEK")
-template:setTubeDirection(1, -90):weaponTubeDisallowCustomMissile(3,"SEEKMK2"):weaponTubeDisallowCustomMissile(3,"MAGSEEK")
-template:setTubeDirection(2, 90):weaponTubeDisallowCustomMissile(4,"SEEKMK2"):weaponTubeDisallowCustomMissile(4,"MAGSEEK")
-template:setTubeDirection(3, -90):weaponTubeDisallowCustomMissile(5,"SEEKMK2"):weaponTubeDisallowCustomMissile(5,"MAGSEEK")
-template:setTubeDirection(4, 90):weaponTubeDisallowCustomMissile(6,"SEEKMK2"):weaponTubeDisallowCustomMissile(6,"MAGSEEK")
-template:setTubeDirection(5, -90):weaponTubeDisallowCustomMissile(7,"SEEKMK2"):weaponTubeDisallowCustomMissile(7,"MAGSEEK")
-
-
---Torpille
---template:setCustomWeapon("Nuke", "SEEKMK2", 2, 400.0, "Kinetic", 60)
---template:setCustomWeaponColor("SEEKMK2", 255, 204, 0)
---template:setCustomWeaponStorage("SEEKMK2", 12)
---template:setCustomWeaponMultiple("SEEKMK2",1,2)
--- Torpille EMP 
---template:setCustomWeapon("EMP", "MAGSEEK", 0.5, 400.0, "EMP", 30)
---template:setCustomWeaponColor("MAGSEEK", 0, 204, 255)
---template:setCustomWeaponStorage("MAGSEEK", 6)
---template:setCustomWeaponMultiple("MAGSEEK",1,2)
-
-
-template:setCustomWeapon("HVLI", "MAGMCAN", 1, 1000.0, "EMP", 25)
-template:setCustomWeaponMultiple("MAGMCAN",1,4)
-template:setCustomWeaponColor("MAGMCAN", 51, 51, 255)
-template:setCustomWeaponStorage("MAGMCAN", 20)
-
-
-
--- macro canon EMP 
-template:setCustomWeapon("HVLI", "MCANMK3", 4, 1500.0, "Kinetic", 25)
-template:setCustomWeaponMultiple("MCANMK3",1,4)
-template:setCustomWeaponColor("MCANMK3", 255, 150, 103)
-template:setCustomWeaponStorage("MCANMK3", 120)
-
-
-template:setDefaultAI('default')
-template:setDockClasses("Drone","Vaisseau leger","Fregate","destroyer")
-template:setCanHack(false)
-
-template:addDrones("Chasseur Lourd Mk2",2)
-template:addDrones("Vaisseau d'abordage Shark Mk2",2)
-template:addDrones("Intercepteur Fury",4)
-template:addDrones("Bombardier Starhawk",4)
-template:setDocks(3, 0, 0, 0, 4, 6)
-
-
---DockClasses
-template:setDockClasses("Drone","Vaisseau leger","Fregate","destroyer")
-template:setDefaultAI('default')
-
-
-
---[[Croiseur Corsair Shadow]]
-template = ShipTemplate():setName("Croiseur Corsaire Shadow"):setClass("Croiseur", "Combat"):setModel("Eldar_Corsair_Cruiser")
-template:setRadarTrace("battleship.png")
-template:setDescription([[Le Croiseur Shadow est un vaisseau de ligne des Flottes Eldars.
-Le modele Shadow est le plus grand des vaisseaux qui composent generalement les flottes des Eldars. Comme beaucoup de vaisseaux Xenos, le Croiseur Shadow est souvent confondu avec d'autres classes de croiseur et de nombreuses attaques sont ainsi attribuees faussement a leurs cousins Eldars. ]])
-template:setHull(1400)
-template:setShields(500, 500)
-template:setSpeed(150, 18, 18)
---template:setReverseSpeed(40,10)
---                  Arc, Dir, Range, CycleTime, Dmg
-template:setBeam(0, 20, 0, 4500.0, 30.0, 300)
-template:setBeam(1, 45, 0, 4000.0, 14.0, 35)
-template:setBeam(2, 45, 0, 4000.0, 14.0, 35)
-template:setBeam(3, 90, 90, 3000.0, 3, 12)
-template:setBeam(4, 90,-90, 3000.0, 3, 12)
-template:setBeam(5, 90, 90, 3000.0, 3, 12)
-template:setBeam(6, 90,-90, 3000.0, 3, 12)
---                              Arc, Dir, Rotate speed
-
---       Tubes
-template:setTubes(8, 12.0)
-template:setTubeDirection(0, 1)template:setTubeSize(0, "small"):weaponTubeDisallowCustomMissile(0,"MCANMK3")
-template:setTubeDirection(1, -1)template:setTubeSize(1, "small"):weaponTubeDisallowCustomMissile(1,"MCANMK3")
-template:setTubeLoadTime(0, 45)
-template:setTubeLoadTime(1, 45)
-template:setTubeDirection(2, 90):weaponTubeDisallowCustomMissile(2,"SEEKMK2"):weaponTubeDisallowCustomMissile(2,"MAGSEEK")
-template:setTubeDirection(3, -90):weaponTubeDisallowCustomMissile(3,"SEEKMK2"):weaponTubeDisallowCustomMissile(3,"MAGSEEK")
-template:setTubeDirection(4, 90):weaponTubeDisallowCustomMissile(4,"SEEKMK2"):weaponTubeDisallowCustomMissile(4,"MAGSEEK")
-template:setTubeDirection(5, -90):weaponTubeDisallowCustomMissile(5,"SEEKMK2"):weaponTubeDisallowCustomMissile(5,"MAGSEEK")
-template:setTubeDirection(6, 90):weaponTubeDisallowCustomMissile(6,"SEEKMK2"):weaponTubeDisallowCustomMissile(6,"MAGSEEK")
-template:setTubeDirection(7, -90):weaponTubeDisallowCustomMissile(7,"SEEKMK2"):weaponTubeDisallowCustomMissile(7,"MAGSEEK")
-
-template:setWeaponStorage("EMP", 5) -- degats bouclier 150
-
---TG Seeker (homing) 
-template:setCustomWeapon("HVLI", "MCANMK3", 4, 1500.0, "Kinetic", 25)
-template:setCustomWeaponMultiple("MCANMK3",1,4)
-template:setCustomWeaponColor("MCANMK3", 255, 150, 103)
-template:setCustomWeaponStorage("MCANMK3", 120)
-
---MGAA Flakburst (nuke faible dommage) 
-
-
-template:setCustomWeapon("Nuke", "SEEKMK2", 2, 400.0, "Kinetic", 60)
-template:setCustomWeaponColor("SEEKMK2", 255, 204, 0)
-template:setCustomWeaponStorage("SEEKMK2", 16)
-template:setCustomWeaponMultiple("SEEKMK2",1,2)
-
--- Torpille EMP 
-template:setCustomWeapon("EMP", "MAGSEEK", 0.5, 400.0, "EMP", 30)
-template:setCustomWeaponColor("MAGSEEK", 0, 204, 255)
-template:setCustomWeaponStorage("MAGSEEK", 10)
-template:setCustomWeaponMultiple("MAGSEEK",1,2)
-
-template:setShortRangeRadarRange(7500)
---DockClasses)
-template:setDefaultAI('default')
-template:setDockClasses("Drone","Vaisseau leger","Fregate","destroyer")
-template:setCanHack(false)
-
---[[Croiseur du Chaos Carnage]]
-template = ShipTemplate():setName("Croiseur du Chaos Carnage"):setClass("Croiseur", "Combat"):setModel("Chaos_Cruiser")
-template:setRadarTrace("battleship.png")
-template:setDescription([[Le Croiseur Carnage fut developpe par la Flotte Obscura afin d'obtenir un vaisseau pouvant fournir des tirs de soutien a longue portee a d'autres croiseurs tout en restant a l'abris des ripostes.
-Basee sur des nombreux emplacements de Batteries d'armes, la conception du Carnage se retrouva entravee par les difficultes d'approvisionnement en energie pour ces armes. Ces difficultes conduisirent a de profondes dissensions au sein des commandants de la Flotte au sujet de la pertinence de cette classe de navire. ]])
-template:setHull(1700)
-template:setShields(650, 650)
-template:setSpeed(85, 9, 8)
---template:setReverseSpeed(40,10)
---                  Arc, Dir, Range, CycleTime, Dmg
-template:setBeam(0, 10, 0, 100.0, 30.0, 20)
-template:setBeam(1, 90, 90, 4500.0, 14.0, 35)
-template:setBeam(2, 90, -90, 4500.0, 14.0, 35)
-template:setBeam(3, 90, 90, 3000.0, 3, 9)
-template:setBeam(4, 90,-90, 3000.0, 3, 9)
-template:setBeam(5, 90, 90, 3000.0, 3, 9)
-template:setBeam(6, 90,-90, 3000.0, 3, 9)
-template:setShortRangeRadarRange(7500)
---                              Arc, Dir, Rotate speed
-
---       Tubes
-template:setTubes(8, 12.0)
-
-template:setCustomWeapon("homing", "chaosM", 2, 600.0, "Kinetic", 60)
-template:setCustomWeaponColor("chaosM", 255, 204, 0)
-template:setCustomWeaponStorage("chaosM", 36)
-template:setCustomWeaponMultiple("chaosM",2,3)
-
-
-template:setCustomWeapon("HVLI", "MCANMK3", 4, 1500.0, "Kinetic", 25)
-template:setCustomWeaponMultiple("MCANMK3",1,4)
-template:setCustomWeaponColor("MCANMK3", 255, 150, 103)
-template:setCustomWeaponStorage("MCANMK3", 120)
-
-
-
-template:setTubeDirection(0, 90)template:setTubeSize(0, "small"):weaponTubeDisallowCustomMissile(0,"MCANMK3")
-template:setTubeDirection(1, -90)template:setTubeSize(1, "small"):weaponTubeDisallowCustomMissile(1,"MCANMK3")
-template:setTubeDirection(2, 90):weaponTubeDisallowCustomMissile(2,"SEEKMK2")
-template:setTubeDirection(3, -90):weaponTubeDisallowCustomMissile(3,"SEEKMK2")
-template:setTubeDirection(4, 90):weaponTubeDisallowCustomMissile(4,"SEEKMK2")
-template:setTubeDirection(5, -90):weaponTubeDisallowCustomMissile(5,"SEEKMK2")
-template:setTubeDirection(6, 90):weaponTubeDisallowCustomMissile(6,"SEEKMK2")
-template:setTubeDirection(7, -90):weaponTubeDisallowCustomMissile(7,"SEEKMK2")
-
-
-
---MGAA Skyreaper (homing trés rapide) fregrate et plus
-
--- Torpille EMP 
-
-
---DockClasses
-template:setDefaultAI('missilevolley')
-template:setDockClasses("Drone","Vaisseau leger","Fregate","destroyer")
-
-template:setCanHack(false)
-
---[[Croiseur Marchand Civil]]
-template = ShipTemplate():setName("Croiseur Marchand Civil Graal"):setClass("Croiseur", "Marchand"):setModel("Civilian_Transport_Cruiser")
-template:setRadarTrace("transport.png")
-template:setDescription([[Ces transporteurs sont generalement des vaisseaux civils issus de la Flotte Marchande. Malgre leur courage et leur volonte, ces vaisseaux ne sont pas equipes pour lutter contre des vaisseaux de guerre, ne disposant que d'un armement leger contre les attaques de pirates, manquant d'officiers experimentes et n'ayant pas la motorisation permettant de semer leurs adversaires.]])
-template:setHull(1000)
-template:setShields(500, 500)
-template:setSpeed(80, 6, 8)
---template:setReverseSpeed(40,10)
---                  Arc, Dir, Range, CycleTime, Dmg
-template:setBeam(0, 10, 0, 100.0, 30.0, 10)
-template:setBeam(1, 90, 90, 3000.0, 14.0, 35)
-template:setBeam(2, 90, -90, 3000.0, 14.0, 35)
-template:setBeam(3, 90, 90, 2000.0, 3, 9)
-template:setBeam(4, 90,-90, 2000.0, 3, 9)
-template:setBeam(5, 90, 90, 200.0, 3, 9)
-template:setBeam(6, 90,-90, 2000.0, 3, 9)
-template:setShortRangeRadarRange(7500)
---                              Arc, Dir, Rotate speed
-
---       Tubes
-template:setTubes(8, 12.0)
-template:setTubeDirection(0, 90)
-template:setTubeDirection(1, -90)
-template:setTubeDirection(2, 90)
-template:setTubeDirection(3, -90)
-template:setTubeDirection(4, 90)
-template:setTubeDirection(5, -90)
---MGAA Skyreaper (homing trés rapide) fregrate et plus
-template:setCustomWeapon("HVLI", "MCANMK2", 3, 1500.0, "Kinetic", 25)
-template:setCustomWeaponMultiple("MCANMK2",1,4)
-template:setCustomWeaponColor("MCANMK2", 255, 150, 103)
-template:setCustomWeaponStorage("MCANMK2", 120)
---Macro-canon : (rafale, non homing) 
-
-template:setDefaultAI('missilevolley')
-
---DockClasses
-template:setDockClasses("Drone","Vaisseau leger")
-
---[[Croiseur Marchand Rogue]]
-
-template = ShipTemplate():setName("Croiseur Rogue Repulse"):setClass("Croiseur", "Transport Lourd"):setModel("Rogue_Trader_Cruiser")
-template:setRadarTrace("tug.png")
-template:setLocaleName("Croiseur Marchand Rogue")
-template:setClass("Croiseur", "Marchand","Rogue")
-template:setModel("Rogue_Trader_Cruiser")
-template:setDescription([[Ce croiseur repulse est construit à Kar Duniash. Rapide mais lourdement armée, Cette version concu pour les libres-marchands offre un bon compromis pour celui qui veux faire du commerce tranquillement]])
-template:setHull(1600)
-template:setShields(600, 600)
-template:setSpeed(100, 17, 10)
---template:setReverseSpeed(40,10)
-template:setDefaultAI('default')
-template:setDockClasses("Drone","Vaisseau leger","Fregate","destroyer")
-template:setCanHack(false)
-template:setJumpDrive(false)
-template:setJumpDriveRange(5000.0, 1300000.0)
---template:setJumpDriveEnergy(0.1)
-template:setJumpDriveEnergy(1)
-
-template:setTubes(8, 12.0)
-template:setTubeDirection(0, 1)template:setTubeSize(0, "small"):weaponTubeDisallowCustomMissile(0,"MCANMK3"):weaponTubeDisallowCustomMissile(0,"MAGMCAN")
-template:setTubeDirection(1, -1)template:setTubeSize(1, "small"):weaponTubeDisallowCustomMissile(1,"MCANMK3"):weaponTubeDisallowCustomMissile(1,"MAGMCAN")
-template:setTubeLoadTime(0, 45)
-template:setTubeLoadTime(1, 45)
-template:setTubeDirection(2, 90):weaponTubeDisallowCustomMissile(2,"SEEKMK2"):weaponTubeDisallowCustomMissile(2,"MAGSEEK")
-template:setTubeDirection(3, -90):weaponTubeDisallowCustomMissile(3,"SEEKMK2"):weaponTubeDisallowCustomMissile(3,"MAGSEEK")
-template:setTubeDirection(4, 90):weaponTubeDisallowCustomMissile(4,"SEEKMK2"):weaponTubeDisallowCustomMissile(4,"MAGSEEK")
-template:setTubeDirection(5, -90):weaponTubeDisallowCustomMissile(5,"SEEKMK2"):weaponTubeDisallowCustomMissile(5,"MAGSEEK")
-template:setTubeDirection(6, 90):weaponTubeDisallowCustomMissile(6,"SEEKMK2"):weaponTubeDisallowCustomMissile(6,"MAGSEEK")
-template:setTubeDirection(7, -90):weaponTubeDisallowCustomMissile(7,"SEEKMK2"):weaponTubeDisallowCustomMissile(7,"MAGSEEK")
-template:setShortRangeRadarRange(7500)
-
---template:setSystemDamageRatio(1.2)
-
-
---Macro-canon : (rafale, non homing) 
-template:setCustomWeapon("HVLI", "MCANMK3", 4, 1500.0, "Kinetic", 25)
-template:setCustomWeaponMultiple("MCANMK3",1,4)
-template:setCustomWeaponColor("MCANMK3", 255, 150, 103)
-template:setCustomWeaponStorage("MCANMK3", 120)
- 
--- Torpille EMP 
---template:setCustomWeapon("EMP", "MAGSEEK", 0.5, 400.0, "EMP", 30)
---template:setCustomWeaponColor("MAGSEEK", 0, 204, 255)
---template:setCustomWeaponStorage("MAGSEEK", 8)
---template:setCustomWeaponMultiple("MAGSEEK",1,2)
-
--- macro canon EMP
---template:setCustomWeapon("HVLI", "MAGMCAN", 1, 1000.0, "EMP", 25)
---template:setCustomWeaponMultiple("MAGMCAN",1,4)
---template:setCustomWeaponColor("MAGMCAN", 51, 51, 255)
---template:setCustomWeaponStorage("MAGMCAN", 20)
-template:setDefaultAI('missilevolley')
-
---[[Croiseur Rogue Repulse]]
-template = ShipTemplate():setName("Croiseur Rogue Repulse MK2"):setClass("Croiseur Marchand", "Experimental"):setModel("Rogue_Trader_Cruiser"):setType("playership")
-template:setRadarTrace("tug.png")
-template:setDescription([[Ce croiseur repulse est construit à Kar Duniash. Rapide mais lourdement armée, Cette version concu pour les libres-marchands offre un bon compromis pour celui qui veux faire du commerce tranquillement]])
-template:setHull(1300)
-template:setShields(800, 800)
-template:setSpeed(100, 15, 10, 50, 10)
-template:addDrones("Chasseur Lourd Mk2",2)
-template:addDrones("Chasseur Lourd MKX2",1)
-template:addDrones("Vaisseau d'abordage Shark Mk2",2)
-template:addDrones("Intercepteur Fury",4)
-template:addDrones("Bombardier Starhawk",4)
-template:setDocks(3, 0, 0, 0, 6, 7)
-template:setEnergyConsumptionRatio(0.9)
-
-template:setJumpDrive(true)
-template:setJumpDriveRange(5000.0, 1300000.0)
---template:setJumpDriveEnergy(0.1)
-template:setJumpDriveEnergy(1)
---                  Arc, Dir, Range, CycleTime, Dmg
-template:setBeam(0, 90, 0, 100.0, 30.0, 10)
-template:setBeam(1, 90, 90, 3000.0, 14.0, 35)
-template:setBeam(2, 90, -90, 3000.0, 14.0, 35)
-template:setBeam(3, 90, 90, 2000.0, 3, 9)
-template:setBeam(4, 90,-90, 2000.0, 3, 9)
-template:setBeam(5, 90, 90, 2000.0, 3, 9)
-template:setBeam(6, 90,-90, 2000.0, 3, 9)
---                              Arc, Dir, Rotate speed
-template:setCustomWeapon("EMP", "XSEEK", 1.5, 600.0, "EMP", 30)
-template:setCustomWeaponColor("XSEEK", 0, 204, 255)
-template:setCustomWeaponStorage("XSEEK", 10)
-template:setCustomWeaponMultiple("XSEEK",1,2)
-
-
-
---       Tubes
-template:setTubes(8, 12.0)
-template:setTubeDirection(0, 1)template:setTubeSize(0, "small"):weaponTubeDisallowCustomMissile(0,"MCANMK3"):weaponTubeDisallowCustomMissile(0,"MAGMCAN")
-template:setTubeDirection(1, -1)template:setTubeSize(1, "small"):weaponTubeDisallowCustomMissile(1,"MCANMK3"):weaponTubeDisallowCustomMissile(1,"MAGMCAN")
-template:setTubeLoadTime(0, 45)
-template:setTubeLoadTime(1, 45)
-template:setTubeDirection(2, 90):weaponTubeDisallowCustomMissile(2,"SEEKMK2"):weaponTubeDisallowCustomMissile(2,"MAGSEEK"):weaponTubeDisallowCustomMissile(2,"XSEEK"):weaponTubeDisallowCustomMissile(2,"TABORD")
-template:setTubeDirection(3, -90):weaponTubeDisallowCustomMissile(3,"SEEKMK2"):weaponTubeDisallowCustomMissile(3,"MAGSEEK"):weaponTubeDisallowCustomMissile(3,"XSEEK"):weaponTubeDisallowCustomMissile(3,"TABORD")
-template:setTubeDirection(4, 90):weaponTubeDisallowCustomMissile(4,"SEEKMK2"):weaponTubeDisallowCustomMissile(4,"MAGSEEK"):weaponTubeDisallowCustomMissile(4,"XSEEK"):weaponTubeDisallowCustomMissile(4,"TABORD")
-template:setTubeDirection(5, -90):weaponTubeDisallowCustomMissile(5,"SEEKMK2"):weaponTubeDisallowCustomMissile(5,"MAGSEEK"):weaponTubeDisallowCustomMissile(5,"XSEEK"):weaponTubeDisallowCustomMissile(5,"TABORD")
-template:setTubeDirection(6, 90):weaponTubeDisallowCustomMissile(6,"SEEKMK2"):weaponTubeDisallowCustomMissile(6,"MAGSEEK"):weaponTubeDisallowCustomMissile(6,"XSEEK"):weaponTubeDisallowCustomMissile(6,"TABORD")
-template:setTubeDirection(7, -90):weaponTubeDisallowCustomMissile(7,"SEEKMK2"):weaponTubeDisallowCustomMissile(7,"MAGSEEK"):weaponTubeDisallowCustomMissile(7,"XSEEK"):weaponTubeDisallowCustomMissile(7,"TABORD")
-
---MGAA Skyreaper (homing trés rapide) fregrate et plus
--- Torpille lourde  
-template:setCustomWeapon("Nuke", "SEEKMK2", 2, 400.0, "Kinetic", 60)
-template:setCustomWeaponColor("SEEKMK2", 255, 204, 0)
-template:setCustomWeaponStorage("SEEKMK2", 16)
-template:setCustomWeaponMultiple("SEEKMK2",1,2)
-
--- macro canon EMP
-template:setCustomWeapon("HVLI", "MAGMCAN", 1, 1000.0, "EMP", 25)
-template:setCustomWeaponMultiple("MAGMCAN",1,4)
-template:setCustomWeaponColor("MAGMCAN", 51, 51, 255)
-template:setCustomWeaponStorage("MAGMCAN", 20)
-
---)
--- Torpille EMP de vargas / techno experimental 
-
-
-template:setCustomWeapon("Homing", "TABORD", 0.5, 400.0, "EMP", 60)
-template:setCustomWeaponColor("TABORD", 57, 142, 55)
-template:setCustomWeaponStorage("TABORD", 30)
-template:setCustomWeaponMultiple("TABORD",1,2)
-
---Macro-canon : (rafale, non homing) 
-template:setCustomWeapon("HVLI", "MCANMK3", 4, 1500.0, "Kinetic", 25)
-template:setCustomWeaponMultiple("MCANMK3",1,4)
-template:setCustomWeaponColor("MCANMK3", 255, 150, 103)
-template:setCustomWeaponStorage("MCANMK3", 120)
---DockClasses
-template:setDockClasses("Drone","Vaisseau leger","Fregate","destroyer")
--- PJ
-template:setJumpDrive(true)
-template:setCanHack(false)
-template:setCombatManeuver(250,150)
---template:setRepairCrewCount(8)
---	(H)oriz, (V)ert	   HC,VC,HS,VS, system    (C)oordinate (S)ize
-template:addRoomSystem( 0, 1, 2, 4, "Impulse")
-template:addRoomSystem( 2, 0, 2, 2, "RearShield")
-template:addRoomSystem( 2, 2, 2, 2, "Warp")
-template:addRoom( 2, 4, 2, 2)
-template:addRoomSystem( 4, 1, 1, 4, "Maneuver")
-template:addRoom( 5, 0, 2, 2)
-template:addRoomSystem( 5, 2, 2, 2, "JumpDrive")
-template:addRoomSystem( 5, 4, 2, 2, "Beamweapons")
-template:addRoomSystem( 7, 1, 3, 2, "Reactor")
-template:addRoomSystem( 7, 3, 3, 2, "MissileSystem")
-template:addRoomSystem(10, 2, 2, 2, "FrontShield")
-template:addDoor( 2, 2, false)
-template:addDoor( 2, 4, false)
-template:addDoor( 3, 2, true)
-template:addDoor( 4, 3, false)
-template:addDoor( 5, 2, false)
-template:addDoor( 5, 4, true)
-template:addDoor( 7, 3, false)
-template:addDoor( 7, 1, false)
-template:addDoor( 8, 3, true)
-template:addDoor(10, 2, false)
-
-template:setShortRangeRadarRange(7500)
-
-
-
---Support: mine layer
---Support: mine sweeper
---Support: science vessel
---Support: deep space recon
---Support: light repair
---Support: resupply
-
-
---[[Croiseur Marchand Il'porrui]]
-template = ShipTemplate():setName("Croiseur Marchand Il'porrui"):setClass("Croiseur", "Marchand"):setModel("Tau_Merchant_Cruiser")
-template:setRadarTrace("transport.png")
-template:setDescription([[Les Il'porruis servent souvent de transport pour des dignitaire de la Caste de l'Eau, desCommandeurs ou des Etheres. Malgre sa fonction, il est suffisamment bien arme pour se defendre contre des ennemis du meme gabarit que lui.
-Les Il'porrui sont devenus communs dans l'Empire Tau et sont meme souvent utilises en dehors lors de missions diplomatiques. Ces navires font egalement d'excellents vaisseaux de commerce et sont de vrai betes de somme au sein de leur jeune empire. ]])
-template:setHull(1200)
-template:setShields(1000, 1000)
-template:setSpeed(80, 6, 8)
---template:setReverseSpeed(40,10)
---                  Arc, Dir, Range, CycleTime, Dmg
-template:setBeam(0, 60, 0, 4500.0, 30.0, 200)
-template:setBeam(1, 120, 90, 4000.0, 14.0, 35)
-template:setBeam(2, 120, -90, 4000.0, 14.0, 35)
-template:setBeam(3, 120, 90, 3000.0, 3, 12)
-template:setBeam(4, 120,-90, 3000.0, 3, 12)
-template:setBeam(5, 120, 90, 3000.0, 3, 12)
-template:setBeam(6, 120,-90, 3000.0, 3, 12)
-template:setShortRangeRadarRange(7500)
---       Tubes
-template:setTubes(8, 12.0)
-template:setTubeDirection(0, 1)
-template:setTubeDirection(1, -1)
-template:setTubeDirection(2, 90)
-template:setTubeDirection(3, -90)
-template:setTubeDirection(4, 90)
-template:setTubeDirection(5, -90)
-template:setTubeDirection(6, 90)
-template:setTubeDirection(7, -90)
---TG Seeker (homing) 
-template:setCustomWeapon("Homing", "SEEK", 1.5, 8000.0, "Kinetic", 12)
-template:setCustomWeaponColor("SEEK", 0, 204, 255)
-template:setCustomWeaponColor("SEEK", 0, 204, 255)
-template:setCustomWeaponMultiple("SEEK",1,3)
-template:setCustomWeaponStorage("SEEK", 18)
---TG fusionmelta (Nuke homing) 
-
-template:setWeaponStorage("EMP", 5)
-
-template:setCustomWeapon("EMP", "XSEEK", 1, 400.0, "EMP", 30)
-template:setCustomWeaponColor("XSEEK", 0, 204, 255)
-template:setCustomWeaponStorage("XSEEK", 10)
-template:setCustomWeaponMultiple("XSEEK",1,2)
-
---DockClasses
-template:setDefaultAI('default')
-template:setDockClasses("Drone","Vaisseau leger","Fregate","destroyer")
-
-
-
-
---[[Croiseur Impérial Mars + nova / jouable + torp et laser frontal ]]
-template = ShipTemplate():setName("Croiseur Mars MK2"):setClass("Croiseur", "Artillerie"):setModel("Navy_Battleship_Mars"):setType("playership")
-template:setRadarTrace("battleship.png")
-template:setDescription([[ ** wip ** ]])
-
-template:setHull(2000)
-template:setShields(1200, 1200) -- recharge rate
-template:setSpeed(85, 6, 8, 40, 8)
-----template:setReverseSpeed(40,10)
-template:setSystemDamageRatio(0.8)
-template:setSystemDamageHullThreshold(0.80)
-template:setCombatManeuver(600, 250) -- si nerf, penser a donner une upgrade
---                  Arc, Dir, Range, CycleTime, Dmg
---template:setBeam(0, 45, 0, 100.0, 30.0, 10) -- a remplacer
-template:setBeam(1, 90, 90, 3000.0, 14.0, 30)
-template:setBeam(2, 90, -90, 3000.0, 14.0, 30)
-template:setBeam(3, 90, 90, 2000, 3, 11)
-template:setBeam(4, 90,-90, 2000, 3, 11) -- template mais pas variation 
-template:setBeam(5, 90, 90, 2000, 3, 11)
-template:setBeam(6, 90,-90, 2000, 3, 11)
-template:setBeamWeaponEnergyPerFire(1, 1)
-template:setBeamWeaponEnergyPerFire(2, 1)
-template:setBeamWeaponHeatPerFire(1, 0.01)
-template:setBeamWeaponHeatPerFire(2, 0.01)
-
-
+function CroiseurLunarTourelles()
+--Définition des armes laser
 
 --Tourelles de défense
 --Axe de tir (N° d'arme, arc de tir, Orientation, portée, délais de tir, dégâts)
-template:setBeamWeapon(0, 10, 0, 3000, 14, 45)
-template:setBeamWeaponTurret(0, 30, 0, 15)
+template:setBeamWeapon(0, 360, 180, 2000, 0.5, 1)
 --Ajustement de la consommation d'énergie des tirs
 template:setBeamWeaponEnergyPerFire(0, 1)
 --Ajustement de la surchauffe engendrée par les tirs
 template:setBeamWeaponHeatPerFire(0, 0.01)
-template:setShortRangeRadarRange(7500)
---template:setBeam(0, 30, 0, 4000.0, 30.0, 150)
---exemple firestorm : template:setBeam(2,30, 0, 5000.0, 40.0, 200) 
---200.0
 
---template:setSystemDamageRatio(0.9)
---template:setSystemDamageHullThreshold(0.85)
-template:setCanHack(false)
-template:setJumpDrive(true)
---template:setRepairCrewCount(2)
---[[template:addRoomSystem(0, 0, 1, 4, "RearShield")
-template:addRoom(1, 0, 1, 1)
-template:addRoomSystem(1, 1, 3, 2, "MissileSystem")
-template:addRoom(1, 3, 1, 1)
-template:addRoomSystem(2, 0, 2, 1, "Beamweapons")
-template:addRoomSystem(2, 3, 2, 1, "Maneuver")
-template:addRoomSystem(4, 0, 2, 1, "Warp")
-template:addRoomSystem(4, 3, 2, 1, "JumpDrive")
-template:addRoomSystem(5, 1, 1, 2, "Reactor")
-template:addRoom(6, 0, 1, 1)
-template:addRoomSystem(6, 1, 1, 2, "Impulse")
-template:addRoom(6, 3, 1, 1)
-template:addRoomSystem(7, 0, 1, 4, "FrontShield")
-template:addDoor(1, 0, false)
-template:addDoor(2, 0, false)
-template:addDoor(4, 0, false)
-template:addDoor(6, 0, false)
-template:addDoor(7, 0, false)
-template:addDoor(1, 1, true)
-template:addDoor(1, 3, true)
-template:addDoor(6, 1, true)
-template:addDoor(6, 2, false)
-template:addDoor(6, 3, true)
-template:addDoor(1, 3, false)
-template:addDoor(2, 3, false)
-template:addDoor(4, 3, false)
-template:addDoor(6, 3, false)
-template:addDoor(7, 3, false)
---]]
-template:setShortRangeRadarRange(7500) -- a tester face a 4500
+--Tourelle Bâbord
+--Axe de tir (N° d'arme, arc de tir, Orientation, portée, délais de tir, dégâts)
+template:setBeamWeapon(1, 1, 270, 7000, 10, 40)
+--Paramètres de tourelle (N°d'arme, Arc de tir, orientation, vitesse de rotation)
+template:setBeamWeaponTurret(1, 90, 270, 0.5)
+--Ajustement de la consommation d'énergie des tirs
+template:setBeamWeaponEnergyPerFire(1, 20)
+--Ajustement de la surchauffe engendrée par les tirs
+template:setBeamWeaponHeatPerFire(1, 0.1)
 
-template:setTubes(7, 12.0)
+--Tourelle Tribord
+--Axe de tir (N° d'arme, arc de tir, Orientation, portée, délais de tir, dégâts)
+template:setBeamWeapon(2, 1, 90, 7000, 10, 40)
+--Paramètres de tourelle (N°d'arme, Arc de tir, orientation, vitesse de rotation)
+template:setBeamWeaponTurret(2, 90, 90, 0.5)
+--Ajustement de la consommation d'énergie des tirs
+template:setBeamWeaponEnergyPerFire(2, 20)
+--Ajustement de la surchauffe engendrée par les tirs
+template:setBeamWeaponHeatPerFire(2, 0.1)
+
+end
+
+CroiseurLunarTourelles()
+
+function CroiseurLunarMissiles()
+--Définition des lance missiles
+
+--Nombre de tubes et temps de chargement
+template:setTubes(5, 30)
+
+--Lance-Torpille
+--Direction (Index,Direction)
 template:setTubeDirection(0, 0)
-template:setTubeSize(0, "large")
---Canon nova
-template:setCustomWeapon("Nuke", "NOVAMK2", 3, 2200.0, "Kinetic", 20) -- 3 = facteur de degats face au commun
-template:setCustomWeaponColor("NOVAMK2", 0, 204, 255)
-template:setCustomWeaponStorage("NOVAMK2", 6)
+--Temps de chargement (Index, Temps)
+template:setTubeLoadTime(0, 30)	
+--Taille des obus (Index, Taille)
+template:setTubeSize(0, "medium")
 
-template:setTubeLoadTime(0, 80):setWeaponTubeExclusiveForCustom(0,'NOVAMK2')
+--Macrocanons Bâbords 1
+--Direction (Index,Direction)
+template:setTubeDirection(1, 270)
+--Temps de chargement (Index, Temps)
+template:setTubeLoadTime(1, 15)
+--Taille des obus (Index, Taille)
+template:setTubeSize(1, "small")
 
+--Macrocanons Bâbords 2
+--Direction (Index,Direction)
+template:setTubeDirection(2, 270)
+--Temps de chargement (Index, Temps)
+template:setTubeLoadTime(2, 15)
+--Taille des obus (Index, Taille)
+template:setTubeSize(2, "small")
 
-template:setTubeDirection(1, 90)
-template:setTubeDirection(2, -90)
-template:setTubeDirection(3, 90)
-template:setTubeDirection(4, -90)
-template:setTubeLoadTime(1, 12):weaponTubeDisallowCustomMissile(1,'NOVAMK2'):weaponTubeDisallowCustomMissile(1,'SEEKMK2'):weaponTubeDisallowCustomMissile(1,'MAGSEEK')
-template:setTubeLoadTime(2, 12):weaponTubeDisallowCustomMissile(2,'NOVAMK2'):weaponTubeDisallowCustomMissile(2,'SEEKMK2'):weaponTubeDisallowCustomMissile(2,'MAGSEEK')
-template:setTubeLoadTime(3, 12):weaponTubeDisallowCustomMissile(3,'NOVAMK2'):weaponTubeDisallowCustomMissile(3,'SEEKMK2'):weaponTubeDisallowCustomMissile(3,'MAGSEEK')
-template:setTubeLoadTime(4, 12):weaponTubeDisallowCustomMissile(4,'NOVAMK2'):weaponTubeDisallowCustomMissile(4,'SEEKMK2'):weaponTubeDisallowCustomMissile(4,'MAGSEEK')
---:weaponTubeAllowMissile(4,"MCANMK3"):weaponTubeAllowMissile(4,"MAGMCAN")
---:weaponTubeAllowMissile(5,"SEEKMK2"):weaponTubeAllowMissile(5,"MAGSEEK")
---Torpille
-template:setTubeDirection(5, 1)
-template:setTubeLoadTime(5, 20):weaponTubeDisallowCustomMissile(5,'NOVAMK2'):weaponTubeDisallowCustomMissile(5,'MCANMK3'):weaponTubeDisallowCustomMissile(5,'MAGMCAN')
-template:setTubeSize(5,"small")
-template:setCustomWeapon("Nuke", "SEEKMK2", 2, 400.0, "Kinetic", 60)
-template:setCustomWeaponColor("SEEKMK2", 255, 204, 0)
-template:setCustomWeaponStorage("SEEKMK2", 16)
-template:setCustomWeaponMultiple("SEEKMK2",1,2)
--- Torpille EMP 
-template:setTubeDirection(6, -1)
-template:setTubeSize(6, "small")
-template:setTubeLoadTime(6, 20):weaponTubeDisallowCustomMissile(6,'NOVAMK2'):weaponTubeDisallowCustomMissile(6,'MCANMK3'):weaponTubeDisallowCustomMissile(6,'MAGMCAN')
-template:setCustomWeapon("EMP", "MAGSEEK", 0.5, 400.0, "EMP", 30)
-template:setCustomWeaponColor("MAGSEEK", 0, 204, 255)
-template:setCustomWeaponStorage("MAGSEEK", 4)
-template:setCustomWeaponMultiple("MAGSEEK",1,2)
+--Macrocanons Tribords 1
+--Direction (Index,Direction)
+template:setTubeDirection(3,90)
+--Temps de chargement (Index, Temps)
+template:setTubeLoadTime(3, 15)
+--Taille des obus (Index, Taille)
+template:setTubeSize(3, "small")
 
--- attention aux homing missiles
--- macro canon EMP 
-template:setCustomWeapon("HVLI", "MAGMCAN", 1, 1000.0, "EMP", 25)
-template:setCustomWeaponMultiple("MAGMCAN",1,4)
-template:setCustomWeaponColor("MAGMCAN", 51, 51, 255)
-template:setCustomWeaponStorage("MAGMCAN", 20)
+--Macrocanons Tribords 2
+--Direction (Index,Direction)
+template:setTubeDirection(4,90)
+--Temps de chargement (Index, Temps)
+template:setTubeLoadTime(4, 15)
+--Taille des obus (Index, Taille)
+template:setTubeSize(4, "small")
 
--- macro canon kinetic
-template:setCustomWeapon("HVLI", "MCANMK3", 4, 1500.0, "Kinetic", 25)
-template:setCustomWeaponMultiple("MCANMK3",1,4)
-template:setCustomWeaponColor("MCANMK3", 255, 150, 103)
-template:setCustomWeaponStorage("MCANMK3", 120)
+--Définition des torpilles
+--Définition des torpilles (Type, Nom, Multiplicateur de dégâts, Vitesse, Type de dégâts, Temps de vie)
+template:setCustomWeapon("Nuke", "Torpille", 1, 800.0, "Kinetic", 60)
+--Définition de la couleur de l'obus
+template:setCustomWeaponColor("Torpille", 255, 204, 0)
+--Définition du montant stocké (Nom, Stock maximum)
+template:setCustomWeaponStorage("Torpille", 12)
+--Définition de la salve (Nom, nombre de salves, nombre d'objets par salve)
+template:setCustomWeaponMultiple("Torpille",1,2)
 
---variation:setDockClasses("Drone","Vaisseau leger","Fregate","destroyer")  A TESTER
-template:setDockClasses("Drone","Vaisseau leger","Fregate","destroyer","Chasseur")
+--Définition des macrocanons
+--Définition des macrocanons (Type, Nom, Multiplicateur de dégâts, Vitesse, Type de dégâts, Temps de vie)
+template:setCustomWeapon("HVLI", "MCANMK2", 6, 4000, "Kinetic", 20)
+--Définition de la couleur de l'obus
+template:setCustomWeaponColor("MCANMK2", 255, 255, 103)
+--Définition du montant stocké (Nom, Stock maximum)
+template:setCustomWeaponStorage("MCANMK2", 200)
+--Définition de la salve (Nom, nombre de salves, nombre d'objets par salve)
+template:setCustomWeaponMultiple("MCANMK2", 1, 3)
 
-template:setCanDock(true)
+--Sélection des munitions
+template:setWeaponTubeExclusiveForCustom(0,"Torpille")
+template:setWeaponTubeExclusiveForCustom(1,"MCANMK2")
+template:setWeaponTubeExclusiveForCustom(2,"MCANMK2")
+template:setWeaponTubeExclusiveForCustom(3,"MCANMK2")
+template:setWeaponTubeExclusiveForCustom(4,"MCANMK2")
+
+end
+
+CroiseurLunarMissiles()
+
+end
+
+--Appel de la fonction créant le vaisseau PNJ
+CroiseurLunarPNJ()
+
+--Création du vaisseau PJ
+function CroiseurLunarPJ()
+--Copie du vaisseau PNJ et transformation en vaisseau PJ
+variation = template:copy("Lunar"):setLocaleName(_("playerShip", "Croiseur Lunar")):setType("playership")
+--Valeur de recharge des boucliers
+variation:setShieldRechargeRate(2.4)
+--Module de saut
+variation:setJumpDrive(true)
+--Portée de saut(Minimum,Maximum)
+variation:setJumpDriveRange(5000.0, 50000.0)
+--Temps de rechargement après un saut de 10 unités
+variation:setJumpDriveChargeTime(60)
+--Définition des portées Radar
+variation:setLongRangeRadarRange(30000):setShortRangeRadarRange(12000)
+
+function CroiseurLunarTourellesPJ()
+--Définition des armes laser
+
+--Tourelles de défense
+--Axe de tir (N° d'arme, arc de tir, Orientation, portée, délais de tir, dégâts)
+variation:setBeamWeapon(0, 360, 180, 2000, 0.5, 1)
+--Ajustement de la consommation d'énergie des tirs
+variation:setBeamWeaponEnergyPerFire(0, 1)
+--Ajustement de la surchauffe engendrée par les tirs
+variation:setBeamWeaponHeatPerFire(0, 0.01)
+
+--Tourelle Bâbord
+--Axe de tir (N° d'arme, arc de tir, Orientation, portée, délais de tir, dégâts)
+variation:setBeamWeapon(1, 1, 270, 7000, 10, 40)
+--Paramètres de tourelle (N°d'arme, Arc de tir, orientation, vitesse de rotation)
+variation:setBeamWeaponTurret(1, 90, 270, 0.5)
+--Ajustement de la consommation d'énergie des tirs
+variation:setBeamWeaponEnergyPerFire(1, 20)
+--Ajustement de la surchauffe engendrée par les tirs
+variation:setBeamWeaponHeatPerFire(1, 0.1)
+
+--Tourelle Tribord
+--Axe de tir (N° d'arme, arc de tir, Orientation, portée, délais de tir, dégâts)
+variation:setBeamWeapon(2, 1, 90, 7000, 10, 40)
+--Paramètres de tourelle (N°d'arme, Arc de tir, orientation, vitesse de rotation)
+variation:setBeamWeaponTurret(2, 90, 90, 0.5)
+--Ajustement de la consommation d'énergie des tirs
+variation:setBeamWeaponEnergyPerFire(2, 20)
+--Ajustement de la surchauffe engendrée par les tirs
+variation:setBeamWeaponHeatPerFire(2, 0.1)
+end
+
+CroiseurLunarTourellesPJ()
+
+end
+
+--Appel de la fonction créant le vaisseau PJ
+CroiseurLunarPJ()
+
+end
+
+--Appel de la fonction créant les vaisseaux PJ et PNJ
+CroiseurLunar()
+
+--Création du vaisseau
+function CroiseurGothic()
+
+--Définition du vaisseau PNJ
+function CroiseurGothicPNJ()
+
+function CroiseurGothicCoque()
+--Description, définition du modèle et de l'icone radar
+template = ShipTemplate():setName("Croiseur Gothic"):setLocaleName(_("ship", "Croiseur Gothic")):setClass(_("class", "Croiseur"), _("subclass", "Gothic")):setModel("Navy_Cruiser")
+template:setDescription(_([[Le Croiseur de Classe Gothic est commun à travers l’Imperium. Un seul d’entre eux est un adversaire redoutable, capable de venir à bout d’ennemis de n’importe quelle taille. Cependant, au cours de la Guerre Gothique, il devint évident que les Croiseurs de Classe Gothic ne pouvaient opérer avec succès qu’appuyés par d’autres vaisseaux.  Aussi puissantes que soient leurs pièces d’artillerie, elles ne représentent pas un réel danger pour un adversaire suffisamment mobile en duel. Une nouvelle tactique fut donc mise en place en associant aux vaisseaux de Classe Gothic un escadron d’escorteurs ou de Croiseurs. Cette configuration permet d’engager les vaisseaux ennemi par le travers, tandis que les autres membres de l’escadron les encerclent pour les attaquer de toutes parts. Il est alors possible de tirer le meilleur parti des pièces d’artillerie du vaisseau.]]))
+--template:setScale(250)
+template:setRadarTrace("cruiser.png")
+--Endommagement des systèmes
+template:setSystemDamageHullThreshold(0.024)
+template:setSystemDamageRatio(0.7)
+--Coque
+template:setHull(700)
+--Boucliers (plusieurs valeurs pour plusieurs boucliers)
+template:setShields(100)
+--Valeur de recharge des boucliers
+template:setShieldRechargeRate(2.4)
+--Energie
+template:setEnergyStorage(1000)
+--Vitesse (vitesse avant max, rotation, accélération, vitesse arrière max, rotation)
+template:setSpeed(125, 5.6, 2.5, 15.625, 5.6)
+--Manoeuvre de Combat (vitesse avant, vitesse latérale)
+template:setCombatManeuver(400, 250)
+--Capacité de hack
 template:setCanHack(false)
+--Sondes
+template:setCanLaunchProbe(false)
+--Définition du comportement IA
+template:setDefaultAI("missilevolley")
 
-template:registerSquadronComposition("Ch", 5, 15, "Chasseur Mk2", "Chasseur", "Chasseur","Chasseur")
-template:registerSquadronComposition("Ch2", 5, 15, "Chasseur Mk2", "Chasseur", "Chasseur","Chasseur")
-template:registerSquadronComposition("Ch3", 5, 15, "Chasseur Mk2", "Chasseur", "Chasseur","Chasseur")
-template:registerSquadronComposition("Ch4", 5, 15, "Chasseur Mk2", "Chasseur", "Chasseur","Chasseur")
-template:setBlueprintAvailable("Ch", "Ch3")
+end
 
---Dock/balise de renfort de la marine
+CroiseurGothicCoque()
 
---template:addDrones("Fregate sword",1)
---template:addDrones("Fregate Firestorm",1)
---template:addDrones("Vaisseau d'abordage Shark Mk2",2)
---template:addDrones("Destroyer widowmaker MK2",1)
---template:setDocks(3, 0, 0, 0, 6, 7)
+function CroiseurGothicTourelles()
+--Définition des armes laser
 
--- mettre deux sword / deux firestorm en possibilité de summon
+--Tourelles de défense
+--Axe de tir (N° d'arme, arc de tir, Orientation, portée, délais de tir, dégâts)
+template:setBeamWeapon(0, 360, 180, 2000, 0.5, 1)
+--Ajustement de la consommation d'énergie des tirs
+template:setBeamWeaponEnergyPerFire(0, 1)
+--Ajustement de la surchauffe engendrée par les tirs
+template:setBeamWeaponHeatPerFire(0, 0.01)
+
+--Tourelle Bâbord 1
+--Axe de tir (N° d'arme, arc de tir, Orientation, portée, délais de tir, dégâts)
+template:setBeamWeapon(1, 1, 270, 7000, 10, 40)
+--Paramètres de tourelle (N°d'arme, Arc de tir, orientation, vitesse de rotation)
+template:setBeamWeaponTurret(1, 90, 270, 0.5)
+--Ajustement de la consommation d'énergie des tirs
+template:setBeamWeaponEnergyPerFire(1, 20)
+--Ajustement de la surchauffe engendrée par les tirs
+template:setBeamWeaponHeatPerFire(1, 0.1)
+
+--Tourelle Bâbord 2
+--Axe de tir (N° d'arme, arc de tir, Orientation, portée, délais de tir, dégâts)
+template:setBeamWeapon(2, 1, 270, 7000, 10, 40)
+--Paramètres de tourelle (N°d'arme, Arc de tir, orientation, vitesse de rotation)
+template:setBeamWeaponTurret(2, 90, 270, 0.5)
+--Ajustement de la consommation d'énergie des tirs
+template:setBeamWeaponEnergyPerFire(2, 20)
+--Ajustement de la surchauffe engendrée par les tirs
+template:setBeamWeaponHeatPerFire(2, 0.1)
+
+--Tourelle Tribord 1
+--Axe de tir (N° d'arme, arc de tir, Orientation, portée, délais de tir, dégâts)
+template:setBeamWeapon(3, 1, 90, 7000, 10, 40)
+--Paramètres de tourelle (N°d'arme, Arc de tir, orientation, vitesse de rotation)
+template:setBeamWeaponTurret(3, 90, 90, 0.5)
+--Ajustement de la consommation d'énergie des tirs
+template:setBeamWeaponEnergyPerFire(3, 20)
+--Ajustement de la surchauffe engendrée par les tirs
+template:setBeamWeaponHeatPerFire(3, 0.1)
+
+--Tourelle Tribord 2
+--Axe de tir (N° d'arme, arc de tir, Orientation, portée, délais de tir, dégâts)
+template:setBeamWeapon(4, 1, 90, 7000, 10, 40)
+--Paramètres de tourelle (N°d'arme, Arc de tir, orientation, vitesse de rotation)
+template:setBeamWeaponTurret(4, 90, 90, 0.5)
+--Ajustement de la consommation d'énergie des tirs
+template:setBeamWeaponEnergyPerFire(4, 20)
+--Ajustement de la surchauffe engendrée par les tirs
+template:setBeamWeaponHeatPerFire(4, 0.1)
+
+end
+
+CroiseurGothicTourelles()
+
+function CroiseurGothicMissiles()
+--Définition des lance missiles
+
+--Nombre de tubes et temps de chargement
+template:setTubes(1, 30)
+
+--Lance-Torpille
+--Direction (Index,Direction)
+template:setTubeDirection(0, 0)
+--Temps de chargement (Index, Temps)
+template:setTubeLoadTime(0, 30)	
+--Taille des obus (Index, Taille)
+template:setTubeSize(0, "medium")
+
+--Définition des torpilles
+--Définition des torpilles (Type, Nom, Multiplicateur de dégâts, Vitesse, Type de dégâts, Temps de vie)
+template:setCustomWeapon("Nuke", "Torpille", 1, 800.0, "Kinetic", 60)
+--Définition de la couleur de l'obus
+template:setCustomWeaponColor("Torpille", 255, 204, 0)
+--Définition du montant stocké (Nom, Stock maximum)
+template:setCustomWeaponStorage("Torpille", 12)
+--Définition de la salve (Nom, nombre de salves, nombre d'objets par salve)
+template:setCustomWeaponMultiple("Torpille",1,2)
+
+--Sélection des munitions
+template:setWeaponTubeExclusiveForCustom(0,"Torpille")
+
+end
+
+CroiseurGothicMissiles()
+
+end
+
+--Appel de la fonction créant le vaisseau PNJ
+CroiseurGothicPNJ()
+
+--Création du vaisseau PJ
+function CroiseurGothicPJ()
+--Copie du vaisseau PNJ et transformation en vaisseau PJ
+variation = template:copy("Gothic"):setLocaleName(_("playerShip", "Croiseur Gothic")):setType("playership")
+--Valeur de recharge des boucliers
+variation:setShieldRechargeRate(2.4)
+--Module de saut
+variation:setJumpDrive(true)
+--Portée de saut(Minimum,Maximum)
+variation:setJumpDriveRange(5000.0, 50000.0)
+--Temps de rechargement après un saut de 10 unités
+variation:setJumpDriveChargeTime(60)
+--Définition des portées Radar
+variation:setLongRangeRadarRange(30000):setShortRangeRadarRange(12000)
+
+function CroiseurGothicTourellesPJ()
+--Définition des armes laser
+
+--Tourelles de défense
+--Axe de tir (N° d'arme, arc de tir, Orientation, portée, délais de tir, dégâts)
+variation:setBeamWeapon(0, 360, 180, 2000, 0.5, 1)
+--Ajustement de la consommation d'énergie des tirs
+variation:setBeamWeaponEnergyPerFire(0, 1)
+--Ajustement de la surchauffe engendrée par les tirs
+variation:setBeamWeaponHeatPerFire(0, 0.01)
+
+--Tourelle Bâbord 1
+--Axe de tir (N° d'arme, arc de tir, Orientation, portée, délais de tir, dégâts)
+variation:setBeamWeapon(1, 1, 270, 7000, 10, 40)
+--Paramètres de tourelle (N°d'arme, Arc de tir, orientation, vitesse de rotation)
+variation:setBeamWeaponTurret(1, 90, 270, 0.5)
+--Ajustement de la consommation d'énergie des tirs
+variation:setBeamWeaponEnergyPerFire(1, 20)
+--Ajustement de la surchauffe engendrée par les tirs
+variation:setBeamWeaponHeatPerFire(1, 0.1)
+
+--Tourelle Bâbord 2
+--Axe de tir (N° d'arme, arc de tir, Orientation, portée, délais de tir, dégâts)
+variation:setBeamWeapon(2, 1, 270, 7000, 10, 40)
+--Paramètres de tourelle (N°d'arme, Arc de tir, orientation, vitesse de rotation)
+variation:setBeamWeaponTurret(2, 90, 270, 0.5)
+--Ajustement de la consommation d'énergie des tirs
+variation:setBeamWeaponEnergyPerFire(2, 20)
+--Ajustement de la surchauffe engendrée par les tirs
+variation:setBeamWeaponHeatPerFire(2, 0.1)
+
+--Tourelle Tribord 1
+--Axe de tir (N° d'arme, arc de tir, Orientation, portée, délais de tir, dégâts)
+variation:setBeamWeapon(3, 1, 90, 7000, 10, 40)
+--Paramètres de tourelle (N°d'arme, Arc de tir, orientation, vitesse de rotation)
+variation:setBeamWeaponTurret(3, 90, 90, 0.5)
+--Ajustement de la consommation d'énergie des tirs
+variation:setBeamWeaponEnergyPerFire(3, 20)
+--Ajustement de la surchauffe engendrée par les tirs
+variation:setBeamWeaponHeatPerFire(3, 0.1)
+
+--Tourelle Tribord 2
+--Axe de tir (N° d'arme, arc de tir, Orientation, portée, délais de tir, dégâts)
+variation:setBeamWeapon(4, 1, 90, 7000, 10, 40)
+--Paramètres de tourelle (N°d'arme, Arc de tir, orientation, vitesse de rotation)
+variation:setBeamWeaponTurret(4, 90, 90, 0.5)
+--Ajustement de la consommation d'énergie des tirs
+variation:setBeamWeaponEnergyPerFire(4, 20)
+--Ajustement de la surchauffe engendrée par les tirs
+variation:setBeamWeaponHeatPerFire(4, 0.1)
+
+end
+
+CroiseurGothicTourellesPJ()
+
+end
+
+--Appel de la fonction créant le vaisseau PJ
+CroiseurGothicPJ()
+
+end
+
+--Appel de la fonction créant les vaisseaux PJ et PNJ
+CroiseurGothic()
+
+--Création du vaisseau
+function CroiseurDominator()
+
+--Définition du vaisseau PNJ
+function CroiseurDominatorPNJ()
+
+function CroiseurDominatorCoque()
+--Description, définition du modèle et de l'icone radar
+template = ShipTemplate():setName("Croiseur Dominator"):setLocaleName(_("ship", "Croiseur Dominator")):setClass(_("class", "Croiseur"), _("subclass", "Dominator")):setModel("Navy_Cruiser")
+template:setDescription(_([[Le Croiseur de Classe Dominator est un vaisseau inhabituel, construit à l’origine pour servir de soutien dans les engagements majeurs et les assauts planétaires. Il fut conçu pour se tenir à l’écart et bombarder son ennemi de loin à l’aide de son imposant Canon Nova. Ce type de vaisseau est beaucoup plus courant dans la Flotte de Guerre Ultima que dans celle du Segmentum Obscurus, car ils sont en grande majorité construits dans la base navale de Kar Duniash.]]))
+--template:setScale(250)
+template:setRadarTrace("cruiser.png")
+--Endommagement des systèmes
+template:setSystemDamageHullThreshold(0.024)
+template:setSystemDamageRatio(0.7)
+--Coque
+template:setHull(700)
+--Boucliers (plusieurs valeurs pour plusieurs boucliers)
+template:setShields(100)
+--Valeur de recharge des boucliers
+template:setShieldRechargeRate(2.4)
+--Energie
+template:setEnergyStorage(1000)
+--Vitesse (vitesse avant max, rotation, accélération, vitesse arrière max, rotation)
+template:setSpeed(125, 5.6, 2.5, 15.625, 5.6)
+--Manoeuvre de Combat (vitesse avant, vitesse latérale)
+template:setCombatManeuver(400, 250)
+--Capacité de hack
+template:setCanHack(false)
+--Sondes
+template:setCanLaunchProbe(false)
+--Définition du comportement IA
+template:setDefaultAI("missilevolley")
+
+end
+
+CroiseurDominatorCoque()
+
+function CroiseurDominatorTourelles()
+--Définition des armes laser
+
+--Tourelles de défense
+--Axe de tir (N° d'arme, arc de tir, Orientation, portée, délais de tir, dégâts)
+template:setBeamWeapon(0, 360, 180, 2000, 0.5, 1)
+--Ajustement de la consommation d'énergie des tirs
+template:setBeamWeaponEnergyPerFire(0, 1)
+--Ajustement de la surchauffe engendrée par les tirs
+template:setBeamWeaponHeatPerFire(0, 0.01)
+
+end
+
+CroiseurDominatorTourelles()
+
+function CroiseurDominatorMissiles()
+--Définition des lance missiles
+
+--Nombre de tubes et temps de chargement
+template:setTubes(7, 30)
+
+--Canon Nova
+--Direction (Index,Direction)
+template:setTubeDirection(0, 0)
+--Temps de chargement (Index, Temps)
+template:setTubeLoadTime(0, 60)	
+--Taille des obus (Index, Taille)
+template:setTubeSize(0, "large")
+
+--Macrocanons Bâbords 1
+--Direction (Index,Direction)
+template:setTubeDirection(1, 270)
+--Temps de chargement (Index, Temps)
+template:setTubeLoadTime(1, 15)
+--Taille des obus (Index, Taille)
+template:setTubeSize(1, "small")
+
+--Macrocanons Bâbords 2
+--Direction (Index,Direction)
+template:setTubeDirection(2, 270)
+--Temps de chargement (Index, Temps)
+template:setTubeLoadTime(2, 15)
+--Taille des obus (Index, Taille)
+template:setTubeSize(2, "small")
+
+--Macrocanons Tribords 1
+--Direction (Index,Direction)
+template:setTubeDirection(3,90)
+--Temps de chargement (Index, Temps)
+template:setTubeLoadTime(3, 15)
+--Taille des obus (Index, Taille)
+template:setTubeSize(3, "small")
+
+--Macrocanons Tribords 2
+--Direction (Index,Direction)
+template:setTubeDirection(4,90)
+--Temps de chargement (Index, Temps)
+template:setTubeLoadTime(4, 15)
+--Taille des obus (Index, Taille)
+template:setTubeSize(4, "small")
+
+--Hangars Bâbords
+--Direction (Index,Direction)
+template:setTubeDirection(5, 270)
+--Temps de chargement (Index, Temps)
+template:setTubeLoadTime(5, 15)
+--Taille des obus (Index, Taille)
+template:setTubeSize(5, "small")
+
+--Hangars Tribords
+--Direction (Index,Direction)
+template:setTubeDirection(6,90)
+--Temps de chargement (Index, Temps)
+template:setTubeLoadTime(6, 15)
+--Taille des obus (Index, Taille)
+template:setTubeSize(6, "small")
+
+--Définition du canon nova
+--Définition des torpilles (Type, Nom, Multiplicateur de dégâts, Vitesse, Type de dégâts, Temps de vie)
+template:setCustomWeapon("Nuke", "Canon Nova", 1, 6400.0, "Kinetic", 10)
+--Définition de la couleur de l'obus
+template:setCustomWeaponColor("Canon Nova", 255, 204, 0)
+--Définition du montant stocké (Nom, Stock maximum)
+template:setCustomWeaponStorage("Canon Nova", 6)
+--Définition de la salve (Nom, nombre de salves, nombre d'objets par salve)
+template:setCustomWeaponMultiple("Canon Nova",1,1)
+
+--Définition des macrocanons
+--Définition des macrocanons (Type, Nom, Multiplicateur de dégâts, Vitesse, Type de dégâts, Temps de vie)
+template:setCustomWeapon("HVLI", "MCANMK2", 6, 4000, "Kinetic", 20)
+--Définition de la couleur de l'obus
+template:setCustomWeaponColor("MCANMK2", 255, 255, 103)
+--Définition du montant stocké (Nom, Stock maximum)
+template:setCustomWeaponStorage("MCANMK2", 200)
+--Définition de la salve (Nom, nombre de salves, nombre d'objets par salve)
+template:setCustomWeaponMultiple("MCANMK2", 1, 3)
+
+--Définition des chasseurs
+--Définition des chasseurs (Type, Nom, Multiplicateur de dégâts, Vitesse, Type de dégâts, Temps de vie)
+template:setCustomWeapon("Nuke", "Chasseurs", 0.5, 800.0, "Kinetic", 60)
+--Définition de la couleur de l'obus
+template:setCustomWeaponColor("Chasseurs", 255, 204, 0)
+--Définition du montant stocké (Nom, Stock maximum)
+template:setCustomWeaponStorage("Chasseurs", 60)
+--Définition de la salve (Nom, nombre de salves, nombre d'objets par salve)
+template:setCustomWeaponMultiple("Chasseurs",1,2)
+
+--Sélection des munitions
+template:setWeaponTubeExclusiveForCustom(0,"Canon Nova")
+template:setWeaponTubeExclusiveForCustom(1,"MCANMK2")
+template:setWeaponTubeExclusiveForCustom(2,"MCANMK2")
+template:setWeaponTubeExclusiveForCustom(3,"MCANMK2")
+template:setWeaponTubeExclusiveForCustom(4,"MCANMK2")
+template:setWeaponTubeExclusiveForCustom(5,"Chasseurs")
+template:setWeaponTubeExclusiveForCustom(6,"Chasseurs")
+
+end
+
+CroiseurDominatorMissiles()
+
+end
+
+--Appel de la fonction créant le vaisseau PNJ
+CroiseurDominatorPNJ()
+
+--Création du vaisseau PJ
+function CroiseurDominatorPJ()
+--Copie du vaisseau PNJ et transformation en vaisseau PJ
+variation = template:copy("Dominator"):setLocaleName(_("playerShip", "Croiseur Dominator")):setType("playership")
+--Valeur de recharge des boucliers
+variation:setShieldRechargeRate(2.4)
+--Module de saut
+variation:setJumpDrive(true)
+--Portée de saut(Minimum,Maximum)
+variation:setJumpDriveRange(5000.0, 50000.0)
+--Temps de rechargement après un saut de 10 unités
+variation:setJumpDriveChargeTime(60)
+--Définition des portées Radar
+variation:setLongRangeRadarRange(30000):setShortRangeRadarRange(12000)
+
+function CroiseurDominatorTourellesPJ()
+--Définition des armes laser
+
+--Tourelles de défense
+--Axe de tir (N° d'arme, arc de tir, Orientation, portée, délais de tir, dégâts)
+variation:setBeamWeapon(0, 360, 180, 2000, 0.5, 1)
+--Ajustement de la consommation d'énergie des tirs
+variation:setBeamWeaponEnergyPerFire(0, 1)
+--Ajustement de la surchauffe engendrée par les tirs
+variation:setBeamWeaponHeatPerFire(0, 0.01)
+
+end
+
+CroiseurDominatorTourellesPJ()
+
+end
+
+--Appel de la fonction créant le vaisseau PJ
+CroiseurDominatorPJ()
+
+end
+
+--Appel de la fonction créant les vaisseaux PJ et PNJ
+CroiseurDominator()
+
+--Création du vaisseau
+function GalionConquest()
+
+--Définition du vaisseau PNJ
+function GalionConquestPNJ()
+
+function GalionConquestCoque()
+--Description, définition du modèle et de l'icone radar
+template = ShipTemplate():setName("Galion Stellaire Conquest"):setLocaleName(_("ship", "Galion Stellaire Conquest")):setClass(_("class", "Croiseur"), _("subclass", "Conquest")):setModel("Navy_Cruiser")
+template:setDescription(_([[Le « Galion Stellaire » de classe Conquest est un ancien modèle de croiseur encore utilisé dans les anciennes flottes impériales ainsi que par certains Libres-Marchands. Ils sont considérés comme des navires au trésor créés pour les tout premiers Libres-Marchands sur ordre de l’Empereur lui-même. Ceux encore en service disposent de merveilles technologiques depuis longtemps perdues et sont capables de mener à la fois des missions d’exploration à longue portée et de mener les leurs au combat. Au 41e millénaire, peu de ces navires sont encore en service et ils sont considérés comme de précieuses reliques des temps légendaires de la fondation de l’Imperium.]]))
+--template:setScale(255)
+template:setRadarTrace("cruiser.png")
+--Endommagement des systèmes
+template:setSystemDamageHullThreshold(0.016)
+template:setSystemDamageRatio(0.7)
+--Coque
+template:setHull(650)
+--Boucliers (plusieurs valeurs pour plusieurs boucliers)
+template:setShields(100)
+--Valeur de recharge des boucliers
+template:setShieldRechargeRate(2.4)
+--Energie
+template:setEnergyStorage(1000)
+--Vitesse (vitesse avant max, rotation, accélération, vitesse arrière max, rotation)
+template:setSpeed(100, 4.8, 2.1, 12.5, 4.8)
+--Manoeuvre de Combat (vitesse avant, vitesse latérale)
+template:setCombatManeuver(400, 250)
+--Capacité de hack
+template:setCanHack(false)
+--Sondes
+template:setCanLaunchProbe(false)
+--Définition du comportement IA
+template:setDefaultAI("missilevolley")
+
+end
+
+GalionConquestCoque()
+
+function GalionConquestTourelles()
+--Définition des armes laser
+
+--Tourelles de défense
+--Axe de tir (N° d'arme, arc de tir, Orientation, portée, délais de tir, dégâts)
+template:setBeamWeapon(0, 360, 180, 2000, 1, 1)
+--Ajustement de la consommation d'énergie des tirs
+template:setBeamWeaponEnergyPerFire(0, 1)
+--Ajustement de la surchauffe engendrée par les tirs
+template:setBeamWeaponHeatPerFire(0, 0.01)
+
+end
+
+GalionConquestTourelles()
+
+function GalionConquestMissiles()
+--Définition des lance missiles
+
+--Nombre de tubes et temps de chargement
+template:setTubes(9, 30)
+
+--Lance-Torpille
+--Direction (Index,Direction)
+template:setTubeDirection(0, 0)
+--Temps de chargement (Index, Temps)
+template:setTubeLoadTime(0, 30)	
+--Taille des obus (Index, Taille)
+template:setTubeSize(0, "medium")
+
+--Macrocanons Bâbords 1
+--Direction (Index,Direction)
+template:setTubeDirection(1, 270)
+--Temps de chargement (Index, Temps)
+template:setTubeLoadTime(1, 15)
+--Taille des obus (Index, Taille)
+template:setTubeSize(1, "small")
+
+--Macrocanons Bâbords 2
+--Direction (Index,Direction)
+template:setTubeDirection(2, 270)
+--Temps de chargement (Index, Temps)
+template:setTubeLoadTime(2, 15)
+--Taille des obus (Index, Taille)
+template:setTubeSize(2, "small")
+
+--Macrocanons Bâbords 3
+--Direction (Index,Direction)
+template:setTubeDirection(3, 270)
+--Temps de chargement (Index, Temps)
+template:setTubeLoadTime(3, 15)
+--Taille des obus (Index, Taille)
+template:setTubeSize(3, "small")
+
+--Macrocanons Bâbords 4
+--Direction (Index,Direction)
+template:setTubeDirection(4, 270)
+--Temps de chargement (Index, Temps)
+template:setTubeLoadTime(4, 15)
+--Taille des obus (Index, Taille)
+template:setTubeSize(4, "small")
+
+--Macrocanons Tribords 1
+--Direction (Index,Direction)
+template:setTubeDirection(5,90)
+--Temps de chargement (Index, Temps)
+template:setTubeLoadTime(5, 15)
+--Taille des obus (Index, Taille)
+template:setTubeSize(5, "small")
+
+--Macrocanons Tribords 2
+--Direction (Index,Direction)
+template:setTubeDirection(6,90)
+--Temps de chargement (Index, Temps)
+template:setTubeLoadTime(6, 15)
+--Taille des obus (Index, Taille)
+template:setTubeSize(6, "small")
+
+--Macrocanons Tribords 3
+--Direction (Index,Direction)
+template:setTubeDirection(7,90)
+--Temps de chargement (Index, Temps)
+template:setTubeLoadTime(7, 15)
+--Taille des obus (Index, Taille)
+template:setTubeSize(7, "small")
+
+--Macrocanons Tribords 4
+--Direction (Index,Direction)
+template:setTubeDirection(8,90)
+--Temps de chargement (Index, Temps)
+template:setTubeLoadTime(8, 15)
+--Taille des obus (Index, Taille)
+template:setTubeSize(8, "small")
+
+--Définition des torpilles
+--Définition des torpilles (Type, Nom, Multiplicateur de dégâts, Vitesse, Type de dégâts, Temps de vie)
+template:setCustomWeapon("Nuke", "Torpille", 1, 800.0, "Kinetic", 60)
+--Définition de la couleur de l'obus
+template:setCustomWeaponColor("Torpille", 255, 204, 0)
+--Définition du montant stocké (Nom, Stock maximum)
+template:setCustomWeaponStorage("Torpille", 12)
+--Définition de la salve (Nom, nombre de salves, nombre d'objets par salve)
+template:setCustomWeaponMultiple("Torpille",1,2)
+
+--Définition des macrocanons
+--Définition des macrocanons (Type, Nom, Multiplicateur de dégâts, Vitesse, Type de dégâts, Temps de vie)
+template:setCustomWeapon("HVLI", "MCANMK2", 6, 4000, "Kinetic", 20)
+--Définition de la couleur de l'obus
+template:setCustomWeaponColor("MCANMK2", 255, 255, 103)
+--Définition du montant stocké (Nom, Stock maximum)
+template:setCustomWeaponStorage("MCANMK2", 200)
+--Définition de la salve (Nom, nombre de salves, nombre d'objets par salve)
+template:setCustomWeaponMultiple("MCANMK2", 1, 3)
+
+--Sélection des munitions
+template:setWeaponTubeExclusiveForCustom(0,"Torpille")
+template:setWeaponTubeExclusiveForCustom(1,"MCANMK2")
+template:setWeaponTubeExclusiveForCustom(2,"MCANMK2")
+template:setWeaponTubeExclusiveForCustom(3,"MCANMK2")
+template:setWeaponTubeExclusiveForCustom(4,"MCANMK2")
+template:setWeaponTubeExclusiveForCustom(5,"MCANMK2")
+template:setWeaponTubeExclusiveForCustom(6,"MCANMK2")
+template:setWeaponTubeExclusiveForCustom(7,"MCANMK2")
+template:setWeaponTubeExclusiveForCustom(8,"MCANMK2")
+
+end
+
+GalionConquestMissiles()
+
+end
+
+--Appel de la fonction créant le vaisseau PNJ
+GalionConquestPNJ()
+
+--Création du vaisseau PJ
+function GalionConquestPJ()
+--Copie du vaisseau PNJ et transformation en vaisseau PJ
+variation = template:copy("Conquest"):setLocaleName(_("playerShip", "Galion Stellaire Conquest")):setType("playership")
+--Valeur de recharge des boucliers
+variation:setShieldRechargeRate(2.4)
+--Module de saut
+variation:setJumpDrive(true)
+--Portée de saut(Minimum,Maximum)
+variation:setJumpDriveRange(5000.0, 50000.0)
+--Temps de rechargement après un saut de 10 unités
+variation:setJumpDriveChargeTime(60)
+--Définition des portées Radar
+variation:setLongRangeRadarRange(30000):setShortRangeRadarRange(12000)
+
+function GalionConquestTourellesPJ()
+--Définition des armes laser
+
+--Tourelles de défense
+--Axe de tir (N° d'arme, arc de tir, Orientation, portée, délais de tir, dégâts)
+variation:setBeamWeapon(0, 360, 180, 2000, 1, 1)
+--Ajustement de la consommation d'énergie des tirs
+variation:setBeamWeaponEnergyPerFire(0, 1)
+--Ajustement de la surchauffe engendrée par les tirs
+variation:setBeamWeaponHeatPerFire(0, 0.01)
+
+end
+
+GalionConquestTourellesPJ()
+
+end
+
+--Appel de la fonction créant le vaisseau PJ
+GalionConquestPJ()
+
+end
+
+--Appel de la fonction créant les vaisseaux PJ et PNJ
+GalionConquest()
+
+--Création du vaisseau
+function CroiseurAmbition()
+
+--Définition du vaisseau PNJ
+function CroiseurAmbitionPNJ()
+
+function CroiseurAmbitionCoque()
+--Description, définition du modèle et de l'icone radar
+template = ShipTemplate():setName("Croiseur Ambition"):setLocaleName(_("ship", "Croiseur Ambition")):setClass(_("class", "Croiseur"), _("subclass", "Ambition")):setModel("Navy_Cruiser")
+template:setDescription(_([[Le croiseur de classe Ambition est un type de vaisseau produit par les chantiers navals de l'Adeptus Mechanicus pour les individus extrêmement riches, les Libres Marchands et les forces de défense spatiales des nobles dynasties. Bien qu’ils soient exploités par divers clans, maisons et flottes, ce sont de véritables croiseurs, possédant autant de puissance de feu que les classes Lunar ou Tyrant. Ils intègrent également invariablement des quartiers luxueux et des équipements pour leurs riches propriétaires.]]))
+--template:setScale(245)
+template:setRadarTrace("cruiser.png")
+--Endommagement des systèmes
+template:setSystemDamageHullThreshold(0.017)
+template:setSystemDamageRatio(0.7)
+--Coque
+template:setHull(660)
+--Boucliers (plusieurs valeurs pour plusieurs boucliers)
+template:setShields(100)
+--Valeur de recharge des boucliers
+template:setShieldRechargeRate(2.4)
+--Energie
+template:setEnergyStorage(1000)
+--Vitesse (vitesse avant max, rotation, accélération, vitesse arrière max, rotation)
+template:setSpeed(125, 5.92, 3, 15.625, 5.92)
+--Manoeuvre de Combat (vitesse avant, vitesse latérale)
+template:setCombatManeuver(400, 250)
+--Capacité de hack
+template:setCanHack(false)
+--Sondes
+template:setCanLaunchProbe(false)
+--Définition du comportement IA
+template:setDefaultAI("missilevolley")
+
+end
+
+CroiseurAmbitionCoque()
+
+function CroiseurAmbitionTourelles()
+--Définition des armes laser
+
+--Tourelles de défense
+--Axe de tir (N° d'arme, arc de tir, Orientation, portée, délais de tir, dégâts)
+template:setBeamWeapon(0, 360, 180, 2000, 0.5, 1)
+--Ajustement de la consommation d'énergie des tirs
+template:setBeamWeaponEnergyPerFire(0, 1)
+--Ajustement de la surchauffe engendrée par les tirs
+template:setBeamWeaponHeatPerFire(0, 0.01)
+
+--Tourelle Bâbord
+--Axe de tir (N° d'arme, arc de tir, Orientation, portée, délais de tir, dégâts)
+template:setBeamWeapon(1, 1, 270, 7000, 10, 40)
+--Paramètres de tourelle (N°d'arme, Arc de tir, orientation, vitesse de rotation)
+template:setBeamWeaponTurret(1, 90, 270, 0.5)
+--Ajustement de la consommation d'énergie des tirs
+template:setBeamWeaponEnergyPerFire(1, 20)
+--Ajustement de la surchauffe engendrée par les tirs
+template:setBeamWeaponHeatPerFire(1, 0.1)
+
+--Tourelle Tribord
+--Axe de tir (N° d'arme, arc de tir, Orientation, portée, délais de tir, dégâts)
+template:setBeamWeapon(2, 1, 90, 7000, 10, 40)
+--Paramètres de tourelle (N°d'arme, Arc de tir, orientation, vitesse de rotation)
+template:setBeamWeaponTurret(2, 90, 90, 0.5)
+--Ajustement de la consommation d'énergie des tirs
+template:setBeamWeaponEnergyPerFire(2, 20)
+--Ajustement de la surchauffe engendrée par les tirs
+template:setBeamWeaponHeatPerFire(2, 0.1)
+
+end
+
+CroiseurAmbitionTourelles()
+
+function CroiseurAmbitionMissiles()
+--Définition des lance missiles
+
+--Nombre de tubes et temps de chargement
+template:setTubes(5, 30)
+
+--Lance-Torpille
+--Direction (Index,Direction)
+template:setTubeDirection(0, 0)
+--Temps de chargement (Index, Temps)
+template:setTubeLoadTime(0, 30)	
+--Taille des obus (Index, Taille)
+template:setTubeSize(0, "medium")
+
+--Macrocanons Bâbords 1
+--Direction (Index,Direction)
+template:setTubeDirection(1, 270)
+--Temps de chargement (Index, Temps)
+template:setTubeLoadTime(1, 15)
+--Taille des obus (Index, Taille)
+template:setTubeSize(1, "small")
+
+--Macrocanons Bâbords 2
+--Direction (Index,Direction)
+template:setTubeDirection(2, 270)
+--Temps de chargement (Index, Temps)
+template:setTubeLoadTime(2, 15)
+--Taille des obus (Index, Taille)
+template:setTubeSize(2, "small")
+
+--Macrocanons Tribords 1
+--Direction (Index,Direction)
+template:setTubeDirection(3,90)
+--Temps de chargement (Index, Temps)
+template:setTubeLoadTime(3, 15)
+--Taille des obus (Index, Taille)
+template:setTubeSize(3, "small")
+
+--Macrocanons Tribords 2
+--Direction (Index,Direction)
+template:setTubeDirection(4,90)
+--Temps de chargement (Index, Temps)
+template:setTubeLoadTime(4, 15)
+--Taille des obus (Index, Taille)
+template:setTubeSize(4, "small")
+
+--Définition des torpilles
+--Définition des torpilles (Type, Nom, Multiplicateur de dégâts, Vitesse, Type de dégâts, Temps de vie)
+template:setCustomWeapon("Nuke", "Torpille", 1, 800.0, "Kinetic", 60)
+--Définition de la couleur de l'obus
+template:setCustomWeaponColor("Torpille", 255, 204, 0)
+--Définition du montant stocké (Nom, Stock maximum)
+template:setCustomWeaponStorage("Torpille", 12)
+--Définition de la salve (Nom, nombre de salves, nombre d'objets par salve)
+template:setCustomWeaponMultiple("Torpille",1,2)
+
+--Définition des macrocanons
+--Définition des macrocanons (Type, Nom, Multiplicateur de dégâts, Vitesse, Type de dégâts, Temps de vie)
+template:setCustomWeapon("HVLI", "MCANMK2", 6, 4000, "Kinetic", 20)
+--Définition de la couleur de l'obus
+template:setCustomWeaponColor("MCANMK2", 255, 255, 103)
+--Définition du montant stocké (Nom, Stock maximum)
+template:setCustomWeaponStorage("MCANMK2", 200)
+--Définition de la salve (Nom, nombre de salves, nombre d'objets par salve)
+template:setCustomWeaponMultiple("MCANMK2", 1, 3)
+
+--Sélection des munitions
+template:setWeaponTubeExclusiveForCustom(0,"Torpille")
+template:setWeaponTubeExclusiveForCustom(1,"MCANMK2")
+template:setWeaponTubeExclusiveForCustom(2,"MCANMK2")
+template:setWeaponTubeExclusiveForCustom(3,"MCANMK2")
+template:setWeaponTubeExclusiveForCustom(4,"MCANMK2")
+
+end
+
+CroiseurAmbitionMissiles()
+
+end
+
+--Appel de la fonction créant le vaisseau PNJ
+CroiseurAmbitionPNJ()
+
+--Création du vaisseau PJ
+function CroiseurAmbitionPJ()
+--Copie du vaisseau PNJ et transformation en vaisseau PJ
+variation = template:copy("Ambition"):setLocaleName(_("playerShip", "Croiseur Ambition")):setType("playership")
+--Valeur de recharge des boucliers
+variation:setShieldRechargeRate(2.4)
+--Module de saut
+variation:setJumpDrive(true)
+--Portée de saut(Minimum,Maximum)
+variation:setJumpDriveRange(5000.0, 50000.0)
+--Temps de rechargement après un saut de 10 unités
+variation:setJumpDriveChargeTime(60)
+--Définition des portées Radar
+variation:setLongRangeRadarRange(45000):setShortRangeRadarRange(18000)
+
+function CroiseurAmbitionTourellesPJ()
+--Définition des armes laser
+
+--Tourelles de défense
+--Axe de tir (N° d'arme, arc de tir, Orientation, portée, délais de tir, dégâts)
+variation:setBeamWeapon(0, 360, 180, 2000, 0.5, 1)
+--Ajustement de la consommation d'énergie des tirs
+variation:setBeamWeaponEnergyPerFire(0, 1)
+--Ajustement de la surchauffe engendrée par les tirs
+variation:setBeamWeaponHeatPerFire(0, 0.01)
+
+--Tourelle Bâbord
+--Axe de tir (N° d'arme, arc de tir, Orientation, portée, délais de tir, dégâts)
+variation:setBeamWeapon(1, 1, 270, 7000, 10, 40)
+--Paramètres de tourelle (N°d'arme, Arc de tir, orientation, vitesse de rotation)
+variation:setBeamWeaponTurret(1, 90, 270, 0.5)
+--Ajustement de la consommation d'énergie des tirs
+variation:setBeamWeaponEnergyPerFire(1, 20)
+--Ajustement de la surchauffe engendrée par les tirs
+variation:setBeamWeaponHeatPerFire(1, 0.1)
+
+--Tourelle Tribord
+--Axe de tir (N° d'arme, arc de tir, Orientation, portée, délais de tir, dégâts)
+variation:setBeamWeapon(2, 1, 90, 7000, 10, 40)
+--Paramètres de tourelle (N°d'arme, Arc de tir, orientation, vitesse de rotation)
+variation:setBeamWeaponTurret(2, 90, 90, 0.5)
+--Ajustement de la consommation d'énergie des tirs
+variation:setBeamWeaponEnergyPerFire(2, 20)
+--Ajustement de la surchauffe engendrée par les tirs
+variation:setBeamWeaponHeatPerFire(2, 0.1)
+end
+
+CroiseurAmbitionTourellesPJ()
+
+end
+
+--Appel de la fonction créant le vaisseau PJ
+CroiseurAmbitionPJ()
+
+end
+
+--Appel de la fonction créant les vaisseaux PJ et PNJ
+CroiseurAmbition()
+
+--Création du vaisseau
+function CroiseurDictator()
+
+--Définition du vaisseau PNJ
+function CroiseurDictatorPNJ()
+
+function CroiseurDictatorCoque()
+--Description, définition du modèle et de l'icone radar
+template = ShipTemplate():setName("Croiseur Dictator"):setLocaleName(_("ship", "Croiseur Dictator")):setClass(_("class", "Croiseur"), _("subclass", "Dictator")):setModel("Navy_Cruiser")
+template:setDescription(_([[Les Croiseurs de Classe Dictator sont construits à partir de la coque de ceux de Classe Lunar, mais les pièces d’artillerie navale sont remplacées par des ponts de lancement d’appareils d’attaque. Ces modifications furent conçues afin de pouvoir envoyer facilement en orbite basse un grand nombre d’appareils, comme les chasseurs Thunderbolts et les Bombardiers Marauder, pour effectuer des opérations de soutien au sol. Cependant, des améliorations successives sur les systèmes de communication et de détection augmentèrent la capacité des Dictators à lancer des attaques à longue portée. C’est pourquoi ces derniers furent de plus en plus souvent équipés de chasseurs Fury capables d’opérer dans l’espace ainsi que de Bombardiers Starhawk, leur permettant d’opérer soit comme vaisseau de soutien au sein d’une flotte, soit indépendamment afin de patrouiller dans le secteur. Un seul Dictator épaulé par une poignée d’escorteurs constitue donc une force extrêmement souple capable de pourchasser des pirates ou d’inquiéter une planète.]]))
+--template:setScale(255)
+template:setRadarTrace("cruiser.png")
+--Endommagement des systèmes
+template:setSystemDamageHullThreshold(0.02)
+template:setSystemDamageRatio(0.7)
+--Coque
+template:setHull(700)
+--Boucliers (plusieurs valeurs pour plusieurs boucliers)
+template:setShields(100)
+--Valeur de recharge des boucliers
+template:setShieldRechargeRate(2.4)
+--Energie
+template:setEnergyStorage(1000)
+--Vitesse (vitesse avant max, rotation, accélération, vitesse arrière max, rotation)
+template:setSpeed(125, 5.28, 2.5, 15.625, 5.28)
+--Manoeuvre de Combat (vitesse avant, vitesse latérale)
+template:setCombatManeuver(400, 250)
+--Capacité de hack
+template:setCanHack(false)
+--Sondes
+template:setCanLaunchProbe(false)
+--Définition du comportement IA
+template:setDefaultAI("missilevolley")
+
+end
+
+CroiseurDictatorCoque()
+
+function CroiseurDictatorTourelles()
+--Définition des armes laser
+
+--Tourelles de défense
+--Axe de tir (N° d'arme, arc de tir, Orientation, portée, délais de tir, dégâts)
+template:setBeamWeapon(0, 360, 180, 2000, 0.33, 1)
+--Ajustement de la consommation d'énergie des tirs
+template:setBeamWeaponEnergyPerFire(0, 1)
+--Ajustement de la surchauffe engendrée par les tirs
+template:setBeamWeaponHeatPerFire(0, 0.01)
+
+end
+
+CroiseurDictatorTourelles()
+
+function CroiseurDictatorMissiles()
+--Définition des lance missiles
+
+--Nombre de tubes et temps de chargement
+template:setTubes(7, 30)
+
+--Lance-Torpille
+--Direction (Index,Direction)
+template:setTubeDirection(0, 0)
+--Temps de chargement (Index, Temps)
+template:setTubeLoadTime(0, 30)	
+--Taille des obus (Index, Taille)
+template:setTubeSize(0, "medium")
+
+--Macrocanons Bâbords 1
+--Direction (Index,Direction)
+template:setTubeDirection(1, 270)
+--Temps de chargement (Index, Temps)
+template:setTubeLoadTime(1, 15)
+--Taille des obus (Index, Taille)
+template:setTubeSize(1, "small")
+
+--Macrocanons Bâbords 2
+--Direction (Index,Direction)
+template:setTubeDirection(2, 270)
+--Temps de chargement (Index, Temps)
+template:setTubeLoadTime(2, 15)
+--Taille des obus (Index, Taille)
+template:setTubeSize(2, "small")
+
+--Macrocanons Tribords 1
+--Direction (Index,Direction)
+template:setTubeDirection(3,90)
+--Temps de chargement (Index, Temps)
+template:setTubeLoadTime(3, 15)
+--Taille des obus (Index, Taille)
+template:setTubeSize(3, "small")
+
+--Macrocanons Tribords 2
+--Direction (Index,Direction)
+template:setTubeDirection(4,90)
+--Temps de chargement (Index, Temps)
+template:setTubeLoadTime(4, 15)
+--Taille des obus (Index, Taille)
+template:setTubeSize(4, "small")
+
+--Hangars Bâbords
+--Direction (Index,Direction)
+template:setTubeDirection(5, 270)
+--Temps de chargement (Index, Temps)
+template:setTubeLoadTime(5, 15)
+--Taille des obus (Index, Taille)
+template:setTubeSize(5, "small")
+
+--Hangars Tribords
+--Direction (Index,Direction)
+template:setTubeDirection(6,90)
+--Temps de chargement (Index, Temps)
+template:setTubeLoadTime(6, 15)
+--Taille des obus (Index, Taille)
+template:setTubeSize(6, "small")
+
+--Définition des torpilles
+--Définition des torpilles (Type, Nom, Multiplicateur de dégâts, Vitesse, Type de dégâts, Temps de vie)
+template:setCustomWeapon("Nuke", "Torpille", 1, 800.0, "Kinetic", 60)
+--Définition de la couleur de l'obus
+template:setCustomWeaponColor("Torpille", 255, 204, 0)
+--Définition du montant stocké (Nom, Stock maximum)
+template:setCustomWeaponStorage("Torpille", 12)
+--Définition de la salve (Nom, nombre de salves, nombre d'objets par salve)
+template:setCustomWeaponMultiple("Torpille",1,2)
+
+--Définition des macrocanons
+--Définition des macrocanons (Type, Nom, Multiplicateur de dégâts, Vitesse, Type de dégâts, Temps de vie)
+template:setCustomWeapon("HVLI", "MCANMK2", 6, 4000, "Kinetic", 20)
+--Définition de la couleur de l'obus
+template:setCustomWeaponColor("MCANMK2", 255, 255, 103)
+--Définition du montant stocké (Nom, Stock maximum)
+template:setCustomWeaponStorage("MCANMK2", 200)
+--Définition de la salve (Nom, nombre de salves, nombre d'objets par salve)
+template:setCustomWeaponMultiple("MCANMK2", 1, 3)
+
+--Définition des chasseurs
+--Définition des chasseurs (Type, Nom, Multiplicateur de dégâts, Vitesse, Type de dégâts, Temps de vie)
+template:setCustomWeapon("Nuke", "Chasseurs", 0.5, 800.0, "Kinetic", 60)
+--Définition de la couleur de l'obus
+template:setCustomWeaponColor("Chasseurs", 255, 204, 0)
+--Définition du montant stocké (Nom, Stock maximum)
+template:setCustomWeaponStorage("Chasseurs", 60)
+--Définition de la salve (Nom, nombre de salves, nombre d'objets par salve)
+template:setCustomWeaponMultiple("Chasseurs",1,2)
+
+--Sélection des munitions
+template:setWeaponTubeExclusiveForCustom(0,"Torpille")
+template:setWeaponTubeExclusiveForCustom(1,"MCANMK2")
+template:setWeaponTubeExclusiveForCustom(2,"MCANMK2")
+template:setWeaponTubeExclusiveForCustom(3,"MCANMK2")
+template:setWeaponTubeExclusiveForCustom(4,"MCANMK2")
+template:setWeaponTubeExclusiveForCustom(5,"Chasseurs")
+template:setWeaponTubeExclusiveForCustom(6,"Chasseurs")
+
+end
+
+CroiseurDictatorMissiles()
+
+end
+
+--Appel de la fonction créant le vaisseau PNJ
+CroiseurDictatorPNJ()
+
+--Création du vaisseau PJ
+function CroiseurDictatorPJ()
+--Copie du vaisseau PNJ et transformation en vaisseau PJ
+variation = template:copy("Dictator"):setLocaleName(_("playerShip", "Croiseur Dictator")):setType("playership")
+--Valeur de recharge des boucliers
+variation:setShieldRechargeRate(2.4)
+--Module de saut
+variation:setJumpDrive(true)
+--Portée de saut(Minimum,Maximum)
+variation:setJumpDriveRange(5000.0, 50000.0)
+--Temps de rechargement après un saut de 10 unités
+variation:setJumpDriveChargeTime(60)
+--Définition des portées Radar
+variation:setLongRangeRadarRange(54000):setShortRangeRadarRange(21600)
+
+function CroiseurDictatorTourellesPJ()
+--Définition des armes laser
+
+--Tourelles de défense
+--Axe de tir (N° d'arme, arc de tir, Orientation, portée, délais de tir, dégâts)
+variation:setBeamWeapon(0, 360, 180, 2000, 0.33, 1)
+--Ajustement de la consommation d'énergie des tirs
+variation:setBeamWeaponEnergyPerFire(0, 1)
+--Ajustement de la surchauffe engendrée par les tirs
+variation:setBeamWeaponHeatPerFire(0, 0.01)
+
+end
+
+CroiseurDictatorTourellesPJ()
+
+end
+
+--Appel de la fonction créant le vaisseau PJ
+CroiseurDictatorPJ()
+
+end
+
+--Appel de la fonction créant les vaisseaux PJ et PNJ
+CroiseurDictator()
+
+--Création du vaisseau
+function CroiseurTyrant()
+
+--Définition du vaisseau PNJ
+function CroiseurTyrantPNJ()
+
+function CroiseurTyrantCoque()
+--Description, définition du modèle et de l'icone radar
+template = ShipTemplate():setName("Croiseur Tyrant"):setLocaleName(_("ship", "Croiseur Tyrant")):setClass(_("class", "Croiseur"), _("subclass", "Tyrant")):setModel("Navy_Cruiser")
+template:setDescription(_([[Vers la fin du trente-huitième millénaire, le célèbre Artisan-Magos Hyus N’dai travailla sur la technologie des Armes à Plasma à haute cadence. Le Croiseur de Classe Tyrant devint bientôt populaire dans les chantiers navals grâce à ses batteries d’armes à plasma à haute cadence capables de délivrer des salves à une portée bien supérieure à celles des batteries classiques. Cela constitua une petite révolution, dans la mesure où le secret de la fabrication d’armes à longue portée avait été perdu depuis le Moyen-Âge Technologique. En pratique, toutefois, ces armes à longue portée n’ont pas la puissance nécessaire pour constituer une menace sérieuse contre autre chose que des escorteurs.]]))
+--template:setScale(250)
+template:setRadarTrace("cruiser.png")
+--Endommagement des systèmes
+template:setSystemDamageHullThreshold(0.02)
+template:setSystemDamageRatio(0.7)
+--Coque
+template:setHull(700)
+--Boucliers (plusieurs valeurs pour plusieurs boucliers)
+template:setShields(100)
+--Valeur de recharge des boucliers
+template:setShieldRechargeRate(2.4)
+--Energie
+template:setEnergyStorage(1000)
+--Vitesse (vitesse avant max, rotation, accélération, vitesse arrière max, rotation)
+template:setSpeed(125, 5.6, 2.5, 15.625, 5.6)
+--Manoeuvre de Combat (vitesse avant, vitesse latérale)
+template:setCombatManeuver(400, 250)
+--Capacité de hack
+template:setCanHack(false)
+--Sondes
+template:setCanLaunchProbe(false)
+--Définition du comportement IA
+template:setDefaultAI("missilevolley")
+
+end
+
+CroiseurTyrantCoque()
+
+function CroiseurTyrantTourelles()
+--Définition des armes laser
+
+--Tourelles de défense
+--Axe de tir (N° d'arme, arc de tir, Orientation, portée, délais de tir, dégâts)
+template:setBeamWeapon(0, 360, 180, 2000, 0.5, 1)
+--Ajustement de la consommation d'énergie des tirs
+template:setBeamWeaponEnergyPerFire(0, 1)
+--Ajustement de la surchauffe engendrée par les tirs
+template:setBeamWeaponHeatPerFire(0, 0.01)
+
+end
+
+CroiseurTyrantTourelles()
+
+function CroiseurTyrantMissiles()
+--Définition des lance missiles
+
+--Nombre de tubes et temps de chargement
+template:setTubes(9, 30)
+
+--Lance-Torpille
+--Direction (Index,Direction)
+template:setTubeDirection(0, 0)
+--Temps de chargement (Index, Temps)
+template:setTubeLoadTime(0, 30)	
+--Taille des obus (Index, Taille)
+template:setTubeSize(0, "medium")
+
+--Macrocanons Bâbords 1
+--Direction (Index,Direction)
+template:setTubeDirection(1, 270)
+--Temps de chargement (Index, Temps)
+template:setTubeLoadTime(1, 15)
+--Taille des obus (Index, Taille)
+template:setTubeSize(1, "small")
+
+--Macrocanons Bâbords 2
+--Direction (Index,Direction)
+template:setTubeDirection(2, 270)
+--Temps de chargement (Index, Temps)
+template:setTubeLoadTime(2, 15)
+--Taille des obus (Index, Taille)
+template:setTubeSize(2, "small")
+
+--Macrocanons Bâbords 3
+--Direction (Index,Direction)
+template:setTubeDirection(3, 270)
+--Temps de chargement (Index, Temps)
+template:setTubeLoadTime(3, 15)
+--Taille des obus (Index, Taille)
+template:setTubeSize(3, "small")
+
+--Macrocanons Bâbords 4
+--Direction (Index,Direction)
+template:setTubeDirection(4, 270)
+--Temps de chargement (Index, Temps)
+template:setTubeLoadTime(4, 15)
+--Taille des obus (Index, Taille)
+template:setTubeSize(4, "small")
+
+--Macrocanons Tribords 1
+--Direction (Index,Direction)
+template:setTubeDirection(5,90)
+--Temps de chargement (Index, Temps)
+template:setTubeLoadTime(5, 15)
+--Taille des obus (Index, Taille)
+template:setTubeSize(5, "small")
+
+--Macrocanons Tribords 2
+--Direction (Index,Direction)
+template:setTubeDirection(6,90)
+--Temps de chargement (Index, Temps)
+template:setTubeLoadTime(6, 15)
+--Taille des obus (Index, Taille)
+template:setTubeSize(6, "small")
+
+--Macrocanons Tribords 3
+--Direction (Index,Direction)
+template:setTubeDirection(7,90)
+--Temps de chargement (Index, Temps)
+template:setTubeLoadTime(7, 15)
+--Taille des obus (Index, Taille)
+template:setTubeSize(7, "small")
+
+--Macrocanons Tribords 4
+--Direction (Index,Direction)
+template:setTubeDirection(8,90)
+--Temps de chargement (Index, Temps)
+template:setTubeLoadTime(8, 15)
+--Taille des obus (Index, Taille)
+template:setTubeSize(8, "small")
+
+--Définition des torpilles
+--Définition des torpilles (Type, Nom, Multiplicateur de dégâts, Vitesse, Type de dégâts, Temps de vie)
+template:setCustomWeapon("Nuke", "Torpille", 1, 800.0, "Kinetic", 60)
+--Définition de la couleur de l'obus
+template:setCustomWeaponColor("Torpille", 255, 204, 0)
+--Définition du montant stocké (Nom, Stock maximum)
+template:setCustomWeaponStorage("Torpille", 12)
+--Définition de la salve (Nom, nombre de salves, nombre d'objets par salve)
+template:setCustomWeaponMultiple("Torpille",1,2)
+
+--Définition des macrocanons
+--Définition des macrocanons (Type, Nom, Multiplicateur de dégâts, Vitesse, Type de dégâts, Temps de vie)
+template:setCustomWeapon("HVLI", "MCANMK2", 6, 4000, "Kinetic", 20)
+--Définition de la couleur de l'obus
+template:setCustomWeaponColor("MCANMK2", 255, 255, 103)
+--Définition du montant stocké (Nom, Stock maximum)
+template:setCustomWeaponStorage("MCANMK2", 200)
+--Définition de la salve (Nom, nombre de salves, nombre d'objets par salve)
+template:setCustomWeaponMultiple("MCANMK2", 1, 3)
+
+--Sélection des munitions
+template:setWeaponTubeExclusiveForCustom(0,"Torpille")
+template:setWeaponTubeExclusiveForCustom(1,"MCANMK2")
+template:setWeaponTubeExclusiveForCustom(2,"MCANMK2")
+template:setWeaponTubeExclusiveForCustom(3,"MCANMK2")
+template:setWeaponTubeExclusiveForCustom(4,"MCANMK2")
+template:setWeaponTubeExclusiveForCustom(5,"MCANMK2")
+template:setWeaponTubeExclusiveForCustom(6,"MCANMK2")
+template:setWeaponTubeExclusiveForCustom(7,"MCANMK2")
+template:setWeaponTubeExclusiveForCustom(8,"MCANMK2")
+
+end
+
+CroiseurTyrantMissiles()
+
+end
+
+--Appel de la fonction créant le vaisseau PNJ
+CroiseurTyrantPNJ()
+
+--Création du vaisseau PJ
+function CroiseurTyrantPJ()
+--Copie du vaisseau PNJ et transformation en vaisseau PJ
+variation = template:copy("Tyrant"):setLocaleName(_("playerShip", "Croiseur Tyrant")):setType("playership")
+--Valeur de recharge des boucliers
+variation:setShieldRechargeRate(2.4)
+--Module de saut
+variation:setJumpDrive(true)
+--Portée de saut(Minimum,Maximum)
+variation:setJumpDriveRange(5000.0, 50000.0)
+--Temps de rechargement après un saut de 10 unités
+variation:setJumpDriveChargeTime(60)
+--Définition des portées Radar
+variation:setLongRangeRadarRange(30000):setShortRangeRadarRange(12000)
+
+function CroiseurTyrantTourellesPJ()
+--Définition des armes laser
+
+--Tourelles de défense
+--Axe de tir (N° d'arme, arc de tir, Orientation, portée, délais de tir, dégâts)
+variation:setBeamWeapon(0, 360, 180, 2000, 0.5, 1)
+--Ajustement de la consommation d'énergie des tirs
+variation:setBeamWeaponEnergyPerFire(0, 1)
+--Ajustement de la surchauffe engendrée par les tirs
+variation:setBeamWeaponHeatPerFire(0, 0.01)
+
+end
+
+CroiseurTyrantTourellesPJ()
+
+end
+
+--Appel de la fonction créant le vaisseau PJ
+CroiseurTyrantPJ()
+
+end
+
+--Appel de la fonction créant les vaisseaux PJ et PNJ
+CroiseurTyrant()
+-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
