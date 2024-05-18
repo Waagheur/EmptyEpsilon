@@ -25,8 +25,8 @@
 #include "gui/gui2_textentry.h"
 
 GameMasterScreen::GameMasterScreen(RenderLayer* render_layer)
-: GuiCanvas(render_layer), click_and_drag_state(CD_None)
-{
+: GuiCanvas(render_layer), Updatable(true), click_and_drag_state(CD_None)
+{	
     my_spaceship = nullptr;
 
     main_radar = new GuiRadarView(this, "MAIN_RADAR", 50000.0f, &targets, my_spaceship); // my_spaceship === nullptr
@@ -320,6 +320,7 @@ GameMasterScreen::~GameMasterScreen()
 
 void GameMasterScreen::update(float delta)
 {
+	/**
     float mouse_wheel_delta = keys.zoom_in.getValue() - keys.zoom_out.getValue();
     if (mouse_wheel_delta != 0.0f)
     {
@@ -334,11 +335,13 @@ void GameMasterScreen::update(float delta)
         else
             main_radar->longRange();
     }
+	/**/
 
     if (keys.gm_delete.getDown())
     {
         gameMasterActions->commandDestroy(targets.getTargets());
     }
+	/**
     if (keys.gm_clipboardcopy.getDown())
     {
         Clipboard::setClipboard(getScriptExport(false));
@@ -535,6 +538,224 @@ void GameMasterScreen::update(float delta)
         create_button->show();
         cancel_action_button->hide();
     }
+	/**/
+}
+
+void GameMasterScreen::safeUpdate(float delta)
+{
+	/**/
+	float mouse_wheel_delta = keys.zoom_in.getValue() - keys.zoom_out.getValue();
+    if (mouse_wheel_delta != 0.0f)
+    {
+        float view_distance = main_radar->getDistance() * (1.0f - (mouse_wheel_delta * 0.1f));
+        if (view_distance > max_distance)
+            view_distance = max_distance;
+        if (view_distance < min_distance)
+            view_distance = min_distance;
+        main_radar->setDistance(view_distance);
+        if (view_distance < 10000)
+            main_radar->shortRange();
+        else
+            main_radar->longRange();
+    }
+
+    if (keys.gm_clipboardcopy.getDown())
+    {
+        Clipboard::setClipboard(getScriptExport(false));
+    }
+
+    if (keys.escape.getDown())
+    {
+        destroy();
+        returnToShipSelection(getRenderLayer());
+    }
+    if (keys.pause.getDown())
+    {
+        if (engine->getGameSpeed() == 0.0f)
+            gameMasterActions->commandSetGameSpeed(1.0f);
+        else
+            gameMasterActions->commandSetGameSpeed(0.0f);
+    }
+    if (engine->getGameSpeed() == 0.0f) {
+        pause_button->setValue(true);
+    } else {
+        pause_button->setValue(false);
+    }
+
+    bool has_object = false;
+    bool has_cpu_ship = false;
+    bool has_player_ship = false;
+
+    // Add and remove entries from the player ship list.
+    for(int n=0; n<GameGlobalInfo::max_player_ships; n++)
+    {
+        P<PlayerSpaceship> ship = gameGlobalInfo->getPlayerShip(n);
+        if (ship)
+        {
+            if (player_ship_selector->indexByValue(string(n)) == -1)
+            {
+                player_ship_selector->addEntry(ship->getTypeName() + " " + ship->getCallSign(), string(n));
+            } else {
+                player_ship_selector->setEntryName(player_ship_selector->indexByValue(string(n)),ship->getCallSign());
+            }
+
+            if (ship->isCommsBeingHailedByGM() || ship->isCommsChatOpenToGM())
+            {
+                if (!chat_dialog_per_ship[n]->isVisible())
+                {
+                    chat_dialog_per_ship[n]->show()->setPosition(main_radar->worldToScreen(ship->getPosition()))->setSize(300, 300);
+                }
+            }
+        }else{
+            if (player_ship_selector->indexByValue(string(n)) != -1)
+                player_ship_selector->removeEntry(player_ship_selector->indexByValue(string(n)));
+        }
+    }
+
+    // Add and remove entries from the CPU ship and space station list.
+    int n = 0;
+    foreach(SpaceObject, obj, space_object_list)
+    {
+        P<SpaceShip> ship = obj;
+        P<SpaceStation> station = obj;
+        if (ship)
+        {
+            if (CPU_ship_selector->indexByValue(string(n)) == -1)
+                CPU_ship_selector->addEntry(ship->getTypeName() + " " + ship->getCallSign(), string(n));
+        }else{
+            if (CPU_ship_selector->indexByValue(string(n)) != -1)
+                CPU_ship_selector->removeEntry(CPU_ship_selector->indexByValue(string(n)));
+        }
+        if (station)
+        {
+            if (space_station_selector->indexByValue(string(n)) == -1)
+                space_station_selector->addEntry(station->getTypeName() + " " + station->getCallSign(), string(n));
+        }else{
+            if (space_station_selector->indexByValue(string(n)) != -1)
+                space_station_selector->removeEntry(space_station_selector->indexByValue(string(n)));
+        }
+    n += 1;
+    }
+
+    // Record object type.
+    for(P<SpaceObject> obj : targets.getTargets())
+    {
+        has_object = true;
+        if (P<CpuShip>(obj))
+            has_cpu_ship = true;
+        else if (P<PlayerSpaceship>(obj))
+            has_player_ship = true;
+    }
+
+    // Show selector only if there are objects.
+    player_ship_selector->setVisible(player_ship_selector->entryCount() > 0);
+    CPU_ship_selector->setVisible(CPU_ship_selector->entryCount() > 0);
+    space_station_selector->setVisible(space_station_selector->entryCount() > 0);
+
+    // Show tweak button.
+    tweak_button->setVisible(has_object);
+
+    order_layout->setVisible(has_cpu_ship);
+    player_comms_hail->setVisible(has_player_ship);
+
+    // Update mission clock
+    info_clock->setValue(gameGlobalInfo->getMissionTime());
+
+    std::unordered_map<string, string> selection_info;
+
+    // For each selected object, determine and report their type.
+    for(P<SpaceObject> obj : targets.getTargets())
+    {
+        std::unordered_map<string, string> info = obj->getGMInfo();
+        for(std::unordered_map<string, string>::iterator i = info.begin(); i != info.end(); i++)
+        {
+            if (selection_info.find(i->first) == selection_info.end())
+            {
+                selection_info[i->first] = i->second;
+            }
+            else if (selection_info[i->first] != i->second)
+            {
+                selection_info[i->first] = tr("*mixed*");
+            }
+        }
+    }
+
+    if (targets.getTargets().size() == 1)
+    {
+        P<SpaceObject> target = targets.getTargets()[0];
+        selection_info[trMark("gm_info", "Position")] = string(targets.getTargets()[0]->getPosition().x, 0) + "," + string(targets.getTargets()[0]->getPosition().y, 0);
+
+        for(int n=0; n<GameGlobalInfo::max_player_ships; n++)
+        {
+            P<PlayerSpaceship> ship = gameGlobalInfo->getPlayerShip(n);
+            if (ship)
+            {
+                float distance = glm::length(targets.getTargets()[0]->getPosition() - ship->getPosition());
+                selection_info["Distance " + ship->callsign] = string(distance / 1000.0f,0) + " U";
+            }
+        }
+    }
+
+    unsigned int cnt = 0;
+    for(std::unordered_map<string, string>::iterator i = selection_info.begin(); i != selection_info.end(); i++)
+    {
+        if (cnt == info_items.size())
+        {
+            info_items.push_back(new GuiKeyValueDisplay(info_layout, "INFO_" + string(cnt), 0.5, i->first, i->second));
+            info_items[cnt]->setSize(GuiElement::GuiSizeMax, 30);
+        }else{
+            info_items[cnt]->show();
+            info_items[cnt]->setKey(tr("gm_info", i->first))->setValue(i->second);
+        }
+        cnt++;
+    }
+    while(cnt < info_items.size())
+    {
+        info_items[cnt]->hide();
+        cnt++;
+    }
+
+    bool gm_functions_changed = gm_script_options->entryCount() != int(gameGlobalInfo->gm_callback_names.size());
+    auto it = gameGlobalInfo->gm_callback_names.begin();
+    for(int n=0; !gm_functions_changed && n<gm_script_options->entryCount(); n++)
+    {
+        if (gm_script_options->getEntryName(n) != *it)
+            gm_functions_changed = true;
+        it++;
+    }
+    if (gm_functions_changed)
+    {
+        gm_script_options->setOptions({});
+        for(const string& callbackName : gameGlobalInfo->gm_callback_names)
+        {
+            gm_script_options->addEntry(callbackName, callbackName);
+        }
+    }
+
+    pause_button->setValue(engine->getGameSpeed());
+    if (gameGlobalInfo->intercept_all_comms_to_gm < CGI_Always)
+        intercept_comms_button->setValue(gameGlobalInfo->intercept_all_comms_to_gm);
+    if (!gameGlobalInfo->gm_messages.empty())
+    {
+        GMMessage* message = &gameGlobalInfo->gm_messages.front();
+        message_text->setText(message->text);
+        message_frame->show();
+    } else {
+        message_frame->hide();
+    }
+
+    if (gameGlobalInfo->on_gm_click)
+    {
+        create_button->hide();
+        object_creation_view->hide();
+        cancel_action_button->show();
+    }
+    else
+    {
+        create_button->show();
+        cancel_action_button->hide();
+    }
+	/**/
 }
 
 void GameMasterScreen::onMouseDown(sp::io::Pointer::Button button, glm::vec2 position)
