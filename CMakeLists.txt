@@ -615,9 +615,11 @@ include(InstallRequiredSystemLibraries)
 
 
 set(EE_RESOURCES resources scripts packs)
+set(EE_MISC_FILES "Carte Spatiale Amas Tarkusien Publique.pdf" keybindings.json options.ini "Notes de Mise à Jour.txt")
 if(WIN32 OR STEAMSDK)
     install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION .)
     install(DIRECTORY ${EE_RESOURCES} DESTINATION .)
+    install(FILES ${EE_MISC_FILES} DESTINATION .)
 
     if(MSVC)
       # Not all configuration emit a pdb (ie Release), make this optional.
@@ -626,11 +628,13 @@ if(WIN32 OR STEAMSDK)
 elseif(APPLE)
   install(FILES logo.icns DESTINATION "$<TARGET_BUNDLE_CONTENT_DIR:${PROJECT_NAME}>/Resources" RENAME "${PROJECT_NAME}.icns")
   install(DIRECTORY ${EE_RESOURCES} DESTINATION "$<TARGET_BUNDLE_CONTENT_DIR:${PROJECT_NAME}>/Resources")
+  install(FILES ${EE_MISC_FILES} DESTINATION "$<TARGET_BUNDLE_CONTENT_DIR:${PROJECT_NAME}>/Resources")
 elseif(ANDROID)
   android_apk(EmptyEpsilon ${APK_WITH_PACKS})
 else()
     install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}")
     install(DIRECTORY ${EE_RESOURCES} DESTINATION "${CMAKE_INSTALL_DATADIR}/emptyepsilon")
+    install(FILES ${EE_MISC_FILES} DESTINATION "${CMAKE_INSTALL_DATADIR}/emptyepsilon")
 endif()
 
 if(WITH_DISCORD)

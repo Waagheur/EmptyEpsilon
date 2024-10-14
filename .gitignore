@@ -37,8 +37,9 @@ thumbs.db
 # gettext temp files
 *.po~
 
-options.ini
-keybindings.json
+# We're keeping those files to have a baseline config
+# options.ini
+# keybindings.json
 
 
 .vscode
