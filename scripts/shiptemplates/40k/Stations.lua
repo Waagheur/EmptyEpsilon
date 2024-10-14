@@ -48,6 +48,8 @@ template:setRepairDocked(false)
 template:setRestocksMissilesDocked(false)
 --Dockage autorisé
 template:setCanDock(false)
+template:setExternalDockClasses(_("class","Transport"),_("class","Escorteur"),_("class","Fregate"),_("class","Croiseur Leger"),_("class","Croiseur"),_("class","Croiseur de Combat"),_("class","Grand Croiseur"),_("class","Cuirasse"))
+--Radars
 template:setLongRangeRadarRange(24000):setShortRangeRadarRange(24000)
 
 end
@@ -155,6 +157,8 @@ template:setRepairDocked(false)
 template:setRestocksMissilesDocked(false)
 --Dockage autorisé
 template:setCanDock(false)
+template:setExternalDockClasses(_("class","Transport"),_("class","Escorteur"),_("class","Fregate"),_("class","Croiseur Leger"),_("class","Croiseur"),_("class","Croiseur de Combat"))
+--Radars
 template:setLongRangeRadarRange(24000):setShortRangeRadarRange(24000)
 
 end
@@ -252,6 +256,8 @@ template:setRepairDocked(false)
 template:setRestocksMissilesDocked(false)
 --Dockage autorisé
 template:setCanDock(false)
+template:setExternalDockClasses(_("class","Transport"),_("class","Escorteur"),_("class","Fregate"),_("class","Croiseur Leger"))
+--Radars
 template:setLongRangeRadarRange(24000):setShortRangeRadarRange(24000)
 
 end
@@ -302,6 +308,7 @@ template:setRepairDocked(false)
 template:setRestocksMissilesDocked(false)
 --Dockage autorisé
 template:setCanDock(false)
+--Radars
 template:setLongRangeRadarRange(24000):setShortRangeRadarRange(24000)
 
 end
@@ -369,6 +376,7 @@ template:setRepairDocked(false)
 template:setRestocksMissilesDocked(false)
 --Dockage autorisé
 template:setCanDock(false)
+--Radars
 template:setLongRangeRadarRange(24000):setShortRangeRadarRange(24000)
 
 end
@@ -450,6 +458,7 @@ template:setRepairDocked(false)
 template:setRestocksMissilesDocked(false)
 --Dockage autorisé
 template:setCanDock(false)
+--Radars
 template:setLongRangeRadarRange(24000):setShortRangeRadarRange(24000)
 
 end

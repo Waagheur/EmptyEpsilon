@@ -46,6 +46,9 @@ template:setCanHack(false)
 template:setCanLaunchProbe(false)
 --Définition du comportement IA
 template:setDefaultAI("fighter")
+--Dockage
+template:setCanDock(true)
+template:setExternalDockClasses(_("class","Escorteur"))
 
 end
 
@@ -185,6 +188,9 @@ template:setCanHack(false)
 template:setCanLaunchProbe(false)
 --Définition du comportement IA
 template:setDefaultAI("fighter")
+--Dockage
+template:setCanDock(true)
+template:setExternalDockClasses(_("class","Escorteur"))
 
 end
 
@@ -324,6 +330,9 @@ template:setCanHack(false)
 template:setCanLaunchProbe(false)
 --Définition du comportement IA
 template:setDefaultAI("fighter")
+--Dockage
+template:setCanDock(true)
+template:setExternalDockClasses(_("class","Escorteur"))
 
 end
 
@@ -463,6 +472,9 @@ template:setCanHack(false)
 template:setCanLaunchProbe(false)
 --Définition du comportement IA
 template:setDefaultAI("fighter")
+--Dockage
+template:setCanDock(true)
+template:setExternalDockClasses(_("class","Escorteur"))
 
 end
 

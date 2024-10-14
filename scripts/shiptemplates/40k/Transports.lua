@@ -42,6 +42,9 @@ template:setCanHack(false)
 template:setCanLaunchProbe(false)
 --Définition du comportement IA
 template:setDefaultAI("missilevolley")
+--Dockage
+template:setCanDock(true)
+template:setExternalDockClasses(_("class","Escorteur"),_("class","Fregate"))
 
 end
 
@@ -177,6 +180,9 @@ template:setCanHack(false)
 template:setCanLaunchProbe(false)
 --Définition du comportement IA
 template:setDefaultAI("default")
+--Dockage
+template:setCanDock(true)
+template:setExternalDockClasses(_("class","Escorteur"),_("class","Fregate"))
 
 end
 
@@ -316,6 +322,9 @@ template:setCanHack(false)
 template:setCanLaunchProbe(false)
 --Définition du comportement IA
 template:setDefaultAI("fighter")
+--Dockage
+template:setCanDock(true)
+template:setExternalDockClasses(_("class","Escorteur"),_("class","Fregate"))
 
 end
 
@@ -455,6 +464,9 @@ template:setCanHack(false)
 template:setCanLaunchProbe(false)
 --Définition du comportement IA
 template:setDefaultAI("fighter")
+--Dockage
+template:setCanDock(true)
+template:setExternalDockClasses(_("class","Escorteur"),_("class","Fregate"))
 
 end
 
@@ -585,6 +597,9 @@ template:setCanHack(false)
 template:setCanLaunchProbe(false)
 --Définition du comportement IA
 template:setDefaultAI("default")
+--Dockage
+template:setCanDock(true)
+template:setExternalDockClasses(_("class","Escorteur"),_("class","Fregate"))
 
 end
 
@@ -698,7 +713,7 @@ function UsineGoliathPNJ()
 
 function UsineGoliathCoque()
 --Description, définition du modèle et de l'icone radar
-template = ShipTemplate():setName("Vaisseau-Usine Goliath"):setLocaleName(_("ship", "Vaisseau-Usine Goliath")):setClass(_("class", "Transport"), _("subclass", "Goliath")):setModel("Adeptus_Mechanicus_cruiser")
+template = ShipTemplate():setName("Vaisseau-Usine Goliath"):setLocaleName(_("ship", "Vaisseau-Usine Goliath")):setClass(_("class", "Croiseur Leger"), _("subclass", "Goliath")):setModel("Adeptus_Mechanicus_cruiser")
 template:setDescription(_([[Les navires-usines de classe Goliath sont des navires de l'Adeptus Mechanicus, des vaisseaux gigantesques de traitement de l’énergie qui récoltent l’essence même des étoiles. Ils dévorent le plasma solaire pour alimenter leurs propres dispositifs techno-arcaniques de production de combustible, afin d’assouvir la faim sans fin des mondes-ruches de l’Imperium. Plus grands encore que les Jericho, ils sont fragiles et potentiellement explosifs, traités avec beaucoup de respect et de prudence par les équipages qui en croisent, étant donné leur propension à détonner dans des explosions catastrophiques qui sont capables de souffler l’atmosphère de mondes entiers.]]))
 --template:setScale(225)
 template:setRadarTrace("adv_gunship.png")
@@ -723,6 +738,9 @@ template:setCanHack(false)
 template:setCanLaunchProbe(false)
 --Définition du comportement IA
 template:setDefaultAI("default")
+--Dockage
+template:setCanDock(true)
+template:setExternalDockClasses(_("class","Transport"),_("class","Escorteur"),_("class","Fregate"))
 
 end
 
@@ -844,7 +862,7 @@ function TransportUniversePNJ()
 
 function TransportUniverseCoque()
 --Description, définition du modèle et de l'icone radar
-template = ShipTemplate():setName("Transporteur Lourd Universe"):setLocaleName(_("ship", "Transporteur Lourd Universe")):setClass(_("class", "Transport"), _("subclass", "Universe")):setModel("Civilian_Transport_Cruiser")
+template = ShipTemplate():setName("Transporteur Lourd Universe"):setLocaleName(_("ship", "Transporteur Lourd Universe")):setClass(_("class", "Cuirasse"), _("subclass", "Universe")):setModel("Civilian_Transport_Cruiser")
 template:setDescription(_([[Parmi les myriades de vaisseaux qui desservent les voies commerciales, certains des plus grands sont les Transporteurs Lourds. S’étendant sur une douzaine de kilomètres de la proue à la poupe, un Transport Lourd pourrait apparaitre mince et élégant vu de loin. Cependant, à mesure qu’on s’en approche lentement, cette impression trompeuse est remplacée par une crainte horrifiée, car ce qui semble être des mâts radio se transforme en gigantesques tours de la taille de cités-ruches. L’échelle réelle du navire se manifeste quand l'observateur réalise que des villes entières scintillent le long de ses flancs. Construire un Transporteur Lourd de classe Universe est une entreprise colossale. Pour construire un, il faut des ressources si immenses qu’ils ne sont bâtis qu’au-dessus des mondes et des station impériales les plus riches. Ce sont de purs transporteurs de marchandises, de conception relativement simple, mais a une échelle gargantuesque. Ce sont des mondes presque autonomes, où des communautés spatiales entières vivent leur vie, insensibles aux motivations ou à l’identité des propriétaires actuels du navire. Le simple déchargement du navire est une entreprise colossale qui exige des mois de labeur.]]))
 --template:setScale(600)
 template:setRadarTrace("transport.png")
@@ -869,6 +887,9 @@ template:setCanHack(false)
 template:setCanLaunchProbe(false)
 --Définition du comportement IA
 template:setDefaultAI("default")
+--Dockage
+template:setCanDock(true)
+template:setExternalDockClasses(_("class","Transport"),_("class","Escorteur"),_("class","Fregate"),_("class","Croiseur Leger"),_("class","Croiseur"),_("class","Croiseur de Combat"),_("class","Grand Croiseur"),_("class","Cuirasse"))
 
 end
 

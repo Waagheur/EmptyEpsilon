@@ -1,5 +1,5 @@
 -- Name: Amas Tarkusien Allégé
--- Description: Carte de l'Amas Tarkusien, Sous-Secteur d'Argos, Secteur d'Acteron, V0.6, par Numérus pour De Verve et D'Acier. Version allégée sans astéroides.
+-- Description: Carte de l'Amas Tarkusien, Sous-Secteur d'Argos, Secteur d'Acteron, V0.7, par Numérus pour De Verve et D'Acier. Version allégée sans astéroides.
 -- Type: 40K - De Verve et D'Acier
 
 --- Scenario
@@ -46,28 +46,49 @@ function Tarkus()
 
 --Soleil
 
-	local SoleilTarkus = Planet():setPosition(160128, 159741):setFaction("Neutre"):setPlanetRadius(7900):setPlanetCloudRadius(8000.00):setCallSign("Soleil de Tarkus"):setPlanetSurfaceTexture("planets/Soleil.jpg"):setPlanetAtmosphereColor(1,1,0.5):setRadarSignatureInfo(0.80, 0.75, -0.95):setScanningParameters(1,1):setPlanetIcon("planets/icons/Sun.png"):setDescriptions("Soleil de Tarkus", "Le système Tarkus est considéré comme le système principal de l'Amas Tarkusien. Composé de 5 planètes et d'une ceinture d'astéroïdes, son point d'intérêt principal est la station Scorpio, en orbite autour de Tarkus V.", "Considéré comme la capitale de l’Amas auquel il a donné son nom, le système Tarkus comprend un soleil jaune autour duquel orbitent 5 planètes dont deux facilement habitables par l’Homme, bien qu’une seule des deux soit réellement habitée, ainsi qu’une ceinture d’astéroïdes aux confins du système. Sa plus grande particularité est la station spatiale Scorpio, un gigantesque dock orbital accueillant non seulement les vaisseaux marchands et les patrouilles de la Marine, mais également les locaux des services administratifs de l’Amas et de l’Académie Navale Tarkusienne, réputée dans tout le secteur pour fournir aux différentes flottes des officiers compétents, quoique souvent jugés trop aventureux.")
+	local SoleilTarkus = Planet():setPosition(160128, 159741):setFaction("Neutre"):setPlanetRadius(7900):setPlanetCloudRadius(8000.00):setCallSign("Soleil de Tarkus"):setPlanetSurfaceTexture("planets/Soleil.jpg"):setPlanetAtmosphereColor(1,1,0.5):setRadarSignatureInfo(0.80, 0.80, 0.00):setScanningParameters(1,1):setPlanetIcon("planets/icons/Sun.png"):setDescriptions("Soleil de Tarkus",[[Le système Tarkus est considéré comme le système principal de l'Amas Tarkusien. Composé de 5 planètes et d'une ceinture d'astéroïdes, son point d'intérêt principal est la station Scorpio, en orbite autour de Tarkus V.
+	
+	
+	]],[[Considéré comme la capitale de l’Amas auquel il a donné son nom, le système Tarkus comprend un soleil jaune autour duquel orbitent 5 planètes dont deux facilement habitables par l’Homme, bien qu’une seule des deux soit réellement habitée, ainsi qu’une ceinture d’astéroïdes aux confins du système. Sa plus grande particularité est la station spatiale Scorpio, un gigantesque dock orbital accueillant non seulement les vaisseaux marchands et les patrouilles de la Marine, mais également les locaux des services administratifs de l’Amas et de l’Académie Navale Tarkusienne, réputée dans tout le secteur pour fournir aux différentes flottes des officiers compétents, quoique souvent jugés trop aventureux.
+	
+	
+	]])
 	WarpJammer():setFaction("Neutre"):setPosition(160128, 159741):setRange(75000.00)
 	
 --Planètes
 --Tarkus I	
-	local TarkusI = Planet():setPosition(153131, 169329):setFaction("Neutre"):setPlanetRadius(250):setAxialRotationTime(3600):setCallSign("Tarkus I"):setPlanetSurfaceTexture("planets/planet-2.png"):setScanningParameters(3, 2):setPlanetIcon("planets/icons/Lava-Planet.png"):setDescriptions("Tarkus I","Tarkus I est une planète volcanique qui orbite proche de son soleil.","Tarkus I est une planète naine volcanique subissant une désorbitation progressive vers son soleil, s’en rapprochant peu à peu au point qu’elle finira par s’y abîmer. Les températures à sa surface sont infernales et l'activité volcanique intense. Elle recèle cependant de nombreux minéraux qui pourraient être exploitables si leur récupération n'était pas aussi risquée.")
+	local TarkusI = Planet():setPosition(153131, 169329):setFaction("Neutre"):setPlanetRadius(250):setAxialRotationTime(3600):setCallSign("Tarkus I"):setPlanetSurfaceTexture("planets/planet-2.png"):setRadarSignatureInfo(0.025, 0.30, 0.00):setScanningParameters(1, 2):setPlanetIcon("planets/icons/Lava-Planet.png"):setDescriptions("Tarkus I","Tarkus I est une planète volcanique qui orbite proche de son soleil.",[[Tarkus I est une planète naine volcanique subissant une désorbitation progressive vers son soleil, s’en rapprochant peu à peu au point qu’elle finira par s’y abîmer. Les températures à sa surface sont infernales et l'activité volcanique intense. Elle recèle cependant de nombreux minéraux qui pourraient être exploitables si leur récupération n'était pas aussi risquée.
+	
+	
+	]])
     TarkusI:setOrbit(SoleilTarkus, 300)
 	
 --Tarkus II		
-	local TarkusII = Planet():setPosition(135038, 171397):setFaction("Neutre"):setPlanetRadius(750):setAxialRotationTime(3600):setCallSign("Tarkus II"):setPlanetSurfaceTexture("planets/2k_mercury.jpg"):setScanningParameters(3, 2):setPlanetIcon("planets/icons/Red-Planet-1.png"):setDescriptions("Tarkus II","Tarkus II est une planète tellurique de petite taille décrivant une orbite stable à proximité de son soleil.","Tarkus II est une planète tellurique décrivant une orbite stable autour de son soleil. Cependant, sa rotation lente rend toute vie à sa surface impossible sans un lourd équipement adapté, et la proximité de Tarkus III entraine périodiquement d'importants épisodes sismiques.")
+	local TarkusII = Planet():setPosition(135038, 171397):setFaction("Neutre"):setPlanetRadius(750):setAxialRotationTime(3600):setCallSign("Tarkus II"):setPlanetSurfaceTexture("planets/2k_mercury.jpg"):setRadarSignatureInfo(0.075, 0.2, 0.025):setScanningParameters(1, 2):setPlanetIcon("planets/icons/Red-Planet-1.png"):setDescriptions("Tarkus II","Tarkus II est une planète tellurique de petite taille décrivant une orbite stable à proximité de son soleil.",[[Tarkus II est une planète tellurique décrivant une orbite stable autour de son soleil. Cependant, sa rotation lente rend toute vie à sa surface impossible sans un lourd équipement adapté, et la proximité de Tarkus III entraine périodiquement d'importants épisodes sismiques.
+	
+	
+	]])
 	TarkusII:setOrbit(SoleilTarkus, 1200)
 	
 --Tarkus III		
-	local TarkusIII = Planet():setPosition(126250, 157052):setFaction("Neutre"):setPlanetRadius(750):setAxialRotationTime(3600):setCallSign("Tarkus III"):setPlanetSurfaceTexture("planets/makemake_fictional.jpg"):setScanningParameters(3, 2):setPlanetIcon("planets/icons/Red-Planet-1.png"):setDescriptions("Tarkus III","Tarkus III est une planète tellurique de taille modeste orbitant à une distance dangereusement proche de sa jumelle Tarkus II.","Tarkus III est une planète tellurique de taille modeste orbitant à une distance dangereusement proche de sa jumelle Tarkus II. Quand les deux planètes arrivent à proximité l’une de l’autre, les forces gravitationnelles entre les deux corps génèrent une activité sismique particulièrement intense.")
+	local TarkusIII = Planet():setPosition(126250, 157052):setFaction("Neutre"):setPlanetRadius(750):setAxialRotationTime(3600):setCallSign("Tarkus III"):setPlanetSurfaceTexture("planets/makemake_fictional.jpg"):setRadarSignatureInfo(0.075, 0.25, 0.05):setScanningParameters(1, 2):setPlanetIcon("planets/icons/Red-Planet-1.png"):setDescriptions("Tarkus III","Tarkus III est une planète tellurique de taille modeste orbitant à une distance dangereusement proche de sa jumelle Tarkus II.",[[Tarkus III est une planète tellurique de taille modeste orbitant à une distance dangereusement proche de sa jumelle Tarkus II. Quand les deux planètes arrivent à proximité l’une de l’autre, les forces gravitationnelles entre les deux corps génèrent une activité sismique particulièrement intense.
+	
+	
+	]])
 	TarkusIII:setOrbit(SoleilTarkus, 2400)
 	
 --Tarkus IV	
-	local TarkusIV = Planet():setPosition(136265, 124123):setFaction("Neutre"):setPlanetRadius(1250):setPlanetCloudRadius(1260.00):setAxialRotationTime(120.0):setCallSign("Tarkus IV"):setPlanetSurfaceTexture("planets/planet-1.png"):setPlanetCloudTexture("planets/clouds-2.png"):setPlanetAtmosphereTexture("planets/atmosphere.png"):setPlanetAtmosphereColor(0.2,0.2,1.0):setScanningParameters(3, 2):setPlanetIcon("planets/icons/16.png"):setDescriptions("Tarkus IV","Tarkus IV est une planète tellurique de taille modeste orbitant en bordure de la ceinture d’astéroïdes du système.","Tarkus IV est une planète tellurique de taille modeste orbitant en bordure de la ceinture d’astéroïdes du système. Elle dispose d’une atmosphère fine et pourrait être colonisée à l’avenir, au prix de quelques efforts, afin d'exploiter ses richesses minérales quand celles de Tarkus V s'épuiseront.")
+	local TarkusIV = Planet():setPosition(136265, 124123):setFaction("Neutre"):setPlanetRadius(1250):setPlanetCloudRadius(1260.00):setAxialRotationTime(120.0):setCallSign("Tarkus IV"):setPlanetSurfaceTexture("planets/planet-1.png"):setPlanetCloudTexture("planets/clouds-2.png"):setPlanetAtmosphereTexture("planets/atmosphere.png"):setPlanetAtmosphereColor(0.2,0.2,1.0):setRadarSignatureInfo(0.126, 0.15, 0.1):setScanningParameters(2, 2):setPlanetIcon("planets/icons/16.png"):setDescriptions("Tarkus IV","Tarkus IV est une planète tellurique de taille modeste orbitant en bordure de la ceinture d’astéroïdes du système.",[[Tarkus IV est une planète tellurique de taille modeste orbitant en bordure de la ceinture d’astéroïdes du système. Elle dispose d’une atmosphère fine et pourrait être colonisée à l’avenir, au prix de quelques efforts, afin d'exploiter ses richesses minérales quand celles de Tarkus V s'épuiseront.
+	
+	
+	]])
 	TarkusIV:setOrbit(SoleilTarkus, 6000)
 	
 --Tarkus V		
-	local TarkusV = Planet():setPosition(218928, 140803):setFaction("Imperium Tarkus"):setPlanetRadius(1250):setPlanetCloudRadius(1260.00):setAxialRotationTime(600.0):setCallSign("Tarkus V"):setPlanetSurfaceTexture("planets/planet-1.png"):setPlanetCloudTexture("planets/clouds-1.png"):setPlanetAtmosphereTexture("planets/atmosphere.png"):setPlanetAtmosphereColor(0.2,0.2,1.0):setScanningParameters(3, 2):setPlanetIcon("planets/icons/16.png"):setDescriptions("Tarkus V","Tarkus V est un monde-ruche minier rattaché à l'Imperium il y a 5 siècles autour duquel orbite la station spatiale Scorpio, qui sert de base à la Marine Impériale au sein de l'Amas.",[["Tarkus V
+	local TarkusV = Planet():setPosition(218928, 140803):setFaction("Imperium Tarkus"):setPlanetRadius(1250):setPlanetCloudRadius(1260.00):setAxialRotationTime(600.0):setCallSign("Tarkus V"):setPlanetSurfaceTexture("planets/planet-1.png"):setPlanetCloudTexture("planets/clouds-1.png"):setPlanetAtmosphereTexture("planets/atmosphere.png"):setPlanetAtmosphereColor(0.2,0.2,1.0):setRadarSignatureInfo(0.125, 0.80, 0.90):setScanningParameters(3, 3):setPlanetIcon("planets/icons/16.png"):setDescriptions("Tarkus V",[[Tarkus V est un monde-ruche minier rattaché à l'Imperium il y a 5 siècles autour duquel orbite la station spatiale Scorpio, qui sert de base à la Marine Impériale au sein de l'Amas.
+	
+	
+	]],[[Tarkus V
 Monde-Ruche Minier
 Gouverneur : Seigneur Markwart Anomtarkus (depuis 21 ans)
 Gouvernement : Aristocratie nobiliaire
@@ -75,30 +96,42 @@ Population : 10.2 Milliards
 Production notable : Minerai, objets manufacturés
 Loi particulière : Esclavage autorisé
 
-Le monde de Tarkus V, revendiqué au nom de l’Impérium par la Libre-Marchande Septima Anom en 256M41, est propice à la vie bien que présentant une faune et une flore hostile. Le sous-sol, riche en minéraux de toutes sortes, est intensivement exploité afin de soutenir les industries locales et de payer la Dîme Impériale. A cette fin, Tarkus a pour habitude d’importer une partie de sa main d'œuvre sous forme de travailleurs sous contrats ou d’esclaves pour travailler dans les mines ou les manufactorums de la planète. Cependant, au-delà de ces industries littéralement terre à terre, les dirigeants de Tarkus V ont de tous temps tourné leurs regards vers les étoiles, et la planète est le premier contributeur à l’industrie et l’expansion spatiale de l’Amas, ne serait-ce que par la construction de la gigantesque station Scorpio, dont les batteries d’armes et les docks de patrouilleurs défendent la planète depuis presque cinq siècles. Tarkus V a récemment levé ses premiers régiments de Gardes Impériaux locaux afin de soutenir les opérations militaires dans l'Amas de Tvasos."]])
+Le monde de Tarkus V, revendiqué au nom de l’Impérium par la Libre-Marchande Septima Anom en 256M41, est propice à la vie bien que présentant une faune et une flore hostile. Le sous-sol, riche en minéraux de toutes sortes, est intensivement exploité afin de soutenir les industries locales et de payer la Dîme Impériale. A cette fin, Tarkus a pour habitude d’importer une partie de sa main d'œuvre sous forme de travailleurs sous contrats ou d’esclaves pour travailler dans les mines ou les manufactorums de la planète. Cependant, au-delà de ces industries littéralement terre à terre, les dirigeants de Tarkus V ont de tous temps tourné leurs regards vers les étoiles, et la planète est le premier contributeur à l’industrie et l’expansion spatiale de l’Amas, ne serait-ce que par la construction de la gigantesque station Scorpio, dont les batteries d’armes et les docks de patrouilleurs défendent la planète depuis presque cinq siècles. Tarkus V a récemment levé ses premiers régiments de Gardes Impériaux locaux afin de soutenir les opérations militaires dans l'Amas de Tvasos.
+
+
+]])
     TarkusV:setOrbit(SoleilTarkus, 10800)
-	local LuneTarkus = Planet():setPosition(224280, 139941):setFaction("Neutre"):setPlanetRadius(400):setCallSign("Lune de Tarkus V"):setPlanetSurfaceTexture("planets/moon-1.png"):setPlanetIcon("planets/icons/Lava-Planet.png"):setDescriptions("Lune de Tarkus V", "La lune de Tarkus V, aussi appelée Tarkus Va, orbite autour de la planète de manière régulière.","La lune de Tarkus V, aussi appelée Tarkus Va, orbite autour de la planète de manière régulière, générant un léger phénomène de marées. Bien que sa colonisation ait été envisagée, le coût de l'opération et les faibles retombées financières ont avorté toutes les tentatives en ce sens. Tant qu'exploiter Tarkus V restera plus rentable, il est fort probable que ce projet ne voit pas le jour.")
+	local LuneTarkus = Planet():setPosition(224280, 139941):setFaction("Neutre"):setPlanetRadius(400):setCallSign("Lune de Tarkus V"):setPlanetSurfaceTexture("planets/moon-1.png"):setRadarSignatureInfo(0.04, 0.01, 0.00):setScanningParameters(1, 2):setPlanetIcon("planets/icons/Lava-Planet.png"):setDescriptions("Lune de Tarkus V","La lune de Tarkus V, aussi appelée Tarkus Va, orbite autour de la planète de manière régulière.",[[La lune de Tarkus V, aussi appelée Tarkus Va, orbite autour de la planète de manière régulière, générant un léger phénomène de marées. Bien que sa colonisation ait été envisagée, le coût de l'opération et les faibles retombées financières ont avorté toutes les tentatives en ce sens. Tant qu'exploiter Tarkus V restera plus rentable, il est fort probable que ce projet ne voit pas le jour.
+	
+	
+	]])
     LuneTarkus:setOrbit(TarkusV, 1080)
 
 --Stations de Tarkus	
 	
 --Station Scorpio	
-	local Scorpio = CpuShip():setTemplate("Dock Spatial"):setPosition(224139, 137347):setFaction("Imperium Tarkus"):setCallSign("Scorpio"):orderDefendTarget(TarkusV,0,0):setDescriptions("Station Spatiale Scorpio","La Station Spatiale de Scorpio est à la fois un dock orbital capable d'accueillir les plus gros vaisseaux de commerce, une académie de la Marine Impériale où sont formés les futurs officiers de la Flotte, ainsi que le centre administratif de l'Amas Tarkusien.","La Station Spatiale de Scorpio est à l'origine de la position privilégiée de Tarkus V dans le sous-secteur d'Argos, et l'un des facteurs de la puissance de la famille Anomtarkus. A la fois dock orbital académie spatiale et centre administratif, cet édifice, dont la construction à débuté à peine quelques années après l'intégration de la planète au sein de l'Imperium, a rapidement attiré tous les vaisseaux de l'Amas à la recherche d'une base de ravitaillement et de replis. Construite directement avec les métaux extraits de la planète par les colons et les esclaves issus de tout le sous-secteur, ce chantier d'un siècle et demi a assuré la prospérité de la planète face à sa rivale, Gisperion III.")
+	local Scorpio = CpuShip():setTemplate("Dock Spatial"):setPosition(224139, 137347):setFaction("Imperium Tarkus"):setCallSign("Scorpio"):setRadarSignatureInfo(0.15, 0.80, 0.5):setScanningParameters(3,2):orderDefendTarget(TarkusV,0,0):setDescriptions("Station Spatiale Scorpio",[[La Station Spatiale de Scorpio est à la fois un dock orbital capable d'accueillir les plus gros vaisseaux de commerce, une académie de la Marine Impériale où sont formés les futurs officiers de la Flotte, ainsi que le centre administratif de l'Amas Tarkusien.
+	
+	
+	]],[[La Station Spatiale de Scorpio est à l'origine de la position privilégiée de Tarkus V dans le sous-secteur d'Argos, et l'un des facteurs de la puissance de la famille Anomtarkus. A la fois dock orbital académie spatiale et centre administratif, cet édifice, dont la construction à débuté à peine quelques années après l'intégration de la planète au sein de l'Imperium, a rapidement attiré tous les vaisseaux de l'Amas à la recherche d'une base de ravitaillement et de replis. Construite directement avec les métaux extraits de la planète par les colons et les esclaves issus de tout le sous-secteur, ce chantier d'un siècle et demi a assuré la prospérité de la planète face à sa rivale, Gisperion III.
+	
+	
+	]])
 
 --Stations de surveillance
 	function SurveillanceTarkus()
-    CpuShip():setFaction("Imperium Tarkus"):setTemplate("Station Relais"):setCallSign("TAR01"):setPosition(159979, 79581):orderStandGround()
-    CpuShip():setFaction("Imperium Tarkus"):setTemplate("Station Relais"):setCallSign("TAR02"):setPosition(202082, 90518):orderStandGround()
-    CpuShip():setFaction("Imperium Tarkus"):setTemplate("Station Relais"):setCallSign("TAR03"):setPosition(230144, 119778):orderStandGround()
-	CpuShip():setFaction("Imperium Tarkus"):setTemplate("Station Relais"):setCallSign("TAR04"):setPosition(240075, 159961):orderStandGround()
-    CpuShip():setFaction("Imperium Tarkus"):setTemplate("Station Relais"):setCallSign("TAR05"):setPosition(229118, 199687):orderStandGround()
-    CpuShip():setFaction("Imperium Tarkus"):setTemplate("Station Relais"):setCallSign("TAR06"):setPosition(200415, 229585):orderStandGround()
-    CpuShip():setFaction("Imperium Tarkus"):setTemplate("Station Relais"):setCallSign("TAR07"):setPosition(159793, 240206):orderStandGround()
-    CpuShip():setFaction("Imperium Tarkus"):setTemplate("Station Relais"):setCallSign("TAR08"):setPosition(118425, 226790):orderStandGround()
-    CpuShip():setFaction("Imperium Tarkus"):setTemplate("Station Relais"):setCallSign("TAR09"):setPosition(91837, 202250):orderStandGround()
-    CpuShip():setFaction("Imperium Tarkus"):setTemplate("Station Relais"):setCallSign("TAR10"):setPosition(78711, 159989):orderStandGround()
-    CpuShip():setFaction("Imperium Tarkus"):setTemplate("Station Relais"):setCallSign("TAR12"):setPosition(116748, 92625):orderStandGround()
-    CpuShip():setFaction("Imperium Tarkus"):setTemplate("Station Relais"):setCallSign("TAR11"):setPosition(90004, 120291):orderStandGround()
+    CpuShip():setFaction("Imperium Tarkus"):setTemplate("Station Relais"):setCallSign("TAR01"):setRadarSignatureInfo(0.3, 0.3, 0.3):setScanningParameters(1,2):setPosition(159979, 79581):orderStandGround()
+    CpuShip():setFaction("Imperium Tarkus"):setTemplate("Station Relais"):setCallSign("TAR02"):setRadarSignatureInfo(0.3, 0.3, 0.3):setScanningParameters(1,2):setPosition(202082, 90518):orderStandGround()
+    CpuShip():setFaction("Imperium Tarkus"):setTemplate("Station Relais"):setCallSign("TAR03"):setRadarSignatureInfo(0.3, 0.3, 0.3):setScanningParameters(1,2):setPosition(230144, 119778):orderStandGround()
+	CpuShip():setFaction("Imperium Tarkus"):setTemplate("Station Relais"):setCallSign("TAR04"):setRadarSignatureInfo(0.3, 0.3, 0.3):setScanningParameters(1,2):setPosition(240075, 159961):orderStandGround()
+    CpuShip():setFaction("Imperium Tarkus"):setTemplate("Station Relais"):setCallSign("TAR05"):setRadarSignatureInfo(0.3, 0.3, 0.3):setScanningParameters(1,2):setPosition(229118, 199687):orderStandGround()
+    CpuShip():setFaction("Imperium Tarkus"):setTemplate("Station Relais"):setCallSign("TAR06"):setRadarSignatureInfo(0.3, 0.3, 0.3):setScanningParameters(1,2):setPosition(200415, 229585):orderStandGround()
+    CpuShip():setFaction("Imperium Tarkus"):setTemplate("Station Relais"):setCallSign("TAR07"):setRadarSignatureInfo(0.3, 0.3, 0.3):setScanningParameters(1,2):setPosition(159793, 240206):orderStandGround()
+    CpuShip():setFaction("Imperium Tarkus"):setTemplate("Station Relais"):setCallSign("TAR08"):setRadarSignatureInfo(0.3, 0.3, 0.3):setScanningParameters(1,2):setPosition(118425, 226790):orderStandGround()
+    CpuShip():setFaction("Imperium Tarkus"):setTemplate("Station Relais"):setCallSign("TAR09"):setRadarSignatureInfo(0.3, 0.3, 0.3):setScanningParameters(1,2):setPosition(91837, 202250):orderStandGround()
+    CpuShip():setFaction("Imperium Tarkus"):setTemplate("Station Relais"):setCallSign("TAR10"):setRadarSignatureInfo(0.3, 0.3, 0.3):setScanningParameters(1,2):setPosition(78711, 159989):orderStandGround()
+    CpuShip():setFaction("Imperium Tarkus"):setTemplate("Station Relais"):setCallSign("TAR12"):setRadarSignatureInfo(0.3, 0.3, 0.3):setScanningParameters(1,2):setPosition(116748, 92625):orderStandGround()
+    CpuShip():setFaction("Imperium Tarkus"):setTemplate("Station Relais"):setCallSign("TAR11"):setRadarSignatureInfo(0.3, 0.3, 0.3):setScanningParameters(1,2):setPosition(90004, 120291):orderStandGround()
 
 	end
 
@@ -108,36 +141,36 @@ SurveillanceTarkus()
 	function DefenseTarkus()
 
 --Stations de Défense Est-Nord
-    CpuShip():setFaction("Imperium Tarkus"):setTemplate("Station de Defense a Lance Siderale"):setCallSign("LS11"):setPosition(239164, 115172):orderStandGround()
-    CpuShip():setFaction("Imperium Tarkus"):setTemplate("Station de Defense a Lance Siderale"):setCallSign("LS12"):setPosition(236879, 112089):orderStandGround()
-    CpuShip():setFaction("Imperium Tarkus"):setTemplate("Station de Defense a Lance Siderale"):setCallSign("LS13"):setPosition(233846, 116765):orderStandGround()
-    CpuShip():setFaction("Imperium Tarkus"):setTemplate("Station de Defense a Macrocanon"):setCallSign("LM11"):setPosition(242602, 120084):orderStandGround():setCustomWeaponStorage("MCANMK0", 200):setCustomWeaponStorageMax("MCANMK0", 200)
-    CpuShip():setFaction("Imperium Tarkus"):setTemplate("Station de Defense a Macrocanon"):setCallSign("LM12"):setPosition(237774, 121238):orderStandGround():setCustomWeaponStorage("MCANMK0", 200):setCustomWeaponStorageMax("MCANMK0", 200)
-	CpuShip():setFaction("Imperium Tarkus"):setTemplate("Station de Defense a Macrocanon"):setCallSign("LM13"):setPosition(232709, 121821):orderStandGround():setCustomWeaponStorage("MCANMK0", 200):setCustomWeaponStorageMax("MCANMK0", 200)
+    CpuShip():setFaction("Imperium Tarkus"):setTemplate("Station de Defense a Lance Siderale"):setCallSign("LS11"):setRadarSignatureInfo(0.15, 0.3, 0.2):setScanningParameters(1,2):setPosition(239164, 115172):orderStandGround()
+    CpuShip():setFaction("Imperium Tarkus"):setTemplate("Station de Defense a Lance Siderale"):setCallSign("LS12"):setRadarSignatureInfo(0.15, 0.3, 0.2):setScanningParameters(1,2):setPosition(236879, 112089):orderStandGround()
+    CpuShip():setFaction("Imperium Tarkus"):setTemplate("Station de Defense a Lance Siderale"):setCallSign("LS13"):setRadarSignatureInfo(0.15, 0.3, 0.2):setScanningParameters(1,2):setPosition(233846, 116765):orderStandGround()
+    CpuShip():setFaction("Imperium Tarkus"):setTemplate("Station de Defense a Macrocanon"):setCallSign("LM11"):setRadarSignatureInfo(0.15, 0.1, 0.2):setScanningParameters(1,2):setPosition(242602, 120084):orderStandGround():setCustomWeaponStorage("MCANMK0", 200):setCustomWeaponStorageMax("MCANMK0", 200)
+    CpuShip():setFaction("Imperium Tarkus"):setTemplate("Station de Defense a Macrocanon"):setCallSign("LM12"):setRadarSignatureInfo(0.15, 0.1, 0.2):setScanningParameters(1,2):setPosition(237774, 121238):orderStandGround():setCustomWeaponStorage("MCANMK0", 200):setCustomWeaponStorageMax("MCANMK0", 200)
+	CpuShip():setFaction("Imperium Tarkus"):setTemplate("Station de Defense a Macrocanon"):setCallSign("LM13"):setRadarSignatureInfo(0.15, 0.1, 0.2):setScanningParameters(1,2):setPosition(232709, 121821):orderStandGround():setCustomWeaponStorage("MCANMK0", 200):setCustomWeaponStorageMax("MCANMK0", 200)
 
 --Stations de Défense Est-Sud	
-	CpuShip():setFaction("Imperium Tarkus"):setTemplate("Station de Defense a Lance Siderale"):setCallSign("LS21"):setPosition(244540, 137928):orderStandGround()
-	CpuShip():setFaction("Imperium Tarkus"):setTemplate("Station de Defense a Lance Siderale"):setCallSign("LS22"):setPosition(242118, 141362):orderStandGround()
-    CpuShip():setFaction("Imperium Tarkus"):setTemplate("Station de Defense a Lance Siderale"):setCallSign("LS23"):setPosition(246415, 134411):orderStandGround()
-    CpuShip():setFaction("Imperium Tarkus"):setTemplate("Station de Defense a Macrocanon"):setCallSign("LM21"):setPosition(238410, 136289):orderStandGround():setCustomWeaponStorage("MCANMK0", 200):setCustomWeaponStorageMax("MCANMK0", 200)
-    CpuShip():setFaction("Imperium Tarkus"):setTemplate("Station de Defense a Macrocanon"):setCallSign("LM22"):setPosition(236837, 139536):orderStandGround():setCustomWeaponStorage("MCANMK0", 200):setCustomWeaponStorageMax("MCANMK0", 200)
-    CpuShip():setFaction("Imperium Tarkus"):setTemplate("Station de Defense a Macrocanon"):setCallSign("LM23"):setPosition(239717, 133653):orderStandGround():setCustomWeaponStorage("MCANMK0", 200):setCustomWeaponStorageMax("MCANMK0", 200)
+	CpuShip():setFaction("Imperium Tarkus"):setTemplate("Station de Defense a Lance Siderale"):setCallSign("LS21"):setRadarSignatureInfo(0.15, 0.3, 0.2):setScanningParameters(1,2):setPosition(244540, 137928):orderStandGround()
+	CpuShip():setFaction("Imperium Tarkus"):setTemplate("Station de Defense a Lance Siderale"):setCallSign("LS22"):setRadarSignatureInfo(0.15, 0.3, 0.2):setScanningParameters(1,2):setPosition(242118, 141362):orderStandGround()
+    CpuShip():setFaction("Imperium Tarkus"):setTemplate("Station de Defense a Lance Siderale"):setCallSign("LS23"):setRadarSignatureInfo(0.15, 0.3, 0.2):setScanningParameters(1,2):setPosition(246415, 134411):orderStandGround()
+    CpuShip():setFaction("Imperium Tarkus"):setTemplate("Station de Defense a Macrocanon"):setCallSign("LM21"):setRadarSignatureInfo(0.15, 0.1, 0.2):setScanningParameters(1,2):setPosition(238410, 136289):orderStandGround():setCustomWeaponStorage("MCANMK0", 200):setCustomWeaponStorageMax("MCANMK0", 200)
+    CpuShip():setFaction("Imperium Tarkus"):setTemplate("Station de Defense a Macrocanon"):setCallSign("LM22"):setRadarSignatureInfo(0.15, 0.1, 0.2):setScanningParameters(1,2):setPosition(236837, 139536):orderStandGround():setCustomWeaponStorage("MCANMK0", 200):setCustomWeaponStorageMax("MCANMK0", 200)
+    CpuShip():setFaction("Imperium Tarkus"):setTemplate("Station de Defense a Macrocanon"):setCallSign("LM23"):setRadarSignatureInfo(0.15, 0.1, 0.2):setScanningParameters(1,2):setPosition(239717, 133653):orderStandGround():setCustomWeaponStorage("MCANMK0", 200):setCustomWeaponStorageMax("MCANMK0", 200)
 
 --Stations de Défense Ouest-Nord
-    CpuShip():setFaction("Imperium Tarkus"):setTemplate("Station de Defense a Lance Siderale"):setCallSign("LS31"):setPosition(88198, 114915):orderStandGround()
-    CpuShip():setFaction("Imperium Tarkus"):setTemplate("Station de Defense a Lance Siderale"):setCallSign("LS32"):setPosition(83570, 112630):orderStandGround()
-	CpuShip():setFaction("Imperium Tarkus"):setTemplate("Station de Defense a Lance Siderale"):setCallSign("LS33"):setPosition(85068, 114977):orderStandGround()
-    CpuShip():setFaction("Imperium Tarkus"):setTemplate("Station de Defense a Macrocanon"):setCallSign("LM31"):setPosition(83457, 118341):orderStandGround():setCustomWeaponStorage("MCANMK0", 200):setCustomWeaponStorageMax("MCANMK0", 200)
-    CpuShip():setFaction("Imperium Tarkus"):setTemplate("Station de Defense a Macrocanon"):setCallSign("LM32"):setPosition(81787, 115411):orderStandGround():setCustomWeaponStorage("MCANMK0", 200):setCustomWeaponStorageMax("MCANMK0", 200)
-    CpuShip():setFaction("Imperium Tarkus"):setTemplate("Station de Defense a Macrocanon"):setCallSign("LM33"):setPosition(86964, 118007):orderStandGround():setCustomWeaponStorage("MCANMK0", 200):setCustomWeaponStorageMax("MCANMK0", 200)
+    CpuShip():setFaction("Imperium Tarkus"):setTemplate("Station de Defense a Lance Siderale"):setCallSign("LS31"):setRadarSignatureInfo(0.15, 0.3, 0.2):setScanningParameters(1,2):setPosition(88198, 114915):orderStandGround()
+    CpuShip():setFaction("Imperium Tarkus"):setTemplate("Station de Defense a Lance Siderale"):setCallSign("LS32"):setRadarSignatureInfo(0.15, 0.3, 0.2):setScanningParameters(1,2):setPosition(83570, 112630):orderStandGround()
+	CpuShip():setFaction("Imperium Tarkus"):setTemplate("Station de Defense a Lance Siderale"):setCallSign("LS33"):setRadarSignatureInfo(0.15, 0.3, 0.2):setScanningParameters(1,2):setPosition(85068, 114977):orderStandGround()
+    CpuShip():setFaction("Imperium Tarkus"):setTemplate("Station de Defense a Macrocanon"):setCallSign("LM31"):setRadarSignatureInfo(0.15, 0.1, 0.2):setScanningParameters(1,2):setPosition(83457, 118341):orderStandGround():setCustomWeaponStorage("MCANMK0", 200):setCustomWeaponStorageMax("MCANMK0", 200)
+    CpuShip():setFaction("Imperium Tarkus"):setTemplate("Station de Defense a Macrocanon"):setCallSign("LM32"):setRadarSignatureInfo(0.15, 0.1, 0.2):setScanningParameters(1,2):setPosition(81787, 115411):orderStandGround():setCustomWeaponStorage("MCANMK0", 200):setCustomWeaponStorageMax("MCANMK0", 200)
+    CpuShip():setFaction("Imperium Tarkus"):setTemplate("Station de Defense a Macrocanon"):setCallSign("LM33"):setRadarSignatureInfo(0.15, 0.1, 0.2):setScanningParameters(1,2):setPosition(86964, 118007):orderStandGround():setCustomWeaponStorage("MCANMK0", 200):setCustomWeaponStorageMax("MCANMK0", 200)
 
 --Stations de Défense Ouest-Sud
-    CpuShip():setFaction("Imperium Tarkus"):setTemplate("Station de Defense a Lance Siderale"):setCallSign("LS41"):setPosition(75204, 149714):orderStandGround()
-    CpuShip():setFaction("Imperium Tarkus"):setTemplate("Station de Defense a Lance Siderale"):setCallSign("LS42"):setPosition(69807, 149254):orderStandGround()
-    CpuShip():setFaction("Imperium Tarkus"):setTemplate("Station de Defense a Lance Siderale"):setCallSign("LS43"):setPosition(73226, 147222):orderStandGround()
-    CpuShip():setFaction("Imperium Tarkus"):setTemplate("Station de Defense a Macrocanon"):setCallSign("LM41"):setPosition(68466, 144648):orderStandGround():setCustomWeaponStorage("MCANMK0", 200):setCustomWeaponStorageMax("MCANMK0", 200)
-    CpuShip():setFaction("Imperium Tarkus"):setTemplate("Station de Defense a Macrocanon"):setCallSign("LM42"):setPosition(74027, 143890):orderStandGround():setCustomWeaponStorage("MCANMK0", 200):setCustomWeaponStorageMax("MCANMK0", 200)
-    CpuShip():setFaction("Imperium Tarkus"):setTemplate("Station de Defense a Macrocanon"):setCallSign("LM43"):setPosition(78703, 147303):orderStandGround():setCustomWeaponStorage("MCANMK0", 200):setCustomWeaponStorageMax("MCANMK0", 200)
+    CpuShip():setFaction("Imperium Tarkus"):setTemplate("Station de Defense a Lance Siderale"):setCallSign("LS41"):setRadarSignatureInfo(0.15, 0.3, 0.2):setScanningParameters(1,2):setPosition(75204, 149714):orderStandGround()
+    CpuShip():setFaction("Imperium Tarkus"):setTemplate("Station de Defense a Lance Siderale"):setCallSign("LS42"):setRadarSignatureInfo(0.15, 0.3, 0.2):setScanningParameters(1,2):setPosition(69807, 149254):orderStandGround()
+    CpuShip():setFaction("Imperium Tarkus"):setTemplate("Station de Defense a Lance Siderale"):setCallSign("LS43"):setRadarSignatureInfo(0.15, 0.3, 0.2):setScanningParameters(1,2):setPosition(73226, 147222):orderStandGround()
+    CpuShip():setFaction("Imperium Tarkus"):setTemplate("Station de Defense a Macrocanon"):setCallSign("LM41"):setRadarSignatureInfo(0.15, 0.1, 0.2):setScanningParameters(1,2):setPosition(68466, 144648):orderStandGround():setCustomWeaponStorage("MCANMK0", 200):setCustomWeaponStorageMax("MCANMK0", 200)
+    CpuShip():setFaction("Imperium Tarkus"):setTemplate("Station de Defense a Macrocanon"):setCallSign("LM42"):setRadarSignatureInfo(0.15, 0.1, 0.2):setScanningParameters(1,2):setPosition(74027, 143890):orderStandGround():setCustomWeaponStorage("MCANMK0", 200):setCustomWeaponStorageMax("MCANMK0", 200)
+    CpuShip():setFaction("Imperium Tarkus"):setTemplate("Station de Defense a Macrocanon"):setCallSign("LM43"):setRadarSignatureInfo(0.15, 0.1, 0.2):setScanningParameters(1,2):setPosition(78703, 147303):orderStandGround():setCustomWeaponStorage("MCANMK0", 200):setCustomWeaponStorageMax("MCANMK0", 200)
 	
 	end
 
@@ -147,29 +180,35 @@ DefenseTarkus()
 	
 --Vaisseaux Intrasystèmes
 --Flotille Est
-	local Molitor = CpuShip():setFaction("Imperium Tarkus"):setTemplate("Croiseur Lunar"):setCallSign("Heritage de Molitor"):setPosition(252675, 126670):orderDefendLocation(252675, 126670):setCustomWeaponStorage("MCANMK2", 200):setCustomWeaponStorageMax("MCANMK2", 200):setCustomWeaponStorage("Torpille", 12):setCustomWeaponStorageMax("Torpille", 12)
-	CpuShip():setFaction("Imperium Tarkus"):setTemplate("Fregate Firestorm"):setCallSign("Devoir d'Amalia"):setPosition(256548, 129921):orderDefendTarget(Molitor,500,5000)
-    CpuShip():setFaction("Imperium Tarkus"):setTemplate("Fregate Firestorm"):setCallSign("Aurelius"):setPosition(250314, 121195):orderDefendTarget(Molitor,500,5000)
+	local Molitor = CpuShip():setFaction("Imperium Tarkus"):setTemplate("Croiseur Lunar"):setCallSign("Heritage de Molitor"):setRadarSignatureInfo(0.25, 0.8, 0.4):setScanningParameters(2,1):setPosition(252675, 126670):orderDefendLocation(252675, 126670):setCustomWeaponStorage("MCANMK2", 200):setCustomWeaponStorageMax("MCANMK2", 200):setCustomWeaponStorage("Torpille", 12):setCustomWeaponStorageMax("Torpille", 12)
+	CpuShip():setFaction("Imperium Tarkus"):setTemplate("Fregate Firestorm"):setCallSign("Devoir d'Amalia"):setRadarSignatureInfo(0.1, 0.7, 0.3):setScanningParameters(2,1):setPosition(256548, 129921):orderDefendTarget(Molitor,500,5000)
+    CpuShip():setFaction("Imperium Tarkus"):setTemplate("Fregate Firestorm"):setCallSign("Aurelius"):setRadarSignatureInfo(0.1, 0.7, 0.3):setScanningParameters(2,1):setPosition(250314, 121195):orderDefendTarget(Molitor,500,5000)
 
 --Flotille Ouest
-	local Titus = CpuShip():setFaction("Imperium Tarkus"):setTemplate("Croiseur Gothic"):setCallSign("Honneur de Titus"):setPosition(64223, 125839):orderDefendLocation(64223, 125839):setCustomWeaponStorage("Torpille", 12):setCustomWeaponStorageMax("Torpille", 12)
-    CpuShip():setFaction("Imperium Tarkus"):setTemplate("Fregate Firestorm"):setCallSign("Piete de Kregory"):setPosition(68927, 122442):orderDefendTarget(Titus,500,5000)
-    CpuShip():setFaction("Imperium Tarkus"):setTemplate("Fregate Firestorm"):setCallSign("Don d'Abnazar"):setPosition(64356, 131791):orderDefendTarget(Titus,500,5000)
+	local Titus = CpuShip():setFaction("Imperium Tarkus"):setTemplate("Croiseur Gothic"):setCallSign("Honneur de Titus"):setRadarSignatureInfo(0.25, 0.8, 0.4):setScanningParameters(2,1):setPosition(64223, 125839):orderDefendLocation(64223, 125839):setCustomWeaponStorage("Torpille", 12):setCustomWeaponStorageMax("Torpille", 12)
+    CpuShip():setFaction("Imperium Tarkus"):setTemplate("Fregate Firestorm"):setCallSign("Piete de Kregory"):setRadarSignatureInfo(0.1, 0.7, 0.3):setScanningParameters(2,1):setPosition(68927, 122442):orderDefendTarget(Titus,500,5000)
+    CpuShip():setFaction("Imperium Tarkus"):setTemplate("Fregate Firestorm"):setCallSign("Don d'Abnazar"):setRadarSignatureInfo(0.1, 0.7, 0.3):setScanningParameters(2,1):setPosition(64356, 131791):orderDefendTarget(Titus,500,5000)
     
 --Flotille d'Interception    
-	CpuShip():setFaction("Imperium Tarkus"):setTemplate("Escorteur Cobra"):setCallSign("Kellana"):setPosition(115355, 180323):orderDefendLocation(115355, 180323):setCustomWeaponStorage("Torpille", 6):setCustomWeaponStorageMax("Torpille", 6)
-    CpuShip():setFaction("Imperium Tarkus"):setTemplate("Escorteur Cobra"):setCallSign("De'Arnise"):setPosition(201179, 186397):orderDefendLocation(201179, 186397):setCustomWeaponStorage("Torpille", 6):setCustomWeaponStorageMax("Torpille", 6)
-    CpuShip():setFaction("Imperium Tarkus"):setTemplate("Escorteur Cobra"):setCallSign("Kovir"):setPosition(162357, 128438):orderDefendLocation(162357, 128438):setCustomWeaponStorage("Torpille", 6):setCustomWeaponStorageMax("Torpille", 6)
-    CpuShip():setFaction("Imperium Tarkus"):setTemplate("Escorteur Cobra"):setCallSign("Tamar"):setPosition(191205, 133533):orderDefendLocation(191205, 133533):setCustomWeaponStorage("Torpille", 6):setCustomWeaponStorageMax("Torpille", 6)
-    CpuShip():setFaction("Imperium Tarkus"):setTemplate("Escorteur Cobra"):setCallSign("Pelor"):setPosition(125849, 139785):orderDefendLocation(125849, 139785):setCustomWeaponStorage("Torpille", 6):setCustomWeaponStorageMax("Torpille", 6)
-    CpuShip():setFaction("Imperium Tarkus"):setTemplate("Escorteur Cobra"):setCallSign("Nelmine"):setPosition(159233, 215658):orderDefendLocation(159233, 215658):setCustomWeaponStorage("Torpille", 6):setCustomWeaponStorageMax("Torpille", 6)
+	CpuShip():setFaction("Imperium Tarkus"):setTemplate("Escorteur Cobra"):setCallSign("Kellana"):setRadarSignatureInfo(0.1, 0.7, 0.3):setScanningParameters(1,1):setPosition(115355, 180323):orderDefendLocation(115355, 180323):setCustomWeaponStorage("Torpille", 6):setCustomWeaponStorageMax("Torpille", 6)
+    CpuShip():setFaction("Imperium Tarkus"):setTemplate("Escorteur Cobra"):setCallSign("De'Arnise"):setRadarSignatureInfo(0.1, 0.7, 0.3):setScanningParameters(1,1):setPosition(201179, 186397):orderDefendLocation(201179, 186397):setCustomWeaponStorage("Torpille", 6):setCustomWeaponStorageMax("Torpille", 6)
+    CpuShip():setFaction("Imperium Tarkus"):setTemplate("Escorteur Cobra"):setCallSign("Kovir"):setRadarSignatureInfo(0.1, 0.7, 0.3):setScanningParameters(1,1):setPosition(162357, 128438):orderDefendLocation(162357, 128438):setCustomWeaponStorage("Torpille", 6):setCustomWeaponStorageMax("Torpille", 6)
+    CpuShip():setFaction("Imperium Tarkus"):setTemplate("Escorteur Cobra"):setCallSign("Tamar"):setRadarSignatureInfo(0.1, 0.7, 0.3):setScanningParameters(1,1):setPosition(191205, 133533):orderDefendLocation(191205, 133533):setCustomWeaponStorage("Torpille", 6):setCustomWeaponStorageMax("Torpille", 6)
+    CpuShip():setFaction("Imperium Tarkus"):setTemplate("Escorteur Cobra"):setCallSign("Pelor"):setRadarSignatureInfo(0.1, 0.7, 0.3):setScanningParameters(1,1):setPosition(125849, 139785):orderDefendLocation(125849, 139785):setCustomWeaponStorage("Torpille", 6):setCustomWeaponStorageMax("Torpille", 6)
+    CpuShip():setFaction("Imperium Tarkus"):setTemplate("Escorteur Cobra"):setCallSign("Nelmine"):setRadarSignatureInfo(0.1, 0.7, 0.3):setScanningParameters(1,1):setPosition(159233, 215658):orderDefendLocation(159233, 215658):setCustomWeaponStorage("Torpille", 6):setCustomWeaponStorageMax("Torpille", 6)
 
 --Croiseurs Marchands
-	CpuShip():setFaction("Imperium Tarkus"):setTemplate("Croiseur Ambition"):setCallSign("Septima Anom"):setPosition(225496, 137506):orderDock(Scorpio):setCustomWeaponStorage("MCANMK2", 200):setCustomWeaponStorageMax("MCANMK2", 200):setCustomWeaponStorage("Torpille", 12):setCustomWeaponStorageMax("Torpille", 12)
-    CpuShip():setFaction("Imperium Tarkus"):setTemplate("Croiseur Ambition"):setCallSign("Tibere Tarkus"):setPosition(222801, 137617):orderDock(Scorpio):setCustomWeaponStorage("MCANMK2", 200):setCustomWeaponStorageMax("MCANMK2", 200):setCustomWeaponStorage("Torpille", 12):setCustomWeaponStorageMax("Torpille", 12)
+	CpuShip():setFaction("Imperium Tarkus"):setTemplate("Croiseur Ambition"):setCallSign("Septima Anom"):setRadarSignatureInfo(0.25, 0.8, 0.4):setScanningParameters(2,1):setPosition(225496, 137506):orderDock(Scorpio):setCustomWeaponStorage("MCANMK2", 200):setCustomWeaponStorageMax("MCANMK2", 200):setCustomWeaponStorage("Torpille", 12):setCustomWeaponStorageMax("Torpille", 12)
+    CpuShip():setFaction("Imperium Tarkus"):setTemplate("Croiseur Ambition"):setCallSign("Tibere Tarkus"):setRadarSignatureInfo(0.25, 0.8, 0.4):setScanningParameters(2,1):setPosition(222801, 137617):orderDock(Scorpio):setCustomWeaponStorage("MCANMK2", 200):setCustomWeaponStorageMax("MCANMK2", 200):setCustomWeaponStorage("Torpille", 12):setCustomWeaponStorageMax("Torpille", 12)
 
 --Epave du Light of Terra
-    CpuShip():setFaction("Epave"):setTemplate("Cuirasse Emperor"):setCallSign("Light of Terra"):setPosition(210220, 155136):setCustomWeaponStorage("Chasseurs", 0):setCustomWeaponStorageMax("Chasseurs", 0):setCustomWeaponStorage("MCANMK4", 0):setCustomWeaponStorageMax("MCANMK4", 0):setCustomWeaponStorage("Torpille", 0):setHull(0):setShields(0):setCustomWeaponStorageMax("Torpille", 0):setMaxEnergy(0):setSystemHealthMax("reactor", -100):setSystemHealthMax("beamweapons", -100):setSystemHealthMax("missilesystem", -100):setSystemHealthMax("maneuver", -100):setSystemHealthMax("impulse", -100):setSystemHealthMax("frontshield", -100):setSystemHealthMax("drones", -100):setCanBeDestroyed(false)
+    CpuShip():setFaction("Epave"):setTemplate("Cuirasse Emperor"):setCallSign("Light of Terra"):setRadarSignatureInfo(0.5, 0.1, 0.1):setScanningParameters(3,1):setPosition(210220, 155136):setCustomWeaponStorage("Chasseurs", 0):setCustomWeaponStorageMax("Chasseurs", 0):setCustomWeaponStorage("MCANMK4", 0):setCustomWeaponStorageMax("MCANMK4", 0):setCustomWeaponStorage("Torpille", 0):setHull(0):setShields(0):setCustomWeaponStorageMax("Torpille", 0):setMaxEnergy(0):setSystemHealthMax("reactor", -100):setSystemHealthMax("beamweapons", -100):setSystemHealthMax("missilesystem", -100):setSystemHealthMax("maneuver", -100):setSystemHealthMax("impulse", -100):setSystemHealthMax("frontshield", -100):setSystemHealthMax("drones", -100):setCanBeDestroyed(false):setDescriptions("Light of Terra",[[Epave du Cuirassé de Classe Emperor "Light of Terra", envoyé renforcer les défenses du système Tarkus en 761M41.
+	
+	
+	]],[[Epave à la dérive du Cuirassé de Classe Emperor "Light of Terra", envoyé renforcer les défenses du système Tarkus en 761M41. A son arrivée, les forces de défenses présentes sur place détectèrent que sa trajectoire le dirigeait droit sur la station Scorpio, et constatèrent que le vaisseau ne rectifiait pas son cap malgré les échanges rassurant de l'équipage. Plusieurs Capitaines de vaisseau décidèrent d'ouvrir le feu et d'aborder le Cuirassé, dont le pont avait été capturé par des traitres à la solde des Puissances de la Ruine. Malgré les efforts déployés, il ne fut pas possible de reprendre les commandes du vaisseau, qui dut être neutralisé par la force pour épargner la station Scorpio, entrainant la mort de tout l'équipage et rendant le Cuirassé inutilisable. Aucun chantier spatial de l'Amas Tarkusien ne possédant de quai suffisamment grand pour accueillir un tel vaisseau, il a été laissé sur place et accueille régulièrement de petites équipes de Technoprêtres ou de recycleurs d'épave venus récupérer ce qui pouvais l'être sur ce titan stellaire.
+	
+	
+	]])
 
 --Failles de Tarkus	
 --Tarkus(L6A)-->Nexus1(AI162D)
@@ -956,20 +995,41 @@ function Gisperion()
 function GisperionMap()
 
 --Soleil
-	local SoleilGisperion = Planet():setPosition(-3715051, -3766232):setFaction("Neutre"):setPlanetRadius(7900):setCallSign("Soleil de Gisperion"):setPlanetSurfaceTexture("planets/Soleil.jpg"):setPlanetAtmosphereColor(1,1,0.5):setRadarSignatureInfo(0.80, 0.75, -0.95):setScanningParameters(1,1):setPlanetIcon("planets/icons/Sun.png"):setDescriptions("Soleil de Gisperion", "Le système Gisperion est constitué de six planètes telluriques ainsi qu’une couronne d’astéroïde extérieure orbitant autour d’une étoile jaune très classique, à seulement un saut Warp du système Tarkus.", "Le système Gisperion est constitué de six planètes telluriques ainsi qu’une couronne d’astéroïde extérieure orbitant autour d’une étoile jaune très classique, à seulement un saut Warp du système Tarkus. Bien que l’intégration de Gisperion à l’Imperium soit plus ancienne que celle de Tarkus, la proximité et la similitude entre ces deux systèmes les a rendu proches culturellement et économiquement tout en les rendant rivaux. ")
+	local SoleilGisperion = Planet():setPosition(-3715051, -3766232):setFaction("Neutre"):setPlanetRadius(7900):setCallSign("Soleil de Gisperion"):setPlanetSurfaceTexture("planets/Soleil.jpg"):setPlanetAtmosphereColor(1,1,0.5):setRadarSignatureInfo(0.79, 0.8, 0.0):setScanningParameters(1,1):setPlanetIcon("planets/icons/Sun.png"):setDescriptions("Soleil de Gisperion",[[Le système Gisperion est constitué de six planètes telluriques ainsi qu’une couronne d’astéroïde extérieure orbitant autour d’une étoile jaune très classique, à seulement un saut Warp du système Tarkus.
+	
+	
+	]],[[Le système Gisperion est constitué de six planètes telluriques ainsi qu’une couronne d’astéroïde extérieure orbitant autour d’une étoile jaune très classique, à seulement un saut Warp du système Tarkus. Bien que l’intégration de Gisperion à l’Imperium soit plus ancienne que celle de Tarkus, la proximité et la similitude entre ces deux systèmes les a rendu proches culturellement et économiquement tout en les rendant rivaux.
+	
+	
+	]])
 	WarpJammer():setFaction("Neutre"):setPosition(-3715051, -3766232):setRange(85500.00)
 
 --Planètes
 --Gisperion I
-	local GisperionI = Planet():setPosition(-3724558, -3758304):setFaction("Neutre"):setPlanetRadius(250):setAxialRotationTime(3600):setCallSign("Gisperion I"):setPlanetSurfaceTexture("planets/planet-2.png"):setScanningParameters(3, 2):setPlanetIcon("planets/icons/Lava-Planet.png"):setDescriptions("Gisperion I", "Gisperion I est une planète naine orbitant proche du soleil.", "Gisperion I est une planète naine orbitant proche de son soleil, à la surface carbonisée par les rayons de l'astre.")
+	local GisperionI = Planet():setPosition(-3724558, -3758304):setFaction("Neutre"):setPlanetRadius(250):setAxialRotationTime(3600):setCallSign("Gisperion I"):setPlanetSurfaceTexture("planets/planet-2.png"):setRadarSignatureInfo(0.075, 0.3, 0.0):setScanningParameters(1, 2):setPlanetIcon("planets/icons/Lava-Planet.png"):setDescriptions("Gisperion I",[[Gisperion I est une planète naine orbitant proche du soleil.
+	
+	
+	]],[[Gisperion I est une planète naine orbitant proche de son soleil, à la surface carbonisée par les rayons de l'astre.
+	
+	
+	]])
     GisperionI:setOrbit(SoleilGisperion, -1000)
 	
 --Gisperion II
-	local GisperionII = Planet():setPosition(-3736653, -3763263):setFaction("Neutre"):setPlanetRadius(1000):setAxialRotationTime(3600):setCallSign("Gisperion II"):setPlanetSurfaceTexture("planets/strange-1.jpg"):setScanningParameters(3, 2):setPlanetIcon("planets/icons/Orange-Planet.png"):setDescriptions("Gisperion II", "Gisperion II est une planète de taille moyenne située dans la zone habitable du système, mais secouée par une intense activité sismique et ne disposant pas d’une atmosphère.", "Gisperion II est une planète de taille moyenne située dans la zone habitable du système, mais secouée par une intense activité sismique et ne disposant pas d’une atmosphère. Malgré son statut de non colonisée, des vaisseaux qui s’y posent régulièrement et des ouvriers impériaux travaillant sur place, car la planète est malgré tout riche en fer ainsi qu’en minéraux de toutes sortes. ")
+	local GisperionII = Planet():setPosition(-3736653, -3763263):setFaction("Neutre"):setPlanetRadius(1000):setAxialRotationTime(3600):setCallSign("Gisperion II"):setPlanetSurfaceTexture("planets/strange-1.jpg"):setRadarSignatureInfo(0.1, 0.3, 0.1):setScanningParameters(2, 2):setPlanetIcon("planets/icons/Orange-Planet.png"):setDescriptions("Gisperion II",[[Gisperion II est une planète de taille moyenne située dans la zone habitable du système, mais secouée par une intense activité sismique et ne disposant pas d’une atmosphère.
+	
+	
+	]],[[Gisperion II est une planète de taille moyenne située dans la zone habitable du système, mais secouée par une intense activité sismique et ne disposant pas d’une atmosphère. Malgré son statut de non colonisée, des vaisseaux qui s’y posent régulièrement et des ouvriers impériaux travaillant sur place, car la planète est malgré tout riche en fer ainsi qu’en minéraux de toutes sortes.
+	
+	
+	]])
     GisperionII:setOrbit(SoleilGisperion, -4000)
 
 --Gisperion III
-	local GisperionIII = Planet():setPosition(-3746209, -3779834):setFaction("Imperium Gisperion"):setPlanetRadius(1500):setAxialRotationTime(3600):setCallSign("Gisperion III"):setPlanetSurfaceTexture("planets/earth2.jpg"):setScanningParameters(3, 2):setPlanetIcon("planets/icons/earth-like.png"):setDescriptions("Gisperion III", "Gisperion III est un Monde-Ruche minier colonisé lors de la Croisade Sternbergienne il y a plus de 600 ans. Elle est depuis dirigée par la puissante Guilde Marchande Gisperienne.", [["Gisperion III
+	local GisperionIII = Planet():setPosition(-3746209, -3779834):setFaction("Imperium Gisperion"):setPlanetRadius(1500):setAxialRotationTime(3600):setCallSign("Gisperion III"):setPlanetSurfaceTexture("planets/earth2.jpg"):setRadarSignatureInfo(0.15, 0.8, 0.9):setScanningParameters(3, 3):setPlanetIcon("planets/icons/earth-like.png"):setDescriptions("Gisperion III",[[Gisperion III est un Monde-Ruche minier colonisé lors de la Croisade Sternbergienne il y a plus de 600 ans. Elle est depuis dirigée par la puissante Guilde Marchande Gisperienne.
+	
+	
+	]],[[Gisperion III
 Monde-Ruche Minier
 Gouverneur : Seigneur Elias De Corellos (depuis 170 ans)
 Gouvernement : Ploutocratie Représentative
@@ -977,38 +1037,59 @@ Population : 12.6 Milliards
 Production notable : Minerai, cristaux, objets manufacturés, produits de luxe
 Loi particulière : Non
 
-Gisperion III fut colonisée en 135M41, soit près d’un siècle avant Tarkus, mais n’a jamais su attirer le même engouement. Planète tellurique riche en minéraux, mais à la vie rare et aux nombreux phénomènes climatiques violents, elle fut avant tout la cible d’une intense exploitation minière. Grâce au commerce, Gisperion III devint un monde avec lequel compter, dirigé par la puissante Guilde Marchande Gisperienne, représentée par la famille De Corellos, rivaux de longue date de la famille Anomtarkus dans le monde des affaires, bien que les deux familles aient également tissé des liens de parenté. Grâce à un astroport bien développé, la planète n’a pas besoin de station spatiale pour accueillir les nombreux vaisseaux de commerce croisant dans le système, mais ses dirigeants rêvent secrètement d’en créer une pour rivaliser avec celle, impressionnante, de Scorpio."]])
+Gisperion III fut colonisée en 135M41, soit près d’un siècle avant Tarkus, mais n’a jamais su attirer le même engouement. Planète tellurique riche en minéraux, mais à la vie rare et aux nombreux phénomènes climatiques violents, elle fut avant tout la cible d’une intense exploitation minière. Grâce au commerce, Gisperion III devint un monde avec lequel compter, dirigé par la puissante Guilde Marchande Gisperienne, représentée par la famille De Corellos, rivaux de longue date de la famille Anomtarkus dans le monde des affaires, bien que les deux familles aient également tissé des liens de parenté. Grâce à un astroport bien développé, la planète n’a pas besoin de station spatiale pour accueillir les nombreux vaisseaux de commerce croisant dans le système, mais ses dirigeants rêvent secrètement d’en créer une pour rivaliser avec celle, impressionnante, de Scorpio.
+
+
+]])
     GisperionIII:setOrbit(SoleilGisperion, -6500)
 
 --Gisperion IV
-	local GisperionIV = Planet():setPosition(-3749474, -3797130):setFaction("Neutre"):setPlanetRadius(1250):setAxialRotationTime(3600):setCallSign("Gisperion IV"):setPlanetSurfaceTexture("planets/planet-1.png"):setScanningParameters(3, 2):setPlanetIcon("planets/icons/Water-Planet-with-Small-Islands.png"):setDescriptions("Gisperion IV", "Gisperion IV est une planète tellurique quasiment recouverte d’eau.", "Gisperion IV est une planète tellurique quasiment recouverte d’eau, et ne disposant à priori d’aucune ressource intéressante pour l’Imperium. Des projets de colonisation pour en faire un agrimonde sont régulièrement proposés depuis plusieurs siècles, sans la moindre concrétisation.")
+	local GisperionIV = Planet():setPosition(-3749474, -3797130):setFaction("Neutre"):setPlanetRadius(1250):setAxialRotationTime(3600):setCallSign("Gisperion IV"):setPlanetSurfaceTexture("planets/planet-1.png"):setRadarSignatureInfo(0.125, 0.2, 0.2):setScanningParameters(2, 2):setPlanetIcon("planets/icons/Water-Planet-with-Small-Islands.png"):setDescriptions("Gisperion IV",[[Gisperion IV est une planète tellurique quasiment exclusivement recouverte d’eau.
+	
+	
+	]],[[Gisperion IV est une planète tellurique quasiment exclusivement recouverte d’eau, et ne disposant à priori d’aucune ressource intéressante pour l’Imperium. Des projets de colonisation pour en faire un agrimonde sont régulièrement proposés depuis plusieurs siècles, sans la moindre concrétisation.
+	
+	
+	]])
     GisperionIV:setOrbit(SoleilGisperion, -10000)
 
 --Gisperion V
-	local GisperionV = Planet():setPosition(-3749836, -3818779):setFaction("Neutre"):setPlanetRadius(1650):setAxialRotationTime(3600):setCallSign("Gisperion V"):setPlanetSurfaceTexture("planets/2k_venus_atmosphere.jpg"):setScanningParameters(3, 2):setPlanetIcon("planets/icons/Red-Planet-With-Ice.png"):setDescriptions("Gisperion V", "Gisperion V est une planète tellurique orbitant loin de son soleil.", "Gisperion V est une planète tellurique orbitant loin de son soleil, couverte de glaces et très peu propice à la vie. Malgré son statut de non colonisée, on y trouve régulièrement des expéditions à la recherche de matériaux rares, dont on trouve quelques filons dans les grottes de glaces qui composent ce lieu. ")
+	local GisperionV = Planet():setPosition(-3749836, -3818779):setFaction("Neutre"):setPlanetRadius(1650):setAxialRotationTime(3600):setCallSign("Gisperion V"):setPlanetSurfaceTexture("planets/2k_venus_atmosphere.jpg"):setRadarSignatureInfo(0.165, 0.1, 0.05):setScanningParameters(1, 2):setPlanetIcon("planets/icons/Red-Planet-With-Ice.png"):setDescriptions("Gisperion V",[[Gisperion V est une planète tellurique orbitant loin de son soleil.
+	
+	
+	]],[[Gisperion V est une planète tellurique orbitant loin de son soleil, couverte de glaces et très peu propice à la vie. Malgré son statut de non colonisée, on y trouve régulièrement des expéditions à la recherche de matériaux rares, dont on trouve quelques filons dans les grottes de glaces qui composent ce lieu.
+	
+	
+	]])
     GisperionV:setOrbit(SoleilGisperion, -14000)
 
 --Gisperion VI
-	local GisperionVI = Planet():setPosition(-3727366, -3845120):setFaction("Neutre"):setPlanetRadius(400):setAxialRotationTime(3600):setCallSign("Gisperion VI"):setPlanetSurfaceTexture("planets/ceres_fictional.jpg"):setScanningParameters(3, 2):setPlanetIcon("planets/icons/Dark-Planet.png"):setDescriptions("Gisperion VI", "Gisperion VI est une pseudo planète très éloignée du système, quasiment incluse dans la ceinture d’astéroïdes.", "Gisperion VI est une pseudo planète très éloignée du système, quasiment incluse dans la ceinture d’astéroïdes dont elle est probablement issue.")
+	local GisperionVI = Planet():setPosition(-3727366, -3845120):setFaction("Neutre"):setPlanetRadius(400):setAxialRotationTime(3600):setCallSign("Gisperion VI"):setPlanetSurfaceTexture("planets/ceres_fictional.jpg"):setRadarSignatureInfo(0.04, 0.01, 0.0):setScanningParameters(3, 2):setPlanetIcon("planets/icons/Dark-Planet.png"):setDescriptions("Gisperion VI",[[Gisperion VI est une pseudo planète très éloignée du système, quasiment incluse dans la ceinture d’astéroïdes.
+	
+	
+	]],[[Gisperion VI est une pseudo planète très éloignée du système, quasiment incluse dans la ceinture d’astéroïdes dont elle est probablement issue.
+	
+	
+	]])
     GisperionVI:setOrbit(SoleilGisperion, -20000)
 
 --Stations de Surveillance
 function SurveillanceGisperion()
-    CpuShip():setFaction("Imperium Gisperion"):setTemplate("Station Relais"):setCallSign("GIS01"):setPosition(-3720026, -3857552):orderStandGround()
-    CpuShip():setFaction("Imperium Gisperion"):setTemplate("Station Relais"):setCallSign("GIS02"):setPosition(-3679852, -3849810):orderStandGround()
-    CpuShip():setFaction("Imperium Gisperion"):setTemplate("Station Relais"):setCallSign("GIS03"):setPosition(-3645012, -3834430):orderStandGround()
-    CpuShip():setFaction("Imperium Gisperion"):setTemplate("Station Relais"):setCallSign("GIS04"):setPosition(-3629738, -3799592):orderStandGround()
-    CpuShip():setFaction("Imperium Gisperion"):setTemplate("Station Relais"):setCallSign("GIS05"):setPosition(-3624088, -3761509):orderStandGround()
-    CpuShip():setFaction("Imperium Gisperion"):setTemplate("Station Relais"):setCallSign("GIS06"):setPosition(-3635282, -3724786):orderStandGround()
-    CpuShip():setFaction("Imperium Gisperion"):setTemplate("Station Relais"):setCallSign("GIS07"):setPosition(-3657462, -3696957):orderStandGround()
-    CpuShip():setFaction("Imperium Gisperion"):setTemplate("Station Relais"):setCallSign("GIS08"):setPosition(-3692720, -3677393):orderStandGround()
-    CpuShip():setFaction("Imperium Gisperion"):setTemplate("Station Relais"):setCallSign("GIS09"):setPosition(-3722888, -3694844):orderStandGround()
-    CpuShip():setFaction("Imperium Gisperion"):setTemplate("Station Relais"):setCallSign("GIS10"):setPosition(-3751518, -3683460):orderStandGround()
-    CpuShip():setFaction("Imperium Gisperion"):setTemplate("Station Relais"):setCallSign("GIS11"):setPosition(-3784787, -3707419):orderStandGround()
-    CpuShip():setFaction("Imperium Gisperion"):setTemplate("Station Relais"):setCallSign("GIS12"):setPosition(-3803306, -3742154):orderStandGround()
-    CpuShip():setFaction("Imperium Gisperion"):setTemplate("Station Relais"):setCallSign("GIS13"):setPosition(-3805398, -3780446):orderStandGround()
-    CpuShip():setFaction("Imperium Gisperion"):setTemplate("Station Relais"):setCallSign("GIS14"):setPosition(-3788344, -3818737):orderStandGround()
-    CpuShip():setFaction("Imperium Gisperion"):setTemplate("Station Relais"):setCallSign("GIS15"):setPosition(-3758736, -3845520):orderStandGround()
+    CpuShip():setFaction("Imperium Gisperion"):setTemplate("Station Relais"):setCallSign("GIS01"):setRadarSignatureInfo(0.3, 0.3, 0.3):setScanningParameters(1,2):setPosition(-3720026, -3857552):orderStandGround()
+    CpuShip():setFaction("Imperium Gisperion"):setTemplate("Station Relais"):setCallSign("GIS02"):setRadarSignatureInfo(0.3, 0.3, 0.3):setScanningParameters(1,2):setPosition(-3679852, -3849810):orderStandGround()
+    CpuShip():setFaction("Imperium Gisperion"):setTemplate("Station Relais"):setCallSign("GIS03"):setRadarSignatureInfo(0.3, 0.3, 0.3):setScanningParameters(1,2):setPosition(-3645012, -3834430):orderStandGround()
+    CpuShip():setFaction("Imperium Gisperion"):setTemplate("Station Relais"):setCallSign("GIS04"):setRadarSignatureInfo(0.3, 0.3, 0.3):setScanningParameters(1,2):setPosition(-3629738, -3799592):orderStandGround()
+    CpuShip():setFaction("Imperium Gisperion"):setTemplate("Station Relais"):setCallSign("GIS05"):setRadarSignatureInfo(0.3, 0.3, 0.3):setScanningParameters(1,2):setPosition(-3624088, -3761509):orderStandGround()
+    CpuShip():setFaction("Imperium Gisperion"):setTemplate("Station Relais"):setCallSign("GIS06"):setRadarSignatureInfo(0.3, 0.3, 0.3):setScanningParameters(1,2):setPosition(-3635282, -3724786):orderStandGround()
+    CpuShip():setFaction("Imperium Gisperion"):setTemplate("Station Relais"):setCallSign("GIS07"):setRadarSignatureInfo(0.3, 0.3, 0.3):setScanningParameters(1,2):setPosition(-3657462, -3696957):orderStandGround()
+    CpuShip():setFaction("Imperium Gisperion"):setTemplate("Station Relais"):setCallSign("GIS08"):setRadarSignatureInfo(0.3, 0.3, 0.3):setScanningParameters(1,2):setPosition(-3692720, -3677393):orderStandGround()
+    CpuShip():setFaction("Imperium Gisperion"):setTemplate("Station Relais"):setCallSign("GIS09"):setRadarSignatureInfo(0.3, 0.3, 0.3):setScanningParameters(1,2):setPosition(-3722888, -3694844):orderStandGround()
+    CpuShip():setFaction("Imperium Gisperion"):setTemplate("Station Relais"):setCallSign("GIS10"):setRadarSignatureInfo(0.3, 0.3, 0.3):setScanningParameters(1,2):setPosition(-3751518, -3683460):orderStandGround()
+    CpuShip():setFaction("Imperium Gisperion"):setTemplate("Station Relais"):setCallSign("GIS11"):setRadarSignatureInfo(0.3, 0.3, 0.3):setScanningParameters(1,2):setPosition(-3784787, -3707419):orderStandGround()
+    CpuShip():setFaction("Imperium Gisperion"):setTemplate("Station Relais"):setCallSign("GIS12"):setRadarSignatureInfo(0.3, 0.3, 0.3):setScanningParameters(1,2):setPosition(-3803306, -3742154):orderStandGround()
+    CpuShip():setFaction("Imperium Gisperion"):setTemplate("Station Relais"):setCallSign("GIS13"):setRadarSignatureInfo(0.3, 0.3, 0.3):setScanningParameters(1,2):setPosition(-3805398, -3780446):orderStandGround()
+    CpuShip():setFaction("Imperium Gisperion"):setTemplate("Station Relais"):setCallSign("GIS14"):setRadarSignatureInfo(0.3, 0.3, 0.3):setScanningParameters(1,2):setPosition(-3788344, -3818737):orderStandGround()
+    CpuShip():setFaction("Imperium Gisperion"):setTemplate("Station Relais"):setCallSign("GIS15"):setRadarSignatureInfo(0.3, 0.3, 0.3):setScanningParameters(1,2):setPosition(-3758736, -3845520):orderStandGround()
 
 end
 
@@ -1017,77 +1098,77 @@ SurveillanceGisperion()
 --Stations de Défense
 function DefenseGisperion()
 --Stations de Défense Nord
-    CpuShip():setFaction("Imperium Gisperion"):setTemplate("Station de Defense a Lance Siderale"):setCallSign("LS11"):setPosition(-3701306, -3852498):orderDefendLocation(-3701306, -3852498)
-    CpuShip():setFaction("Imperium Gisperion"):setTemplate("Station de Defense a Lance Siderale"):setCallSign("LS12"):setPosition(-3708370, -3853196):orderDefendLocation(-3708370, -3853196)
-    CpuShip():setFaction("Imperium Gisperion"):setTemplate("Station de Defense a Macrocanon"):setCallSign("LM11"):setPosition(-3698396, -3852692):orderDefendLocation(-3698396, -3852692):setCustomWeaponStorage("MCANMK0", 200):setCustomWeaponStorageMax("MCANMK0", 200)
-    CpuShip():setFaction("Imperium Gisperion"):setTemplate("Station de Defense a Macrocanon"):setCallSign("LM12"):setPosition(-3704294, -3853623):orderDefendLocation(-3704294, -3853623):setCustomWeaponStorage("MCANMK0", 200):setCustomWeaponStorageMax("MCANMK0", 200)
-	CpuShip():setFaction("Imperium Gisperion"):setTemplate("Station de Defense a Macrocanon"):setCallSign("LM13"):setPosition(-3711124, -3854554):orderDefendLocation(-3711124, -3854554):setCustomWeaponStorage("MCANMK0", 200):setCustomWeaponStorageMax("MCANMK0", 200)
+    CpuShip():setFaction("Imperium Gisperion"):setTemplate("Station de Defense a Lance Siderale"):setCallSign("LS11"):setRadarSignatureInfo(0.15, 0.3, 0.2):setScanningParameters(1,2):setPosition(-3701306, -3852498):orderDefendLocation(-3701306, -3852498)
+    CpuShip():setFaction("Imperium Gisperion"):setTemplate("Station de Defense a Lance Siderale"):setCallSign("LS12"):setRadarSignatureInfo(0.15, 0.3, 0.2):setScanningParameters(1,2):setPosition(-3708370, -3853196):orderDefendLocation(-3708370, -3853196)
+    CpuShip():setFaction("Imperium Gisperion"):setTemplate("Station de Defense a Macrocanon"):setCallSign("LM11"):setRadarSignatureInfo(0.15, 0.1, 0.2):setScanningParameters(1,2):setPosition(-3698396, -3852692):orderDefendLocation(-3698396, -3852692):setCustomWeaponStorage("MCANMK0", 200):setCustomWeaponStorageMax("MCANMK0", 200)
+    CpuShip():setFaction("Imperium Gisperion"):setTemplate("Station de Defense a Macrocanon"):setCallSign("LM12"):setRadarSignatureInfo(0.15, 0.1, 0.2):setScanningParameters(1,2):setPosition(-3704294, -3853623):orderDefendLocation(-3704294, -3853623):setCustomWeaponStorage("MCANMK0", 200):setCustomWeaponStorageMax("MCANMK0", 200)
+	CpuShip():setFaction("Imperium Gisperion"):setTemplate("Station de Defense a Macrocanon"):setCallSign("LM13"):setRadarSignatureInfo(0.15, 0.1, 0.2):setScanningParameters(1,2):setPosition(-3711124, -3854554):orderDefendLocation(-3711124, -3854554):setCustomWeaponStorage("MCANMK0", 200):setCustomWeaponStorageMax("MCANMK0", 200)
 
 --Stations de Défense Sud-Ouest
-    CpuShip():setFaction("Imperium Gisperion"):setTemplate("Station de Defense a Lance Siderale"):setCallSign("LS21"):setPosition(-3748486, -3661260):orderDefendLocation(-3748486, -3661260)
-    CpuShip():setFaction("Imperium Gisperion"):setTemplate("Station de Defense a Lance Siderale"):setCallSign("LS22"):setPosition(-3750999, -3666682):orderDefendLocation(-3750999, -3666682)
-    CpuShip():setFaction("Imperium Gisperion"):setTemplate("Station de Defense a Macrocanon"):setCallSign("LM21"):setPosition(-3743990, -3658748):orderDefendLocation(-3743990, -3658748):setCustomWeaponStorage("MCANMK0", 200):setCustomWeaponStorageMax("MCANMK0", 200)
-    CpuShip():setFaction("Imperium Gisperion"):setTemplate("Station de Defense a Macrocanon"):setCallSign("LM22"):setPosition(-3746768, -3664698):orderDefendLocation(-3746768, -3664698):setCustomWeaponStorage("MCANMK0", 200):setCustomWeaponStorageMax("MCANMK0", 200)
-	CpuShip():setFaction("Imperium Gisperion"):setTemplate("Station de Defense a Macrocanon"):setCallSign("LM23"):setPosition(-3748883, -3670120):orderDefendLocation(-3748883, -3670120):setCustomWeaponStorage("MCANMK0", 200):setCustomWeaponStorageMax("MCANMK0", 200)
+    CpuShip():setFaction("Imperium Gisperion"):setTemplate("Station de Defense a Lance Siderale"):setCallSign("LS21"):setRadarSignatureInfo(0.15, 0.3, 0.2):setScanningParameters(1,2):setPosition(-3748486, -3661260):orderDefendLocation(-3748486, -3661260)
+    CpuShip():setFaction("Imperium Gisperion"):setTemplate("Station de Defense a Lance Siderale"):setCallSign("LS22"):setRadarSignatureInfo(0.15, 0.3, 0.2):setScanningParameters(1,2):setPosition(-3750999, -3666682):orderDefendLocation(-3750999, -3666682)
+    CpuShip():setFaction("Imperium Gisperion"):setTemplate("Station de Defense a Macrocanon"):setCallSign("LM21"):setRadarSignatureInfo(0.15, 0.1, 0.2):setScanningParameters(1,2):setPosition(-3743990, -3658748):orderDefendLocation(-3743990, -3658748):setCustomWeaponStorage("MCANMK0", 200):setCustomWeaponStorageMax("MCANMK0", 200)
+    CpuShip():setFaction("Imperium Gisperion"):setTemplate("Station de Defense a Macrocanon"):setCallSign("LM22"):setRadarSignatureInfo(0.15, 0.1, 0.2):setScanningParameters(1,2):setPosition(-3746768, -3664698):orderDefendLocation(-3746768, -3664698):setCustomWeaponStorage("MCANMK0", 200):setCustomWeaponStorageMax("MCANMK0", 200)
+	CpuShip():setFaction("Imperium Gisperion"):setTemplate("Station de Defense a Macrocanon"):setCallSign("LM23"):setRadarSignatureInfo(0.15, 0.1, 0.2):setScanningParameters(1,2):setPosition(-3748883, -3670120):orderDefendLocation(-3748883, -3670120):setCustomWeaponStorage("MCANMK0", 200):setCustomWeaponStorageMax("MCANMK0", 200)
 
 --Stations de Défense Sud-Est
-    CpuShip():setFaction("Imperium Gisperion"):setTemplate("Station de Defense a Lance Siderale"):setCallSign("LS31"):setPosition(-3701148, -3667475):orderDefendLocation(-3701148, -3667475)
-    CpuShip():setFaction("Imperium Gisperion"):setTemplate("Station de Defense a Lance Siderale"):setCallSign("LS32"):setPosition(-3702470, -3662054):orderDefendLocation(-3702470, -3662054)
-    CpuShip():setFaction("Imperium Gisperion"):setTemplate("Station de Defense a Macrocanon"):setCallSign("LM31"):setPosition(-3704454, -3665624):orderDefendLocation(-3704454, -3665624):setCustomWeaponStorage("MCANMK0", 200):setCustomWeaponStorageMax("MCANMK0", 200)
-	CpuShip():setFaction("Imperium Gisperion"):setTemplate("Station de Defense a Macrocanon"):setCallSign("LM32"):setPosition(-3705247, -3660070):orderDefendLocation(-3705247, -3660070):setCustomWeaponStorage("MCANMK0", 200):setCustomWeaponStorageMax("MCANMK0", 200)
+    CpuShip():setFaction("Imperium Gisperion"):setTemplate("Station de Defense a Lance Siderale"):setCallSign("LS31"):setRadarSignatureInfo(0.15, 0.3, 0.2):setScanningParameters(1,2):setPosition(-3701148, -3667475):orderDefendLocation(-3701148, -3667475)
+    CpuShip():setFaction("Imperium Gisperion"):setTemplate("Station de Defense a Lance Siderale"):setCallSign("LS32"):setRadarSignatureInfo(0.15, 0.3, 0.2):setScanningParameters(1,2):setPosition(-3702470, -3662054):orderDefendLocation(-3702470, -3662054)
+    CpuShip():setFaction("Imperium Gisperion"):setTemplate("Station de Defense a Macrocanon"):setCallSign("LM31"):setRadarSignatureInfo(0.15, 0.1, 0.2):setScanningParameters(1,2):setPosition(-3704454, -3665624):orderDefendLocation(-3704454, -3665624):setCustomWeaponStorage("MCANMK0", 200):setCustomWeaponStorageMax("MCANMK0", 200)
+	CpuShip():setFaction("Imperium Gisperion"):setTemplate("Station de Defense a Macrocanon"):setCallSign("LM32"):setRadarSignatureInfo(0.15, 0.1, 0.2):setScanningParameters(1,2):setPosition(-3705247, -3660070):orderDefendLocation(-3705247, -3660070):setCustomWeaponStorage("MCANMK0", 200):setCustomWeaponStorageMax("MCANMK0", 200)
 
 --Stations de Défense Sud-Nord
-	CpuShip():setFaction("Imperium Gisperion"):setTemplate("Station de Defense a Lance Siderale"):setCallSign("LS41"):setPosition(-3731090, -3694803):orderDefendLocation(-3731090, -3694803)
-    CpuShip():setFaction("Imperium Gisperion"):setTemplate("Station de Defense a Lance Siderale"):setCallSign("LS42"):setPosition(-3727139, -3695079):orderDefendLocation(-3727139, -3695079)
-    CpuShip():setFaction("Imperium Gisperion"):setTemplate("Station de Defense a Macrocanon"):setCallSign("LM41"):setPosition(-3715468, -3694711):orderDefendLocation(-3715468, -3694711):setCustomWeaponStorage("MCANMK0", 200):setCustomWeaponStorageMax("MCANMK0", 200)
-    CpuShip():setFaction("Imperium Gisperion"):setTemplate("Station de Defense a Macrocanon"):setCallSign("LM42"):setPosition(-3719052, -3694711):orderDefendLocation(-3719052, -3694711):setCustomWeaponStorage("MCANMK0", 200):setCustomWeaponStorageMax("MCANMK0", 200)
+	CpuShip():setFaction("Imperium Gisperion"):setTemplate("Station de Defense a Lance Siderale"):setCallSign("LS41"):setRadarSignatureInfo(0.15, 0.3, 0.2):setScanningParameters(1,2):setPosition(-3731090, -3694803):orderDefendLocation(-3731090, -3694803)
+    CpuShip():setFaction("Imperium Gisperion"):setTemplate("Station de Defense a Lance Siderale"):setCallSign("LS42"):setRadarSignatureInfo(0.15, 0.3, 0.2):setScanningParameters(1,2):setPosition(-3727139, -3695079):orderDefendLocation(-3727139, -3695079)
+    CpuShip():setFaction("Imperium Gisperion"):setTemplate("Station de Defense a Macrocanon"):setCallSign("LM41"):setRadarSignatureInfo(0.15, 0.1, 0.2):setScanningParameters(1,2):setPosition(-3715468, -3694711):orderDefendLocation(-3715468, -3694711):setCustomWeaponStorage("MCANMK0", 200):setCustomWeaponStorageMax("MCANMK0", 200)
+    CpuShip():setFaction("Imperium Gisperion"):setTemplate("Station de Defense a Macrocanon"):setCallSign("LM42"):setRadarSignatureInfo(0.15, 0.1, 0.2):setScanningParameters(1,2):setPosition(-3719052, -3694711):orderDefendLocation(-3719052, -3694711):setCustomWeaponStorage("MCANMK0", 200):setCustomWeaponStorageMax("MCANMK0", 200)
 
 --Stations Archéotech
 function SecretGisperion()
-    CpuShip():setFaction("Neutre"):setTemplate("Station de Defense Archeotech"):setCallSign(""):setPosition(-3697778, -3681850):orderStandGround()
-	CpuShip():setFaction("Neutre"):setTemplate("Station de Defense Archeotech"):setCallSign(""):setPosition(-3680110, -3686607):orderStandGround()
-    CpuShip():setFaction("Neutre"):setTemplate("Station de Defense Archeotech"):setCallSign(""):setPosition(-3671502, -3692497):orderStandGround()
-    CpuShip():setFaction("Neutre"):setTemplate("Station de Defense Archeotech"):setCallSign(""):setPosition(-3691210, -3683436):orderStandGround()
-	CpuShip():setFaction("Neutre"):setTemplate("Station de Defense Archeotech"):setCallSign(""):setPosition(-3651342, -3708806):orderStandGround()
-    CpuShip():setFaction("Neutre"):setTemplate("Station de Defense Archeotech"):setCallSign(""):setPosition(-3630049, -3751392):orderStandGround()
-    CpuShip():setFaction("Neutre"):setTemplate("Station de Defense Archeotech"):setCallSign(""):setPosition(-3633220, -3740066):orderStandGround()
-    CpuShip():setFaction("Neutre"):setTemplate("Station de Defense Archeotech"):setCallSign(""):setPosition(-3637977, -3726701):orderStandGround()
-    CpuShip():setFaction("Neutre"):setTemplate("Station de Defense Archeotech"):setCallSign(""):setPosition(-3711143, -3680944):orderStandGround()
-    CpuShip():setFaction("Neutre"):setTemplate("Station de Defense Archeotech"):setCallSign(""):setPosition(-3643640, -3717414):orderStandGround()
-    CpuShip():setFaction("Neutre"):setTemplate("Station de Defense Archeotech"):setCallSign(""):setPosition(-3659496, -3700652):orderStandGround()
-    CpuShip():setFaction("Neutre"):setTemplate("Station de Defense Archeotech"):setCallSign(""):setPosition(-3727000, -3681624):orderStandGround()
-	CpuShip():setFaction("Neutre"):setTemplate("Station de Defense Archeotech"):setCallSign(""):setPosition(-3761204, -3837243):orderStandGround()
-    CpuShip():setFaction("Neutre"):setTemplate("Station de Defense Archeotech"):setCallSign(""):setPosition(-3769132, -3832260):orderStandGround()
-    CpuShip():setFaction("Neutre"):setTemplate("Station de Defense Archeotech"):setCallSign(""):setPosition(-3775700, -3826143):orderStandGround()
-    CpuShip():setFaction("Neutre"):setTemplate("Station de Defense Archeotech"):setCallSign(""):setPosition(-3782044, -3819348):orderStandGround()
-    CpuShip():setFaction("Neutre"):setTemplate("Station de Defense Archeotech"):setCallSign(""):setPosition(-3788386, -3810966):orderStandGround()
-    CpuShip():setFaction("Neutre"):setTemplate("Station de Defense Archeotech"):setCallSign(""):setPosition(-3793143, -3803491):orderStandGround()
-    CpuShip():setFaction("Neutre"):setTemplate("Station de Defense Archeotech"):setCallSign(""):setPosition(-3796767, -3793978):orderStandGround()
-    CpuShip():setFaction("Neutre"):setTemplate("Station de Defense Archeotech"):setCallSign(""):setPosition(-3798353, -3785596):orderStandGround()
-    CpuShip():setFaction("Neutre"):setTemplate("Station de Defense Archeotech"):setCallSign(""):setPosition(-3799485, -3778348):orderStandGround()
-    CpuShip():setFaction("Neutre"):setTemplate("Station de Defense Archeotech"):setCallSign(""):setPosition(-3800844, -3769966):orderStandGround()
-    CpuShip():setFaction("Neutre"):setTemplate("Station de Defense Archeotech"):setCallSign(""):setPosition(-3800844, -3758640):orderStandGround()
-    CpuShip():setFaction("Neutre"):setTemplate("Station de Defense Archeotech"):setCallSign(""):setPosition(-3798580, -3746182):orderStandGround()
-    CpuShip():setFaction("Neutre"):setTemplate("Station de Defense Archeotech"):setCallSign(""):setPosition(-3794502, -3732817):orderStandGround()
-    CpuShip():setFaction("Neutre"):setTemplate("Station de Defense Archeotech"):setCallSign(""):setPosition(-3789292, -3721944):orderStandGround()
-    CpuShip():setFaction("Neutre"):setTemplate("Station de Defense Archeotech"):setCallSign(""):setPosition(-3782723, -3713336):orderStandGround()
-    CpuShip():setFaction("Neutre"):setTemplate("Station de Defense Archeotech"):setCallSign(""):setPosition(-3775248, -3705635):orderStandGround()
-    CpuShip():setFaction("Neutre"):setTemplate("Station de Defense Archeotech"):setCallSign(""):setPosition(-3767320, -3698160):orderStandGround()
-    CpuShip():setFaction("Neutre"):setTemplate("Station de Defense Archeotech"):setCallSign(""):setPosition(-3751916, -3687966):orderStandGround()
-    CpuShip():setFaction("Neutre"):setTemplate("Station de Defense Archeotech"):setCallSign(""):setPosition(-3656778, -3829314):orderStandGround()
-    CpuShip():setFaction("Neutre"):setTemplate("Station de Defense Archeotech"):setCallSign(""):setPosition(-3667425, -3837470):orderStandGround()
-    CpuShip():setFaction("Neutre"):setTemplate("Station de Defense Archeotech"):setCallSign(""):setPosition(-3675806, -3842226):orderStandGround()
-    CpuShip():setFaction("Neutre"):setTemplate("Station de Defense Archeotech"):setCallSign(""):setPosition(-3691889, -3848795):orderStandGround()
-    CpuShip():setFaction("Neutre"):setTemplate("Station de Defense Archeotech"):setCallSign(""):setPosition(-3753049, -3842000):orderStandGround()
-    CpuShip():setFaction("Neutre"):setTemplate("Station de Defense Archeotech"):setCallSign(""):setPosition(-3737872, -3684342):orderStandGround()
-    CpuShip():setFaction("Neutre"):setTemplate("Station de Defense Archeotech"):setCallSign(""):setPosition(-3639563, -3807342):orderStandGround()
-    CpuShip():setFaction("Neutre"):setTemplate("Station de Defense Archeotech"):setCallSign(""):setPosition(-3635712, -3797149):orderStandGround()
-    CpuShip():setFaction("Neutre"):setTemplate("Station de Defense Archeotech"):setCallSign(""):setPosition(-3631634, -3784690):orderStandGround()
-    CpuShip():setFaction("Neutre"):setTemplate("Station de Defense Archeotech"):setCallSign(""):setPosition(-3629370, -3763397):orderStandGround()
-	CpuShip():setFaction("Neutre"):setTemplate("Station de Defense Archeotech"):setCallSign(""):setPosition(-3701629, -3851514):orderStandGround()
-    CpuShip():setFaction("Neutre"):setTemplate("Station de Defense Archeotech"):setCallSign(""):setPosition(-3712728, -3851966):orderStandGround()
-    CpuShip():setFaction("Neutre"):setTemplate("Station de Defense Archeotech"):setCallSign(""):setPosition(-3736740, -3848342):orderStandGround()
-    CpuShip():setFaction("Neutre"):setTemplate("Station de Defense Archeotech"):setCallSign(""):setPosition(-3742402, -3846756):orderStandGround()
+    CpuShip():setFaction("Neutre"):setTemplate("Station de Defense Archeotech"):setCallSign(""):setRadarSignatureInfo(0.15, 0.0, 0.0):setScanningParameters(3,2):setPosition(-3697778, -3681850):orderStandGround()
+	CpuShip():setFaction("Neutre"):setTemplate("Station de Defense Archeotech"):setCallSign(""):setRadarSignatureInfo(0.15, 0.0, 0.0):setScanningParameters(3,2):setPosition(-3680110, -3686607):orderStandGround()
+    CpuShip():setFaction("Neutre"):setTemplate("Station de Defense Archeotech"):setCallSign(""):setRadarSignatureInfo(0.15, 0.0, 0.0):setScanningParameters(3,2):setPosition(-3671502, -3692497):orderStandGround()
+    CpuShip():setFaction("Neutre"):setTemplate("Station de Defense Archeotech"):setCallSign(""):setRadarSignatureInfo(0.15, 0.0, 0.0):setScanningParameters(3,2):setPosition(-3691210, -3683436):orderStandGround()
+	CpuShip():setFaction("Neutre"):setTemplate("Station de Defense Archeotech"):setCallSign(""):setRadarSignatureInfo(0.15, 0.0, 0.0):setScanningParameters(3,2):setPosition(-3651342, -3708806):orderStandGround()
+    CpuShip():setFaction("Neutre"):setTemplate("Station de Defense Archeotech"):setCallSign(""):setRadarSignatureInfo(0.15, 0.0, 0.0):setScanningParameters(3,2):setPosition(-3630049, -3751392):orderStandGround()
+    CpuShip():setFaction("Neutre"):setTemplate("Station de Defense Archeotech"):setCallSign(""):setRadarSignatureInfo(0.15, 0.0, 0.0):setScanningParameters(3,2):setPosition(-3633220, -3740066):orderStandGround()
+    CpuShip():setFaction("Neutre"):setTemplate("Station de Defense Archeotech"):setCallSign(""):setRadarSignatureInfo(0.15, 0.0, 0.0):setScanningParameters(3,2):setPosition(-3637977, -3726701):orderStandGround()
+    CpuShip():setFaction("Neutre"):setTemplate("Station de Defense Archeotech"):setCallSign(""):setRadarSignatureInfo(0.15, 0.0, 0.0):setScanningParameters(3,2):setPosition(-3711143, -3680944):orderStandGround()
+    CpuShip():setFaction("Neutre"):setTemplate("Station de Defense Archeotech"):setCallSign(""):setRadarSignatureInfo(0.15, 0.0, 0.0):setScanningParameters(3,2):setPosition(-3643640, -3717414):orderStandGround()
+    CpuShip():setFaction("Neutre"):setTemplate("Station de Defense Archeotech"):setCallSign(""):setRadarSignatureInfo(0.15, 0.0, 0.0):setScanningParameters(3,2):setPosition(-3659496, -3700652):orderStandGround()
+    CpuShip():setFaction("Neutre"):setTemplate("Station de Defense Archeotech"):setCallSign(""):setRadarSignatureInfo(0.15, 0.0, 0.0):setScanningParameters(3,2):setPosition(-3727000, -3681624):orderStandGround()
+	CpuShip():setFaction("Neutre"):setTemplate("Station de Defense Archeotech"):setCallSign(""):setRadarSignatureInfo(0.15, 0.0, 0.0):setScanningParameters(3,2):setPosition(-3761204, -3837243):orderStandGround()
+    CpuShip():setFaction("Neutre"):setTemplate("Station de Defense Archeotech"):setCallSign(""):setRadarSignatureInfo(0.15, 0.0, 0.0):setScanningParameters(3,2):setPosition(-3769132, -3832260):orderStandGround()
+    CpuShip():setFaction("Neutre"):setTemplate("Station de Defense Archeotech"):setCallSign(""):setRadarSignatureInfo(0.15, 0.0, 0.0):setScanningParameters(3,2):setPosition(-3775700, -3826143):orderStandGround()
+    CpuShip():setFaction("Neutre"):setTemplate("Station de Defense Archeotech"):setCallSign(""):setRadarSignatureInfo(0.15, 0.0, 0.0):setScanningParameters(3,2):setPosition(-3782044, -3819348):orderStandGround()
+    CpuShip():setFaction("Neutre"):setTemplate("Station de Defense Archeotech"):setCallSign(""):setRadarSignatureInfo(0.15, 0.0, 0.0):setScanningParameters(3,2):setPosition(-3788386, -3810966):orderStandGround()
+    CpuShip():setFaction("Neutre"):setTemplate("Station de Defense Archeotech"):setCallSign(""):setRadarSignatureInfo(0.15, 0.0, 0.0):setScanningParameters(3,2):setPosition(-3793143, -3803491):orderStandGround()
+    CpuShip():setFaction("Neutre"):setTemplate("Station de Defense Archeotech"):setCallSign(""):setRadarSignatureInfo(0.15, 0.0, 0.0):setScanningParameters(3,2):setPosition(-3796767, -3793978):orderStandGround()
+    CpuShip():setFaction("Neutre"):setTemplate("Station de Defense Archeotech"):setCallSign(""):setRadarSignatureInfo(0.15, 0.0, 0.0):setScanningParameters(3,2):setPosition(-3798353, -3785596):orderStandGround()
+    CpuShip():setFaction("Neutre"):setTemplate("Station de Defense Archeotech"):setCallSign(""):setRadarSignatureInfo(0.15, 0.0, 0.0):setScanningParameters(3,2):setPosition(-3799485, -3778348):orderStandGround()
+    CpuShip():setFaction("Neutre"):setTemplate("Station de Defense Archeotech"):setCallSign(""):setRadarSignatureInfo(0.15, 0.0, 0.0):setScanningParameters(3,2):setPosition(-3800844, -3769966):orderStandGround()
+    CpuShip():setFaction("Neutre"):setTemplate("Station de Defense Archeotech"):setCallSign(""):setRadarSignatureInfo(0.15, 0.0, 0.0):setScanningParameters(3,2):setPosition(-3800844, -3758640):orderStandGround()
+    CpuShip():setFaction("Neutre"):setTemplate("Station de Defense Archeotech"):setCallSign(""):setRadarSignatureInfo(0.15, 0.0, 0.0):setScanningParameters(3,2):setPosition(-3798580, -3746182):orderStandGround()
+    CpuShip():setFaction("Neutre"):setTemplate("Station de Defense Archeotech"):setCallSign(""):setRadarSignatureInfo(0.15, 0.0, 0.0):setScanningParameters(3,2):setPosition(-3794502, -3732817):orderStandGround()
+    CpuShip():setFaction("Neutre"):setTemplate("Station de Defense Archeotech"):setCallSign(""):setRadarSignatureInfo(0.15, 0.0, 0.0):setScanningParameters(3,2):setPosition(-3789292, -3721944):orderStandGround()
+    CpuShip():setFaction("Neutre"):setTemplate("Station de Defense Archeotech"):setCallSign(""):setRadarSignatureInfo(0.15, 0.0, 0.0):setScanningParameters(3,2):setPosition(-3782723, -3713336):orderStandGround()
+    CpuShip():setFaction("Neutre"):setTemplate("Station de Defense Archeotech"):setCallSign(""):setRadarSignatureInfo(0.15, 0.0, 0.0):setScanningParameters(3,2):setPosition(-3775248, -3705635):orderStandGround()
+    CpuShip():setFaction("Neutre"):setTemplate("Station de Defense Archeotech"):setCallSign(""):setRadarSignatureInfo(0.15, 0.0, 0.0):setScanningParameters(3,2):setPosition(-3767320, -3698160):orderStandGround()
+    CpuShip():setFaction("Neutre"):setTemplate("Station de Defense Archeotech"):setCallSign(""):setRadarSignatureInfo(0.15, 0.0, 0.0):setScanningParameters(3,2):setPosition(-3751916, -3687966):orderStandGround()
+    CpuShip():setFaction("Neutre"):setTemplate("Station de Defense Archeotech"):setCallSign(""):setRadarSignatureInfo(0.15, 0.0, 0.0):setScanningParameters(3,2):setPosition(-3656778, -3829314):orderStandGround()
+    CpuShip():setFaction("Neutre"):setTemplate("Station de Defense Archeotech"):setCallSign(""):setRadarSignatureInfo(0.15, 0.0, 0.0):setScanningParameters(3,2):setPosition(-3667425, -3837470):orderStandGround()
+    CpuShip():setFaction("Neutre"):setTemplate("Station de Defense Archeotech"):setCallSign(""):setRadarSignatureInfo(0.15, 0.0, 0.0):setScanningParameters(3,2):setPosition(-3675806, -3842226):orderStandGround()
+    CpuShip():setFaction("Neutre"):setTemplate("Station de Defense Archeotech"):setCallSign(""):setRadarSignatureInfo(0.15, 0.0, 0.0):setScanningParameters(3,2):setPosition(-3691889, -3848795):orderStandGround()
+    CpuShip():setFaction("Neutre"):setTemplate("Station de Defense Archeotech"):setCallSign(""):setRadarSignatureInfo(0.15, 0.0, 0.0):setScanningParameters(3,2):setPosition(-3753049, -3842000):orderStandGround()
+    CpuShip():setFaction("Neutre"):setTemplate("Station de Defense Archeotech"):setCallSign(""):setRadarSignatureInfo(0.15, 0.0, 0.0):setScanningParameters(3,2):setPosition(-3737872, -3684342):orderStandGround()
+    CpuShip():setFaction("Neutre"):setTemplate("Station de Defense Archeotech"):setCallSign(""):setRadarSignatureInfo(0.15, 0.0, 0.0):setScanningParameters(3,2):setPosition(-3639563, -3807342):orderStandGround()
+    CpuShip():setFaction("Neutre"):setTemplate("Station de Defense Archeotech"):setCallSign(""):setRadarSignatureInfo(0.15, 0.0, 0.0):setScanningParameters(3,2):setPosition(-3635712, -3797149):orderStandGround()
+    CpuShip():setFaction("Neutre"):setTemplate("Station de Defense Archeotech"):setCallSign(""):setRadarSignatureInfo(0.15, 0.0, 0.0):setScanningParameters(3,2):setPosition(-3631634, -3784690):orderStandGround()
+    CpuShip():setFaction("Neutre"):setTemplate("Station de Defense Archeotech"):setCallSign(""):setRadarSignatureInfo(0.15, 0.0, 0.0):setScanningParameters(3,2):setPosition(-3629370, -3763397):orderStandGround()
+	CpuShip():setFaction("Neutre"):setTemplate("Station de Defense Archeotech"):setCallSign(""):setRadarSignatureInfo(0.15, 0.0, 0.0):setScanningParameters(3,2):setPosition(-3701629, -3851514):orderStandGround()
+    CpuShip():setFaction("Neutre"):setTemplate("Station de Defense Archeotech"):setCallSign(""):setRadarSignatureInfo(0.15, 0.0, 0.0):setScanningParameters(3,2):setPosition(-3712728, -3851966):orderStandGround()
+    CpuShip():setFaction("Neutre"):setTemplate("Station de Defense Archeotech"):setCallSign(""):setRadarSignatureInfo(0.15, 0.0, 0.0):setScanningParameters(3,2):setPosition(-3736740, -3848342):orderStandGround()
+    CpuShip():setFaction("Neutre"):setTemplate("Station de Defense Archeotech"):setCallSign(""):setRadarSignatureInfo(0.15, 0.0, 0.0):setScanningParameters(3,2):setPosition(-3742402, -3846756):orderStandGround()
 
 end
 
@@ -1107,24 +1188,24 @@ DefenseGisperion()
 
 --Vaisseaux Intrasystèmes de Gisperion
 --Flotille Sud
-    local Athenee = CpuShip():setFaction("Imperium Gisperion"):setTemplate("Croiseur Ambition"):setCallSign("Martyr d'Athénée"):setPosition(-3706136, -3690804):orderDefendLocation(-3706136, -3690804):setCustomWeaponStorage("MCANMK2", 200):setCustomWeaponStorageMax("MCANMK2", 200):setCustomWeaponStorage("Torpille", 12):setCustomWeaponStorageMax("Torpille", 12)
-    CpuShip():setFaction("Imperium Gisperion"):setTemplate("Escorteur Cobra"):setCallSign("Sang d'Arsène"):setPosition(-3707525, -3692193):orderDefendTarget(Athenee,500,5000):setCustomWeaponStorage("Torpille", 6):setCustomWeaponStorageMax("Torpille", 6)
-    CpuShip():setFaction("Imperium Gisperion"):setTemplate("Escorteur Cobra"):setCallSign("Volonté de Louise"):setPosition(-3704283, -3689136):orderDefendTarget(Athenee,500,5000):setCustomWeaponStorage("Torpille", 6):setCustomWeaponStorageMax("Torpille", 6)
-	CpuShip():setFaction("Imperium Gisperion"):setTemplate("Escorteur Cobra"):setCallSign("Vengence du Duc D'Airain"):setPosition(-3704468, -3692193):orderDefendTarget(Athenee,500,5000):setCustomWeaponStorage("Torpille", 6):setCustomWeaponStorageMax("Torpille", 6)
+    local Athenee = CpuShip():setFaction("Imperium Gisperion"):setTemplate("Croiseur Ambition"):setCallSign("Martyr d'Athénée"):setRadarSignatureInfo(0.25, 0.8, 0.4):setScanningParameters(2,1):setPosition(-3706136, -3690804):orderDefendLocation(-3706136, -3690804):setCustomWeaponStorage("MCANMK2", 200):setCustomWeaponStorageMax("MCANMK2", 200):setCustomWeaponStorage("Torpille", 12):setCustomWeaponStorageMax("Torpille", 12)
+    CpuShip():setFaction("Imperium Gisperion"):setTemplate("Escorteur Cobra"):setCallSign("Sang d'Arsène"):setRadarSignatureInfo(0.1, 0.7, 0.3):setScanningParameters(1,1):setPosition(-3707525, -3692193):orderDefendTarget(Athenee,500,5000):setCustomWeaponStorage("Torpille", 6):setCustomWeaponStorageMax("Torpille", 6)
+    CpuShip():setFaction("Imperium Gisperion"):setTemplate("Escorteur Cobra"):setCallSign("Volonté de Louise"):setRadarSignatureInfo(0.1, 0.7, 0.3):setScanningParameters(1,1):setPosition(-3704283, -3689136):orderDefendTarget(Athenee,500,5000):setCustomWeaponStorage("Torpille", 6):setCustomWeaponStorageMax("Torpille", 6)
+	CpuShip():setFaction("Imperium Gisperion"):setTemplate("Escorteur Cobra"):setCallSign("Vengence du Duc D'Airain"):setRadarSignatureInfo(0.1, 0.7, 0.3):setScanningParameters(1,1):setPosition(-3704468, -3692193):orderDefendTarget(Athenee,500,5000):setCustomWeaponStorage("Torpille", 6):setCustomWeaponStorageMax("Torpille", 6)
 
 --Flotille Nord
-    local Maximillien = CpuShip():setFaction("Imperium Gisperion"):setTemplate("Croiseur Ambition"):setCallSign("Lord Maximillien"):setPosition(-3683257, -3860491):orderDefendLocation(-3683257, -3860491):setCustomWeaponStorage("MCANMK2", 200):setCustomWeaponStorageMax("MCANMK2", 200):setCustomWeaponStorage("Torpille", 12):setCustomWeaponStorageMax("Torpille", 12)
-    CpuShip():setFaction("Imperium Gisperion"):setTemplate("Escorteur Cobra"):setCallSign("Harpagon"):setPosition(-3682980, -3858454):orderDefendTarget(Maximillien,500,5000):setCustomWeaponStorage("Torpille", 6):setCustomWeaponStorageMax("Torpille", 6)
-	CpuShip():setFaction("Imperium Gisperion"):setTemplate("Escorteur Cobra"):setCallSign("Renatta"):setPosition(-3683442, -3861603):orderDefendTarget(Maximillien,500,5000):setCustomWeaponStorage("Torpille", 6):setCustomWeaponStorageMax("Torpille", 6)
-    CpuShip():setFaction("Imperium Gisperion"):setTemplate("Escorteur Cobra"):setCallSign("Proserpine"):setPosition(-3681775, -3860676):orderDefendTarget(Maximillien,500,5000):setCustomWeaponStorage("Torpille", 6):setCustomWeaponStorageMax("Torpille", 6)
+    local Maximillien = CpuShip():setFaction("Imperium Gisperion"):setTemplate("Croiseur Ambition"):setCallSign("Lord Maximillien"):setRadarSignatureInfo(0.25, 0.8, 0.4):setScanningParameters(2,1):setPosition(-3683257, -3860491):orderDefendLocation(-3683257, -3860491):setCustomWeaponStorage("MCANMK2", 200):setCustomWeaponStorageMax("MCANMK2", 200):setCustomWeaponStorage("Torpille", 12):setCustomWeaponStorageMax("Torpille", 12)
+    CpuShip():setFaction("Imperium Gisperion"):setTemplate("Escorteur Cobra"):setCallSign("Harpagon"):setRadarSignatureInfo(0.1, 0.7, 0.3):setScanningParameters(1,1):setPosition(-3682980, -3858454):orderDefendTarget(Maximillien,500,5000):setCustomWeaponStorage("Torpille", 6):setCustomWeaponStorageMax("Torpille", 6)
+	CpuShip():setFaction("Imperium Gisperion"):setTemplate("Escorteur Cobra"):setCallSign("Renatta"):setRadarSignatureInfo(0.1, 0.7, 0.3):setScanningParameters(1,1):setPosition(-3683442, -3861603):orderDefendTarget(Maximillien,500,5000):setCustomWeaponStorage("Torpille", 6):setCustomWeaponStorageMax("Torpille", 6)
+    CpuShip():setFaction("Imperium Gisperion"):setTemplate("Escorteur Cobra"):setCallSign("Proserpine"):setRadarSignatureInfo(0.1, 0.7, 0.3):setScanningParameters(1,1):setPosition(-3681775, -3860676):orderDefendTarget(Maximillien,500,5000):setCustomWeaponStorage("Torpille", 6):setCustomWeaponStorageMax("Torpille", 6)
 
 --Flotte Marchande d'Intervention
-    CpuShip():setFaction("Imperium Gisperion"):setTemplate("Corvette Claymore"):setCallSign("Juste Rétribution"):setPosition(-3701982, -3807554):orderDefendLocation(-3701982, -3807554)
-    CpuShip():setFaction("Imperium Gisperion"):setTemplate("Corvette Claymore"):setCallSign("Prix du Sang"):setPosition(-3737530, -3806650):orderDefendLocation(-3737530, -3806650)
-    CpuShip():setFaction("Imperium Gisperion"):setTemplate("Corvette Claymore"):setCallSign("Casta-Meer"):setPosition(-3681496, -3738867):orderDefendLocation(-3681496, -3738867)
-    CpuShip():setFaction("Imperium Gisperion"):setTemplate("Corvette Claymore"):setCallSign("Lord Elias"):setPosition(-3677580, -3780441):orderDefendLocation(-3677580, -3780441)
-    CpuShip():setFaction("Imperium Gisperion"):setTemplate("Corvette Claymore"):setCallSign("Eternelle Dévotion"):setPosition(-3755004, -3738265):orderDefendLocation(-3755004, -3738265)
-    CpuShip():setFaction("Imperium Gisperion"):setTemplate("Corvette Claymore"):setCallSign("Volonté Impériale"):setPosition(-3760426, -3776223):orderDefendLocation(-3760426, -3776223)
+    CpuShip():setFaction("Imperium Gisperion"):setTemplate("Corvette Claymore"):setCallSign("Juste Rétribution"):setRadarSignatureInfo(0.1, 0.7, 0.3):setScanningParameters(1,1):setPosition(-3701982, -3807554):orderDefendLocation(-3701982, -3807554)
+    CpuShip():setFaction("Imperium Gisperion"):setTemplate("Corvette Claymore"):setCallSign("Prix du Sang"):setRadarSignatureInfo(0.1, 0.7, 0.3):setScanningParameters(1,1):setPosition(-3737530, -3806650):orderDefendLocation(-3737530, -3806650)
+    CpuShip():setFaction("Imperium Gisperion"):setTemplate("Corvette Claymore"):setCallSign("Casta-Meer"):setRadarSignatureInfo(0.1, 0.7, 0.3):setScanningParameters(1,1):setPosition(-3681496, -3738867):orderDefendLocation(-3681496, -3738867)
+    CpuShip():setFaction("Imperium Gisperion"):setTemplate("Corvette Claymore"):setCallSign("Lord Elias"):setRadarSignatureInfo(0.1, 0.7, 0.3):setScanningParameters(1,1):setPosition(-3677580, -3780441):orderDefendLocation(-3677580, -3780441)
+    CpuShip():setFaction("Imperium Gisperion"):setTemplate("Corvette Claymore"):setCallSign("Eternelle Dévotion"):setRadarSignatureInfo(0.1, 0.7, 0.3):setScanningParameters(1,1):setPosition(-3755004, -3738265):orderDefendLocation(-3755004, -3738265)
+    CpuShip():setFaction("Imperium Gisperion"):setTemplate("Corvette Claymore"):setCallSign("Volonté Impériale"):setRadarSignatureInfo(0.1, 0.7, 0.3):setScanningParameters(1,1):setPosition(-3760426, -3776223):orderDefendLocation(-3760426, -3776223)
 
 end
 
@@ -1989,30 +2070,63 @@ function FractariusMap()
 
 --Soleil
 
-	local SoleilFractarius = Planet():setPosition(12628718, -6285376):setFaction("Neutre"):setPlanetRadius(10000):setPlanetCloudRadius(10100.00):setCallSign("Soleil de Fractarius"):setPlanetSurfaceTexture("planets/Soleil.jpg"):setPlanetAtmosphereColor(1,1,0.5):setRadarSignatureInfo(0.80, 0.75, -0.95):setScanningParameters(1,1):setPlanetIcon("planets/icons/Sun.png"):setDescriptions("Soleil de Fractarius", "Le système de Fractarius comprend deux planètes gazeuses et trois planètes telluriques orbitant autour d’une géante rouge.", "Le système de Fractarius comprend deux planètes gazeuses et trois planètes telluriques orbitant autour d’une géante rouge, et abrite un Monde-Forge spécialisé dans la production d’éléments technoarcaniques complexes, comme les pièces de croiseurs, les éléments de station spatiale, les armes et armures de qualité supérieure ou les armements lourds à destination de la Garde Impériale.")
+	local SoleilFractarius = Planet():setPosition(12628718, -6285376):setFaction("Neutre"):setPlanetRadius(10000):setPlanetCloudRadius(10100.00):setCallSign("Soleil de Fractarius"):setPlanetSurfaceTexture("planets/Soleil.jpg"):setPlanetAtmosphereColor(1,1,0.5):setRadarSignatureInfo(1.00, 0.7, 0.0):setScanningParameters(1,1):setPlanetIcon("planets/icons/Sun.png"):setDescriptions("Soleil de Fractarius",[[Le système de Fractarius comprend deux planètes gazeuses et trois planètes telluriques orbitant autour d’une géante rouge.
+	
+	
+	]],[[Le système de Fractarius comprend deux planètes gazeuses et trois planètes telluriques orbitant autour d’une géante rouge, et abrite un Monde-Forge spécialisé dans la production d’éléments technoarcaniques complexes, comme les pièces de croiseurs, les éléments de station spatiale, les armes et armures de qualité supérieure ou les armements lourds à destination de la Garde Impériale.
+	
+	
+	]])
     WarpJammer():setFaction("Neutre"):setPosition(12628718, -6285376):setRange(100000.00)
 	
 --Planètes
 --Fractarius I	
-	local FractariusI = Planet():setPosition(12647164, -6303815):setFaction("Neutre"):setPlanetRadius(2000):setAxialRotationTime(3600):setCallSign("Fractarius I"):setPlanetSurfaceTexture("planets/2k_venus_atmosphere.jpg"):setScanningParameters(3, 2):setPlanetIcon("planets/icons/14.png"):setDescriptions("Fractarius I", "Fractarius I est une géante gazeuse située à une certaine distance du soleil, qui dispose de nombreux satellites.", "Fractarius I est une géante gazeuse située à une certaine distance du soleil, qui dispose de nombreux satellites. Son atmosphère est régulièrement “récoltée” par des vaisseaux raffineurs pour produire du plasma pour les vaisseaux.")
+	local FractariusI = Planet():setPosition(12647164, -6303815):setFaction("Neutre"):setPlanetRadius(2000):setAxialRotationTime(3600):setCallSign("Fractarius I"):setPlanetSurfaceTexture("planets/2k_venus_atmosphere.jpg"):setRadarSignatureInfo(0.1, 0.2, 0.1):setScanningParameters(1, 1):setPlanetIcon("planets/icons/14.png"):setDescriptions("Fractarius I", "Fractarius I est une géante gazeuse située à une certaine distance du soleil, qui dispose de nombreux satellites.",[[Fractarius I est une géante gazeuse située à une certaine distance du soleil, qui dispose de nombreux satellites. Son atmosphère est régulièrement “récoltée” par des vaisseaux raffineurs pour produire du plasma pour les vaisseaux.
+	
+	
+	]])
     FractariusI:setOrbit(SoleilFractarius, 3000)
-	local LuneIFractariusI = Planet():setPosition(12647628, -6300596):setFaction("Neutre"):setPlanetRadius(100):setAxialRotationTime(3600):setCallSign("Lune I de Fractarius I"):setPlanetSurfaceTexture("planets/lava-1.jpg"):setScanningParameters(3, 2):setPlanetIcon("planets/icons/Lava-Planet.png"):setDescriptions("Fractarius Ia", "Fractarius Ia est un planétoïde volcanique.", "Fractarius Ia est un planétoïde volcanique non exploité, sans doute résultant de la collision de plusieurs corps célestes plus petits.")
+	local LuneIFractariusI = Planet():setPosition(12647628, -6300596):setFaction("Neutre"):setPlanetRadius(100):setAxialRotationTime(3600):setCallSign("Lune I de Fractarius I"):setPlanetSurfaceTexture("planets/lava-1.jpg"):setRadarSignatureInfo(0.01, 0.3, 0.0):setScanningParameters(1, 1):setPlanetIcon("planets/icons/Lava-Planet.png"):setDescriptions("Fractarius Ia", "Fractarius Ia est un planétoïde volcanique.",[[Fractarius Ia est un planétoïde volcanique non exploité, sans doute résultant de la collision de plusieurs corps célestes plus petits.
+	
+	
+	]])
     LuneIFractariusI:setOrbit(FractariusI, 15)
-	local LuneIIFractariusI = Planet():setPosition(12650378, -6305976):setFaction("Neutre"):setPlanetRadius(50):setAxialRotationTime(3600):setCallSign("Lune II de Fractarius I"):setPlanetSurfaceTexture("planets/moon-1.png"):setScanningParameters(3, 2):setPlanetIcon("planets/icons/Red-Planet-1.png"):setDescriptions("Fractarius Ib", "Fractarius Ib est un planétoïde désertique.", "Fractarius Ib est un désert brûlant et radioactif impropre au moindre déploiment. Le métal y fond, les hommes y mutent rapidement, et rien de peut survivre sous son soleil assassin.")
+	local LuneIIFractariusI = Planet():setPosition(12650378, -6305976):setFaction("Neutre"):setPlanetRadius(50):setAxialRotationTime(3600):setCallSign("Lune II de Fractarius I"):setPlanetSurfaceTexture("planets/moon-1.png"):setRadarSignatureInfo(0.005, 0.1, 0.0):setScanningParameters(1, 1):setPlanetIcon("planets/icons/Red-Planet-1.png"):setDescriptions("Fractarius Ib", "Fractarius Ib est un planétoïde désertique.",[[Fractarius Ib est un désert brûlant et radioactif impropre au moindre déploiment. Le métal y fond, les hommes y mutent rapidement, et rien de peut survivre sous son soleil assassin.
+	
+	
+	]])
     LuneIIFractariusI:setOrbit(FractariusI, 40)
-	local LuneIIIFractariusI = Planet():setPosition(12643230, -6306214):setFaction("Neutre"):setPlanetRadius(150):setAxialRotationTime(3600):setCallSign("Lune III de Fractarius I"):setPlanetSurfaceTexture("planets/lava-1.jpg"):setScanningParameters(3, 2):setPlanetIcon("planets/icons/Lava-Planet.png"):setDescriptions("Fractarius Ic", "Fractarius Ic est un planétoïde volcanique.", "Fractarius Ic était il y a quelques décennies un monde désertique, jusqu'a ce qu'il soit percuté par Fractarius Id, les deux corps célestes n'en formant plus qu'un désormais.")
+	local LuneIIIFractariusI = Planet():setPosition(12643230, -6306214):setFaction("Neutre"):setPlanetRadius(150):setAxialRotationTime(3600):setCallSign("Lune III de Fractarius I"):setPlanetSurfaceTexture("planets/lava-1.jpg"):setRadarSignatureInfo(0.015, 0.3, 0.0):setScanningParameters(1, 1):setPlanetIcon("planets/icons/Lava-Planet.png"):setDescriptions("Fractarius Ic", "Fractarius Ic est un planétoïde volcanique.",[[Fractarius Ic était il y a quelques décennies un monde désertique, jusqu'a ce qu'il soit percuté par Fractarius Id, les deux corps célestes n'en formant plus qu'un désormais.
+	
+	
+	]])
     LuneIIIFractariusI:setOrbit(FractariusI, 55)
 	
-	local FractariusII = Planet():setPosition(12657068, -6255686):setFaction("Neutre"):setPlanetRadius(2500):setAxialRotationTime(3600):setCallSign("Fractarius II"):setPlanetSurfaceTexture("planets/2k_neptune.jpg"):setScanningParameters(3, 2):setPlanetIcon("planets/icons/Purple-Planet.png"):setDescriptions("Fractarius II", "Fractarius II est une géante gazeuse à anneaux.", "Fractarius II est une géante gazeuse à anneaux dotée de nombreux satellites exploitables.")
+	local FractariusII = Planet():setPosition(12657068, -6255686):setFaction("Neutre"):setPlanetRadius(2500):setAxialRotationTime(3600):setCallSign("Fractarius II"):setPlanetSurfaceTexture("planets/2k_neptune.jpg"):setRadarSignatureInfo(0.125, 0.1, 0.0):setScanningParameters(1, 1):setPlanetIcon("planets/icons/Purple-Planet.png"):setDescriptions("Fractarius II", "Fractarius II est une géante gazeuse à anneaux.",[[Fractarius II est une géante gazeuse à anneaux dotée de nombreux satellites exploitables.
+	
+	
+	]])
     FractariusII:setOrbit(SoleilFractarius, 4000)
-	local LuneIFractariusII = Planet():setPosition(12658314, -6252149):setFaction("Neutre"):setPlanetRadius(100):setAxialRotationTime(3600):setCallSign("Lune I de Fractarius II"):setPlanetSurfaceTexture("planets/moon-2.png"):setScanningParameters(3, 2):setPlanetIcon("planets/icons/Red-Planet-1.png"):setDescriptions("Fractarius IIa", "Fractarius IIa est un monde désertique.", "Fractarius IIa est un monde désolé en orbite instable, destiné à s'abïmer dans Fractarius II.")
+	local LuneIFractariusII = Planet():setPosition(12658314, -6252149):setFaction("Neutre"):setPlanetRadius(100):setAxialRotationTime(3600):setCallSign("Lune I de Fractarius II"):setPlanetSurfaceTexture("planets/moon-2.png"):setRadarSignatureInfo(0.01, 0.01, 0.0):setScanningParameters(1, 1):setPlanetIcon("planets/icons/Red-Planet-1.png"):setDescriptions("Fractarius IIa", "Fractarius IIa est un monde désertique.",[[Fractarius IIa est un monde désolé en orbite instable, destiné à s'abïmer dans Fractarius II.
+	
+	
+	]])
     LuneIFractariusII:setOrbit(FractariusII, 15)
-	local LuneIIFractariusII = Planet():setPosition(12655896, -6259886):setFaction("Neutre"):setPlanetRadius(50):setAxialRotationTime(3600):setCallSign("Lune II de Fractarius II"):setPlanetSurfaceTexture("planets/planet-2.png"):setScanningParameters(3, 2):setPlanetIcon("planets/icons/Lava-Planet.png"):setDescriptions("Fractarius IIb", "Fractarius IIb est un monde volcanique.", "Fractarius IIb servait autrefois régulièrement de terrain d'essai pour les nouvelles armes produites par Fractarius, jusqu'a ce que l'une d'elles détonne de manière incontrôlée et perfore la croûte du planétoïde, le rendant hautement instable.")
+	local LuneIIFractariusII = Planet():setPosition(12655896, -6259886):setFaction("Neutre"):setPlanetRadius(50):setAxialRotationTime(3600):setCallSign("Lune II de Fractarius II"):setPlanetSurfaceTexture("planets/planet-2.png"):setRadarSignatureInfo(0.005, 0.3, 0.0):setScanningParameters(1, 1):setPlanetIcon("planets/icons/Lava-Planet.png"):setDescriptions("Fractarius IIb", "Fractarius IIb est un monde volcanique.",[[Fractarius IIb servait autrefois régulièrement de terrain d'essai pour les nouvelles armes produites par Fractarius, jusqu'a ce que l'une d'elles détonne de manière incontrôlée et perfore la croûte du planétoïde, le rendant hautement instable.
+	
+	
+	]])
     LuneIIFractariusII:setOrbit(FractariusII, 40)
-	local LuneIIIFractariusII = Planet():setPosition(12662312, -6255095):setFaction("Neutre"):setPlanetRadius(150):setAxialRotationTime(3600):setCallSign("Lune III de Fractarius II"):setPlanetSurfaceTexture("planets/moon-1.png"):setScanningParameters(3, 2):setPlanetIcon("planets/icons/Red-Planet-1.png"):setDescriptions("Fractarius IIc", "Fractarius IIc est un monde désolé.", "Fractarius IIc abrite un poste d'observation de l'Adeptus Mechanicus qui servait autrefois lors des essais réalisés sur Fractarius IIb. Il est aujourd'hui déserté.")
+	local LuneIIIFractariusII = Planet():setPosition(12662312, -6255095):setFaction("Neutre"):setPlanetRadius(150):setAxialRotationTime(3600):setCallSign("Lune III de Fractarius II"):setPlanetSurfaceTexture("planets/moon-1.png"):setRadarSignatureInfo(0.015, 0.1, 0.05):setScanningParameters(1, 1):setPlanetIcon("planets/icons/Red-Planet-1.png"):setDescriptions("Fractarius IIc", "Fractarius IIc est un monde désolé.",[[Fractarius IIc abrite un poste d'observation de l'Adeptus Mechanicus qui servait autrefois lors des essais réalisés sur Fractarius IIb. Il est aujourd'hui déserté.
+	
+	
+	]])
     LuneIIIFractariusII:setOrbit(FractariusII, 55)
 	
-	local FractariusIII = Planet():setPosition(12699431, -6284985):setFaction("Adeptus Mechanicus Fractarius"):setPlanetRadius(800):setAxialRotationTime(3600):setCallSign("Fractarius III"):setPlanetSurfaceTexture("planets/planet-2.png"):setScanningParameters(3, 2):setPlanetIcon("planets/icons/Lava-Planet.png"):setDescriptions("Fractarius III", "Le Monde-Forge de Fractarius III, dont la fontation est antérieure à la Croisade Sternbergienne, est une planète dont l’activité tellurique et volcanique facilitait grandement l’accès aux ressources présentes dans le noyau planétaire.", [["Fractarius III
+	local FractariusIII = Planet():setPosition(12699431, -6284985):setFaction("Adeptus Mechanicus Fractarius"):setPlanetRadius(800):setAxialRotationTime(3600):setCallSign("Fractarius III"):setPlanetSurfaceTexture("planets/planet-2.png"):setRadarSignatureInfo(0.08, 0.9, 0.9):setScanningParameters(3, 3):setPlanetIcon("planets/icons/Lava-Planet.png"):setDescriptions("Fractarius III",[[Le Monde-Forge de Fractarius III, dont la fontation est antérieure à la Croisade Sternbergienne, est une planète dont l’activité tellurique et volcanique facilitait grandement l’accès aux ressources présentes dans le noyau planétaire.
+	
+	
+	]], [[Fractarius III
 Monde-Forge
 Gouverneur : Fabricator-Général Osadien X22
 Gouvernement : Théocratie Omnissienne
@@ -2020,35 +2134,44 @@ Population : 14.3 Milliards
 Production notable : Croiseurs, stations spatiales, armements spécialisés
 Loi particulière : Biens et personnes en provenance de Lascarios interdits dans le système.
 
-Le Monde-Forge de Fractarius fut fondé bien avant que la Croisade Sternbergienne ne l’intègre formellement à l’Imperium. Les Magos Explorator de l’époque virent dans la lueur rouge généralisée du système le signe d’un message de l’Omnimessie et s’installèrent sur Fractarius III, planète dont l’activité tellurique et volcanique facilitait grandement l’accès aux ressources présentes dans le noyau planétaire. Fractarius est le principal site de production de croiseurs de l’Amas Tarkusien grâce au chantier spatial situé dans le système. Un état de fait qui leur vaut l’animosité de leurs frères de Lascarios IV."]])
+Le Monde-Forge de Fractarius fut fondé bien avant que la Croisade Sternbergienne ne l’intègre formellement à l’Imperium. Les Magos Explorator de l’époque virent dans la lueur rouge généralisée du système le signe d’un message de l’Omnimessie et s’installèrent sur Fractarius III, planète dont l’activité tellurique et volcanique facilitait grandement l’accès aux ressources présentes dans le noyau planétaire. Fractarius est le principal site de production de croiseurs de l’Amas Tarkusien grâce au chantier spatial situé dans le système. Un état de fait qui vaut aux Technoprêtres issus de ce monde l’animosité de leurs frères de Lascarios IV.]])
     FractariusIII:setOrbit(SoleilFractarius, 6000)
 
-	local FractariusIV = Planet():setPosition(12577474, -6355582):setFaction("Neutre"):setPlanetRadius(750):setAxialRotationTime(3600):setCallSign("Fractarius IV"):setPlanetSurfaceTexture("planets/haumea_fictional.jpg"):setScanningParameters(3, 2):setPlanetIcon("planets/icons/Ice-Planet.png"):setDescriptions("Fractarius IV", "Fractarus IV est une planète tellurique située loin du coeur du système.", "Fractarus IV est une planète tellurique située loin du coeur du système, à la surface gelée et sans atmosphère.")
+	local FractariusIV = Planet():setPosition(12577474, -6355582):setFaction("Neutre"):setPlanetRadius(750):setAxialRotationTime(3600):setCallSign("Fractarius IV"):setPlanetSurfaceTexture("planets/haumea_fictional.jpg"):setRadarSignatureInfo(0.075, 0.1, 0.0):setScanningParameters(1, 2):setPlanetIcon("planets/icons/Ice-Planet.png"):setDescriptions("Fractarius IV", "Fractarus IV est une planète tellurique située loin du coeur du système.",[[Fractarus IV est une planète tellurique située loin du coeur du système, à la surface gelée et sans atmosphère.
+	
+	
+	]])
     FractariusIV:setOrbit(SoleilFractarius, 8000)
 	
-	local FractariusV = Planet():setPosition(12533902, -6316055):setFaction("Neutre"):setPlanetRadius(200):setAxialRotationTime(3600):setCallSign("Fractarius V"):setPlanetSurfaceTexture("planets/makemake_fictional.jpg"):setScanningParameters(3, 2):setPlanetIcon("planets/icons/Red-Planet-With-Ice.png"):setDescriptions("Fractarius V", "Fractarius V est une planète tellurique naine.", "Fractarius V est une planète tellurique naine située à l’extrémité du système, non loin du point de Mandeville.")
+	local FractariusV = Planet():setPosition(12533902, -6316055):setFaction("Neutre"):setPlanetRadius(200):setAxialRotationTime(3600):setCallSign("Fractarius V"):setPlanetSurfaceTexture("planets/makemake_fictional.jpg"):setRadarSignatureInfo(0.02, 0.1, 0.0):setScanningParameters(1, 2):setPlanetIcon("planets/icons/Red-Planet-With-Ice.png"):setDescriptions("Fractarius V", "Fractarius V est une planète tellurique naine.",[[Fractarius V est une planète tellurique naine située à l’extrémité du système, non loin du point de Mandeville.
+	
+	
+	]])
     FractariusV:setOrbit(SoleilFractarius, 36000)
 
-    local FRACIND3 = CpuShip():setFaction("Adeptus Mechanicus Fractarius"):setTemplate("Dock Spatial"):setCallSign("FRAC-IND-3"):setPosition(12700605, -6287750):orderDefendTarget(FractariusIII,0,0)
+    local FRACIND3 = CpuShip():setFaction("Adeptus Mechanicus Fractarius"):setTemplate("Dock Spatial"):setCallSign("FRAC-IND-3"):setRadarSignatureInfo(0.15, 0.8, 0.5):setScanningParameters(3, 2):setPosition(12700605, -6287750):orderDefendTarget(FractariusIII,0,0):setDescriptions("Dock Spatial FRAC-IND-3", [[Le Dock Spatial FRAC-IND-3 est le plus gros chantier spatial de l'Amas Tarkusien et peut accueillir tout type de vaisseau.]],[[Le Dock Spatial FRAC-IND-3 est le plus gros enssemble de chantiers spatiaux de l'Amas Tarkusien, bien plus imposant que ceux de Lascarios et plus grand encore que la station Scorpio de Tarkus V. Il produit et répare toutes sortes de vaisseaux, et nottament de puissants croiseurs qu'il est le seul, ou presque, à pouvoir accueillir. C'est à travers ces vaisseaux que les Technoprêtres de Fractarius expriment tout leur savoir-faire et leur dévotion et chacun d'eux est autant une oeuvre d'art qu'un objet de vénération doublé d'une puissance machine de destruction.
+	
+	
+	]])
 
 --Stations de Surveillance
 function SurveillanceFractarius()
-	CpuShip():setFaction("Adeptus Mechanicus Fractarius"):setTemplate("Station Relais"):setCallSign("FRA01"):setPosition(12622450, -6388946):orderDefendLocation(12622450, -6388946)
-    CpuShip():setFaction("Adeptus Mechanicus Fractarius"):setTemplate("Station Relais"):setCallSign("FRA02"):setPosition(12664028, -6382318):orderDefendLocation(12664028, -6382318)
-    CpuShip():setFaction("Adeptus Mechanicus Fractarius"):setTemplate("Station Relais"):setCallSign("FRA03"):setPosition(12699858, -6359586):orderDefendLocation(12699858, -6359586)
-    CpuShip():setFaction("Adeptus Mechanicus Fractarius"):setTemplate("Station Relais"):setCallSign("FRA04"):setPosition(12725671, -6324719):orderDefendLocation(12725671, -6324719)
-    CpuShip():setFaction("Adeptus Mechanicus Fractarius"):setTemplate("Station Relais"):setCallSign("FRA05"):setPosition(12733570, -6283880):orderDefendLocation(12733570, -6283880)
-	CpuShip():setFaction("Adeptus Mechanicus Fractarius"):setTemplate("Station Relais"):setCallSign("FRA06"):setPosition(12722975, -6243619):orderDefendLocation(12722975, -6243619)
-    CpuShip():setFaction("Adeptus Mechanicus Fractarius"):setTemplate("Station Relais"):setCallSign("FRA07"):setPosition(12701208, -6212796):orderDefendLocation(12701208, -6212796)
-    CpuShip():setFaction("Adeptus Mechanicus Fractarius"):setTemplate("Station Relais"):setCallSign("FRA08"):setPosition(12669808, -6189680):orderDefendLocation(12669808, -6189680)
-    CpuShip():setFaction("Adeptus Mechanicus Fractarius"):setTemplate("Station Relais"):setCallSign("FRA09"):setPosition(12629739, -6181011):orderDefendLocation(12629739, -6181011)
-    CpuShip():setFaction("Adeptus Mechanicus Fractarius"):setTemplate("Station Relais"):setCallSign("FRA10"):setPosition(12586972, -6188331):orderDefendLocation(12586972, -6188331)
-    CpuShip():setFaction("Adeptus Mechanicus Fractarius"):setTemplate("Station Relais"):setCallSign("FRA11"):setPosition(12554610, -6211833):orderDefendLocation(12554610, -6211833)
-    CpuShip():setFaction("Adeptus Mechanicus Fractarius"):setTemplate("Station Relais"):setCallSign("FRA12"):setPosition(12533805, -6241500):orderDefendLocation(12533805, -6241500)
-    CpuShip():setFaction("Adeptus Mechanicus Fractarius"):setTemplate("Station Relais"):setCallSign("FRA13"):setPosition(12523402, -6278293):orderDefendLocation(12523402, -6278293)
-    CpuShip():setFaction("Adeptus Mechanicus Fractarius"):setTemplate("Station Relais"):setCallSign("FRA14"):setPosition(12529374, -6318940):orderDefendLocation(12529374, -6318940)
-    CpuShip():setFaction("Adeptus Mechanicus Fractarius"):setTemplate("Station Relais"):setCallSign("FRA15"):setPosition(12551528, -6355349):orderDefendLocation(12551528, -6355349)
-    CpuShip():setFaction("Adeptus Mechanicus Fractarius"):setTemplate("Station Relais"):setCallSign("FRA16"):setPosition(12583120, -6380006):orderDefendLocation(12583120, -6380006)
+	CpuShip():setFaction("Adeptus Mechanicus Fractarius"):setTemplate("Station Relais"):setCallSign("FRA01"):setRadarSignatureInfo(0.3, 0.3, 0.3):setScanningParameters(1, 2):setPosition(12622450, -6388946):orderDefendLocation(12622450, -6388946)
+    CpuShip():setFaction("Adeptus Mechanicus Fractarius"):setTemplate("Station Relais"):setCallSign("FRA02"):setRadarSignatureInfo(0.3, 0.3, 0.3):setScanningParameters(1, 2):setPosition(12664028, -6382318):orderDefendLocation(12664028, -6382318)
+    CpuShip():setFaction("Adeptus Mechanicus Fractarius"):setTemplate("Station Relais"):setCallSign("FRA03"):setRadarSignatureInfo(0.3, 0.3, 0.3):setScanningParameters(1, 2):setPosition(12699858, -6359586):orderDefendLocation(12699858, -6359586)
+    CpuShip():setFaction("Adeptus Mechanicus Fractarius"):setTemplate("Station Relais"):setCallSign("FRA04"):setRadarSignatureInfo(0.3, 0.3, 0.3):setScanningParameters(1, 2):setPosition(12725671, -6324719):orderDefendLocation(12725671, -6324719)
+    CpuShip():setFaction("Adeptus Mechanicus Fractarius"):setTemplate("Station Relais"):setCallSign("FRA05"):setRadarSignatureInfo(0.3, 0.3, 0.3):setScanningParameters(1, 2):setPosition(12733570, -6283880):orderDefendLocation(12733570, -6283880)
+	CpuShip():setFaction("Adeptus Mechanicus Fractarius"):setTemplate("Station Relais"):setCallSign("FRA06"):setRadarSignatureInfo(0.3, 0.3, 0.3):setScanningParameters(1, 2):setPosition(12722975, -6243619):orderDefendLocation(12722975, -6243619)
+    CpuShip():setFaction("Adeptus Mechanicus Fractarius"):setTemplate("Station Relais"):setCallSign("FRA07"):setRadarSignatureInfo(0.3, 0.3, 0.3):setScanningParameters(1, 2):setPosition(12701208, -6212796):orderDefendLocation(12701208, -6212796)
+    CpuShip():setFaction("Adeptus Mechanicus Fractarius"):setTemplate("Station Relais"):setCallSign("FRA08"):setRadarSignatureInfo(0.3, 0.3, 0.3):setScanningParameters(1, 2):setPosition(12669808, -6189680):orderDefendLocation(12669808, -6189680)
+    CpuShip():setFaction("Adeptus Mechanicus Fractarius"):setTemplate("Station Relais"):setCallSign("FRA09"):setRadarSignatureInfo(0.3, 0.3, 0.3):setScanningParameters(1, 2):setPosition(12629739, -6181011):orderDefendLocation(12629739, -6181011)
+    CpuShip():setFaction("Adeptus Mechanicus Fractarius"):setTemplate("Station Relais"):setCallSign("FRA10"):setRadarSignatureInfo(0.3, 0.3, 0.3):setScanningParameters(1, 2):setPosition(12586972, -6188331):orderDefendLocation(12586972, -6188331)
+    CpuShip():setFaction("Adeptus Mechanicus Fractarius"):setTemplate("Station Relais"):setCallSign("FRA11"):setRadarSignatureInfo(0.3, 0.3, 0.3):setScanningParameters(1, 2):setPosition(12554610, -6211833):orderDefendLocation(12554610, -6211833)
+    CpuShip():setFaction("Adeptus Mechanicus Fractarius"):setTemplate("Station Relais"):setCallSign("FRA12"):setRadarSignatureInfo(0.3, 0.3, 0.3):setScanningParameters(1, 2):setPosition(12533805, -6241500):orderDefendLocation(12533805, -6241500)
+    CpuShip():setFaction("Adeptus Mechanicus Fractarius"):setTemplate("Station Relais"):setCallSign("FRA13"):setRadarSignatureInfo(0.3, 0.3, 0.3):setScanningParameters(1, 2):setPosition(12523402, -6278293):orderDefendLocation(12523402, -6278293)
+    CpuShip():setFaction("Adeptus Mechanicus Fractarius"):setTemplate("Station Relais"):setCallSign("FRA14"):setRadarSignatureInfo(0.3, 0.3, 0.3):setScanningParameters(1, 2):setPosition(12529374, -6318940):orderDefendLocation(12529374, -6318940)
+    CpuShip():setFaction("Adeptus Mechanicus Fractarius"):setTemplate("Station Relais"):setCallSign("FRA15"):setRadarSignatureInfo(0.3, 0.3, 0.3):setScanningParameters(1, 2):setPosition(12551528, -6355349):orderDefendLocation(12551528, -6355349)
+    CpuShip():setFaction("Adeptus Mechanicus Fractarius"):setTemplate("Station Relais"):setCallSign("FRA16"):setRadarSignatureInfo(0.3, 0.3, 0.3):setScanningParameters(1, 2):setPosition(12583120, -6380006):orderDefendLocation(12583120, -6380006)
 
 end
 
@@ -2056,14 +2179,14 @@ SurveillanceFractarius()
 
 --Stations de Défense
 function DefenseFractarius()
-    CpuShip():setFaction("Adeptus Mechanicus Fractarius"):setTemplate("Station de Defense a Lance Siderale"):setCallSign("LS11"):setPosition(12738291, -6297281):orderDefendLocation(12738291, -6297281)
-    CpuShip():setFaction("Adeptus Mechanicus Fractarius"):setTemplate("Station de Defense a Lance Siderale"):setCallSign("LS12"):setPosition(12732129, -6306287):orderDefendLocation(12732129, -6306287)
-    CpuShip():setFaction("Adeptus Mechanicus Fractarius"):setTemplate("Station de Defense a Lance Siderale"):setCallSign("LS13"):setPosition(12731466, -6315861):orderDefendLocation(12731466, -6315861)
-    CpuShip():setFaction("Adeptus Mechanicus Fractarius"):setTemplate("Station de Defense a Lance Siderale"):setCallSign("LS14"):setPosition(12744074, -6290361):orderDefendLocation(12744074, -6290361)
-    CpuShip():setFaction("Adeptus Mechanicus Fractarius"):setTemplate("Station de Defense a Macrocanon"):setCallSign("LM11"):setPosition(12744928, -6296618):orderDefendLocation(12744928, -6296618):setCustomWeaponStorage("MCANMK0", 200):setCustomWeaponStorageMax("MCANMK0", 200)
-    CpuShip():setFaction("Adeptus Mechanicus Fractarius"):setTemplate("Station de Defense a Macrocanon"):setCallSign("LM12"):setPosition(12751278, -6289129):orderDefendLocation(12751278, -6289129):setCustomWeaponStorage("MCANMK0", 200):setCustomWeaponStorageMax("MCANMK0", 200)
-    CpuShip():setFaction("Adeptus Mechanicus Fractarius"):setTemplate("Station de Defense a Macrocanon"):setCallSign("LM13"):setPosition(12739808, -6322402):orderDefendLocation(12739808, -6322402):setCustomWeaponStorage("MCANMK0", 200):setCustomWeaponStorageMax("MCANMK0", 200)
-    CpuShip():setFaction("Adeptus Mechanicus Fractarius"):setTemplate("Station de Defense a Macrocanon"):setCallSign("LM14"):setPosition(12738386, -6312070):orderDefendLocation(12738386, -6312070):setCustomWeaponStorage("MCANMK0", 200):setCustomWeaponStorageMax("MCANMK0", 200)
+    CpuShip():setFaction("Adeptus Mechanicus Fractarius"):setTemplate("Station de Defense a Lance Siderale"):setCallSign("LS11"):setRadarSignatureInfo(0.15, 0.3, 0.2):setScanningParameters(1, 2):setPosition(12738291, -6297281):orderDefendLocation(12738291, -6297281)
+    CpuShip():setFaction("Adeptus Mechanicus Fractarius"):setTemplate("Station de Defense a Lance Siderale"):setCallSign("LS12"):setRadarSignatureInfo(0.15, 0.3, 0.2):setScanningParameters(1, 2):setPosition(12732129, -6306287):orderDefendLocation(12732129, -6306287)
+    CpuShip():setFaction("Adeptus Mechanicus Fractarius"):setTemplate("Station de Defense a Lance Siderale"):setCallSign("LS13"):setRadarSignatureInfo(0.15, 0.3, 0.2):setScanningParameters(1, 2):setPosition(12731466, -6315861):orderDefendLocation(12731466, -6315861)
+    CpuShip():setFaction("Adeptus Mechanicus Fractarius"):setTemplate("Station de Defense a Lance Siderale"):setCallSign("LS14"):setRadarSignatureInfo(0.15, 0.3, 0.2):setScanningParameters(1, 2):setPosition(12744074, -6290361):orderDefendLocation(12744074, -6290361)
+    CpuShip():setFaction("Adeptus Mechanicus Fractarius"):setTemplate("Station de Defense a Macrocanon"):setCallSign("LM11"):setRadarSignatureInfo(0.15, 0.1, 0.2):setScanningParameters(1, 2):setPosition(12744928, -6296618):orderDefendLocation(12744928, -6296618):setCustomWeaponStorage("MCANMK0", 200):setCustomWeaponStorageMax("MCANMK0", 200)
+    CpuShip():setFaction("Adeptus Mechanicus Fractarius"):setTemplate("Station de Defense a Macrocanon"):setCallSign("LM12"):setRadarSignatureInfo(0.15, 0.1, 0.2):setScanningParameters(1, 2):setPosition(12751278, -6289129):orderDefendLocation(12751278, -6289129):setCustomWeaponStorage("MCANMK0", 200):setCustomWeaponStorageMax("MCANMK0", 200)
+    CpuShip():setFaction("Adeptus Mechanicus Fractarius"):setTemplate("Station de Defense a Macrocanon"):setCallSign("LM13"):setRadarSignatureInfo(0.15, 0.1, 0.2):setScanningParameters(1, 2):setPosition(12739808, -6322402):orderDefendLocation(12739808, -6322402):setCustomWeaponStorage("MCANMK0", 200):setCustomWeaponStorageMax("MCANMK0", 200)
+    CpuShip():setFaction("Adeptus Mechanicus Fractarius"):setTemplate("Station de Defense a Macrocanon"):setCallSign("LM14"):setRadarSignatureInfo(0.15, 0.1, 0.2):setScanningParameters(1, 2):setPosition(12738386, -6312070):orderDefendLocation(12738386, -6312070):setCustomWeaponStorage("MCANMK0", 200):setCustomWeaponStorageMax("MCANMK0", 200)
 
 end
 
@@ -2071,30 +2194,30 @@ DefenseFractarius()
 
 --Vaisseaux de Fractarius
 --Flotille de Défense
-	local Gardien = CpuShip():setFaction("Adeptus Mechanicus Fractarius"):setTemplate("Croiseur Monitor Secutor"):setCallSign("Gardien d'Acier"):setPosition(12727638, -6297616):orderDefendLocation(12727638, -6297616):setCustomWeaponStorage("MCANMK2", 200):setCustomWeaponStorageMax("MCANMK2", 200):setCustomWeaponStorage("Torpille", 12):setCustomWeaponStorageMax("Torpille", 12):setBeamWeapon(1, 1, 298, 7000, 10.0, 40.0):setBeamWeaponTurret(1, 90, 0, 0)
-    CpuShip():setFaction("Adeptus Mechanicus Fractarius"):setTemplate("Escorteur Falchion"):setCallSign("Fureur de la Force Motrice"):setPosition(12721038, -6298230):orderDefendTarget(Gardien,500,5000):setCustomWeaponStorage("Torpille", 6):setCustomWeaponStorageMax("Torpille", 6)
-    CpuShip():setFaction("Adeptus Mechanicus Fractarius"):setTemplate("Escorteur Falchion"):setCallSign("Magos Adrianus"):setPosition(12726252, -6292542):orderDefendTarget(Gardien,500,5000):setCustomWeaponStorage("Torpille", 6):setCustomWeaponStorageMax("Torpille", 6)
-    CpuShip():setFaction("Adeptus Mechanicus Fractarius"):setTemplate("Escorteur Falchion"):setCallSign("Regard de l'Omnimessie"):setPosition(12725399, -6290836):orderDefendTarget(Gardien,500,5000):setCustomWeaponStorage("Torpille", 6):setCustomWeaponStorageMax("Torpille", 6)
-    CpuShip():setFaction("Adeptus Mechanicus Fractarius"):setTemplate("Escorteur Falchion"):setCallSign("Souffle du Dieu-Machine"):setPosition(12724356, -6298609):orderDefendTarget(Gardien,500,5000):setCustomWeaponStorage("Torpille", 6):setCustomWeaponStorageMax("Torpille", 6)
+	local Gardien = CpuShip():setFaction("Adeptus Mechanicus Fractarius"):setTemplate("Croiseur Monitor Secutor"):setCallSign("Gardien d'Acier"):setRadarSignatureInfo(0.2, 0.7, 0.4):setScanningParameters(2, 1):setPosition(12727638, -6297616):orderDefendLocation(12727638, -6297616):setCustomWeaponStorage("MCANMK2", 200):setCustomWeaponStorageMax("MCANMK2", 200):setCustomWeaponStorage("Torpille", 12):setCustomWeaponStorageMax("Torpille", 12):setBeamWeapon(1, 1, 298, 7000, 10.0, 40.0):setBeamWeaponTurret(1, 90, 0, 0)
+    CpuShip():setFaction("Adeptus Mechanicus Fractarius"):setTemplate("Escorteur Falchion"):setCallSign("Fureur de la Force Motrice"):setRadarSignatureInfo(0.1, 0.7, 0.3):setScanningParameters(1, 1):setPosition(12721038, -6298230):orderDefendTarget(Gardien,500,5000):setCustomWeaponStorage("Torpille", 6):setCustomWeaponStorageMax("Torpille", 6)
+    CpuShip():setFaction("Adeptus Mechanicus Fractarius"):setTemplate("Escorteur Falchion"):setCallSign("Magos Adrianus"):setRadarSignatureInfo(0.1, 0.7, 0.3):setScanningParameters(1, 1):setPosition(12726252, -6292542):orderDefendTarget(Gardien,500,5000):setCustomWeaponStorage("Torpille", 6):setCustomWeaponStorageMax("Torpille", 6)
+    CpuShip():setFaction("Adeptus Mechanicus Fractarius"):setTemplate("Escorteur Falchion"):setCallSign("Regard de l'Omnimessie"):setRadarSignatureInfo(0.1, 0.7, 0.3):setScanningParameters(1, 1):setPosition(12725399, -6290836):orderDefendTarget(Gardien,500,5000):setCustomWeaponStorage("Torpille", 6):setCustomWeaponStorageMax("Torpille", 6)
+    CpuShip():setFaction("Adeptus Mechanicus Fractarius"):setTemplate("Escorteur Falchion"):setCallSign("Souffle du Dieu-Machine"):setRadarSignatureInfo(0.1, 0.7, 0.3):setScanningParameters(1, 1):setPosition(12724356, -6298609):orderDefendTarget(Gardien,500,5000):setCustomWeaponStorage("Torpille", 6):setCustomWeaponStorageMax("Torpille", 6)
 
 --Flotille d'intervention
-    local Inflexible = CpuShip():setFaction("Adeptus Mechanicus Fractarius"):setTemplate("Croiseur Monitor Lathe"):setCallSign("Foi Inflexible"):setPosition(12671301, -6351705):orderDefendLocation(12671301, -6351705):setCustomWeaponStorage("Torpille", 12):setCustomWeaponStorageMax("Torpille", 12)
-	CpuShip():setFaction("Adeptus Mechanicus Fractarius"):setTemplate("Escorteur Hazeroth"):setCallSign("Feu Rédempteur"):setPosition(12676110, -6355454):orderDefendTarget(Inflexible)
-    CpuShip():setFaction("Adeptus Mechanicus Fractarius"):setTemplate("Escorteur Hazeroth"):setCallSign("Eternel Vengeur"):setPosition(12673094, -6355372):orderDefendTarget(Inflexible)
-    CpuShip():setFaction("Adeptus Mechanicus Fractarius"):setTemplate("Escorteur Hazeroth"):setCallSign("Fureur Ignée"):setPosition(12669019, -6353661):orderDefendTarget(Inflexible)
-    CpuShip():setFaction("Adeptus Mechanicus Fractarius"):setTemplate("Escorteur Hazeroth"):setCallSign("Marteau des Infidèles"):setPosition(12666330, -6353009):orderDefendTarget(Inflexible)
+    local Inflexible = CpuShip():setFaction("Adeptus Mechanicus Fractarius"):setTemplate("Croiseur Monitor Lathe"):setCallSign("Foi Inflexible"):setRadarSignatureInfo(0.2, 0.7, 0.4):setScanningParameters(2, 1):setPosition(12671301, -6351705):orderDefendLocation(12671301, -6351705):setCustomWeaponStorage("Torpille", 12):setCustomWeaponStorageMax("Torpille", 12)
+	CpuShip():setFaction("Adeptus Mechanicus Fractarius"):setTemplate("Escorteur Hazeroth"):setCallSign("Feu Rédempteur"):setRadarSignatureInfo(0.1, 0.7, 0.3):setScanningParameters(1, 1):setPosition(12676110, -6355454):orderDefendTarget(Inflexible)
+    CpuShip():setFaction("Adeptus Mechanicus Fractarius"):setTemplate("Escorteur Hazeroth"):setCallSign("Eternel Vengeur"):setRadarSignatureInfo(0.1, 0.7, 0.3):setScanningParameters(1, 1):setPosition(12673094, -6355372):orderDefendTarget(Inflexible)
+    CpuShip():setFaction("Adeptus Mechanicus Fractarius"):setTemplate("Escorteur Hazeroth"):setCallSign("Fureur Ignée"):setRadarSignatureInfo(0.1, 0.7, 0.3):setScanningParameters(1, 1):setPosition(12669019, -6353661):orderDefendTarget(Inflexible)
+    CpuShip():setFaction("Adeptus Mechanicus Fractarius"):setTemplate("Escorteur Hazeroth"):setCallSign("Marteau des Infidèles"):setRadarSignatureInfo(0.1, 0.7, 0.3):setScanningParameters(1, 1):setPosition(12666330, -6353009):orderDefendTarget(Inflexible)
     
 --Arche Mechanicus
-	local Patriarcha = CpuShip():setFaction("Adeptus Mechanicus Fractarius"):setTemplate("Arche Mechanicus"):setCallSign("Ferrum Patriarcha"):setPosition(12708810, -6315766):orderDefendLocation(12708810, -6315766):setCustomWeaponStorage("Canon Nova", 6):setCustomWeaponStorageMax("Canon Nova", 6):setCustomWeaponStorage("MCANMK4", 200):setCustomWeaponStorageMax("MCANMK4", 200)
-    local Lux = CpuShip():setFaction("Adeptus Mechanicus Fractarius"):setTemplate("Croiseur Leger Endurance"):setCallSign("Lux Omnissiah"):setPosition(12707388, -6313586):orderDefendTarget(Patriarcha,500,5000):setCustomWeaponStorage("MCANMK2", 200):setCustomWeaponStorageMax("MCANMK2", 200):setCustomWeaponStorage("Torpille", 12):setCustomWeaponStorageMax("Torpille", 12)
-	local Manus = CpuShip():setFaction("Adeptus Mechanicus Fractarius"):setTemplate("Croiseur Leger Endurance"):setCallSign("Manus Deus Machina"):setPosition(12711559, -6315577):orderDefendTarget(Patriarcha):setCustomWeaponStorage("MCANMK2", 200):setCustomWeaponStorageMax("MCANMK2", 200):setCustomWeaponStorage("Torpille", 12):setCustomWeaponStorageMax("Torpille", 12)
-	CpuShip():setFaction("Adeptus Mechanicus Fractarius"):setTemplate("Escorteur Falchion"):setCallSign("Ferrum Cor"):setPosition(12704354, -6315292):orderDefendTarget(Lux):setCustomWeaponStorage("Torpille", 6):setCustomWeaponStorageMax("Torpille", 6)
-    CpuShip():setFaction("Adeptus Mechanicus Fractarius"):setTemplate("Escorteur Falchion"):setCallSign("Vigilans Oculus"):setPosition(12702174, -6316240):orderDefendTarget(Lux):setCustomWeaponStorage("Torpille", 6):setCustomWeaponStorageMax("Torpille", 6)
-    CpuShip():setFaction("Adeptus Mechanicus Fractarius"):setTemplate("Escorteur Falchion"):setCallSign("Ultoris Brachium"):setPosition(12712791, -6321360):orderDefendTarget(Manus):setCustomWeaponStorage("Torpille", 6):setCustomWeaponStorageMax("Torpille", 6)
-    CpuShip():setFaction("Adeptus Mechanicus Fractarius"):setTemplate("Escorteur Falchion"):setCallSign("Pondus Scientiae"):setPosition(12712508, -6318610):orderDefendTarget(Manus):setCustomWeaponStorage("Torpille", 6):setCustomWeaponStorageMax("Torpille", 6)
+	local Patriarcha = CpuShip():setFaction("Adeptus Mechanicus Fractarius"):setTemplate("Arche Mechanicus"):setCallSign("Ferrum Patriarcha"):setRadarSignatureInfo(0.6, 0.9, 0.5):setScanningParameters(3, 1):setPosition(12708810, -6315766):orderDefendLocation(12708810, -6315766):setCustomWeaponStorage("Canon Nova", 6):setCustomWeaponStorageMax("Canon Nova", 6):setCustomWeaponStorage("MCANMK4", 200):setCustomWeaponStorageMax("MCANMK4", 200)
+    local Lux = CpuShip():setFaction("Adeptus Mechanicus Fractarius"):setTemplate("Croiseur Leger Endurance"):setCallSign("Lux Omnissiah"):setRadarSignatureInfo(0.2, 0.7, 0.4):setScanningParameters(2, 1):setPosition(12707388, -6313586):orderDefendTarget(Patriarcha,500,5000):setCustomWeaponStorage("MCANMK2", 200):setCustomWeaponStorageMax("MCANMK2", 200):setCustomWeaponStorage("Torpille", 12):setCustomWeaponStorageMax("Torpille", 12)
+	local Manus = CpuShip():setFaction("Adeptus Mechanicus Fractarius"):setTemplate("Croiseur Leger Endurance"):setCallSign("Manus Deus Machina"):setRadarSignatureInfo(0.2, 0.7, 0.4):setScanningParameters(2, 1):setPosition(12711559, -6315577):orderDefendTarget(Patriarcha):setCustomWeaponStorage("MCANMK2", 200):setCustomWeaponStorageMax("MCANMK2", 200):setCustomWeaponStorage("Torpille", 12):setCustomWeaponStorageMax("Torpille", 12)
+	CpuShip():setFaction("Adeptus Mechanicus Fractarius"):setTemplate("Escorteur Falchion"):setCallSign("Ferrum Cor"):setRadarSignatureInfo(0.1, 0.7, 0.3):setScanningParameters(1, 1):setPosition(12704354, -6315292):orderDefendTarget(Lux):setCustomWeaponStorage("Torpille", 6):setCustomWeaponStorageMax("Torpille", 6)
+    CpuShip():setFaction("Adeptus Mechanicus Fractarius"):setTemplate("Escorteur Falchion"):setCallSign("Vigilans Oculus"):setRadarSignatureInfo(0.1, 0.7, 0.3):setScanningParameters(1, 1):setPosition(12702174, -6316240):orderDefendTarget(Lux):setCustomWeaponStorage("Torpille", 6):setCustomWeaponStorageMax("Torpille", 6)
+    CpuShip():setFaction("Adeptus Mechanicus Fractarius"):setTemplate("Escorteur Falchion"):setCallSign("Ultoris Brachium"):setRadarSignatureInfo(0.1, 0.7, 0.3):setScanningParameters(1, 1):setPosition(12712791, -6321360):orderDefendTarget(Manus):setCustomWeaponStorage("Torpille", 6):setCustomWeaponStorageMax("Torpille", 6)
+    CpuShip():setFaction("Adeptus Mechanicus Fractarius"):setTemplate("Escorteur Falchion"):setCallSign("Pondus Scientiae"):setRadarSignatureInfo(0.1, 0.7, 0.3):setScanningParameters(1, 1):setPosition(12712508, -6318610):orderDefendTarget(Manus):setCustomWeaponStorage("Torpille", 6):setCustomWeaponStorageMax("Torpille", 6)
     
 --Vaisseau usine
-    CpuShip():setFaction("Adeptus Mechanicus Fractarius"):setTemplate("Vaisseau-Usine Goliath"):setCallSign("Pourvoyeur Providentiel"):setPosition(12647038, -6308170):orderDefendTarget(FractariusI):setCustomWeaponStorage("MCANMK1", 200):setCustomWeaponStorageMax("MCANMK1", 200)
+    CpuShip():setFaction("Adeptus Mechanicus Fractarius"):setTemplate("Vaisseau-Usine Goliath"):setCallSign("Pourvoyeur Providentiel"):setRadarSignatureInfo(0.2, 0.7, 0.3):setScanningParameters(1, 1):setPosition(12647038, -6308170):orderDefendTarget(FractariusI):setCustomWeaponStorage("MCANMK1", 200):setCustomWeaponStorageMax("MCANMK1", 200)
 
 --Fractarius(LG625C)-->Nexus4(HO256C)
 	WormHole():setPosition(12515798, -6361503):setFaction("Neutre"):setTargetPosition(5131058, -4446236)
@@ -2677,24 +2800,45 @@ function UltraSemptorMap()
 
 --Soleil
 
-	local SoleilUltraSemptor = Planet():setPosition(13482376, 757295):setFaction("Neutre"):setPlanetRadius(5900):setPlanetCloudRadius(6000.00):setCallSign("Soleil de Ultra Semptor"):setPlanetSurfaceTexture("planets/Soleil.jpg"):setPlanetAtmosphereColor(1,1,0.5):setRadarSignatureInfo(0.80, 0.75, -0.95):setScanningParameters(1,1):setPlanetIcon("planets/icons/Sun.png"):setDescriptions("Soleil d'Ultra Semptor", "Le système d’Ultra Semptor est constitué d’une étoile jaune autour de laquelle orbitent 4 planètes telluriques et une ceinture d’astéroïdes.", "Le système d’Ultra Semptor est constitué d’une étoile jaune autour de laquelle orbitent 4 planètes telluriques et une ceinture d’astéroïdes. Plusieurs épaves de vaisseaux peuvent encore être trouvées dans le système, vestiges d’une bataille spatiale qui n’attendent plus que d’être envoyées sur un Monde-Forge pour être recyclées.")
+	local SoleilUltraSemptor = Planet():setPosition(13482376, 757295):setFaction("Neutre"):setPlanetRadius(5900):setPlanetCloudRadius(6000.00):setCallSign("Soleil de Ultra Semptor"):setPlanetSurfaceTexture("planets/Soleil.jpg"):setPlanetAtmosphereColor(1,1,0.5):setRadarSignatureInfo(0.59, 0.8, 0.0):setScanningParameters(1,1):setPlanetIcon("planets/icons/Sun.png"):setDescriptions("Soleil d'Ultra Semptor",[[Le système d’Ultra Semptor est constitué d’une étoile jaune autour de laquelle orbitent 4 planètes telluriques et une ceinture d’astéroïdes.
+	
+	
+	]],[[Le système d’Ultra Semptor est constitué d’une étoile jaune autour de laquelle orbitent 4 planètes telluriques et une ceinture d’astéroïdes. Plusieurs épaves de vaisseaux peuvent encore être trouvées dans le système, vestiges d’une bataille spatiale qui n’attendent plus que d’être envoyées sur un Monde-Forge pour être recyclées.
+	
+	
+	]])
     WarpJammer():setFaction("Neutre"):setPosition(13482376, 757295):setRange(90000.00)
 	
 --Planètes
 --UltraSemptor I	
-	local UltraSemptorI = Planet():setPosition(13478156, 741117):setFaction("Neutre"):setPlanetRadius(1000):setAxialRotationTime(3600):setCallSign("UltraSemptor I"):setPlanetSurfaceTexture("planets/4k_eris_fictional.jpg"):setScanningParameters(3, 2):setPlanetIcon("planets/icons/Red-Planet-1.png"):setDescriptions("Ultra Semptor I", "Ultra Semptor I est une planète tellurique de taille moyenne orbitant proche de son soleil.", "Ultra Semptor I est une planète tellurique de taille moyenne orbitant proche de son soleil. Les températures la rendent impropre à la colonisation.")
+	local UltraSemptorI = Planet():setPosition(13478156, 741117):setFaction("Neutre"):setPlanetRadius(1000):setAxialRotationTime(3600):setCallSign("UltraSemptor I"):setPlanetSurfaceTexture("planets/4k_eris_fictional.jpg"):setRadarSignatureInfo(0.1, 0.1, 0.05):setScanningParameters(1, 2):setPlanetIcon("planets/icons/Red-Planet-1.png"):setDescriptions("Ultra Semptor I",[[Ultra Semptor I est une planète tellurique de taille moyenne orbitant proche de son soleil.
+	
+	
+	]],[[Ultra Semptor I est une planète tellurique de taille moyenne orbitant proche de son soleil. Les températures la rendent impropre à la colonisation.
+	
+	
+	]])
     UltraSemptorI:setOrbit(SoleilUltraSemptor, 300)
 
 --UltraSemptor II	
-	local UltraSemptorII = Planet():setPosition(13487302, 786083):setFaction("Neutre"):setPlanetRadius(500):setAxialRotationTime(3600):setCallSign("UltraSemptor II"):setPlanetSurfaceTexture("planets/4k_haumea_fictional.jpg"):setScanningParameters(3, 2):setPlanetIcon("planets/icons/red-planet-sputnik.png"):setDescriptions("Ultra Semptor II", "Ultra Semptor II est une planète naine tellurique.", "Ultra Semptor II est une planète naine tellurique autour de laquelle orbitent plusieurs petits satellites.")
+	local UltraSemptorII = Planet():setPosition(13487302, 786083):setFaction("Neutre"):setPlanetRadius(500):setAxialRotationTime(3600):setCallSign("UltraSemptor II"):setPlanetSurfaceTexture("planets/4k_haumea_fictional.jpg"):setRadarSignatureInfo(0.05, 0.01, 0.0):setScanningParameters(1, 2):setPlanetIcon("planets/icons/red-planet-sputnik.png"):setDescriptions("Ultra Semptor II", "Ultra Semptor II est une planète naine tellurique.",[[Ultra Semptor II est une planète naine tellurique autour de laquelle orbitent plusieurs petits satellites.
+	
+	
+	]])
     UltraSemptorII:setOrbit(SoleilUltraSemptor, 700)
 
 --UltraSemptor III	
-	local UltraSemptorIII = Planet():setPosition(13521344, 723080):setFaction("Neutre"):setPlanetRadius(1000):setAxialRotationTime(3600):setCallSign("UltraSemptor III"):setPlanetSurfaceTexture("planets/strange-2.jpg"):setScanningParameters(3, 2):setPlanetIcon("planets/icons/Red-Planet-With-Ice.png"):setDescriptions("Ultra Semptor III", "Ultra Semptor III est une planète tellurique de taille moyenne orbitant à bonne distance de son soleil.", "Ultra Semptor III est une planète tellurique de taille moyenne orbitant à bonne distance de son soleil, et partiellement recouverte de glace.")
+	local UltraSemptorIII = Planet():setPosition(13521344, 723080):setFaction("Neutre"):setPlanetRadius(1000):setAxialRotationTime(3600):setCallSign("UltraSemptor III"):setPlanetSurfaceTexture("planets/strange-2.jpg"):setRadarSignatureInfo(0.1, 0.1, 0.05):setScanningParameters(1, 2):setPlanetIcon("planets/icons/Red-Planet-With-Ice.png"):setDescriptions("Ultra Semptor III",[[Ultra Semptor III est une planète tellurique de taille moyenne orbitant à bonne distance de son soleil.
+	
+	
+	]],[[Ultra Semptor III est une planète tellurique de taille moyenne orbitant à bonne distance de son soleil, et partiellement recouverte de glace.
+	
+	
+	]])
     UltraSemptorIII:setOrbit(SoleilUltraSemptor, 1000)
 
 --UltraSemptor IV	
-	local UltraSemptorIV = Planet():setPosition(13557418, 736290):setFaction("Imperium Ultra Semptor"):setPlanetRadius(1500):setAxialRotationTime(3600):setCallSign("UltraSemptor IV"):setPlanetSurfaceTexture("planets/strange-1.jpg"):setScanningParameters(3, 2):setPlanetIcon("planets/icons/16.png"):setDescriptions("Ultra Semptor IV", "Ultra Semptor IV est un Monde-Chapelle Agricole.", [["Ultra Semptor IV
+	local UltraSemptorIV = Planet():setPosition(13557418, 736290):setFaction("Imperium Ultra Semptor"):setPlanetRadius(1500):setAxialRotationTime(3600):setCallSign("UltraSemptor IV"):setPlanetSurfaceTexture("planets/strange-1.jpg"):setRadarSignatureInfo(0.15, 0.7, 0.7):setScanningParameters(3, 3):setPlanetIcon("planets/icons/16.png"):setDescriptions("Ultra Semptor IV", "Ultra Semptor IV est un Monde-Chapelle Agricole.", [[Ultra Semptor IV
 Monde-Chapelle Agricole
 Gouverneur : Archévêque Aristachius
 Gouvernement : Théocratie Ecclésiarchique
@@ -2702,19 +2846,22 @@ Population : 4.1 Milliards
 Production notable : Biomasse, objets de culte
 Loi particulière : Alcool et drogues interdites
 
-Ultra Semptor IV ne présente qu’un intérêt commercial limité, sa production de biomasse étant largement inférieure à celle de Triticum, mais a été le théâtre d’une bataille féroce lors de la conquête du sous-secteur par l’Imperium. En mémoire des soldats tombés pour l’Empereur, la planète fut transformée en Monde-Chapelle, et de nombreux pèlerins s’y rendent à longueur d’année. Le clergé local est souvent qualifié d’ambitieux, du fait du nombre important de reliques diverses régulièrement découvertes sur la planète et des nombreuses demandes de canonisation de personnalités locales déposées auprès du diocèse."]])
+Ultra Semptor IV ne présente qu’un intérêt commercial limité, sa production de biomasse étant largement inférieure à celle de Triticum, mais a été le théâtre d’une bataille féroce lors de la conquête du sous-secteur par l’Imperium. En mémoire des soldats tombés pour l’Empereur, la planète fut transformée en Monde-Chapelle, et de nombreux pèlerins s’y rendent à longueur d’année. Le clergé local est souvent qualifié d’ambitieux, du fait du nombre important de reliques diverses régulièrement découvertes sur la planète et des nombreuses demandes de canonisation de personnalités locales déposées auprès du diocèse.
+
+
+]])
     UltraSemptorIV:setOrbit(SoleilUltraSemptor, 2500)
 
 --Stations de surveillance d'Ultra Semptor
 function SurveillanceUltraSemptor()
-    CpuShip():setFaction("Imperium Ultra Semptor"):setTemplate("Station Relais"):setCallSign("ULT01"):setPosition(13480031, 663198):orderDefendLocation(13480031, 663198)
-    CpuShip():setFaction("Imperium Ultra Semptor"):setTemplate("Station Relais"):setCallSign("ULT02"):setPosition(13549544, 690614):orderDefendLocation(13549544, 690614)
-    CpuShip():setFaction("Imperium Ultra Semptor"):setTemplate("Station Relais"):setCallSign("ULT03"):setPosition(13577314, 756235):orderDefendLocation(13577314, 756235)
-    CpuShip():setFaction("Imperium Ultra Semptor"):setTemplate("Station Relais"):setCallSign("ULT04"):setPosition(13557319, 816225):orderDefendLocation(13557319, 816225)
-    CpuShip():setFaction("Imperium Ultra Semptor"):setTemplate("Station Relais"):setCallSign("ULT05"):setPosition(13483229, 851714):orderDefendLocation(13483229, 851714)
-    CpuShip():setFaction("Imperium Ultra Semptor"):setTemplate("Station Relais"):setCallSign("ULT06"):setPosition(13405714, 817470):orderDefendLocation(13405714, 817470)
-    CpuShip():setFaction("Imperium Ultra Semptor"):setTemplate("Station Relais"):setCallSign("ULT07"):setPosition(13385479, 756143):orderDefendLocation(13385479, 756143)
-    CpuShip():setFaction("Imperium Ultra Semptor"):setTemplate("Station Relais"):setCallSign("ULT08"):setPosition(13415052, 689524):orderDefendLocation(13415052, 689524)
+    CpuShip():setFaction("Imperium Ultra Semptor"):setTemplate("Station Relais"):setCallSign("ULT01"):setRadarSignatureInfo(0.3, 0.3, 0.3):setScanningParameters(1, 2):setPosition(13480031, 663198):orderDefendLocation(13480031, 663198)
+    CpuShip():setFaction("Imperium Ultra Semptor"):setTemplate("Station Relais"):setCallSign("ULT02"):setRadarSignatureInfo(0.3, 0.3, 0.3):setScanningParameters(1, 2):setPosition(13549544, 690614):orderDefendLocation(13549544, 690614)
+    CpuShip():setFaction("Imperium Ultra Semptor"):setTemplate("Station Relais"):setCallSign("ULT03"):setRadarSignatureInfo(0.3, 0.3, 0.3):setScanningParameters(1, 2):setPosition(13577314, 756235):orderDefendLocation(13577314, 756235)
+    CpuShip():setFaction("Imperium Ultra Semptor"):setTemplate("Station Relais"):setCallSign("ULT04"):setRadarSignatureInfo(0.3, 0.3, 0.3):setScanningParameters(1, 2):setPosition(13557319, 816225):orderDefendLocation(13557319, 816225)
+    CpuShip():setFaction("Imperium Ultra Semptor"):setTemplate("Station Relais"):setCallSign("ULT05"):setRadarSignatureInfo(0.3, 0.3, 0.3):setScanningParameters(1, 2):setPosition(13483229, 851714):orderDefendLocation(13483229, 851714)
+    CpuShip():setFaction("Imperium Ultra Semptor"):setTemplate("Station Relais"):setCallSign("ULT06"):setRadarSignatureInfo(0.3, 0.3, 0.3):setScanningParameters(1, 2):setPosition(13405714, 817470):orderDefendLocation(13405714, 817470)
+    CpuShip():setFaction("Imperium Ultra Semptor"):setTemplate("Station Relais"):setCallSign("ULT07"):setRadarSignatureInfo(0.3, 0.3, 0.3):setScanningParameters(1, 2):setPosition(13385479, 756143):orderDefendLocation(13385479, 756143)
+    CpuShip():setFaction("Imperium Ultra Semptor"):setTemplate("Station Relais"):setCallSign("ULT08"):setRadarSignatureInfo(0.3, 0.3, 0.3):setScanningParameters(1, 2):setPosition(13415052, 689524):orderDefendLocation(13415052, 689524)
 
 end
 
@@ -2723,19 +2870,19 @@ SurveillanceUltraSemptor()
 --Stations de Défense
 function DefenseUltraSemptor()
 --Stations de Défense Nord
-    CpuShip():setFaction("Imperium Ultra Semptor"):setTemplate("Station de Defense a Lance Siderale"):setCallSign("LS11"):setPosition(13508840, 685515):orderDefendLocation(13508840, 685515)
-    CpuShip():setFaction("Imperium Ultra Semptor"):setTemplate("Station de Defense a Macrocanon"):setCallSign("LM11"):setPosition(13507108, 680703):orderDefendLocation(13507108, 680703):setCustomWeaponStorage("MCANMK0", 200):setCustomWeaponStorageMax("MCANMK0", 200)
-    CpuShip():setFaction("Imperium Ultra Semptor"):setTemplate("Station de Defense a Macrocanon"):setCallSign("LM12"):setPosition(13513460, 682820):orderDefendLocation(13513460, 682820):setCustomWeaponStorage("MCANMK0", 200):setCustomWeaponStorageMax("MCANMK0", 200)
+    CpuShip():setFaction("Imperium Ultra Semptor"):setTemplate("Station de Defense a Lance Siderale"):setCallSign("LS11"):setRadarSignatureInfo(0.15, 0.3, 0.2):setScanningParameters(1, 2):setPosition(13508840, 685515):orderDefendLocation(13508840, 685515)
+    CpuShip():setFaction("Imperium Ultra Semptor"):setTemplate("Station de Defense a Macrocanon"):setCallSign("LM11"):setRadarSignatureInfo(0.15, 0.1, 0.2):setScanningParameters(1, 2):setPosition(13507108, 680703):orderDefendLocation(13507108, 680703):setCustomWeaponStorage("MCANMK0", 200):setCustomWeaponStorageMax("MCANMK0", 200)
+    CpuShip():setFaction("Imperium Ultra Semptor"):setTemplate("Station de Defense a Macrocanon"):setCallSign("LM12"):setRadarSignatureInfo(0.15, 0.1, 0.2):setScanningParameters(1, 2):setPosition(13513460, 682820):orderDefendLocation(13513460, 682820):setCustomWeaponStorage("MCANMK0", 200):setCustomWeaponStorageMax("MCANMK0", 200)
 
 --Stations de Défense Sud-Est
-    CpuShip():setFaction("Imperium Ultra Semptor"):setTemplate("Station de Defense a Lance Siderale"):setCallSign("LS21"):setPosition(13566972, 803128):orderDefendLocation(13566972, 803128)
-    CpuShip():setFaction("Imperium Ultra Semptor"):setTemplate("Station de Defense a Macrocanon"):setCallSign("LM21"):setPosition(13572362, 805437):orderDefendLocation(13572362, 805437):setCustomWeaponStorage("MCANMK0", 200):setCustomWeaponStorageMax("MCANMK0", 200)
-    CpuShip():setFaction("Imperium Ultra Semptor"):setTemplate("Station de Defense a Macrocanon"):setCallSign("LM22"):setPosition(13566588, 808902):orderDefendLocation(13566588, 808902):setCustomWeaponStorage("MCANMK0", 200):setCustomWeaponStorageMax("MCANMK0", 200)
+    CpuShip():setFaction("Imperium Ultra Semptor"):setTemplate("Station de Defense a Lance Siderale"):setCallSign("LS21"):setRadarSignatureInfo(0.15, 0.3, 0.2):setScanningParameters(1, 2):setPosition(13566972, 803128):orderDefendLocation(13566972, 803128)
+    CpuShip():setFaction("Imperium Ultra Semptor"):setTemplate("Station de Defense a Macrocanon"):setCallSign("LM21"):setRadarSignatureInfo(0.15, 0.1, 0.2):setScanningParameters(1, 2):setPosition(13572362, 805437):orderDefendLocation(13572362, 805437):setCustomWeaponStorage("MCANMK0", 200):setCustomWeaponStorageMax("MCANMK0", 200)
+    CpuShip():setFaction("Imperium Ultra Semptor"):setTemplate("Station de Defense a Macrocanon"):setCallSign("LM22"):setRadarSignatureInfo(0.15, 0.1, 0.2):setScanningParameters(1, 2):setPosition(13566588, 808902):orderDefendLocation(13566588, 808902):setCustomWeaponStorage("MCANMK0", 200):setCustomWeaponStorageMax("MCANMK0", 200)
 
 --Stations de Défense Sud-Ouest
-    CpuShip():setFaction("Imperium Ultra Semptor"):setTemplate("Station de Defense a Lance Siderale"):setCallSign("LS31"):setPosition(13544451, 844898):orderDefendLocation(13544451, 844898)
-	CpuShip():setFaction("Imperium Ultra Semptor"):setTemplate("Station de Defense a Macrocanon"):setCallSign("LM31"):setPosition(13550802, 846438):orderDefendLocation(13550802, 846438):setCustomWeaponStorage("MCANMK0", 200):setCustomWeaponStorageMax("MCANMK0", 200)
-    CpuShip():setFaction("Imperium Ultra Semptor"):setTemplate("Station de Defense a Macrocanon"):setCallSign("LM32"):setPosition(13549262, 840278):orderDefendLocation(13549262, 840278):setCustomWeaponStorage("MCANMK0", 200):setCustomWeaponStorageMax("MCANMK0", 200)
+    CpuShip():setFaction("Imperium Ultra Semptor"):setTemplate("Station de Defense a Lance Siderale"):setCallSign("LS31"):setRadarSignatureInfo(0.15, 0.3, 0.2):setScanningParameters(1, 2):setPosition(13544451, 844898):orderDefendLocation(13544451, 844898)
+	CpuShip():setFaction("Imperium Ultra Semptor"):setTemplate("Station de Defense a Macrocanon"):setCallSign("LM31"):setRadarSignatureInfo(0.15, 0.1, 0.2):setScanningParameters(1, 2):setPosition(13550802, 846438):orderDefendLocation(13550802, 846438):setCustomWeaponStorage("MCANMK0", 200):setCustomWeaponStorageMax("MCANMK0", 200)
+    CpuShip():setFaction("Imperium Ultra Semptor"):setTemplate("Station de Defense a Macrocanon"):setCallSign("LM32"):setRadarSignatureInfo(0.15, 0.1, 0.2):setScanningParameters(1, 2):setPosition(13549262, 840278):orderDefendLocation(13549262, 840278):setCustomWeaponStorage("MCANMK0", 200):setCustomWeaponStorageMax("MCANMK0", 200)
     
 end
 
@@ -2743,15 +2890,15 @@ DefenseUltraSemptor()
 
 --Vaisseaux d'Ultra Semptor
 --Forces d'intervention
-    local Thor = CpuShip():setFaction("Imperium Ultra Semptor"):setTemplate("Croiseur Gothic"):setCallSign("Marteau de Sebastian Thor"):setPosition(13550369, 729076):orderDefendTarget(UltraSemptorIV,500,5000):setCustomWeaponStorage("Torpille", 12):setCustomWeaponStorageMax("Torpille", 12)
-    CpuShip():setFaction("Imperium Ultra Semptor"):setTemplate("Fregate Sword"):setCallSign("Colère de l'Empereur-Dieu"):setPosition(13552652, 724203):orderDefendTarget(Thor)
-    CpuShip():setFaction("Imperium Ultra Semptor"):setTemplate("Fregate Sword"):setCallSign("Purificateur Céleste"):setPosition(13545476, 729466):orderDefendTarget(Thor)
+    local Thor = CpuShip():setFaction("Imperium Ultra Semptor"):setTemplate("Croiseur Gothic"):setCallSign("Marteau de Sebastian Thor"):setRadarSignatureInfo(0.25, 0.8, 0.4):setScanningParameters(2, 1):setPosition(13550369, 729076):orderDefendTarget(UltraSemptorIV,500,5000):setCustomWeaponStorage("Torpille", 12):setCustomWeaponStorageMax("Torpille", 12)
+    CpuShip():setFaction("Imperium Ultra Semptor"):setTemplate("Fregate Sword"):setCallSign("Colère de l'Empereur-Dieu"):setRadarSignatureInfo(0.1, 0.7, 0.3):setScanningParameters(2, 1):setPosition(13552652, 724203):orderDefendTarget(Thor)
+    CpuShip():setFaction("Imperium Ultra Semptor"):setTemplate("Fregate Sword"):setCallSign("Purificateur Céleste"):setRadarSignatureInfo(0.1, 0.7, 0.3):setScanningParameters(2, 1):setPosition(13545476, 729466):orderDefendTarget(Thor)
 
 --Epaves
-    CpuShip():setFaction("Epave"):setTemplate("Corvette Claymore"):setCallSign(""):setPosition(13514954, 708859):setHull(0):setShields(0):setMaxEnergy(0):setSystemHealthMax("reactor", -100):setSystemHealthMax("beamweapons", -100):setSystemHealthMax("missilesystem", -100):setSystemHealthMax("maneuver", -100):setSystemHealthMax("impulse", -100):setSystemHealthMax("frontshield", -100):setSystemHealthMax("drones", -100):setCanBeDestroyed(false)
-    CpuShip():setFaction("Epave"):setTemplate("Corvette Claymore"):setCallSign(""):setPosition(13546728, 675990):setHull(0):setShields(0):setMaxEnergy(0):setSystemHealthMax("reactor", -100):setSystemHealthMax("beamweapons", -100):setSystemHealthMax("missilesystem", -100):setSystemHealthMax("maneuver", -100):setSystemHealthMax("impulse", -100):setSystemHealthMax("frontshield", -100):setSystemHealthMax("drones", -100):setCanBeDestroyed(false)
-    CpuShip():setFaction("Epave"):setTemplate("Corvette Claymore"):setCallSign(""):setPosition(13552205, 673361):setHull(0):setShields(0):setMaxEnergy(0):setSystemHealthMax("reactor", -100):setSystemHealthMax("beamweapons", -100):setSystemHealthMax("missilesystem", -100):setSystemHealthMax("maneuver", -100):setSystemHealthMax("impulse", -100):setSystemHealthMax("frontshield", -100):setSystemHealthMax("drones", -100):setCanBeDestroyed(false)
-    CpuShip():setFaction("Epave"):setTemplate("Corvette Claymore"):setCallSign(""):setPosition(13590112, 803081):setHull(0):setShields(0):setMaxEnergy(0):setSystemHealthMax("reactor", -100):setSystemHealthMax("beamweapons", -100):setSystemHealthMax("missilesystem", -100):setSystemHealthMax("maneuver", -100):setSystemHealthMax("impulse", -100):setSystemHealthMax("frontshield", -100):setSystemHealthMax("drones", -100):setCanBeDestroyed(false)
+    CpuShip():setFaction("Epave"):setTemplate("Corvette Claymore"):setCallSign(""):setRadarSignatureInfo(0.1, 0.0, 0.0):setScanningParameters(1, 1):setPosition(13514954, 708859):setHull(0):setShields(0):setMaxEnergy(0):setSystemHealthMax("reactor", -100):setSystemHealthMax("beamweapons", -100):setSystemHealthMax("missilesystem", -100):setSystemHealthMax("maneuver", -100):setSystemHealthMax("impulse", -100):setSystemHealthMax("frontshield", -100):setSystemHealthMax("drones", -100):setCanBeDestroyed(false)
+    CpuShip():setFaction("Epave"):setTemplate("Corvette Claymore"):setCallSign(""):setRadarSignatureInfo(0.1, 0.0, 0.0):setScanningParameters(1, 1):setPosition(13546728, 675990):setHull(0):setShields(0):setMaxEnergy(0):setSystemHealthMax("reactor", -100):setSystemHealthMax("beamweapons", -100):setSystemHealthMax("missilesystem", -100):setSystemHealthMax("maneuver", -100):setSystemHealthMax("impulse", -100):setSystemHealthMax("frontshield", -100):setSystemHealthMax("drones", -100):setCanBeDestroyed(false)
+    CpuShip():setFaction("Epave"):setTemplate("Corvette Claymore"):setCallSign(""):setRadarSignatureInfo(0.1, 0.0, 0.0):setScanningParameters(1, 1):setPosition(13552205, 673361):setHull(0):setShields(0):setMaxEnergy(0):setSystemHealthMax("reactor", -100):setSystemHealthMax("beamweapons", -100):setSystemHealthMax("missilesystem", -100):setSystemHealthMax("maneuver", -100):setSystemHealthMax("impulse", -100):setSystemHealthMax("frontshield", -100):setSystemHealthMax("drones", -100):setCanBeDestroyed(false)
+    CpuShip():setFaction("Epave"):setTemplate("Corvette Claymore"):setCallSign(""):setRadarSignatureInfo(0.1, 0.0, 0.0):setScanningParameters(1, 1):setPosition(13590112, 803081):setHull(0):setShields(0):setMaxEnergy(0):setSystemHealthMax("reactor", -100):setSystemHealthMax("beamweapons", -100):setSystemHealthMax("missilesystem", -100):setSystemHealthMax("maneuver", -100):setSystemHealthMax("impulse", -100):setSystemHealthMax("frontshield", -100):setSystemHealthMax("drones", -100):setCanBeDestroyed(false)
 
 --UltraSemptor(AH676A)-->Nexus5(HL502C)
     WormHole():setPosition(13532421, 668184):setFaction("Neutre"):setTargetPosition(10050904, -4446236)
@@ -3319,32 +3466,59 @@ function LascariosMap()
 
 --Soleil
 
-	local SoleilLascarios = Planet():setPosition(11531710, 4292880):setFaction("Neutre"):setPlanetRadius(7900):setPlanetCloudRadius(8000.00):setCallSign("Soleil de Lascarios"):setPlanetSurfaceTexture("planets/Soleil_Bleu.jpg"):setPlanetAtmosphereColor(0.8,1,1):setRadarSignatureInfo(0.80, 0.75, -0.95):setScanningParameters(1,1):setPlanetIcon("planets/icons/white-dwarf-star.png"):setDescriptions("Soleil de Lascarios", "Le système Lascarios est composé d’une étoile bleue autour de laquelle orbitent 4 planètes telluriques et 2 géantes gazeuses.", "Le système Lascarios est composé d’une étoile bleue autour de laquelle orbitent 4 planètes telluriques et 2 géantes gazeuses. Sa particularité tient en la présence de trois petits Mondes-Forges situés sur les satellites principaux d’une des géantes gazeuses, qui travaillent en si étroite collaboration qu’ils sont généralement considérés comme une seul et unique monde. Le système ne possède pas de ceinture d’astéroïdes, ces derniers ayant sans doute rejoint depuis longtemps les corps orbitant autour des planètes.")
+	local SoleilLascarios = Planet():setPosition(11531710, 4292880):setFaction("Neutre"):setPlanetRadius(7900):setPlanetCloudRadius(8000.00):setCallSign("Soleil de Lascarios"):setPlanetSurfaceTexture("planets/Soleil_Bleu.jpg"):setPlanetAtmosphereColor(0.8,1,1):setRadarSignatureInfo(0.79, 0.9, 0.0):setScanningParameters(1,1):setPlanetIcon("planets/icons/white-dwarf-star.png"):setDescriptions("Soleil de Lascarios",[[Le système Lascarios est composé d’une étoile bleue autour de laquelle orbitent 4 planètes telluriques et 2 géantes gazeuses.
+	
+	
+	]],[[Le système Lascarios est composé d’une étoile bleue autour de laquelle orbitent 4 planètes telluriques et 2 géantes gazeuses. Sa particularité tient en la présence de trois petits Mondes-Forges situés sur les satellites principaux d’une des géantes gazeuses, qui travaillent en si étroite collaboration qu’ils sont généralement considérés comme une seul et unique monde. Le système ne possède pas de ceinture d’astéroïdes, ces derniers ayant sans doute rejoint depuis longtemps les corps orbitant autour des planètes.
+	
+	
+	]])
     WarpJammer():setFaction("Neutre"):setPosition(11531710, 4292880):setRange(90000.00)
 	
 --Planètes
 --Lascarios I	
-	local LascariosI = Planet():setPosition(11517016, 4296184):setFaction("Neutre"):setPlanetRadius(300):setAxialRotationTime(3600):setCallSign("Lascarios I"):setPlanetSurfaceTexture("planets/planet-2.png"):setScanningParameters(3, 2):setPlanetIcon("planets/icons/Lava-Planet.png"):setDescriptions("Lascarios I", "Lascarios I est une planète naine volcanique orbitant proche de son soleil.", "Lascarios I est une planète naine volcanique orbitant proche de son soleil. Sa colonisation est impossible en raison des conditions extrêmes qui y règnent.")
+	local LascariosI = Planet():setPosition(11517016, 4296184):setFaction("Neutre"):setPlanetRadius(300):setAxialRotationTime(3600):setCallSign("Lascarios I"):setPlanetSurfaceTexture("planets/planet-2.png"):setRadarSignatureInfo(0.03, 0.3, 0.0):setScanningParameters(1, 2):setPlanetIcon("planets/icons/Lava-Planet.png"):setDescriptions("Lascarios I", "Lascarios I est une planète naine volcanique orbitant proche de son soleil.",[[Lascarios I est une planète naine volcanique orbitant proche de son soleil. Sa colonisation est impossible en raison des conditions extrêmes qui y règnent.
+	
+	
+	]])
     LascariosI:setOrbit(SoleilLascarios, 300)
 
 --Lascarios II	
-	local LascariosII = Planet():setPosition(11514058, 4280346):setFaction("Neutre"):setPlanetRadius(500):setAxialRotationTime(3600):setCallSign("Lascarios II"):setPlanetSurfaceTexture("planets/2k_mars.jpg"):setScanningParameters(3, 2):setPlanetIcon("planets/icons/Red-Planet-1.png"):setDescriptions("Lascarios II", "Lascarios II est une petite planète tellurique à la température élevée.", "Lascarios II est une petite planète tellurique riche en minéraux à la température élevée et sans atmosphère.")
+	local LascariosII = Planet():setPosition(11514058, 4280346):setFaction("Neutre"):setPlanetRadius(500):setAxialRotationTime(3600):setCallSign("Lascarios II"):setPlanetSurfaceTexture("planets/2k_mars.jpg"):setRadarSignatureInfo(0.05, 0.1, 0.05):setScanningParameters(1, 2):setPlanetIcon("planets/icons/Red-Planet-1.png"):setDescriptions("Lascarios II", "Lascarios II est une petite planète tellurique à la température élevée.",[[Lascarios II est une petite planète tellurique riche en minéraux à la température élevée et sans atmosphère.
+	
+	
+	]])
     LascariosII:setOrbit(SoleilLascarios, 500)
 
 --Lascarios III	
-	local LascariosIII = Planet():setPosition(11543036, 4269756):setFaction("Neutre"):setPlanetRadius(100):setAxialRotationTime(3600):setCallSign("Lascarios III"):setPlanetSurfaceTexture("planets/planet-2.png"):setScanningParameters(3, 2):setPlanetIcon("planets/icons/Lava-Planet.png"):setDescriptions("Lascarios III", "Lascarios III est un minuscule planétoïde orbitant dans la zone médiane du système.", "Lascarios III est un minuscule planétoïde fortement instable orbitant dans la zone médiane du système. Il est fort probable qu’il finisse par percuter l’une des autres planètes d’ici quelques siècles.")
+	local LascariosIII = Planet():setPosition(11543036, 4269756):setFaction("Neutre"):setPlanetRadius(100):setAxialRotationTime(3600):setCallSign("Lascarios III"):setPlanetSurfaceTexture("planets/planet-2.png"):setRadarSignatureInfo(0.01, 0.01, 0.0):setScanningParameters(1, 2):setPlanetIcon("planets/icons/Lava-Planet.png"):setDescriptions("Lascarios III", "Lascarios III est un minuscule planétoïde orbitant dans la zone médiane du système.",[[Lascarios III est un minuscule planétoïde fortement instable orbitant dans la zone médiane du système. Il est fort probable qu’il finisse par percuter l’une des autres planètes d’ici quelques siècles.
+	
+	
+	]])
     LascariosIII:setOrbit(SoleilLascarios, 850)
 
 --Lascarios IV	
-	local LascariosIV = Planet():setPosition(11556016, 4270676):setFaction("Neutre"):setPlanetRadius(700):setAxialRotationTime(3600):setCallSign("Lascarios IV"):setPlanetSurfaceTexture("planets/gas-3.png"):setScanningParameters(3, 2):setPlanetIcon("planets/icons/cyan-planet.png"):setDescriptions("Lascarios IV", "Lascarios IV est une petite planète gazeuse composée de gazs rares.", "Lascarios IV est une petite planète gazeuse que le Mechanicus local exploite pour ses gazs rares. Orbitant proche de Lascarios V, il n’est pas impossible que la planète finissent par entrer dans son champ de gravité et en devenir un satellite d’ici quelques milliers d’années.")
+	local LascariosIV = Planet():setPosition(11556016, 4270676):setFaction("Neutre"):setPlanetRadius(700):setAxialRotationTime(3600):setCallSign("Lascarios IV"):setPlanetSurfaceTexture("planets/gas-3.png"):setRadarSignatureInfo(0.035, 0.2, 0.1):setScanningParameters(1, 1):setPlanetIcon("planets/icons/cyan-planet.png"):setDescriptions("Lascarios IV", "Lascarios IV est une petite planète gazeuse composée de gazs rares.",[[Lascarios IV est une petite planète gazeuse que le Mechanicus local exploite pour ses gazs rares. Orbitant proche de Lascarios V, il n’est pas impossible que la planète finissent par entrer dans son champ de gravité et en devenir un satellite d’ici quelques milliers d’années.
+	
+	
+	]])
     LascariosIV:setOrbit(SoleilLascarios, 1000)
 
 --Lascarios V	
-	local LascariosV = Planet():setPosition(11566122, 4267579):setFaction("Neutre"):setPlanetRadius(4000):setAxialRotationTime(3600):setCallSign("Lascarios V"):setPlanetSurfaceTexture("planets/gas-1.png"):setScanningParameters(3, 2):setPlanetIcon("planets/icons/14.png"):setDescriptions("Lascarios V", "Lascarios V est une géante gazeuse dont l'atmosphère pourrait être exploitée pour alimenter les réacteurs des vaisseaux.", "Lascarios V est une géante gazeuse dont l’atmosphère aurait déjà commencé à être exploitée si Lascarios VI ne fournissait pas déjà les mêmes ressources à à peine quelques heures des mondes-Forges.")
+	local LascariosV = Planet():setPosition(11566122, 4267579):setFaction("Neutre"):setPlanetRadius(4000):setAxialRotationTime(3600):setCallSign("Lascarios V"):setPlanetSurfaceTexture("planets/gas-1.png"):setRadarSignatureInfo(0.2, 0.1, 0.0):setScanningParameters(1, 1):setPlanetIcon("planets/icons/14.png"):setDescriptions("Lascarios V",[[Lascarios V est une géante gazeuse dont l'atmosphère pourrait être exploitée pour alimenter les réacteurs des vaisseaux.
+	
+	
+	]],[[Lascarios V est une géante gazeuse dont l’atmosphère aurait déjà commencé à être exploitée si Lascarios VI ne fournissait pas déjà les mêmes ressources à à peine quelques heures des mondes-Forges.
+	
+	
+	]])
     LascariosV:setOrbit(SoleilLascarios, 1300)
 
 --Lascarios VI	
-	local LascariosVI = Planet():setPosition(11576539, 4236836):setFaction("Adeptus Mechanicus Lascarios"):setPlanetRadius(5000):setAxialRotationTime(3600):setCallSign("Lascarios VI"):setPlanetSurfaceTexture("planets/gas-2.png"):setScanningParameters(3, 2):setPlanetIcon("planets/icons/Orange-Planet.png"):setDescriptions("Lascarios VI", "Lascarios VI est une géante gazeuse autour de laquelle orbitent 3 Lunes-Forges.", [["Lascarios VI (VIa, VIb et VIc)
+	local LascariosVI = Planet():setPosition(11576539, 4236836):setFaction("Adeptus Mechanicus Lascarios"):setPlanetRadius(5000):setAxialRotationTime(3600):setCallSign("Lascarios VI"):setPlanetSurfaceTexture("planets/gas-2.png"):setRadarSignatureInfo(0.25, 0.2, 0.1):setScanningParameters(3, 3):setPlanetIcon("planets/icons/Orange-Planet.png"):setDescriptions("Lascarios VI",[[Lascarios VI est une géante gazeuse autour de laquelle orbitent 3 Lunes-Forges.
+	
+	
+	]], [[Lascarios VI (VIa, VIb et VIc)
 Mondes-Forge
 Gouverneur : Fabricator-Général JV-218
 Gouvernement  : Théocratie Omnissienne Représentative
@@ -3352,9 +3526,15 @@ Population : 14.6 Milliards
 Production notable : Produits manufacturés, armement, escorteurs
 Loi particulière : Biens et personnes en provenance de Fractarius interdits dans le système.
 
-Bien que les trois Lunes-Forges soient théoriquement indépendant, les Fabricators-Généraux de Lascarios VIa, VIb et VIc ont depuis longtemps convenu que pour obtenir le poids politique nécessaire à la défense de leurs intérêts, une représentation commune était préférable, ce qui a conduit à la mise en place d’un Triumvirat parlant au nom des trois lunes. Cependant, une telle proximité n’est pas sans inconvénients, et outre les tensions habituelles inévitables dues à ce voisinage constant, l’histoire des trois satellites est émaillée d’incidents divers, dont le plus grave à entraîné la perte de nombreuses bases de données sur les trois astres durant le dernier siècle, dont la reconstitution n’est pas encore terminée. En conséquence de cet évènement, les Mondes-Forges de Lascarios se sont trouvés incapables d’assurer la production de certains éléments technologiques de haute volée, comme certains systèmes indispensables aux croiseurs, et ont dû restreindre leur production à des niveaux technologiques plus modestes. Le système est connu pour être capable de produire plus d’escorteurs et de transports que son rival de Fractarius, et de pouvoir les alimenter en puisant directement leur carburant dans la géante gazeuse autour de laquelle orbitent les Mondes-Forges."]])
+Bien que les trois Lunes-Forges soient théoriquement indépendant, les Fabricators-Généraux de Lascarios VIa, VIb et VIc ont depuis longtemps convenu que pour obtenir le poids politique nécessaire à la défense de leurs intérêts, une représentation commune était préférable, ce qui a conduit à la mise en place d’un Triumvirat parlant au nom des trois lunes. Cependant, une telle proximité n’est pas sans inconvénients, et outre les tensions habituelles inévitables dues à ce voisinage constant, l’histoire des trois satellites est émaillée d’incidents divers, dont le plus grave à entraîné la perte de nombreuses bases de données sur les trois astres durant le dernier siècle, dont la reconstitution n’est pas encore terminée. En conséquence de cet évènement, les Mondes-Forges de Lascarios se sont trouvés incapables d’assurer la production de certains éléments technologiques de haute volée, comme certains systèmes indispensables aux croiseurs, et ont dû restreindre leur production à des niveaux technologiques plus modestes. Le système est connu pour être capable de produire plus d’escorteurs et de transports que son rival de Fractarius, et de pouvoir les alimenter en puisant directement leur carburant dans la géante gazeuse autour de laquelle orbitent les Mondes-Forges.
+
+
+]])
     LascariosVI:setOrbit(SoleilLascarios, 20000)
-	local LuneILascariosVI = Planet():setPosition(11570158, 4241470):setFaction("Adeptus Mechanicus Lascarios"):setPlanetRadius(400):setCallSign("Lune I de Lascarios VI"):setPlanetSurfaceTexture("planets/moon-1.png"):setPlanetIcon("planets/icons/Lava-Planet.png"):setDescriptions("Lascarios VIa", "Lascarios VIa est une Lune-Forge étroitement liée à Lascarios VIb et Lascarios VIc.", [["Lascarios VIa
+	local LuneILascariosVI = Planet():setPosition(11570158, 4241470):setFaction("Adeptus Mechanicus Lascarios"):setPlanetRadius(400):setCallSign("Lune I de Lascarios VI"):setPlanetSurfaceTexture("planets/moon-1.png"):setRadarSignatureInfo(0.04, 0.9, 0.9):setScanningParameters(3, 3):setPlanetIcon("planets/icons/Lava-Planet.png"):setDescriptions("Lascarios VIa",[[Lascarios VIa est une Lune-Forge étroitement liée à Lascarios VIb et Lascarios VIc.
+	
+	
+	]], [[Lascarios VIa
 Lune-Forge
 Gouverneur : Fabricator-Général Althera Durius
 Gouvernement  : Théocratie Omnissienne
@@ -3362,9 +3542,15 @@ Population : 3.6 Milliards
 Production notable : Escorteurs, vaisseaux de transport, générateurs d'énergie, batteries et moyens de propulsion
 Loi particulière : Biens et personnes en provenance de Fractarius interdits dans le système.
 
-Lune-Forge la plus proche de Lascarios VI, Lascarios VIa est spécialisée dans la production de réacteurs, de moteurs, de turbines, de batteries et de tout autre moyen de produire et stocker de l'énergie ou de générer un déplacement. Puisant l'essentiel de son carburant dans la géante gazeuse, Lascarios VIa, bien qu'ayant perdu les secrets des éléments massifs permettant d'équiper les Croiseurs de générateurs de champ Geller ou de réacteurs suffisamment puissants, produit des éléments de taille moindre en grande quantité, alimentant Lascarios VIb en moteurs pour ses véhicules et Lascarios VIc en chargeurs pour ses armes laser."]])
+Lune-Forge la plus proche de Lascarios VI, Lascarios VIa est spécialisée dans la production de réacteurs, de moteurs, de turbines, de batteries et de tout autre moyen de produire et stocker de l'énergie ou de générer un déplacement. Puisant l'essentiel de son carburant dans la géante gazeuse, Lascarios VIa, bien qu'ayant perdu les secrets des éléments massifs permettant d'équiper les Croiseurs de générateurs de champ Geller ou de réacteurs suffisamment puissants, produit des éléments de taille moindre en grande quantité, alimentant Lascarios VIb en moteurs pour ses véhicules et Lascarios VIc en chargeurs pour ses armes laser.
+
+
+]])
     LuneILascariosVI:setOrbit(LascariosVI, 2000)
-	local LuneIILascariosVI = Planet():setPosition(11567722, 4230812):setFaction("Adeptus Mechanicus Lascarios"):setPlanetRadius(400):setCallSign("Lune II de Lascarios VI"):setPlanetSurfaceTexture("planets/2k_mars.jpg"):setPlanetIcon("planets/icons/Red-Planet-1.png"):setDescriptions("Lascarios VIb", "Lascarios VIb est une Lune-Forge étroitement liée à Lascarios VIa et Lascarios VIc.", [["Lascarios VIb
+	local LuneIILascariosVI = Planet():setPosition(11567722, 4230812):setFaction("Adeptus Mechanicus Lascarios"):setPlanetRadius(400):setCallSign("Lune II de Lascarios VI"):setPlanetSurfaceTexture("planets/2k_mars.jpg"):setRadarSignatureInfo(0.04, 0.9, 0.9):setScanningParameters(3, 3):setPlanetIcon("planets/icons/Red-Planet-1.png"):setDescriptions("Lascarios VIb",[[Lascarios VIb est une Lune-Forge étroitement liée à Lascarios VIa et Lascarios VIc.
+	
+	
+	]], [[Lascarios VIb
 Lune-Forge
 Gouverneur : Fabricator-Général JV-218
 Gouvernement  : Théocratie Omnissienne
@@ -3372,9 +3558,12 @@ Population : 5 Milliards
 Production notable : Véhicules terrestres et aériens
 Loi particulière : Biens et personnes en provenance de Fractarius interdits dans le système.
 
-Lascarios VIb est une Lune-Forge spécialisée dans la production de véhicules, depuis les chars destinés aux régiments de la Garde Impériale aux moissonneuses-batteuses destinées aux agrimondes en passant par les navettes de l'Aeronautica Imperialis. Les moteurs, réacteurs et tuyères importées de Lascarios VIa sont intégrés à tous les véhicules afin de leur fournir énergie et poussée, alors que les armes et blindages de Lascarios VIc leur apportent leur efficacité martiale."]])
+Lascarios VIb est une Lune-Forge spécialisée dans la production de véhicules, depuis les chars destinés aux régiments de la Garde Impériale aux moissonneuses-batteuses destinées aux agrimondes en passant par les navettes de l'Aeronautica Imperialis. Les moteurs, réacteurs et tuyères importées de Lascarios VIa sont intégrés à tous les véhicules afin de leur fournir énergie et poussée, alors que les armes et blindages de Lascarios VIc leur apportent leur efficacité martiale.]])
     LuneIILascariosVI:setOrbit(LascariosVI, 2500)
-	local LuneIIILascariosVI = Planet():setPosition(11584622, 4226930):setFaction("Adeptus Mechanicus Lascarios"):setPlanetRadius(400):setCallSign("Lune III de Lascarios VI"):setPlanetSurfaceTexture("planets/moon-1.png"):setPlanetIcon("planets/icons/Red-Planet-1.png"):setDescriptions("Lascarios VIc", "Lascarios VIc est une Lune-Forge étroitement liée à Lascarios VIa et Lascarios VIb.", [["Lascarios VIc
+	local LuneIIILascariosVI = Planet():setPosition(11584622, 4226930):setFaction("Adeptus Mechanicus Lascarios"):setPlanetRadius(400):setCallSign("Lune III de Lascarios VI"):setPlanetSurfaceTexture("planets/moon-1.png"):setRadarSignatureInfo(0.04, 0.9, 0.9):setScanningParameters(3, 3):setPlanetIcon("planets/icons/Red-Planet-1.png"):setDescriptions("Lascarios VIc",[[Lascarios VIc est une Lune-Forge étroitement liée à Lascarios VIa et Lascarios VIb.
+	
+	
+	]], [[Lascarios VIc
 Lune-Forge
 Gouverneur : Fabricator-Général Archator 85
 Gouvernement  : Théocratie Omnissienne
@@ -3382,30 +3571,33 @@ Population : 6 Milliards
 Production notable : Armes et armures
 Loi particulière : Biens et personnes en provenance de Fractarius interdits dans le système.
 
-Lascarios VIc est une Lune-Forge spécialisée dans la production d'armes et de protections de toutes sortes, ce qui en fait un fournisseur régulier de la Garde Impériale en matière d'équipement. Des fusils laser aux macrocanons, sont oublier les innombrables munitions, Lascarios VIc alimente littéralement l'Amas Tarkusien en armes. Quand aux protections, la Lune-Forge produit blindages et armures de qualité à destinations des véhicules et vaisseaux de Lascarios VIb et VIa, ainsi qu'aux officiers et combattants spécialisés."]])
+Lascarios VIc est une Lune-Forge spécialisée dans la production d'armes et de protections de toutes sortes, ce qui en fait un fournisseur régulier de la Garde Impériale en matière d'équipement. Des fusils laser aux macrocanons, sont oublier les innombrables munitions, Lascarios VIc alimente littéralement l'Amas Tarkusien en armes. Quand aux protections, la Lune-Forge produit blindages et armures de qualité à destinations des véhicules et vaisseaux de Lascarios VIb et VIa, ainsi qu'aux officiers et combattants spécialisés.]])
     LuneIIILascariosVI:setOrbit(LascariosVI, 3500)
 
-    local Volonte = CpuShip():setFaction("Adeptus Mechanicus Lascarios"):setTemplate("Station Wayfarer"):setCallSign("Volonté de la Trinité"):setPosition(11563980, 4229724):orderDefendTarget(LascariosVI,500,5000)
+    local Volonte = CpuShip():setFaction("Adeptus Mechanicus Lascarios"):setTemplate("Station Wayfarer"):setCallSign("Volonté de la Trinité"):setRadarSignatureInfo(0.1, 0.7, 0.3):setScanningParameters(2, 2):setPosition(11563980, 4229724):orderDefendTarget(LascariosVI,500,5000):setDescriptions("Volonté de la Trinité",[[La station spatiale "Volonté de la Trinité" est la principale station du système de Lascarios.]],[[La station spatiale "Volonté de la Trinité" est la principale station du système de Lascarios. Elle sert de pôle d'échange et de rencontre entre les trois Lunes-Forges et abrite le centre administratif du système. Elle est également équipée de chantiers spatiaux de petite taille mais nombreux, permettant d'assembler relativement rapidement des escorteurs et des cargos en grande quantité.	
+	
+	
+	]])
 
 --Stations de Surveillance
 function SurveillanceLascarios()
 
-    CpuShip():setFaction("Adeptus Mechanicus Lascarios"):setTemplate("Station Relais"):setCallSign("LAS01"):setPosition(11532035, 4200042):orderDefendLocation(11532035, 4200042)
-    CpuShip():setFaction("Adeptus Mechanicus Lascarios"):setTemplate("Station Relais"):setCallSign("LAS02"):setPosition(11567295, 4207094):orderDefendLocation(11567295, 4207094)
-    CpuShip():setFaction("Adeptus Mechanicus Lascarios"):setTemplate("Station Relais"):setCallSign("LAS03"):setPosition(11603460, 4230600):orderDefendLocation(11603460, 4230600)
-    CpuShip():setFaction("Adeptus Mechanicus Lascarios"):setTemplate("Station Relais"):setCallSign("LAS04"):setPosition(11622085, 4264958):orderDefendLocation(11622085, 4264958)
-    CpuShip():setFaction("Adeptus Mechanicus Lascarios"):setTemplate("Station Relais"):setCallSign("LAS05"):setPosition(11625882, 4306908):orderDefendLocation(11625882, 4306908)
-    CpuShip():setFaction("Adeptus Mechanicus Lascarios"):setTemplate("Station Relais"):setCallSign("LAS06"):setPosition(11608342, 4345244):orderDefendLocation(11608342, 4345244)
-    CpuShip():setFaction("Adeptus Mechanicus Lascarios"):setTemplate("Station Relais"):setCallSign("LAS07"):setPosition(11577060, 4373814):orderDefendLocation(11577060, 4373814)
-    CpuShip():setFaction("Adeptus Mechanicus Lascarios"):setTemplate("Station Relais"):setCallSign("LAS08"):setPosition(11540352, 4385568):orderDefendLocation(11540352, 4385568)
-    CpuShip():setFaction("Adeptus Mechanicus Lascarios"):setTemplate("Station Relais"):setCallSign("LAS09"):setPosition(11501838, 4381046):orderDefendLocation(11501838, 4381046)
-    CpuShip():setFaction("Adeptus Mechanicus Lascarios"):setTemplate("Station Relais"):setCallSign("LAS10"):setPosition(11471278, 4365676):orderDefendLocation(11471278, 4365676)
-    CpuShip():setFaction("Adeptus Mechanicus Lascarios"):setTemplate("Station Relais"):setCallSign("LAS11"):setPosition(11451388, 4342350):orderDefendLocation(11451388, 4342350)
-    CpuShip():setFaction("Adeptus Mechanicus Lascarios"):setTemplate("Station Relais"):setCallSign("LAS12"):setPosition(11439995, 4314322):orderDefendLocation(11439995, 4314322)
-    CpuShip():setFaction("Adeptus Mechanicus Lascarios"):setTemplate("Station Relais"):setCallSign("LAS13"):setPosition(11439271, 4277615):orderDefendLocation(11439271, 4277615)
-    CpuShip():setFaction("Adeptus Mechanicus Lascarios"):setTemplate("Station Relais"):setCallSign("LAS14"):setPosition(11453014, 4245970):orderDefendLocation(11453014, 4245970)
-    CpuShip():setFaction("Adeptus Mechanicus Lascarios"):setTemplate("Station Relais"):setCallSign("LAS15"):setPosition(11473448, 4220655):orderDefendLocation(11473448, 4220655)
-    CpuShip():setFaction("Adeptus Mechanicus Lascarios"):setTemplate("Station Relais"):setCallSign("LAS16"):setPosition(11497859, 4206008):orderDefendLocation(11497859, 4206008)
+    CpuShip():setFaction("Adeptus Mechanicus Lascarios"):setTemplate("Station Relais"):setCallSign("LAS01"):setRadarSignatureInfo(0.3, 0.3, 0.3):setScanningParameters(1, 2):setPosition(11532035, 4200042):orderDefendLocation(11532035, 4200042)
+    CpuShip():setFaction("Adeptus Mechanicus Lascarios"):setTemplate("Station Relais"):setCallSign("LAS02"):setRadarSignatureInfo(0.3, 0.3, 0.3):setScanningParameters(1, 2):setPosition(11567295, 4207094):orderDefendLocation(11567295, 4207094)
+    CpuShip():setFaction("Adeptus Mechanicus Lascarios"):setTemplate("Station Relais"):setCallSign("LAS03"):setRadarSignatureInfo(0.3, 0.3, 0.3):setScanningParameters(1, 2):setPosition(11603460, 4230600):orderDefendLocation(11603460, 4230600)
+    CpuShip():setFaction("Adeptus Mechanicus Lascarios"):setTemplate("Station Relais"):setCallSign("LAS04"):setRadarSignatureInfo(0.3, 0.3, 0.3):setScanningParameters(1, 2):setPosition(11622085, 4264958):orderDefendLocation(11622085, 4264958)
+    CpuShip():setFaction("Adeptus Mechanicus Lascarios"):setTemplate("Station Relais"):setCallSign("LAS05"):setRadarSignatureInfo(0.3, 0.3, 0.3):setScanningParameters(1, 2):setPosition(11625882, 4306908):orderDefendLocation(11625882, 4306908)
+    CpuShip():setFaction("Adeptus Mechanicus Lascarios"):setTemplate("Station Relais"):setCallSign("LAS06"):setRadarSignatureInfo(0.3, 0.3, 0.3):setScanningParameters(1, 2):setPosition(11608342, 4345244):orderDefendLocation(11608342, 4345244)
+    CpuShip():setFaction("Adeptus Mechanicus Lascarios"):setTemplate("Station Relais"):setCallSign("LAS07"):setRadarSignatureInfo(0.3, 0.3, 0.3):setScanningParameters(1, 2):setPosition(11577060, 4373814):orderDefendLocation(11577060, 4373814)
+    CpuShip():setFaction("Adeptus Mechanicus Lascarios"):setTemplate("Station Relais"):setCallSign("LAS08"):setRadarSignatureInfo(0.3, 0.3, 0.3):setScanningParameters(1, 2):setPosition(11540352, 4385568):orderDefendLocation(11540352, 4385568)
+    CpuShip():setFaction("Adeptus Mechanicus Lascarios"):setTemplate("Station Relais"):setCallSign("LAS09"):setRadarSignatureInfo(0.3, 0.3, 0.3):setScanningParameters(1, 2):setPosition(11501838, 4381046):orderDefendLocation(11501838, 4381046)
+    CpuShip():setFaction("Adeptus Mechanicus Lascarios"):setTemplate("Station Relais"):setCallSign("LAS10"):setRadarSignatureInfo(0.3, 0.3, 0.3):setScanningParameters(1, 2):setPosition(11471278, 4365676):orderDefendLocation(11471278, 4365676)
+    CpuShip():setFaction("Adeptus Mechanicus Lascarios"):setTemplate("Station Relais"):setCallSign("LAS11"):setRadarSignatureInfo(0.3, 0.3, 0.3):setScanningParameters(1, 2):setPosition(11451388, 4342350):orderDefendLocation(11451388, 4342350)
+    CpuShip():setFaction("Adeptus Mechanicus Lascarios"):setTemplate("Station Relais"):setCallSign("LAS12"):setRadarSignatureInfo(0.3, 0.3, 0.3):setScanningParameters(1, 2):setPosition(11439995, 4314322):orderDefendLocation(11439995, 4314322)
+    CpuShip():setFaction("Adeptus Mechanicus Lascarios"):setTemplate("Station Relais"):setCallSign("LAS13"):setRadarSignatureInfo(0.3, 0.3, 0.3):setScanningParameters(1, 2):setPosition(11439271, 4277615):orderDefendLocation(11439271, 4277615)
+    CpuShip():setFaction("Adeptus Mechanicus Lascarios"):setTemplate("Station Relais"):setCallSign("LAS14"):setRadarSignatureInfo(0.3, 0.3, 0.3):setScanningParameters(1, 2):setPosition(11453014, 4245970):orderDefendLocation(11453014, 4245970)
+    CpuShip():setFaction("Adeptus Mechanicus Lascarios"):setTemplate("Station Relais"):setCallSign("LAS15"):setRadarSignatureInfo(0.3, 0.3, 0.3):setScanningParameters(1, 2):setPosition(11473448, 4220655):orderDefendLocation(11473448, 4220655)
+    CpuShip():setFaction("Adeptus Mechanicus Lascarios"):setTemplate("Station Relais"):setCallSign("LAS16"):setRadarSignatureInfo(0.3, 0.3, 0.3):setScanningParameters(1, 2):setPosition(11497859, 4206008):orderDefendLocation(11497859, 4206008)
 
 end
 
@@ -3415,30 +3607,30 @@ SurveillanceLascarios()
 function DefenseLascarios()
 
 --Stations de Défense Sud-Ouest
-	CpuShip():setFaction("Adeptus Mechanicus Lascarios"):setTemplate("Station de Defense a Lance Siderale"):setCallSign("LS11"):setPosition(11458598, 4343808):orderDefendLocation(11458598, 4343808)
-    CpuShip():setFaction("Adeptus Mechanicus Lascarios"):setTemplate("Station de Defense a Lance Siderale"):setCallSign("LS12"):setPosition(11454420, 4339630):orderDefendLocation(11454420, 4339630)
-    CpuShip():setFaction("Adeptus Mechanicus Lascarios"):setTemplate("Station de Defense a Lance Siderale"):setCallSign("LS13"):setPosition(11461382, 4348140):orderDefendLocation(11461382, 4348140)
-    CpuShip():setFaction("Adeptus Mechanicus Lascarios"):setTemplate("Station de Defense a Macrocanon"):setCallSign("LM11"):setPosition(11456588, 4351854):orderDefendLocation(11456588, 4351854):setCustomWeaponStorage("MCANMK0", 200):setCustomWeaponStorageMax("MCANMK0", 200)
-    CpuShip():setFaction("Adeptus Mechanicus Lascarios"):setTemplate("Station de Defense a Macrocanon"):setCallSign("LM12"):setPosition(11446838, 4343034):orderDefendLocation(11446838, 4343034):setCustomWeaponStorage("MCANMK0", 200):setCustomWeaponStorageMax("MCANMK0", 200)
-    CpuShip():setFaction("Adeptus Mechanicus Lascarios"):setTemplate("Station de Defense a Macrocanon"):setCallSign("LM13"):setPosition(11453338, 4347057):orderDefendLocation(11453338, 4347057):setCustomWeaponStorage("MCANMK0", 200):setCustomWeaponStorageMax("MCANMK0", 200)
+	CpuShip():setFaction("Adeptus Mechanicus Lascarios"):setTemplate("Station de Defense a Lance Siderale"):setCallSign("LS11"):setRadarSignatureInfo(0.15, 0.3, 0.2):setScanningParameters(1, 2):setPosition(11458598, 4343808):orderDefendLocation(11458598, 4343808)
+    CpuShip():setFaction("Adeptus Mechanicus Lascarios"):setTemplate("Station de Defense a Lance Siderale"):setCallSign("LS12"):setRadarSignatureInfo(0.15, 0.3, 0.2):setScanningParameters(1, 2):setPosition(11454420, 4339630):orderDefendLocation(11454420, 4339630)
+    CpuShip():setFaction("Adeptus Mechanicus Lascarios"):setTemplate("Station de Defense a Lance Siderale"):setCallSign("LS13"):setRadarSignatureInfo(0.15, 0.3, 0.2):setScanningParameters(1, 2):setPosition(11461382, 4348140):orderDefendLocation(11461382, 4348140)
+    CpuShip():setFaction("Adeptus Mechanicus Lascarios"):setTemplate("Station de Defense a Macrocanon"):setCallSign("LM11"):setRadarSignatureInfo(0.15, 0.1, 0.2):setScanningParameters(1, 2):setPosition(11456588, 4351854):orderDefendLocation(11456588, 4351854):setCustomWeaponStorage("MCANMK0", 200):setCustomWeaponStorageMax("MCANMK0", 200)
+    CpuShip():setFaction("Adeptus Mechanicus Lascarios"):setTemplate("Station de Defense a Macrocanon"):setCallSign("LM12"):setRadarSignatureInfo(0.15, 0.1, 0.2):setScanningParameters(1, 2):setPosition(11446838, 4343034):orderDefendLocation(11446838, 4343034):setCustomWeaponStorage("MCANMK0", 200):setCustomWeaponStorageMax("MCANMK0", 200)
+    CpuShip():setFaction("Adeptus Mechanicus Lascarios"):setTemplate("Station de Defense a Macrocanon"):setCallSign("LM13"):setRadarSignatureInfo(0.15, 0.1, 0.2):setScanningParameters(1, 2):setPosition(11453338, 4347057):orderDefendLocation(11453338, 4347057):setCustomWeaponStorage("MCANMK0", 200):setCustomWeaponStorageMax("MCANMK0", 200)
 
 --Stations de Défense Sud
-    CpuShip():setFaction("Adeptus Mechanicus Lascarios"):setTemplate("Station de Defense a Lance Siderale"):setCallSign("LS21"):setPosition(11528692, 4380790):orderDefendLocation(11528692, 4380790)
-    CpuShip():setFaction("Adeptus Mechanicus Lascarios"):setTemplate("Station de Defense a Lance Siderale"):setCallSign("LS22"):setPosition(11523278, 4380016):orderDefendLocation(11523278, 4380016)
-    CpuShip():setFaction("Adeptus Mechanicus Lascarios"):setTemplate("Station de Defense a Lance Siderale"):setCallSign("LS23"):setPosition(11514612, 4379706):orderDefendLocation(11514612, 4379706)
-    CpuShip():setFaction("Adeptus Mechanicus Lascarios"):setTemplate("Station de Defense a Macrocanon"):setCallSign("LM21"):setPosition(11520646, 4385277):orderDefendLocation(11520646, 4385277):setCustomWeaponStorage("MCANMK0", 200):setCustomWeaponStorageMax("MCANMK0", 200)
-    CpuShip():setFaction("Adeptus Mechanicus Lascarios"):setTemplate("Station de Defense a Macrocanon"):setCallSign("LM22"):setPosition(11513994, 4385277):orderDefendLocation(11513994, 4385277):setCustomWeaponStorage("MCANMK0", 200):setCustomWeaponStorageMax("MCANMK0", 200)
-    CpuShip():setFaction("Adeptus Mechanicus Lascarios"):setTemplate("Station de Defense a Macrocanon"):setCallSign("LM23"):setPosition(11528074, 4385432):orderDefendLocation(11528074, 4385432):setCustomWeaponStorage("MCANMK0", 200):setCustomWeaponStorageMax("MCANMK0", 200)
+    CpuShip():setFaction("Adeptus Mechanicus Lascarios"):setTemplate("Station de Defense a Lance Siderale"):setCallSign("LS21"):setRadarSignatureInfo(0.15, 0.3, 0.2):setScanningParameters(1, 2):setPosition(11528692, 4380790):orderDefendLocation(11528692, 4380790)
+    CpuShip():setFaction("Adeptus Mechanicus Lascarios"):setTemplate("Station de Defense a Lance Siderale"):setCallSign("LS22"):setRadarSignatureInfo(0.15, 0.3, 0.2):setScanningParameters(1, 2):setPosition(11523278, 4380016):orderDefendLocation(11523278, 4380016)
+    CpuShip():setFaction("Adeptus Mechanicus Lascarios"):setTemplate("Station de Defense a Lance Siderale"):setCallSign("LS23"):setRadarSignatureInfo(0.15, 0.3, 0.2):setScanningParameters(1, 2):setPosition(11514612, 4379706):orderDefendLocation(11514612, 4379706)
+    CpuShip():setFaction("Adeptus Mechanicus Lascarios"):setTemplate("Station de Defense a Macrocanon"):setCallSign("LM21"):setRadarSignatureInfo(0.15, 0.1, 0.2):setScanningParameters(1, 2):setPosition(11520646, 4385277):orderDefendLocation(11520646, 4385277):setCustomWeaponStorage("MCANMK0", 200):setCustomWeaponStorageMax("MCANMK0", 200)
+    CpuShip():setFaction("Adeptus Mechanicus Lascarios"):setTemplate("Station de Defense a Macrocanon"):setCallSign("LM22"):setRadarSignatureInfo(0.15, 0.1, 0.2):setScanningParameters(1, 2):setPosition(11513994, 4385277):orderDefendLocation(11513994, 4385277):setCustomWeaponStorage("MCANMK0", 200):setCustomWeaponStorageMax("MCANMK0", 200)
+    CpuShip():setFaction("Adeptus Mechanicus Lascarios"):setTemplate("Station de Defense a Macrocanon"):setCallSign("LM23"):setRadarSignatureInfo(0.15, 0.1, 0.2):setScanningParameters(1, 2):setPosition(11528074, 4385432):orderDefendLocation(11528074, 4385432):setCustomWeaponStorage("MCANMK0", 200):setCustomWeaponStorageMax("MCANMK0", 200)
 
 --Stations de Défense Sud-Est
-    CpuShip():setFaction("Adeptus Mechanicus Lascarios"):setTemplate("Station de Defense a Lance Siderale"):setCallSign("LS31"):setPosition(11617046, 4332358):orderRoaming()
-    CpuShip():setFaction("Adeptus Mechanicus Lascarios"):setTemplate("Station de Defense a Lance Siderale"):setCallSign("LS32"):setPosition(11621532, 4325550):orderRoaming()
-    CpuShip():setFaction("Adeptus Mechanicus Lascarios"):setTemplate("Station de Defense a Lance Siderale"):setCallSign("LS33"):setPosition(11623390, 4319360):orderRoaming()
+    CpuShip():setFaction("Adeptus Mechanicus Lascarios"):setTemplate("Station de Defense a Lance Siderale"):setCallSign("LS31"):setRadarSignatureInfo(0.15, 0.3, 0.2):setScanningParameters(1, 2):setPosition(11617046, 4332358):orderRoaming()
+    CpuShip():setFaction("Adeptus Mechanicus Lascarios"):setTemplate("Station de Defense a Lance Siderale"):setCallSign("LS32"):setRadarSignatureInfo(0.15, 0.3, 0.2):setScanningParameters(1, 2):setPosition(11621532, 4325550):orderRoaming()
+    CpuShip():setFaction("Adeptus Mechanicus Lascarios"):setTemplate("Station de Defense a Lance Siderale"):setCallSign("LS33"):setRadarSignatureInfo(0.15, 0.3, 0.2):setScanningParameters(1, 2):setPosition(11623390, 4319360):orderRoaming()
 
 --Stations de Défense Nord
-    CpuShip():setFaction("Adeptus Mechanicus Lascarios"):setTemplate("Station de Defense a Lance Siderale"):setCallSign("LS41"):setPosition(11458599, 4237815):orderRoaming()
-    CpuShip():setFaction("Adeptus Mechanicus Lascarios"):setTemplate("Station de Defense a Lance Siderale"):setCallSign("LS42"):setPosition(11462158, 4233173):orderRoaming()
-    CpuShip():setFaction("Adeptus Mechanicus Lascarios"):setTemplate("Station de Defense a Lance Siderale"):setCallSign("LS43"):setPosition(11468038, 4227294):orderRoaming()
+    CpuShip():setFaction("Adeptus Mechanicus Lascarios"):setTemplate("Station de Defense a Lance Siderale"):setCallSign("LS41"):setRadarSignatureInfo(0.15, 0.3, 0.2):setScanningParameters(1, 2):setPosition(11458599, 4237815):orderRoaming()
+    CpuShip():setFaction("Adeptus Mechanicus Lascarios"):setTemplate("Station de Defense a Lance Siderale"):setCallSign("LS42"):setRadarSignatureInfo(0.15, 0.3, 0.2):setScanningParameters(1, 2):setPosition(11462158, 4233173):orderRoaming()
+    CpuShip():setFaction("Adeptus Mechanicus Lascarios"):setTemplate("Station de Defense a Lance Siderale"):setCallSign("LS43"):setRadarSignatureInfo(0.15, 0.3, 0.2):setScanningParameters(1, 2):setPosition(11468038, 4227294):orderRoaming()
 	
 end
 
@@ -3446,20 +3638,20 @@ DefenseLascarios()
 
 --Vaisseaux de Lascarios
 
-    local DieuMachine = CpuShip():setFaction("Adeptus Mechanicus Lascarios"):setTemplate("Fregate Sword"):setCallSign("Sagesse du Dieu-Machine"):setPosition(11557428, 4225793):orderDefendTarget(Volonte,500,5000)
-    CpuShip():setFaction("Adeptus Mechanicus Lascarios"):setTemplate("Escorteur Cobra"):setCallSign("Durius"):setPosition(11554644, 4219242):orderDefendTarget(DieuMachine,500,5000):setCustomWeaponStorage("Torpille", 6):setCustomWeaponStorageMax("Torpille", 6)
-    CpuShip():setFaction("Adeptus Mechanicus Lascarios"):setTemplate("Escorteur Cobra"):setCallSign("Foi Absolue"):setPosition(11550059, 4223009):orderDefendTarget(DieuMachine,500,5000):setCustomWeaponStorage("Torpille", 6):setCustomWeaponStorageMax("Torpille", 6)
-    CpuShip():setFaction("Adeptus Mechanicus Lascarios"):setTemplate("Escorteur Cobra"):setCallSign("Sagacité Divine"):setPosition(11554644, 4223173):orderDefendTarget(DieuMachine,500,5000):setCustomWeaponStorage("Torpille", 6):setCustomWeaponStorageMax("Torpille", 6)
+    local DieuMachine = CpuShip():setFaction("Adeptus Mechanicus Lascarios"):setTemplate("Fregate Sword"):setCallSign("Sagesse du Dieu-Machine"):setRadarSignatureInfo(0.1, 0.7, 0.3):setScanningParameters(2, 1):setPosition(11557428, 4225793):orderDefendTarget(Volonte,500,5000)
+    CpuShip():setFaction("Adeptus Mechanicus Lascarios"):setTemplate("Escorteur Cobra"):setCallSign("Durius"):setRadarSignatureInfo(0.1, 0.7, 0.3):setScanningParameters(1, 1):setPosition(11554644, 4219242):orderDefendTarget(DieuMachine,500,5000):setCustomWeaponStorage("Torpille", 6):setCustomWeaponStorageMax("Torpille", 6)
+    CpuShip():setFaction("Adeptus Mechanicus Lascarios"):setTemplate("Escorteur Cobra"):setCallSign("Foi Absolue"):setRadarSignatureInfo(0.1, 0.7, 0.3):setScanningParameters(1, 1):setPosition(11550059, 4223009):orderDefendTarget(DieuMachine,500,5000):setCustomWeaponStorage("Torpille", 6):setCustomWeaponStorageMax("Torpille", 6)
+    CpuShip():setFaction("Adeptus Mechanicus Lascarios"):setTemplate("Escorteur Cobra"):setCallSign("Sagacité Divine"):setRadarSignatureInfo(0.1, 0.7, 0.3):setScanningParameters(1, 1):setPosition(11554644, 4223173):orderDefendTarget(DieuMachine,500,5000):setCustomWeaponStorage("Torpille", 6):setCustomWeaponStorageMax("Torpille", 6)
 
-    local Omnimessie = CpuShip():setFaction("Adeptus Mechanicus Lascarios"):setTemplate("Fregate Sword"):setCallSign("Grandeur de l'Omnimessie"):setPosition(11541379, 4262478):orderDefendLocation(11541379, 4262478)
-	CpuShip():setFaction("Adeptus Mechanicus Lascarios"):setTemplate("Escorteur Cobra"):setCallSign("JV-218"):setPosition(11533518, 4265426):orderDefendTarget(Omnimessie,500,5000):setCustomWeaponStorage("Torpille", 6):setCustomWeaponStorageMax("Torpille", 6)
-    CpuShip():setFaction("Adeptus Mechanicus Lascarios"):setTemplate("Escorteur Cobra"):setCallSign("Rédempteur d'Acier"):setPosition(11536629, 4262478):orderDefendTarget(Omnimessie,500,5000):setCustomWeaponStorage("Torpille", 6):setCustomWeaponStorageMax("Torpille", 6)
-    CpuShip():setFaction("Adeptus Mechanicus Lascarios"):setTemplate("Escorteur Cobra"):setCallSign("Volonté Indomptable"):setPosition(11535156, 4259202):orderDefendTarget(Omnimessie,500,5000):setCustomWeaponStorage("Torpille", 6):setCustomWeaponStorageMax("Torpille", 6)
+    local Omnimessie = CpuShip():setFaction("Adeptus Mechanicus Lascarios"):setTemplate("Fregate Sword"):setCallSign("Grandeur de l'Omnimessie"):setRadarSignatureInfo(0.1, 0.7, 0.3):setScanningParameters(2, 1):setPosition(11541379, 4262478):orderDefendLocation(11541379, 4262478)
+	CpuShip():setFaction("Adeptus Mechanicus Lascarios"):setTemplate("Escorteur Cobra"):setCallSign("JV-218"):setRadarSignatureInfo(0.1, 0.7, 0.3):setScanningParameters(1, 1):setPosition(11533518, 4265426):orderDefendTarget(Omnimessie,500,5000):setCustomWeaponStorage("Torpille", 6):setCustomWeaponStorageMax("Torpille", 6)
+    CpuShip():setFaction("Adeptus Mechanicus Lascarios"):setTemplate("Escorteur Cobra"):setCallSign("Rédempteur d'Acier"):setRadarSignatureInfo(0.1, 0.7, 0.3):setScanningParameters(1, 1):setPosition(11536629, 4262478):orderDefendTarget(Omnimessie,500,5000):setCustomWeaponStorage("Torpille", 6):setCustomWeaponStorageMax("Torpille", 6)
+    CpuShip():setFaction("Adeptus Mechanicus Lascarios"):setTemplate("Escorteur Cobra"):setCallSign("Volonté Indomptable"):setRadarSignatureInfo(0.1, 0.7, 0.3):setScanningParameters(1, 1):setPosition(11535156, 4259202):orderDefendTarget(Omnimessie,500,5000):setCustomWeaponStorage("Torpille", 6):setCustomWeaponStorageMax("Torpille", 6)
     
-    local ForceMotrice = CpuShip():setFaction("Adeptus Mechanicus Lascarios"):setTemplate("Fregate Sword"):setCallSign("Pouvoir de la Force Motrice"):setPosition(11516812, 4340105):orderDefendLocation(11516812, 4340105)
-    CpuShip():setFaction("Adeptus Mechanicus Lascarios"):setTemplate("Escorteur Cobra"):setCallSign("Archator 85"):setPosition(11516485, 4332899):orderDefendTarget(ForceMotrice,500,5000):setCustomWeaponStorage("Torpille", 6):setCustomWeaponStorageMax("Torpille", 6)
-    CpuShip():setFaction("Adeptus Mechanicus Lascarios"):setTemplate("Escorteur Cobra"):setCallSign("Feu Purificateur"):setPosition(11511245, 4335192):orderDefendTarget(ForceMotrice,500,5000):setCustomWeaponStorage("Torpille", 6):setCustomWeaponStorageMax("Torpille", 6)
-    CpuShip():setFaction("Adeptus Mechanicus Lascarios"):setTemplate("Escorteur Cobra"):setCallSign("Main Vengeresse"):setPosition(11507314, 4333227):orderDefendTarget(ForceMotrice,500,5000):setCustomWeaponStorage("Torpille", 6):setCustomWeaponStorageMax("Torpille", 6)
+    local ForceMotrice = CpuShip():setFaction("Adeptus Mechanicus Lascarios"):setTemplate("Fregate Sword"):setCallSign("Pouvoir de la Force Motrice"):setRadarSignatureInfo(0.1, 0.7, 0.3):setScanningParameters(2, 1):setPosition(11516812, 4340105):orderDefendLocation(11516812, 4340105)
+    CpuShip():setFaction("Adeptus Mechanicus Lascarios"):setTemplate("Escorteur Cobra"):setCallSign("Archator 85"):setRadarSignatureInfo(0.1, 0.7, 0.3):setScanningParameters(1, 1):setPosition(11516485, 4332899):orderDefendTarget(ForceMotrice,500,5000):setCustomWeaponStorage("Torpille", 6):setCustomWeaponStorageMax("Torpille", 6)
+    CpuShip():setFaction("Adeptus Mechanicus Lascarios"):setTemplate("Escorteur Cobra"):setCallSign("Feu Purificateur"):setRadarSignatureInfo(0.1, 0.7, 0.3):setScanningParameters(1, 1):setPosition(11511245, 4335192):orderDefendTarget(ForceMotrice,500,5000):setCustomWeaponStorage("Torpille", 6):setCustomWeaponStorageMax("Torpille", 6)
+    CpuShip():setFaction("Adeptus Mechanicus Lascarios"):setTemplate("Escorteur Cobra"):setCallSign("Main Vengeresse"):setRadarSignatureInfo(0.1, 0.7, 0.3):setScanningParameters(1, 1):setPosition(11507314, 4333227):orderDefendTarget(ForceMotrice,500,5000):setCustomWeaponStorage("Torpille", 6):setCustomWeaponStorageMax("Torpille", 6)
 
 
 --Lascarios(HD571A)-->Nexus6(A566A)
@@ -3524,12 +3716,21 @@ function TriticumMap()
 
 --Soleil
 
-	local SoleilTriticum = Planet():setPosition(5642427, 2700304):setFaction("Neutre"):setPlanetRadius(5300):setPlanetCloudRadius(5400.00):setCallSign("Soleil de Triticum"):setPlanetSurfaceTexture("planets/Soleil_Bleu.jpg"):setPlanetAtmosphereColor(0.8,1,1):setRadarSignatureInfo(0.80, 0.75, -0.95):setScanningParameters(1,1):setPlanetIcon("planets/icons/white-dwarf-star.png"):setDescriptions("Soleil de Triticum", "Le système de Triticum est constitué d'une unique planète orbitant autour d'une naine blanche, ainsi que d'une ceinture d'astéroïdes.", "Système orbitant autour d’une naine blanche particulièrement brillante, Triticum est souvent surnommé “le grenier Tarkusien” en raison de l’Agrimonde qu’il abrite. La forte gravité de l’étoile semble avoir propulsé de nombreux débris stellaires alentours, ce qui fait que le système est relativement déserté d’astres. L’Agrimonde de Triticum I est en fait le seul objet spatial notable, en plus de la ceinture d’astéroïdes. ")
+	local SoleilTriticum = Planet():setPosition(5642427, 2700304):setFaction("Neutre"):setPlanetRadius(5300):setPlanetCloudRadius(5400.00):setCallSign("Soleil de Triticum"):setPlanetSurfaceTexture("planets/Soleil_Bleu.jpg"):setPlanetAtmosphereColor(0.8,1,1):setRadarSignatureInfo(0.53, 0.95, 0.0):setScanningParameters(1,1):setPlanetIcon("planets/icons/white-dwarf-star.png"):setDescriptions("Soleil de Triticum",[[Le système de Triticum est constitué d'une unique planète orbitant autour d'une naine blanche, ainsi que d'une ceinture d'astéroïdes.
+	
+	
+	]],[[Système orbitant autour d’une naine blanche particulièrement brillante, Triticum est souvent surnommé “le grenier Tarkusien” en raison de l’Agrimonde qu’il abrite. La forte gravité de l’étoile semble avoir propulsé de nombreux débris stellaires alentours, ce qui fait que le système est relativement déserté d’astres. L’Agrimonde de Triticum I est en fait le seul objet spatial notable, en plus de la ceinture d’astéroïdes.
+	
+	
+	]])
     WarpJammer():setFaction("Neutre"):setPosition(5642427, 2700304):setRange(30000.00)
 	
 --Planètes
 --Triticum I	
-	local TriticumI = Planet():setPosition(5624747, 2721400):setFaction("Imperium Triticum"):setPlanetRadius(2000):setAxialRotationTime(0):setCallSign("Triticum I"):setPlanetSurfaceTexture("planets/earth3.jpg"):setScanningParameters(3, 2):setPlanetIcon("planets/icons/15.png"):setDescriptions("Triticum I", "L'Agrimonde de Triticum I est vaste, avec une orbite lente éloignée du soleil blanc mais se gavant de la lumière de ce dernier.", [["Triticum I
+	local TriticumI = Planet():setPosition(5624747, 2721400):setFaction("Imperium Triticum"):setPlanetRadius(2000):setAxialRotationTime(0):setCallSign("Triticum I"):setPlanetSurfaceTexture("planets/earth3.jpg"):setRadarSignatureInfo(0.2, 0.3, 0.5):setScanningParameters(2, 3):setPlanetIcon("planets/icons/15.png"):setDescriptions("Triticum I",[[L'Agrimonde de Triticum I est vaste, avec une orbite lente éloignée du soleil blanc mais se gavant de la lumière de ce dernier.
+	
+	
+	]], [[Triticum I
 Agrimonde
 Gouverneur : Seigneur Elloy Carborios
 Gouvernement : Aristocratie nobiliaire
@@ -3538,19 +3739,27 @@ Production notable : Biomasse, produits pharmaceutiques, alcool
 Loi particulière : Non
  
 
-Le monde de Triticum I est vaste, avec une orbite lente éloignée du soleil blanc mais se gavant de la lumière de ce dernier. Sa révolution interne étant assez lente, les périodes de jour et de nuit y sont particulièrement longues (près d’une demie année terra). Cependant, le monde est riche en eau, avec des pluies abondantes très fréquentes issues de gros nuages gris qui obscurcissent régulièrement la lumière solaire qui, sinon, assassine sans doute toute vie à la surface. Dans ces conditions, le monde, bien que peu propice à la vie sauvage, est devenu une véritable mine de nourriture une fois aménagé par l’Homme.
+Le monde de Triticum I est vaste, avec une orbite lente éloignée du soleil blanc mais se gavant de la lumière de ce dernier. Sa révolution interne étant assez lente, les périodes de jour et de nuit y sont particulièrement longues (près d’une demie année terra). Cependant, le monde est riche en eau, avec des pluies abondantes très fréquentes issues de gros nuages gris qui obscurcissent régulièrement la lumière solaire qui, sinon, assassinerai sans doute toute vie à la surface. Dans ces conditions, le monde, bien que peu propice à la vie sauvage, est devenu une véritable mine de nourriture une fois aménagé par l’Homme.
 
-Triticum I est un monde terne, gris, pluvieux et boueux, et ses habitants sont connus pour être constamment maussades. De plus, n’étant que faiblement peuplée, les défenses planétaires sont faibles et certaines régions sont régulièrement pillées par des pillards Xenos de passage."]])
+Triticum I est un monde terne, gris, pluvieux et boueux, et ses habitants sont connus pour être constamment maussades. De plus, n’étant que faiblement peuplée, les défenses planétaires sont faibles et certaines régions sont régulièrement pillées par des pillards Xenos de passage. La rotation planétaire étant trop lente pour permettre une culture permanente au même endroit, les populations ont un mode de vie semi-nomade, passant la moitié de l'année d'un côté de la planète et l'autre moitié de l'autre, de manière à toujours être ducôté éclairé de la planète.
+
+
+]])
     TriticumI:setOrbit(SoleilTriticum, 7200)
 
-    local Grace = CpuShip():setFaction("Imperium Triticum"):setTemplate("Station Wayfarer"):setCallSign("Grâce Providentielle"):setPosition(5628686, 2723716):orderDefendTarget(TriticumI,500,5000)
-
+    local Grace = CpuShip():setFaction("Imperium Triticum"):setTemplate("Station Wayfarer"):setCallSign("Grâce Providentielle"):setRadarSignatureInfo(0.1, 0.7, 0.3):setScanningParameters(2, 2):setPosition(5628686, 2723716):orderDefendTarget(TriticumI,500,5000):setDescriptions("Grâce Providentielle",[[La station spatiale "Grâce Providentielle" est une station commerciale classique dont le rôle principal est de conditionner et de charger la biomasse produite sur Triticum I pour exportation.
+	
+	
+	]], [[La station spatiale "Grâce Providentielle" est une station commerciale classique dont le rôle principal est de conditionner et de charger la biomasse produite sur Triticum I pour exportation. De fait, les vaisseaux venant commercer dans le système ne contactent pour aisi dire jamais la planète. La station abrite également la résidence du Gouverneur de Triticum et un certain nombre de services administratifs.
+	
+	
+	]])
 
 --Stations de Surveillance
 function SurveillanceTriticum()
-    CpuShip():setFaction("Imperium Triticum"):setTemplate("Station Relais"):setCallSign("TRI01"):setPosition(5650753, 2669674):orderDefendLocation(5650753, 2669674)
-    CpuShip():setFaction("Imperium Triticum"):setTemplate("Station Relais"):setCallSign("TRI02"):setPosition(5670316, 2683531):orderDefendLocation(5670316, 2683531)
-    CpuShip():setFaction("Imperium Triticum"):setTemplate("Station Relais"):setCallSign("TRI03"):setPosition(5674880, 2705050):orderDefendLocation(5674880, 2705050)
+    CpuShip():setFaction("Imperium Triticum"):setTemplate("Station Relais"):setCallSign("TRI01"):setRadarSignatureInfo(0.3, 0.3, 0.3):setScanningParameters(1, 2):setPosition(5650753, 2669674):orderDefendLocation(5650753, 2669674)
+    CpuShip():setFaction("Imperium Triticum"):setTemplate("Station Relais"):setCallSign("TRI02"):setRadarSignatureInfo(0.3, 0.3, 0.3):setScanningParameters(1, 2):setPosition(5670316, 2683531):orderDefendLocation(5670316, 2683531)
+    CpuShip():setFaction("Imperium Triticum"):setTemplate("Station Relais"):setCallSign("TRI03"):setRadarSignatureInfo(0.3, 0.3, 0.3):setScanningParameters(1, 2):setPosition(5674880, 2705050):orderDefendLocation(5674880, 2705050)
 end
 
 SurveillanceTriticum()
@@ -3558,8 +3767,8 @@ SurveillanceTriticum()
 --Stations de Défense
 function DefenseTriticum()
 
-    CpuShip():setFaction("Imperium Triticum"):setTemplate("Station de Defense a Macrocanon"):setCallSign("LM11"):setPosition(5654340, 2692660):orderRoaming():setCustomWeaponStorage("MCANMK0", 200):setCustomWeaponStorageMax("MCANMK0", 200)
-    CpuShip():setFaction("Imperium Triticum"):setTemplate("Station de Defense a Macrocanon"):setCallSign("LM12"):setPosition(5651242, 2688096):orderRoaming():setCustomWeaponStorage("MCANMK0", 200):setCustomWeaponStorageMax("MCANMK0", 200)
+    CpuShip():setFaction("Imperium Triticum"):setTemplate("Station de Defense a Macrocanon"):setCallSign("LM11"):setRadarSignatureInfo(0.15, 0.1, 0.2):setScanningParameters(1, 2):setPosition(5654340, 2692660):orderRoaming():setCustomWeaponStorage("MCANMK0", 200):setCustomWeaponStorageMax("MCANMK0", 200)
+    CpuShip():setFaction("Imperium Triticum"):setTemplate("Station de Defense a Macrocanon"):setCallSign("LM12"):setRadarSignatureInfo(0.15, 0.1, 0.2):setScanningParameters(1, 2):setPosition(5651242, 2688096):orderRoaming():setCustomWeaponStorage("MCANMK0", 200):setCustomWeaponStorageMax("MCANMK0", 200)
 
 end
 
@@ -3567,9 +3776,9 @@ DefenseTriticum()
 
 --Vaisseaux
 
-    CpuShip():setFaction("Imperium Triticum"):setTemplate("Coursier Stellaire Orion"):setCallSign("Providence"):setPosition(5628691, 2724377):orderDock(Grace)
-    CpuShip():setFaction("Imperium Triticum"):setTemplate("Coursier Stellaire Orion"):setCallSign("Messager Céleste"):setPosition(5629448, 2723808):orderDock(Grace)
-    CpuShip():setFaction("Imperium Triticum"):setTemplate("Coursier Stellaire Orion"):setCallSign("Parole de l'Empereur"):setPosition(5628707, 2723086):orderDock(Grace)
+    CpuShip():setFaction("Imperium Triticum"):setTemplate("Coursier Stellaire Orion"):setCallSign("Providence"):setRadarSignatureInfo(0.2, 0.7, 0.3):setScanningParameters(1, 1):setPosition(5628691, 2724377):orderDock(Grace)
+    CpuShip():setFaction("Imperium Triticum"):setTemplate("Coursier Stellaire Orion"):setCallSign("Messager Céleste"):setRadarSignatureInfo(0.2, 0.7, 0.3):setScanningParameters(1, 1):setPosition(5629448, 2723808):orderDock(Grace)
+    CpuShip():setFaction("Imperium Triticum"):setTemplate("Coursier Stellaire Orion"):setCallSign("Parole de l'Empereur"):setRadarSignatureInfo(0.2, 0.7, 0.3):setScanningParameters(1, 1):setPosition(5628707, 2723086):orderDock(Grace)
 
 
 --Triticum(EH280A)-->Nexus3(A186A)
@@ -3754,32 +3963,44 @@ function Merinita()
 function MerinitaMap()
 
 --Soleil
-	local SoleilMerinita = Planet():setPosition(-7156543, 3265607):setFaction("Neutre"):setPlanetRadius(6500):setCallSign("Soleil de Merinita"):setPlanetSurfaceTexture("planets/Soleil_Bleu.jpg"):setPlanetAtmosphereColor(0.8,1,1):setRadarSignatureInfo(0.80, 0.75, -0.95):setScanningParameters(1,1):setPlanetIcon("planets/icons/white-dwarf-star.png"):setDescriptions("Soleil de Merinita", "Le système de Merinita comporte quatre planètes telluriques et deux planètes gazeuses, comprennant un Monde-Chapelle et une station spatiale.", "Le système de Merinita est composé de 4 planète telluriques et 2 planètes gazeuses. On y trouve le seul couvent de l’Adeptas Sororitas de l’Amas Tarkusien, mais également une des populations humaines les plus ferventes. La plupart des interactions du système ont lieu non pas sur le monde habité, mais au niveau de la station “Gloire de Sainte Aliénor”, qui se trouve en orbite.")
+	local SoleilMerinita = Planet():setPosition(-7156543, 3265607):setFaction("Neutre"):setPlanetRadius(6500):setCallSign("Soleil de Merinita"):setPlanetSurfaceTexture("planets/Soleil_Bleu.jpg"):setPlanetAtmosphereColor(0.8,1,1):setRadarSignatureInfo(0.65, 0.9, 0.0):setScanningParameters(1,1):setPlanetIcon("planets/icons/white-dwarf-star.png"):setDescriptions("Soleil de Merinita", "Le système de Merinita comporte quatre planètes telluriques et deux planètes gazeuses, comprennant un Monde-Chapelle et une station spatiale.", [[Le système de Merinita est composé de 4 planète telluriques et 2 planètes gazeuses. On y trouve le seul couvent de l’Adeptas Sororitas de l’Amas Tarkusien, mais également une des populations humaines les plus ferventes. La plupart des interactions du système ont lieu non pas sur le monde habité, mais au niveau de la station “Gloire de Sainte Aliénor”, qui se trouve en orbite.
+	
+	
+	]])
 	WarpJammer():setFaction("Neutre"):setPosition(-7156543, 3265607):setRange(95000.00)
 
 --Planètes
 --Merinita I
-	local MerinitaI = Planet():setPosition(-7147832, 3276548):setFaction("Neutre"):setPlanetRadius(250):setAxialRotationTime(3600):setCallSign("Merinita I"):setPlanetSurfaceTexture("planets/2k_mercury.jpg"):setScanningParameters(3, 2):setPlanetIcon("planets/icons/Orange-Planet.png"):setDescriptions("Merinita I", "Merinita I est une planète naine tellurique qui orbite près de son soleil.", "Merinita I est une planète naine tellurique qui orbite près de son soleil. Bien qu’elle possède une quantité de métaux intéressante, les radiations solaires qui bombardent la surface découragent toute tentative de colonisation.")
+	local MerinitaI = Planet():setPosition(-7147832, 3276548):setFaction("Neutre"):setPlanetRadius(250):setAxialRotationTime(3600):setCallSign("Merinita I"):setPlanetSurfaceTexture("planets/2k_mercury.jpg"):setRadarSignatureInfo(0.025, 0.1, 0.0):setScanningParameters(1, 2):setPlanetIcon("planets/icons/Orange-Planet.png"):setDescriptions("Merinita I", "Merinita I est une planète naine tellurique qui orbite près de son soleil.", [[Merinita I est une planète naine tellurique qui orbite près de son soleil. Bien qu’elle possède une quantité de métaux intéressante, les radiations solaires qui bombardent la surface découragent toute tentative de colonisation.
+	
+	
+	]])
     MerinitaI:setOrbit(SoleilMerinita, -1000)
 
 --Merinita II
-	local MerinitaII = Planet():setPosition(-7134849, 3282952):setFaction("Neutre"):setPlanetRadius(500):setAxialRotationTime(3600):setCallSign("Merinita II"):setPlanetSurfaceTexture("planets/lava-1.jpg"):setScanningParameters(3, 2):setPlanetIcon("planets/icons/Lava-Planet.png"):setDescriptions("Merinita II", "Merinita II est une planète volcanique particulièrement active.", "Merinita II est une planète volcanique particulièrement active, dont les surfaces émergées sont régulièrement réenglouties par les marées de lave régulières.")
+	local MerinitaII = Planet():setPosition(-7134849, 3282952):setFaction("Neutre"):setPlanetRadius(500):setAxialRotationTime(3600):setCallSign("Merinita II"):setPlanetSurfaceTexture("planets/lava-1.jpg"):setRadarSignatureInfo(0.05, 0.3, 0.0):setScanningParameters(1, 2):setPlanetIcon("planets/icons/Lava-Planet.png"):setDescriptions("Merinita II", "Merinita II est une planète volcanique particulièrement active.", [[Merinita II est une planète volcanique particulièrement active, dont les surfaces émergées sont régulièrement réenglouties par les marées de lave régulières.
+	
+	
+	]])
     MerinitaII:setOrbit(SoleilMerinita, -4000)
 	
 --Merinita III
-	local MerinitaIII = Planet():setPosition(-7119374, 3270679):setFaction("Neutre"):setPlanetRadius(800):setAxialRotationTime(3600):setCallSign("Merinita III"):setPlanetSurfaceTexture("planets/2k_mars.jpg"):setScanningParameters(3, 2):setPlanetIcon("planets/icons/Red-Planet-1.png"):setDescriptions("Merinita III", "Merinita III est une planète désertique principalement composée de poussières et de cendres.", "Merinita III est une planète désertique principalement composée de poussières et de cendres. Elle ne présente que peu d’intérêt.")
+	local MerinitaIII = Planet():setPosition(-7119374, 3270679):setFaction("Neutre"):setPlanetRadius(800):setAxialRotationTime(3600):setCallSign("Merinita III"):setPlanetSurfaceTexture("planets/2k_mars.jpg"):setRadarSignatureInfo(0.08, 0.1, 0.05):setScanningParameters(1, 2):setPlanetIcon("planets/icons/Red-Planet-1.png"):setDescriptions("Merinita III", "Merinita III est une planète désertique principalement composée de poussières et de cendres.", "Merinita III est une planète désertique principalement composée de poussières et de cendres. Elle ne présente que peu d’intérêt.")
     MerinitaIII:setOrbit(SoleilMerinita, -6000)
 
 --Merinita IV
-	local MerinitaIV = Planet():setPosition(-7114572, 3269434):setFaction("Neutre"):setPlanetRadius(1000):setAxialRotationTime(3600):setCallSign("Merinita IV"):setPlanetSurfaceTexture("planets/8k_saturn.jpg"):setScanningParameters(3, 2):setPlanetIcon("planets/icons/Orange-Planet.png"):setDescriptions("Merinita IV", "Merinita IV est une planète gazeuse de taille moyenne.", "Merinita IV est une planète gazeuse de taille moyenne dont l’étude et l’exploitation a été reportée à une date indéterminée.")
+	local MerinitaIV = Planet():setPosition(-7114572, 3269434):setFaction("Neutre"):setPlanetRadius(1000):setAxialRotationTime(3600):setCallSign("Merinita IV"):setPlanetSurfaceTexture("planets/8k_saturn.jpg"):setRadarSignatureInfo(0.05, 0.1, 0.0):setScanningParameters(1, 1):setPlanetIcon("planets/icons/Orange-Planet.png"):setDescriptions("Merinita IV", "Merinita IV est une planète gazeuse de taille moyenne.", "Merinita IV est une planète gazeuse de taille moyenne dont l’étude et l’exploitation a été reportée à une date indéterminée.")
     MerinitaIV:setOrbit(SoleilMerinita, -7000)
 
 --Merinita V
-	local MerinitaV = Planet():setPosition(-7094829, 3263386):setFaction("Neutre"):setPlanetRadius(2000):setAxialRotationTime(3600):setCallSign("Merinita V"):setPlanetSurfaceTexture("planets/2k_jupiter.jpg"):setScanningParameters(3, 2):setPlanetIcon("planets/icons/14.png"):setDescriptions("Merinita V", "Merinita V est une planète gazeuse de bonne taille.", "Merinita V est une planète gazeuse de bonne taille, exploité superficiellement par des vaisseaux-raffineurs afin d’alimenter les réacteurs des vaisseaux du système.")
+	local MerinitaV = Planet():setPosition(-7094829, 3263386):setFaction("Neutre"):setPlanetRadius(2000):setAxialRotationTime(3600):setCallSign("Merinita V"):setPlanetSurfaceTexture("planets/2k_jupiter.jpg"):setRadarSignatureInfo(0.1, 0.2, 0.1):setScanningParameters(1, 1):setPlanetIcon("planets/icons/14.png"):setDescriptions("Merinita V", "Merinita V est une planète gazeuse de bonne taille.", [[Merinita V est une planète gazeuse de bonne taille, exploité superficiellement par des vaisseaux-raffineurs afin d’alimenter les réacteurs des vaisseaux du système.
+	
+	
+	]])
     MerinitaV:setOrbit(SoleilMerinita, -14000)
 
 --Merinita VI
-	local MerinitaVI = Planet():setPosition(-7073664, 3263387):setFaction("Imperium Merinita"):setPlanetRadius(1000):setAxialRotationTime(3600):setCallSign("Merinita VI"):setPlanetSurfaceTexture("planets/earth3.jpg"):setScanningParameters(3, 2):setPlanetIcon("planets/icons/16.png"):setDescriptions("Merinita VI", "Merinita VI est un Monde-Chapelle abritant un couvent de l’Adeptas Sororitas.", [["Merinita VI
+	local MerinitaVI = Planet():setPosition(-7073664, 3263387):setFaction("Imperium Merinita"):setPlanetRadius(1000):setAxialRotationTime(3600):setCallSign("Merinita VI"):setPlanetSurfaceTexture("planets/earth3.jpg"):setRadarSignatureInfo(0.1, 0.7, 0.7):setScanningParameters(3, 3):setPlanetIcon("planets/icons/16.png"):setDescriptions("Merinita VI", "Merinita VI est un Monde-Chapelle abritant un couvent de l’Adeptas Sororitas.", [[Merinita VI
 Monde-Chapelle
 Gouverneur : Archi-Abesse Junith Edmeti
 Gouvernement : Théocratie Ecclésiarchique
@@ -3787,18 +4008,24 @@ Population : 846 Millions
 Production notable : Objets de culte, personnel
 Loi particulière : Objets religieux provenant d’Ultra Semptor interdits
 
-Merinita VI est un Monde-Chapelle abritant un couvent de l’Adeptas Sororitas dédié à Sainte Alienor, dite “la fille des étoiles”, une soeur de bataille dont les exploits lors de la conquête du système ont permit à l’Imperium de sécuriser un chemin sûr pour la colonisation de la couronne extérieure de l’Amas Tarkusien. Bien que les formalités pour la canonisation d’Aliénor soient encore en cours, elle est déjà adorée comme une Sainte dans ce système, ce qui n’est pas sans causer quelques tensions avec le reste de l’Ecclésiarchie. Le couvent local a subi de récentes pertes lors d’une mission au service de l’Inquisition, et peine à renouveler ses effectifs."]])
+Merinita VI est un Monde-Chapelle abritant un couvent de l’Adeptas Sororitas dédié à Sainte Alienor, dite “la fille des étoiles”, une soeur de bataille dont les exploits lors de la conquête du système ont permit à l’Imperium de sécuriser un chemin sûr pour la colonisation de la couronne extérieure de l’Amas Tarkusien. Bien que les formalités pour la canonisation d’Aliénor soient encore en cours, elle est déjà adorée comme une Sainte dans ce système, ce qui n’est pas sans causer quelques tensions avec le reste de l’Ecclésiarchie. Le couvent local a subi de récentes pertes lors d’une mission au service de l’Inquisition, et peine à renouveler ses effectifs.
+
+
+]])
     MerinitaVI:setOrbit(SoleilMerinita, -20000)
 
 --Station Gloire de Sainte Alienor	
-	local Alienor = CpuShip():setTemplate("Station Wayfarer"):setPosition(-7073688, 3260302):setFaction("Imperium Merinita"):setCallSign("Gloire de Sainte Alienor"):orderFlyFormation(MerinitaVI,0,0):setDescriptions("Gloire de Sainte Alienor", "Gloire de Sainte Alienor", "Gloire de Sainte Alienor")
+	local Alienor = CpuShip():setTemplate("Station Wayfarer"):setPosition(-7073688, 3260302):setFaction("Imperium Merinita"):setCallSign("Gloire de Sainte Alienor"):setRadarSignatureInfo(0.1, 0.7, 0.3):setScanningParameters(2, 2):orderFlyFormation(MerinitaVI,0,0):setDescriptions("Gloire de Sainte Alienor", [[La station spatiale "Gloire de Sainte Alienor" est le principal point d'interraction du système Marinita.]], [[La station spatiale "Gloire de Sainte Alienor" est le principal point d'interraction du système Marinita. Elle a été nommée en l'honneure de Sainte Aliénor, une soeur de bataille ayant mené des action héroïques lors de la Croisade Sternbergienne, dont la demande de canonisation est en cours de traitement par l'administration de l'Ecclésiarchie depuis ces évènements.
+	
+	
+	]])
 
 --Stations de Surveillance
 function SurveillanceMerinita()
 
-	CpuShip():setFaction("Imperium Merinita"):setTemplate("Station Relais"):setCallSign("MER01"):setPosition(-7059594, 3277600):orderDefendLocation(-7059594, 3277600)
-	CpuShip():setFaction("Imperium Merinita"):setTemplate("Station Relais"):setCallSign("MER02"):setPosition(-7083003, 3331554):orderDefendLocation(-7083003, 3331554)
-	CpuShip():setFaction("Imperium Merinita"):setTemplate("Station Relais"):setCallSign("MER03"):setPosition(-7045260, 3311443):orderDefendLocation(-7045260, 3311443)
+	CpuShip():setFaction("Imperium Merinita"):setTemplate("Station Relais"):setCallSign("MER01"):setRadarSignatureInfo(0.3, 0.3, 0.3):setScanningParameters(1, 2):setPosition(-7059594, 3277600):orderDefendLocation(-7059594, 3277600)
+	CpuShip():setFaction("Imperium Merinita"):setTemplate("Station Relais"):setCallSign("MER02"):setRadarSignatureInfo(0.3, 0.3, 0.3):setScanningParameters(1, 2):setPosition(-7083003, 3331554):orderDefendLocation(-7083003, 3331554)
+	CpuShip():setFaction("Imperium Merinita"):setTemplate("Station Relais"):setCallSign("MER03"):setRadarSignatureInfo(0.3, 0.3, 0.3):setScanningParameters(1, 2):setPosition(-7045260, 3311443):orderDefendLocation(-7045260, 3311443)
 
 end
 
@@ -3807,22 +4034,22 @@ SurveillanceMerinita()
 --Stations de Défense
 function DefenseMerinita()
 --Stations de Défense Nord
-    CpuShip():setFaction("Imperium Merinita"):setTemplate("Station de Defense a Macrocanon"):setCallSign("LM11"):setPosition(-7069014, 3286711):orderDefendLocation(-7069014, 3286711):setCustomWeaponStorage("MCANMK0", 200):setCustomWeaponStorageMax("MCANMK0", 200)
-    CpuShip():setFaction("Imperium Merinita"):setTemplate("Station de Defense a Macrocanon"):setCallSign("LM12"):setPosition(-7066610, 3283196):orderDefendLocation(-7066610, 3283196):setCustomWeaponStorage("MCANMK0", 200):setCustomWeaponStorageMax("MCANMK0", 200)
-    CpuShip():setFaction("Imperium Merinita"):setTemplate("Station de Defense a Macrocanon"):setCallSign("LM13"):setPosition(-7064760, 3280422):orderDefendLocation(-7064760, 3280422):setCustomWeaponStorage("MCANMK0", 200):setCustomWeaponStorageMax("MCANMK0", 200)
+    CpuShip():setFaction("Imperium Merinita"):setTemplate("Station de Defense a Macrocanon"):setRadarSignatureInfo(0.15, 0.1, 0.2):setScanningParameters(1, 2):setCallSign("LM11"):setPosition(-7069014, 3286711):orderDefendLocation(-7069014, 3286711):setCustomWeaponStorage("MCANMK0", 200):setCustomWeaponStorageMax("MCANMK0", 200)
+    CpuShip():setFaction("Imperium Merinita"):setTemplate("Station de Defense a Macrocanon"):setRadarSignatureInfo(0.15, 0.1, 0.2):setScanningParameters(1, 2):setCallSign("LM12"):setPosition(-7066610, 3283196):orderDefendLocation(-7066610, 3283196):setCustomWeaponStorage("MCANMK0", 200):setCustomWeaponStorageMax("MCANMK0", 200)
+    CpuShip():setFaction("Imperium Merinita"):setTemplate("Station de Defense a Macrocanon"):setRadarSignatureInfo(0.15, 0.1, 0.2):setScanningParameters(1, 2):setCallSign("LM13"):setPosition(-7064760, 3280422):orderDefendLocation(-7064760, 3280422):setCustomWeaponStorage("MCANMK0", 200):setCustomWeaponStorageMax("MCANMK0", 200)
 
 --Stations de Défense Sud   
-	CpuShip():setFaction("Imperium Merinita"):setTemplate("Station de Defense a Macrocanon"):setCallSign("LM21"):setPosition(-7085971, 3319338):orderDefendLocation(-7085971, 3319338):setCustomWeaponStorage("MCANMK0", 200):setCustomWeaponStorageMax("MCANMK0", 200)
-    CpuShip():setFaction("Imperium Merinita"):setTemplate("Station de Defense a Macrocanon"):setCallSign("LM22"):setPosition(-7084908, 3323239):orderDefendLocation(-7084908, 3323239):setCustomWeaponStorage("MCANMK0", 200):setCustomWeaponStorageMax("MCANMK0", 200)
+	CpuShip():setFaction("Imperium Merinita"):setTemplate("Station de Defense a Macrocanon"):setRadarSignatureInfo(0.15, 0.1, 0.2):setScanningParameters(1, 2):setCallSign("LM21"):setPosition(-7085971, 3319338):orderDefendLocation(-7085971, 3319338):setCustomWeaponStorage("MCANMK0", 200):setCustomWeaponStorageMax("MCANMK0", 200)
+    CpuShip():setFaction("Imperium Merinita"):setTemplate("Station de Defense a Macrocanon"):setRadarSignatureInfo(0.15, 0.1, 0.2):setScanningParameters(1, 2):setCallSign("LM22"):setPosition(-7084908, 3323239):orderDefendLocation(-7084908, 3323239):setCustomWeaponStorage("MCANMK0", 200):setCustomWeaponStorageMax("MCANMK0", 200)
     
 end
 
 DefenseMerinita()
 
 --Vaisseaux de Merinita
-    local Fille = CpuShip():setFaction("Imperium Merinita"):setTemplate("Fregate Firestorm"):setCallSign("Fille des Etoiles"):setPosition(-7079737, 3251617):orderDefendTarget(Alienor,500,5000)
-    CpuShip():setFaction("Imperium Merinita"):setTemplate("Fregate Firestorm"):setCallSign("Seigneur Sternberg"):setPosition(-7086196, 3247124):orderDefendTarget(Fille,500,5000)
-    CpuShip():setFaction("Imperium Merinita"):setTemplate("Fregate Firestorm"):setCallSign("Lumière de l'Empereur"):setPosition(-7079737, 3243474):orderDefendTarget(Fille,500,5000)
+    local Fille = CpuShip():setFaction("Imperium Merinita"):setTemplate("Fregate Firestorm"):setCallSign("Fille des Etoiles"):setRadarSignatureInfo(0.1, 0.7, 0.3):setScanningParameters(2, 1):setPosition(-7079737, 3251617):orderDefendTarget(Alienor,500,5000)
+    CpuShip():setFaction("Imperium Merinita"):setTemplate("Fregate Firestorm"):setCallSign("Seigneur Sternberg"):setRadarSignatureInfo(0.1, 0.7, 0.3):setScanningParameters(2, 1):setPosition(-7086196, 3247124):orderDefendTarget(Fille,500,5000)
+    CpuShip():setFaction("Imperium Merinita"):setTemplate("Fregate Firestorm"):setCallSign("Lumière de l'Empereur"):setRadarSignatureInfo(0.1, 0.7, 0.3):setScanningParameters(2, 1):setPosition(-7079737, 3243474):orderDefendTarget(Fille,500,5000)
 
 --Merinita(FI353B)-->Nexus1(AI162D)
     WormHole():setPosition(-7067198, 3300005):setFaction("Neutre"):setTargetPosition(-3244898, -698659)
@@ -4051,35 +4278,53 @@ function Juno()
 
 --Soleil
 
-	local SoleilJuno = Planet():setPosition(10239918, 8159753):setFaction("Neutre"):setPlanetRadius(7900):setPlanetCloudRadius(8000.00):setCallSign("Soleil de Juno"):setPlanetSurfaceTexture("planets/Soleil_Bleu.jpg"):setPlanetAtmosphereColor(0.8,1,1):setRadarSignatureInfo(0.80, 0.75, -0.95):setScanningParameters(1,1):setPlanetIcon("planets/icons/white-dwarf-star.png"):setDescriptions("Soleil de Juno", "Le système Juno comporte 4 planètes telluriques et 2 planète gazeuses, ainsi que deux stations spatiales : La vieille académie spatiale de Saint Maximus, et la station d'extraction gazière d'Oxon.", "Le système Juno, composé de 4 planètes telluriques et 2 planètes gazeuses, est un système important pour l’Amas, bien que sa colonisation soit récente. En effet, le monde de Juno IV et la station d’extraction gazière Oxon produisent prométhium et plasma afin d’alimenter les véhicules et vaisseaux des secteurs proches. Le commerce y est donc régulier, et un des ancêtres du Gouverneur Gallianus Von Kurg a même eu l’idée brillante d’y construire l’académie spatiale de Saint Maximus, afin d’attirer les vaisseaux de la Marine dans le système où ils pourraient trouver matériaux de réparation, carburant et officiers formés. ")
+	local SoleilJuno = Planet():setPosition(10239918, 8159753):setFaction("Neutre"):setPlanetRadius(7900):setPlanetCloudRadius(8000.00):setCallSign("Soleil de Juno"):setPlanetSurfaceTexture("planets/Soleil_Bleu.jpg"):setPlanetAtmosphereColor(0.8,1,1):setRadarSignatureInfo(0.79, 0.9, 0.0):setScanningParameters(1,1):setPlanetIcon("planets/icons/white-dwarf-star.png"):setDescriptions("Soleil de Juno", [[Le système Juno comporte 4 planètes telluriques et 2 planète gazeuses, ainsi que deux stations spatiales : La vieille académie spatiale de Saint Maximus, et la station d'extraction gazière d'Oxon.
+	
+	
+	]], [[Le système Juno, composé de 4 planètes telluriques et 2 planètes gazeuses, est un système important pour l’Amas, bien que sa colonisation soit récente. En effet, le monde de Juno IV et la station d’extraction gazière Oxon produisent prométhium et plasma afin d’alimenter les véhicules et vaisseaux des secteurs proches. Le commerce y est donc régulier, et un des ancêtres du Gouverneur Gallianus Von Kurg a même eu l’idée brillante d’y construire l’académie spatiale de Saint Maximus, afin d’attirer les vaisseaux de la Marine dans le système où ils pourraient trouver matériaux de réparation, carburant et officiers formés.
+	
+	
+	]])
     WarpJammer():setFaction("Neutre"):setPosition(10239918, 8159753):setRange(80000.00)
 	
 --Planètes
 --Juno I	
-	local JunoI = Planet():setPosition(10222439, 8160647):setFaction("Neutre"):setPlanetRadius(250):setAxialRotationTime(3600):setCallSign("Juno I"):setPlanetSurfaceTexture("planets/lava-1.jpg"):setScanningParameters(3, 2):setPlanetIcon("planets/icons/Lava-Planet.png"):setDescriptions("Juno I", "Juno I est une petite planète volcanique.", "Juno I est une petite planète volcanique riche en métaux, mais à l’exploitation complexe.")
+	local JunoI = Planet():setPosition(10222439, 8160647):setFaction("Neutre"):setPlanetRadius(250):setAxialRotationTime(3600):setCallSign("Juno I"):setPlanetSurfaceTexture("planets/lava-1.jpg"):setRadarSignatureInfo(0.025, 0.3, 0.0):setScanningParameters(1, 2):setPlanetIcon("planets/icons/Lava-Planet.png"):setDescriptions("Juno I", "Juno I est une petite planète volcanique.", "Juno I est une petite planète volcanique riche en métaux, mais à l’exploitation complexe.")
     JunoI:setOrbit(SoleilJuno, 300)
 	
 --Juno II		
-	local JunoII = Planet():setPosition(10259770, 8180498):setFaction("Neutre"):setPlanetRadius(750):setAxialRotationTime(3600):setCallSign("Juno II"):setPlanetSurfaceTexture("planets/makemake_fictional.jpg"):setScanningParameters(3, 2):setPlanetIcon("planets/icons/14.png"):setDescriptions("Juno II", "Juno II est une planète tellurique pourvue d'une atmosphère.", "Juno II est une planète tellurique abritant une température infernale sous son épaisse atmosphère.")
+	local JunoII = Planet():setPosition(10259770, 8180498):setFaction("Neutre"):setPlanetRadius(750):setAxialRotationTime(3600):setCallSign("Juno II"):setPlanetSurfaceTexture("planets/makemake_fictional.jpg"):setRadarSignatureInfo(0.075, 0.25, 0.0):setScanningParameters(1, 2):setPlanetIcon("planets/icons/14.png"):setDescriptions("Juno II", "Juno II est une planète tellurique pourvue d'une atmosphère.", "Juno II est une planète tellurique abritant une température infernale sous son épaisse atmosphère.")
 	JunoII:setOrbit(SoleilJuno, 1200)
 	
 --Juno III		
-	local JunoIII = Planet():setPosition(10260511, 8126279):setFaction("Neutre"):setPlanetRadius(750):setAxialRotationTime(3600):setCallSign("Juno III"):setPlanetSurfaceTexture("planets/strange-2.jpg"):setScanningParameters(3, 2):setPlanetIcon("planets/icons/Red-Planet-With-Ice.png"):setDescriptions("Juno III", "Juno III est une planète en partie gelée", "Juno III est une planète dont l’atmosphère est trop fine pour retenir la chaleur, faisant geler la moitié de la planète.")
+	local JunoIII = Planet():setPosition(10260511, 8126279):setFaction("Neutre"):setPlanetRadius(750):setAxialRotationTime(3600):setCallSign("Juno III"):setPlanetSurfaceTexture("planets/strange-2.jpg"):setRadarSignatureInfo(0.075, 0.1, 0.05):setScanningParameters(1, 2):setPlanetIcon("planets/icons/Red-Planet-With-Ice.png"):setDescriptions("Juno III", "Juno III est une planète en partie gelée", [[Juno III est une planète dont l’atmosphère est trop fine pour retenir la chaleur, faisant geler la moitié de la planète.
+	
+	
+	]])
 	JunoIII:setOrbit(SoleilJuno, 2400)
 	
 --Juno IV	
-	local JunoIV = Planet():setPosition(10191817, 8160519):setFaction("Neutre"):setPlanetRadius(2000):setPlanetCloudRadius(1260.00):setAxialRotationTime(120.0):setCallSign("Juno IV"):setPlanetSurfaceTexture("planets/gaz-1.png"):setPlanetCloudTexture("planets/clouds-1.png"):setPlanetAtmosphereTexture("planets/atmosphere.png"):setPlanetAtmosphereColor(0.2,0.2,1.0):setScanningParameters(3, 2):setPlanetIcon("planets/icons/Cream-Violet-Planet.png"):setDescriptions("Juno IV", "Juno IV est une planète présentant de nombreux gaz rares.", "Juno IV est une planète présentant de nombreux gaz rares. La station Oxon, construite en orbite, est chargée de les extraire et de les raffiner pour un usage industriel.")
+	local JunoIV = Planet():setPosition(10191817, 8160519):setFaction("Neutre"):setPlanetRadius(2000):setPlanetCloudRadius(2100.00):setAxialRotationTime(120.0):setCallSign("Juno IV"):setPlanetSurfaceTexture("planets/gas-1.png"):setPlanetCloudTexture("planets/clouds-1.png"):setPlanetAtmosphereTexture("planets/atmosphere.png"):setPlanetAtmosphereColor(0.2,0.2,1.0):setRadarSignatureInfo(0.1, 0.2, 0.1):setScanningParameters(1, 1):setPlanetIcon("planets/icons/Cream-Violet-Planet.png"):setDescriptions("Juno IV", "Juno IV est une planète présentant de nombreux gaz rares.", [[Juno IV est une planète présentant de nombreux gaz rares. La station Oxon, construite en orbite, est chargée de les extraire et de les raffiner pour un usage industriel.
+	
+	
+	]])
 	JunoIV:setOrbit(SoleilJuno, 6000)
 	
 --Station d'extraction gazière Oxon	
-	local Oxon = CpuShip():setTemplate("Station Wayfarer"):setPosition(10194613, 8155214):setFaction("Imperium Juno"):setCallSign("Oxon"):orderFlyFormation(JunoIV,0,0):setDescriptions("Oxon, Station spatiale modèle Wayfarer", "Station d'extraction gazeuse Oxon, en orbite de Juno IV", "La Station Oxon est une station comme on en voit des milliers dans l’Imperium, construite en orbite autour de la planète gazeuse de Juno IV pour en pomper l’atmosphère et s’en servir pour produire le plasma nécessaire à l’alimentation des réacteurs des villes et des vaisseaux. Bien qu’en constante évolution afin d’extraire et produire plus, on parle de lui construire une jumelle afin de pouvoir suivre l’évolution de la consommation locale.")
+	local Oxon = CpuShip():setTemplate("Station Wayfarer"):setPosition(10194613, 8155214):setFaction("Imperium Juno"):setCallSign("Oxon"):setRadarSignatureInfo(0.1, 0.7, 0.3):setScanningParameters(2, 2):orderFlyFormation(JunoIV,0,0):setDescriptions("Oxon, Station spatiale modèle Wayfarer", "Station d'extraction gazeuse Oxon, en orbite de Juno IV", [[La Station Oxon est une station comme on en voit des milliers dans l’Imperium, construite en orbite autour de la planète gazeuse de Juno IV pour en pomper l’atmosphère et s’en servir pour produire le plasma nécessaire à l’alimentation des réacteurs des villes et des vaisseaux. Bien qu’en constante évolution afin d’extraire et produire plus, on parle de lui construire une jumelle afin de pouvoir suivre l’évolution de la consommation locale.
+	
+	
+	]])
 
 --Juno V		
-	local JunoV = Planet():setPosition(10199626, 8119909):setFaction("Neutre"):setPlanetRadius(1250):setPlanetCloudRadius(1260.00):setAxialRotationTime(600.0):setCallSign("Juno V"):setPlanetSurfaceTexture("planets/2k_uranus.jpg"):setPlanetCloudTexture("planets/clouds-1.png"):setPlanetAtmosphereTexture("planets/atmosphere.png"):setPlanetAtmosphereColor(0.2,0.2,1.0):setScanningParameters(3, 2):setPlanetIcon("planets/icons/blue-planet.png"):setDescriptions("Juno V", "Juno V est une planète gazeuse.", "Juno V est une planète gazeuse qui pourrait être exploitée pour produire le plasma nécessaire aux réacteurs des vaisseaux.")
+	local JunoV = Planet():setPosition(10199626, 8119909):setFaction("Neutre"):setPlanetRadius(1250):setPlanetCloudRadius(1260.00):setAxialRotationTime(600.0):setCallSign("Juno V"):setPlanetSurfaceTexture("planets/2k_uranus.jpg"):setPlanetCloudTexture("planets/clouds-1.png"):setPlanetAtmosphereTexture("planets/atmosphere.png"):setPlanetAtmosphereColor(0.2,0.2,1.0):setRadarSignatureInfo(0.063, 0.1, 0.0):setScanningParameters(1, 1):setPlanetIcon("planets/icons/blue-planet.png"):setDescriptions("Juno V", "Juno V est une planète gazeuse.", [[Juno V est une planète gazeuse qui pourrait être exploitée pour produire le plasma nécessaire aux réacteurs des vaisseaux.
+	
+	
+	]])
     JunoV:setOrbit(SoleilJuno, 10800)
 
 --Juno VI	
-	local JunoVI = Planet():setPosition(10279620, 8220940):setFaction("Imperium Juno"):setPlanetRadius(1250):setPlanetCloudRadius(1260.00):setAxialRotationTime(120.0):setCallSign("Juno VI"):setPlanetSurfaceTexture("planets/strange-1.jpg"):setPlanetCloudTexture("planets/clouds-1.png"):setPlanetAtmosphereTexture("planets/atmosphere.png"):setPlanetAtmosphereColor(0.2,0.2,1.0):setScanningParameters(3, 2):setPlanetIcon("planets/icons/Red-Planet-1.png"):setDescriptions("Juno VI", "Juno VI est un monde minier dont la colonisation a commencée il y a 5 siècles.", [["Juno VI
+	local JunoVI = Planet():setPosition(10279620, 8220940):setFaction("Imperium Juno"):setPlanetRadius(1250):setPlanetCloudRadius(1260.00):setAxialRotationTime(120.0):setCallSign("Juno VI"):setPlanetSurfaceTexture("planets/strange-1.jpg"):setPlanetCloudTexture("planets/clouds-1.png"):setPlanetAtmosphereTexture("planets/atmosphere.png"):setPlanetAtmosphereColor(0.2,0.2,1.0):setRadarSignatureInfo(0.125, 0.7, 0.7):setScanningParameters(3, 3):setPlanetIcon("planets/icons/Red-Planet-1.png"):setDescriptions("Juno VI", "Juno VI est un monde minier dont la colonisation a commencée il y a 5 siècles.", [[Juno VI
 Monde Minier
 Gouverneur : Gallianus Von Kurg
 Gouvernement : Aristocratie nobiliaire
@@ -4087,20 +4332,26 @@ Population : 450 Millions
 Production notable : Prométhéum
 Loi particulière : Non
 
-Juno VI est un monde dont la colonisation a commencée il y a 5 siècles, quand le Gouvernement Sectoriel a estimé que le tout jeune Amas Tarkusien devait subvenir à ses propres besoins en matière de carburant. Désormais en pleine phase de développement, et malgré quelques erreurs de gestion et de planification qui sont venues émailler son développement, Juno VI est le principal fournisseur de prométhium et de plasma à usage industriel de l’Amas, ce qui lui assure des revenus confortables qui attirent des travailleurs toujours plus nombreux. Bien que la planète soit loin d’atteindre le statut de Monde-Ruche de Tarkus V ou Gisperion III, il semble évident à de nombreuses personnes qu’il s’agit là de son destin."]])
+Juno VI est un monde dont la colonisation a commencée il y a 5 siècles, quand le Gouvernement Sectoriel a estimé que le tout jeune Amas Tarkusien devait subvenir à ses propres besoins en matière de carburant. Désormais en pleine phase de développement, et malgré quelques erreurs de gestion et de planification qui sont venues émailler son développement, Juno VI est le principal fournisseur de prométhium et de plasma à usage industriel de l’Amas, ce qui lui assure des revenus confortables qui attirent des travailleurs toujours plus nombreux. Bien que la planète soit loin d’atteindre le statut de Monde-Ruche de Tarkus V ou Gisperion III, il semble évident à de nombreuses personnes qu’il s’agit là de son destin.
+
+
+]])
 	JunoVI:setOrbit(SoleilJuno, 6000)
 	
 --Académie spatiale St Maximus
-	local Maximus = CpuShip():setTemplate("Station Wayfarer"):setPosition(10274319, 8217222):setFaction("Imperium Juno"):setCallSign("Académie Spatiale St Maximus"):orderFlyFormation(JunoVI,0,0):setDescriptions("Station spatiale Imperiale Saint Maximus.", "Ancienne Académie Spatiale de Saint Maximus.", "Construite dès le début de la colonisation de Juno VI afin de compléter les services déjà proposés par la planète et la station Oxon, la station de Saint Maximus avait pour vocation d’ancrer les forces de la Flotte Impériale dans le système Juno, protégeant ainsi la planète et aidant à son développement. Malheureusement, l’académie commença à décliner lorsque de la mise en service de la monstrueuse station Scorpio attira les institutions spatiales dans le système Tarkus, et le sort de Saint Maximus fut scellé il y a quelques années, quand une mauvaise évaluation des forces ennemies, une trahison et des ordres inconsidérés entraînèrent l’envoi des 6 frégates en poste contre 4 croiseurs du Chaos, causant la perte des vaisseaux, la mort de plus de 150.000 membres d’équipage et l’abandon de la station.")
+	local Maximus = CpuShip():setTemplate("Station Wayfarer"):setPosition(10274319, 8217222):setFaction("Imperium Juno"):setCallSign("Académie Spatiale St Maximus"):setRadarSignatureInfo(0.1, 0.7, 0.3):setScanningParameters(2, 2):orderFlyFormation(JunoVI,0,0):setDescriptions("Station spatiale Imperiale Saint Maximus.", "Ancienne Académie Spatiale de Saint Maximus.", [[Construite dès le début de la colonisation de Juno VI afin de compléter les services déjà proposés par la planète et la station Oxon, la station de Saint Maximus avait pour vocation d’ancrer les forces de la Flotte Impériale dans le système Juno, protégeant ainsi la planète et aidant à son développement. Malheureusement, l’académie commença à décliner lorsque de la mise en service de la monstrueuse station Scorpio attira les institutions spatiales dans le système Tarkus, et le sort de Saint Maximus fut scellé il y a quelques années, quand une mauvaise évaluation des forces ennemies, une trahison et des ordres inconsidérés entraînèrent l’envoi des 6 frégates en poste contre 4 croiseurs du Chaos, causant la perte des vaisseaux, la mort de plus de 150.000 membres d’équipage et l’abandon de la station.
+	
+	
+	]])
 	
 --Stations de Surveillance
 function SurveillanceJuno()
     
-	CpuShip():setFaction("Imperium Juno"):setTemplate("Station Relais"):setCallSign("JUN01"):setPosition(10274572, 8082935):orderDefendLocation(10274572, 8082935)
-    CpuShip():setFaction("Imperium Juno"):setTemplate("Station Relais"):setCallSign("JUN02"):setPosition(10299355, 8100430):orderDefendLocation(10299355, 8100430)
-    CpuShip():setFaction("Imperium Juno"):setTemplate("Station Relais"):setCallSign("JUN03"):setPosition(10321474, 8142580):orderDefendLocation(10321474, 8142580)
-    CpuShip():setFaction("Imperium Juno"):setTemplate("Station Relais"):setCallSign("JUN04"):setPosition(10311229, 8204728):orderDefendLocation(10311229, 8204728)
-    CpuShip():setFaction("Imperium Juno"):setTemplate("Station Relais"):setCallSign("JUN05"):setPosition(10158787, 8137020):orderDefendLocation(10158787, 8137020)
+	CpuShip():setFaction("Imperium Juno"):setTemplate("Station Relais"):setCallSign("JUN01"):setRadarSignatureInfo(0.3, 0.3, 0.3):setScanningParameters(1, 2):setPosition(10274572, 8082935):orderDefendLocation(10274572, 8082935)
+    CpuShip():setFaction("Imperium Juno"):setTemplate("Station Relais"):setCallSign("JUN02"):setRadarSignatureInfo(0.3, 0.3, 0.3):setScanningParameters(1, 2):setPosition(10299355, 8100430):orderDefendLocation(10299355, 8100430)
+    CpuShip():setFaction("Imperium Juno"):setTemplate("Station Relais"):setCallSign("JUN03"):setRadarSignatureInfo(0.3, 0.3, 0.3):setScanningParameters(1, 2):setPosition(10321474, 8142580):orderDefendLocation(10321474, 8142580)
+    CpuShip():setFaction("Imperium Juno"):setTemplate("Station Relais"):setCallSign("JUN04"):setRadarSignatureInfo(0.3, 0.3, 0.3):setScanningParameters(1, 2):setPosition(10311229, 8204728):orderDefendLocation(10311229, 8204728)
+    CpuShip():setFaction("Imperium Juno"):setTemplate("Station Relais"):setCallSign("JUN05"):setRadarSignatureInfo(0.3, 0.3, 0.3):setScanningParameters(1, 2):setPosition(10158787, 8137020):orderDefendLocation(10158787, 8137020)
 
 end
 
@@ -4108,19 +4359,19 @@ SurveillanceJuno()
 
 --Stations de Défense
 function DefenseJuno()
-    CpuShip():setFaction("Imperium Juno"):setTemplate("Station de Defense a Lance Siderale"):setCallSign("LS11"):setPosition(10290282, 8127247):orderDefendLocation(10290282, 8127247)
-    CpuShip():setFaction("Imperium Juno"):setTemplate("Station de Defense a Lance Siderale"):setCallSign("LS12"):setPosition(10292228, 8131054):orderDefendLocation(10292228, 8131054)
-    CpuShip():setFaction("Imperium Juno"):setTemplate("Station de Defense a Macrocanon"):setCallSign("LM11"):setPosition(10291198, 8124400):orderDefendLocation(10291198, 8124400):setCustomWeaponStorage("MCANMK0", 200):setCustomWeaponStorageMax("MCANMK0", 200)
-    CpuShip():setFaction("Imperium Juno"):setTemplate("Station de Defense a Macrocanon"):setCallSign("LM12"):setPosition(10293201, 8129208):orderDefendLocation(10293201, 8129208):setCustomWeaponStorage("MCANMK0", 200):setCustomWeaponStorageMax("MCANMK0", 200)
-    CpuShip():setFaction("Imperium Juno"):setTemplate("Station de Defense a Macrocanon"):setCallSign("LM13"):setPosition(10294502, 8134115):orderDefendLocation(10294502, 8134115):setCustomWeaponStorage("MCANMK0", 200):setCustomWeaponStorageMax("MCANMK0", 200)
+    CpuShip():setFaction("Imperium Juno"):setTemplate("Station de Defense a Lance Siderale"):setCallSign("LS11"):setRadarSignatureInfo(0.15, 0.3, 0.2):setScanningParameters(1, 2):setPosition(10290282, 8127247):orderDefendLocation(10290282, 8127247)
+    CpuShip():setFaction("Imperium Juno"):setTemplate("Station de Defense a Lance Siderale"):setCallSign("LS12"):setRadarSignatureInfo(0.15, 0.3, 0.2):setScanningParameters(1, 2):setPosition(10292228, 8131054):orderDefendLocation(10292228, 8131054)
+    CpuShip():setFaction("Imperium Juno"):setTemplate("Station de Defense a Macrocanon"):setCallSign("LM11"):setRadarSignatureInfo(0.15, 0.1, 0.2):setScanningParameters(1, 2):setPosition(10291198, 8124400):orderDefendLocation(10291198, 8124400):setCustomWeaponStorage("MCANMK0", 200):setCustomWeaponStorageMax("MCANMK0", 200)
+    CpuShip():setFaction("Imperium Juno"):setTemplate("Station de Defense a Macrocanon"):setCallSign("LM12"):setRadarSignatureInfo(0.15, 0.1, 0.2):setScanningParameters(1, 2):setPosition(10293201, 8129208):orderDefendLocation(10293201, 8129208):setCustomWeaponStorage("MCANMK0", 200):setCustomWeaponStorageMax("MCANMK0", 200)
+    CpuShip():setFaction("Imperium Juno"):setTemplate("Station de Defense a Macrocanon"):setCallSign("LM13"):setRadarSignatureInfo(0.15, 0.1, 0.2):setScanningParameters(1, 2):setPosition(10294502, 8134115):orderDefendLocation(10294502, 8134115):setCustomWeaponStorage("MCANMK0", 200):setCustomWeaponStorageMax("MCANMK0", 200)
 
 end
 
 DefenseJuno()
 
 --Vaisseaux
-    CpuShip():setFaction("Imperium Juno"):setTemplate("Fregate Sword"):setCallSign("Arthur"):setPosition(10274586, 8217793):orderDock(Maximus)
-    CpuShip():setFaction("Imperium Juno"):setTemplate("Fregate Firestorm"):setCallSign("Lancelot"):setPosition(10275032, 8217456):orderDock(Maximus)
+    CpuShip():setFaction("Imperium Juno"):setTemplate("Fregate Sword"):setCallSign("Arthur"):setRadarSignatureInfo(0.1, 0.7, 0.3):setScanningParameters(2, 1):setPosition(10274586, 8217793):orderDock(Maximus)
+    CpuShip():setFaction("Imperium Juno"):setTemplate("Fregate Firestorm"):setCallSign("Lancelot"):setRadarSignatureInfo(0.1, 0.7, 0.3):setScanningParameters(2, 1):setPosition(10275032, 8217456):orderDock(Maximus)
 
 --Juno(QV515A)-->Nexus2()
     WormHole():setPosition(10315516, 8220191):setFaction("Neutre"):setTargetPosition(1049354, 3128404)
@@ -6490,28 +6741,40 @@ function PuruscaMap()
 
 --Soleil
 
-	local SoleilPurusca = Planet():setPosition(15806062, 8259086):setFaction("Neutre"):setPlanetRadius(7900):setPlanetCloudRadius(8000.00):setCallSign("Soleil de Purusca"):setPlanetSurfaceTexture("planets/Soleil.jpg"):setPlanetAtmosphereColor(1,1,0.5):setRadarSignatureInfo(0.80, 0.75, -0.95):setScanningParameters(1,1):setPlanetIcon("planets/icons/Sun.png"):setDescriptions("Soleil de Purusca","Le système de Purusca est composé de 5 planètes telluriques et d’une planète gazeuse.","Le système de Purusca est composé de 5 planètes telluriques et d’une planète gazeuse. Si deux de ces planètes sont habitables, une seule est actuellement habitée par une population dont le niveau technologique dépasse à peine le stade de la poudre noire. En conséquence, ce système n’offre que peu de débouchés commerciaux et aucune production notable, si ce n’est les petits groupes de locaux qui sont parfois envoyés rejoindre les rangs des forces militaires du sous-secteur s’il s’avère qu’ils peuvent encaisser le choc culturel et technologique.")
+	local SoleilPurusca = Planet():setPosition(15806062, 8259086):setFaction("Neutre"):setPlanetRadius(7900):setPlanetCloudRadius(8000.00):setCallSign("Soleil de Purusca"):setPlanetSurfaceTexture("planets/Soleil.jpg"):setPlanetAtmosphereColor(1,1,0.5):setRadarSignatureInfo(0.79, 0.7, 0.0):setScanningParameters(1,1):setPlanetIcon("planets/icons/Sun.png"):setDescriptions("Soleil de Purusca","Le système de Purusca est composé de 5 planètes telluriques et d’une planète gazeuse.",[[Le système de Purusca est composé de 5 planètes telluriques et d’une planète gazeuse. Si deux de ces planètes sont habitables, une seule est actuellement habitée par une population dont le niveau technologique dépasse à peine le stade de la poudre noire. En conséquence, ce système n’offre que peu de débouchés commerciaux et aucune production notable, si ce n’est les petits groupes de locaux qui sont parfois envoyés rejoindre les rangs des forces militaires du sous-secteur s’il s’avère qu’ils peuvent encaisser le choc culturel et technologique.
+	
+	
+	]])
     WarpJammer():setFaction("Neutre"):setPosition(15806062, 8259086):setRange(100000.00)
 	
 --Planètes
 --Purusca I	
-	local PuruscaI = Planet():setPosition(15807280, 8277229):setFaction("Neutre"):setPlanetRadius(100):setAxialRotationTime(3600):setCallSign("Purusca I"):setPlanetSurfaceTexture("planets/planet-2.png"):setScanningParameters(3, 2):setPlanetIcon("planets/icons/Lava-Planet.png"):setDescriptions("Purusca I","Purusca I est un minuscule planétoïde volcanique.","Purusca I est un minuscule planétoïde volcanique sans le moindre intérêt.")
+	local PuruscaI = Planet():setPosition(15807280, 8277229):setFaction("Neutre"):setPlanetRadius(100):setAxialRotationTime(3600):setCallSign("Purusca I"):setPlanetSurfaceTexture("planets/planet-2.png"):setRadarSignatureInfo(0.01, 0.3, 0.0):setScanningParameters(1, 2):setPlanetIcon("planets/icons/Lava-Planet.png"):setDescriptions("Purusca I","Purusca I est un minuscule planétoïde volcanique.","Purusca I est un minuscule planétoïde volcanique sans le moindre intérêt.")
     PuruscaI:setOrbit(SoleilPurusca, 150)
 
 --Purusca II	
-	local PuruscaII = Planet():setPosition(15821584, 8284683):setFaction("Neutre"):setPlanetRadius(700):setAxialRotationTime(3600):setCallSign("Purusca II"):setPlanetSurfaceTexture("planets/2k_mars.jpg"):setScanningParameters(3, 2):setPlanetIcon("planets/icons/Red-Planet-1.png"):setDescriptions("Purusca II","Purusca II est une planète tellurique de taille correcte.","Purusca II est une planète tellurique de taille correcte dont les écarts de température rendent malheureusement la colonisation complexe.")
+	local PuruscaII = Planet():setPosition(15821584, 8284683):setFaction("Neutre"):setPlanetRadius(700):setAxialRotationTime(3600):setCallSign("Purusca II"):setPlanetSurfaceTexture("planets/2k_mars.jpg"):setRadarSignatureInfo(0.07, 0.1, 0.05):setScanningParameters(1, 2):setPlanetIcon("planets/icons/Red-Planet-1.png"):setDescriptions("Purusca II","Purusca II est une planète tellurique de taille correcte.",[[Purusca II est une planète tellurique de taille correcte dont les écarts de température rendent malheureusement la colonisation complexe.
+	
+	
+	]])
     PuruscaII:setOrbit(SoleilPurusca, 300)
 
 --Purusca III	
-	local PuruscaIII = Planet():setPosition(15774036, 8286092):setFaction("Neutre"):setPlanetRadius(1000):setAxialRotationTime(3600):setCallSign("Purusca III"):setPlanetSurfaceTexture("planets/strange-2.jpg"):setScanningParameters(3, 2):setPlanetIcon("planets/icons/Red-Planet-With-Ice.png"):setDescriptions("Purusca III","Purusca III est une planète tellurique désertique.","Purusca III est une planète désertique dont l’eau est emprisonnée sous forme de glace sur la face obscure. Des efforts de terraformation minimes pourraient en faire une planète habitable.")
+	local PuruscaIII = Planet():setPosition(15774036, 8286092):setFaction("Neutre"):setPlanetRadius(1000):setAxialRotationTime(3600):setCallSign("Purusca III"):setPlanetSurfaceTexture("planets/strange-2.jpg"):setRadarSignatureInfo(0.1, 0.1, 0.05):setScanningParameters(1, 2):setPlanetIcon("planets/icons/Red-Planet-With-Ice.png"):setDescriptions("Purusca III","Purusca III est une planète tellurique désertique.",[[Purusca III est une planète désertique dont l’eau est emprisonnée sous forme de glace sur la face obscure. Des efforts de terraformation minimes pourraient en faire une planète habitable.
+	
+	
+	]])
     PuruscaIII:setOrbit(SoleilPurusca, 800)
 
 --Purusca IV	
-	local PuruscaIV = Planet():setPosition(15755704, 8271386):setFaction("Neutre"):setPlanetRadius(1800):setAxialRotationTime(3600):setCallSign("Purusca IV"):setPlanetSurfaceTexture("planets/earth2.jpg"):setScanningParameters(3, 2):setPlanetIcon("planets/icons/16.png"):setDescriptions("Purusca IV","Purusca IV est une planète tellurique abritant de l’eau sous forme liquide.","Purusca IV est une planète tellurique abritant de l’eau sous forme liquide. Elle est donc habitable, et selon certaines rumeurs, plusieurs groupes de colons issus de Purusca V y ont été déposés au cours des dernières décennies afin de commencer la colonisation. Cependant, aucune ville digne de ce nom n’ayant encore vu le jour, la colonisation n’est pas encore considérée comme étant effectuée.")
+	local PuruscaIV = Planet():setPosition(15755704, 8271386):setFaction("Neutre"):setPlanetRadius(1800):setAxialRotationTime(3600):setCallSign("Purusca IV"):setPlanetSurfaceTexture("planets/earth2.jpg"):setRadarSignatureInfo(0.18, 0.2, 0.2):setScanningParameters(2, 2):setPlanetIcon("planets/icons/16.png"):setDescriptions("Purusca IV","Purusca IV est une planète tellurique abritant de l’eau sous forme liquide.",[[Purusca IV est une planète tellurique abritant de l’eau sous forme liquide. Elle est donc habitable, et selon certaines rumeurs, plusieurs groupes de colons issus de Purusca V y ont été déposés au cours des dernières décennies afin de commencer la colonisation. Cependant, aucune ville digne de ce nom n’ayant encore vu le jour, la colonisation n’est pas encore considérée comme étant effectuée.
+	
+	
+	]])
     PuruscaIV:setOrbit(SoleilPurusca, 1200)
 
 --Purusca V	
-	local PuruscaV = Planet():setPosition(15824002, 8191806):setFaction("Imperium Purusca"):setPlanetRadius(1300):setAxialRotationTime(3600):setCallSign("Purusca V"):setPlanetSurfaceTexture("planets/planet-1.png"):setScanningParameters(3, 2):setPlanetIcon("planets/icons/earth-like.png"):setDescriptions("Purusca V","Purusca V est un monde féodal dont l’Imperium n’a pas jugé utile d’accélérer le développement.",[["Purusca V
+	local PuruscaV = Planet():setPosition(15824002, 8191806):setFaction("Imperium Purusca"):setPlanetRadius(1300):setAxialRotationTime(3600):setCallSign("Purusca V"):setPlanetSurfaceTexture("planets/planet-1.png"):setRadarSignatureInfo(0.13, 0.3, 0.4):setScanningParameters(2, 3):setPlanetIcon("planets/icons/earth-like.png"):setDescriptions("Purusca V","Purusca V est un monde féodal dont l’Imperium n’a pas jugé utile d’accélérer le développement.",[[Purusca V
 Monde-Féodal
 Gouverneur : Seigneur Absalion de Couraal
 Gouvernement : Aristocratie nobiliaire
@@ -6519,18 +6782,24 @@ Population :  80 Millions
 Production notable : Personnel
 Loi particulière : Accès planétaire et import de matériel technologique restreint
 
-Purusca V est un monde féodal dont l’Imperium n’a pas jugé utile d’accélérer le développement. La planète est autosuffisante et le Seigneur Absalion de Couraal, le Gouverneur Planétaire, veille à ce que son peuple reste dans l’ignorance de l’immensité de l’espace tant qu’il ne le juge pas prêt à se mêler au reste de l’Imperium. Pour cette raison, le trafic des objets d’une technologie supérieure à ce qui est produit localement est étroitement surveillé et limité à l’enclave gouvernementale, alors que les rares marchands, commerçants et visiteurs hors-monde qui doivent accéder à la planète sont généralement orientés vers des zones isolées afins de pouvoir se poser à l’abris des regards et prendre l’apparence des locaux avant d’être autorisés à se déplacer à la surface."]])
+Purusca V est un monde féodal dont l’Imperium n’a pas jugé utile d’accélérer le développement. La planète est autosuffisante et le Seigneur Absalion de Couraal, le Gouverneur Planétaire, veille à ce que son peuple reste dans l’ignorance de l’immensité de l’espace tant qu’il ne le juge pas prêt à se mêler au reste de l’Imperium. Pour cette raison, le trafic des objets d’une technologie supérieure à ce qui est produit localement est étroitement surveillé et limité à l’enclave gouvernementale, alors que les rares marchands, commerçants et visiteurs hors-monde qui doivent accéder à la planète sont généralement orientés vers des zones isolées afin de pouvoir se poser à l’abri des regards et prendre l’apparence des locaux avant d’être autorisés à se déplacer à la surface.
+
+
+]])
     PuruscaV:setOrbit(SoleilPurusca, 1500)
 
 --Purusca VI	
-	local PuruscaVI = Planet():setPosition(15744018, 8191604):setFaction("Neutre"):setPlanetRadius(500):setAxialRotationTime(3600):setCallSign("Purusca VI"):setPlanetSurfaceTexture("planets/2k_uranus.jpg"):setScanningParameters(3, 2):setPlanetIcon("planets/icons/Storm-Planet.png"):setDescriptions("Purusca VI","Purusca VI est une petite planète gazeuse située en bordure du système.","Purusca VI est une petite planète gazeuse située en bordure du système. Elle n’est pas encore exploitée et ne présente donc pas beaucoup d’intérêt.")
+	local PuruscaVI = Planet():setPosition(15744018, 8191604):setFaction("Neutre"):setPlanetRadius(500):setAxialRotationTime(3600):setCallSign("Purusca VI"):setPlanetSurfaceTexture("planets/2k_uranus.jpg"):setRadarSignatureInfo(0.025, 0.1, 0.0):setScanningParameters(1, 1):setPlanetIcon("planets/icons/Storm-Planet.png"):setDescriptions("Purusca VI","Purusca VI est une petite planète gazeuse située en bordure du système.",[[Purusca VI est une petite planète gazeuse située en bordure du système. Elle n’est pas encore exploitée et ne présente donc pas beaucoup d’intérêt.
+	
+	
+	]])
     PuruscaVI:setOrbit(SoleilPurusca, 2000)
 
 --Stations de Surveillance
 function SurveillancePurusca()
-    CpuShip():setFaction("Imperium Purusca"):setTemplate("Station Relais"):setCallSign("PUR01"):setPosition(15880505, 8187862):orderDefendLocation(15880505, 8187862)
-    CpuShip():setFaction("Imperium Purusca"):setTemplate("Station Relais"):setCallSign("PUR02"):setPosition(15903858, 8223056):orderDefendLocation(15903858, 8223056)
-    CpuShip():setFaction("Imperium Purusca"):setTemplate("Station Relais"):setCallSign("PUR03"):setPosition(15739072, 8180954):orderDefendLocation(15739072, 8180954)
+    CpuShip():setFaction("Imperium Purusca"):setTemplate("Station Relais"):setCallSign("PUR01"):setRadarSignatureInfo(0.3, 0.3, 0.3):setScanningParameters(1, 2):setPosition(15880505, 8187862):orderDefendLocation(15880505, 8187862)
+    CpuShip():setFaction("Imperium Purusca"):setTemplate("Station Relais"):setCallSign("PUR02"):setRadarSignatureInfo(0.3, 0.3, 0.3):setScanningParameters(1, 2):setPosition(15903858, 8223056):orderDefendLocation(15903858, 8223056)
+    CpuShip():setFaction("Imperium Purusca"):setTemplate("Station Relais"):setCallSign("PUR03"):setRadarSignatureInfo(0.3, 0.3, 0.3):setScanningParameters(1, 2):setPosition(15739072, 8180954):orderDefendLocation(15739072, 8180954)
 
 end
 
@@ -6987,20 +7256,29 @@ function AcadiaMap()
 
 --Soleil
 
-	local SoleilAcadia = Planet():setPosition(18407810, 2342212):setFaction("Neutre"):setPlanetRadius(7900):setPlanetCloudRadius(8000.00):setCallSign("Soleil d'Acadia"):setPlanetSurfaceTexture("planets/Soleil.jpg"):setPlanetAtmosphereColor(1,1,0.5):setRadarSignatureInfo(0.80, 0.75, -0.95):setScanningParameters(1,1):setPlanetIcon("planets/icons/Sun.png"):setDescriptions("Soleil D'Acadia","Le Système d’Acadia est composé de 2 planètes telluriques et d’une planète gazeuse.","Le Système d’Acadia est composé de 2 planètes telluriques et d’une planète gazeuse. Le système ne possède rien de notable, si ce n’est que la planète Acadia III jouit de parfaites conditions d’habitabilité, une faune et une flore dense à la dangerosité faible, et ce sans terraformation. A l’écart des zones plus industrieuses, cette planète est choisie comme monde de villégiature par de nombreux nobles du sous-secteur, mais également comme lieu de production pour certaines industries spécialisées dans les produits pharmaceutiques ou de luxes utiles à ces nobles.")
+	local SoleilAcadia = Planet():setPosition(18407810, 2342212):setFaction("Neutre"):setPlanetRadius(7900):setPlanetCloudRadius(8000.00):setCallSign("Soleil d'Acadia"):setPlanetSurfaceTexture("planets/Soleil.jpg"):setPlanetAtmosphereColor(1,1,0.5):setRadarSignatureInfo(0.79, 0.78, 0.0):setScanningParameters(1,1):setPlanetIcon("planets/icons/Sun.png"):setDescriptions("Soleil D'Acadia","Le Système d’Acadia est composé de 2 planètes telluriques et d’une planète gazeuse.",[[Le Système d’Acadia est composé de 2 planètes telluriques et d’une planète gazeuse. Le système ne possède rien de notable, si ce n’est que la planète Acadia III jouit de parfaites conditions d’habitabilité, une faune et une flore dense à la dangerosité faible, et ce sans terraformation. A l’écart des zones plus industrieuses, cette planète est choisie comme monde de villégiature par de nombreux nobles du sous-secteur, mais également comme lieu de production pour certaines industries spécialisées dans les produits pharmaceutiques ou de luxes utiles à ces nobles.
+	
+	
+	]])
     WarpJammer():setFaction("Neutre"):setPosition(18407810, 2342212):setRange(70000.00)
 	
 --Planètes
 --Acadia I	
-	local AcadiaI = Planet():setPosition(18389956, 2338289):setFaction("Neutre"):setPlanetRadius(1000):setAxialRotationTime(3600):setCallSign("Acadia I"):setPlanetSurfaceTexture("planets/planet-2.png"):setScanningParameters(3, 2):setPlanetIcon("planets/icons/Lava-Planet.png"):setDescriptions("Acadia I","Acadia I est une planète volcanique assez massive.","Acadia I est une planète volcanique assez massive, qui pourrait être exploitée pour ses ressources minérales si les infrastructures nécessaires y étaient installées.")
+	local AcadiaI = Planet():setPosition(18389956, 2338289):setFaction("Neutre"):setPlanetRadius(1000):setAxialRotationTime(3600):setCallSign("Acadia I"):setPlanetSurfaceTexture("planets/planet-2.png"):setRadarSignatureInfo(0.1, 0.3, 0.0):setScanningParameters(1, 2):setPlanetIcon("planets/icons/Lava-Planet.png"):setDescriptions("Acadia I","Acadia I est une planète volcanique assez massive.",[[Acadia I est une planète volcanique assez massive, qui pourrait être exploitée pour ses ressources minérales si les infrastructures nécessaires y étaient installées.
+	
+	
+	]])
     AcadiaI:setOrbit(SoleilAcadia, 500)
 	
 --Acadia II	
-	local AcadiaII = Planet():setPosition(18414160, 2310166):setFaction("Neutre"):setPlanetRadius(3000):setAxialRotationTime(3600):setCallSign("Acadia II"):setPlanetSurfaceTexture("planets/2k_jupiter.jpg"):setScanningParameters(3, 2):setPlanetIcon("planets/icons/Orange-Planet.png"):setDescriptions("Acadia II","Acadia II est une planète gazeuse.","Acadia II est une planète gazeuse dont l’exploitation est, étrangement, avant tout touristique. En effet, la lumière solaire, en passant dans les différentes couches d’atmosphère, donne lieu à des jeux de lumière particulièrement appréciés de la noblesse présente sur Acadia III.")
+	local AcadiaII = Planet():setPosition(18414160, 2310166):setFaction("Neutre"):setPlanetRadius(3000):setAxialRotationTime(3600):setCallSign("Acadia II"):setPlanetSurfaceTexture("planets/2k_jupiter.jpg"):setRadarSignatureInfo(0.15, 0.2, 0.1):setScanningParameters(1, 1):setPlanetIcon("planets/icons/Orange-Planet.png"):setDescriptions("Acadia II","Acadia II est une planète gazeuse.",[[Acadia II est une planète gazeuse dont l’exploitation est, étrangement, avant tout touristique. En effet, les rayons solaires, en passant dans les différentes couches d’atmosphère, donnent lieu à des jeux de lumière particulièrement appréciés de la noblesse présente sur Acadia III.
+	
+	
+	]])
     AcadiaII:setOrbit(SoleilAcadia, 2000)
 	
 --Acadia III	
-	local AcadiaIII = Planet():setPosition(18459326, 2308120):setFaction("Imperium Acadia"):setPlanetRadius(5000):setAxialRotationTime(3600):setCallSign("Acadia III"):setPlanetSurfaceTexture("planets/earth3.jpg"):setScanningParameters(3, 2):setPlanetIcon("planets/icons/17.png"):setDescriptions("Acadia III","Acadia III est une planète tellurique essentiellement touristique.",[["Acadia III
+	local AcadiaIII = Planet():setPosition(18459326, 2308120):setFaction("Imperium Acadia"):setPlanetRadius(5000):setAxialRotationTime(3600):setCallSign("Acadia III"):setPlanetSurfaceTexture("planets/earth3.jpg"):setRadarSignatureInfo(0.5, 0.3, 0.5):setScanningParameters(3, 3):setPlanetIcon("planets/icons/17.png"):setDescriptions("Acadia III","Acadia III est une planète tellurique essentiellement touristique.",[[Acadia III
 Agrimonde
 Gouverneur : Président Sondar Galdeaux
 Gouvernement : République Démocratique
@@ -7008,17 +7286,20 @@ Population :  3.6 Milliards
 Production notable : Biomasse, alcool, produits pharmaceutiques, minéraux, matériaux de luxe
 Loi particulière : Contrat de mercenariat perpétuel avec le groupe Arès.
 
-Acadia III est une planète tellurique essentiellement touristique, dirigée par un président élu par une assemblée ouverte à tous, sous réserve de pouvoir verser les droits d’inscription, une méthode permettant que la prise de décision soit réservée aux “citoyens de bonne situation”. Riche d’une biosphère florissante et d’une industrie de pointe dans les domaines de la pharmacologie et du luxe, Acadia est une des destinations favorites des nobles locaux qui souhaitent se soustraire à la pression sociale associée à leur fonction. Relativement isolée, la planète à passé un accord avec un groupement de corsaires nommé Consortium Arès afin d’assurer la sécurité de la planète face aux éventuels raids ennemis."]])
+Acadia III est une planète tellurique essentiellement touristique, dirigée par un président élu par une assemblée ouverte à tous, sous réserve de pouvoir verser les droits d’inscription, une méthode permettant que la prise de décision soit réservée aux “citoyens de bonne situation”. Riche d’une biosphère florissante et d’une industrie de pointe dans les domaines de la pharmacologie et du luxe, Acadia est une des destinations favorites des nobles locaux qui souhaitent se soustraire à la pression sociale associée à leur fonction. Relativement isolée, la planète a passé un accord avec un groupement de corsaires nommé Consortium Arès afin d’assurer la sécurité de la planète face aux éventuels raids ennemis.
+
+
+]])
     AcadiaIII:setOrbit(SoleilAcadia, 5000)
 
 --Stations de Surveillance
 function SurveillanceAcadia()
-    CpuShip():setFaction("Imperium Acadia"):setTemplate("Station Relais"):setCallSign("ACA01"):setPosition(18460840, 2290924):orderDefendLocation(18460840, 2290924)
-    CpuShip():setFaction("Imperium Acadia"):setTemplate("Station Relais"):setCallSign("ACA02"):setPosition(18480940, 2338566):orderDefendLocation(18480940, 2338566)
-    CpuShip():setFaction("Imperium Acadia"):setTemplate("Station Relais"):setCallSign("ACA03"):setPosition(18465306, 2392164):orderDefendLocation(18465306, 2392164)
-    CpuShip():setFaction("Imperium Acadia"):setTemplate("Station Relais"):setCallSign("ACA04"):setPosition(18334288, 2322561):orderDefendLocation(18334288, 2322561)
-    CpuShip():setFaction("Imperium Acadia"):setTemplate("Station Relais"):setCallSign("ACA05"):setPosition(18358110, 2290179):orderDefendLocation(18358110, 2290179)
-    CpuShip():setFaction("Imperium Acadia"):setTemplate("Station Relais"):setCallSign("ACA06"):setPosition(18392354, 2270080):orderDefendLocation(18392354, 2270080)
+    CpuShip():setFaction("Imperium Acadia"):setTemplate("Station Relais"):setCallSign("ACA01"):setRadarSignatureInfo(0.3, 0.3, 0.3):setScanningParameters(1, 2):setPosition(18460840, 2290924):orderDefendLocation(18460840, 2290924)
+    CpuShip():setFaction("Imperium Acadia"):setTemplate("Station Relais"):setCallSign("ACA02"):setRadarSignatureInfo(0.3, 0.3, 0.3):setScanningParameters(1, 2):setPosition(18480940, 2338566):orderDefendLocation(18480940, 2338566)
+    CpuShip():setFaction("Imperium Acadia"):setTemplate("Station Relais"):setCallSign("ACA03"):setRadarSignatureInfo(0.3, 0.3, 0.3):setScanningParameters(1, 2):setPosition(18465306, 2392164):orderDefendLocation(18465306, 2392164)
+    CpuShip():setFaction("Imperium Acadia"):setTemplate("Station Relais"):setCallSign("ACA04"):setRadarSignatureInfo(0.3, 0.3, 0.3):setScanningParameters(1, 2):setPosition(18334288, 2322561):orderDefendLocation(18334288, 2322561)
+    CpuShip():setFaction("Imperium Acadia"):setTemplate("Station Relais"):setCallSign("ACA05"):setRadarSignatureInfo(0.3, 0.3, 0.3):setScanningParameters(1, 2):setPosition(18358110, 2290179):orderDefendLocation(18358110, 2290179)
+    CpuShip():setFaction("Imperium Acadia"):setTemplate("Station Relais"):setCallSign("ACA06"):setRadarSignatureInfo(0.3, 0.3, 0.3):setScanningParameters(1, 2):setPosition(18392354, 2270080):orderDefendLocation(18392354, 2270080)
 
 end
 
@@ -7026,22 +7307,22 @@ SurveillanceAcadia()
 
 --Vaisseaux
 --Flotille Nord
-    local Nigra = CpuShip():setFaction("Imperium Acadia"):setTemplate("Fregate Lourde Turbulent"):setCallSign("Nigra Stella"):setPosition(18406414, 2268267):orderDefendLocation(18406414, 2268267)
-    CpuShip():setFaction("Imperium Acadia"):setTemplate("Escorteur Cobra"):setCallSign("Rabiosus Canis"):setPosition(18407356, 2268862):orderDefendTarget(Nigra,500,5000):setCustomWeaponStorage("Torpille", 6):setCustomWeaponStorageMax("Torpille", 6)
-    CpuShip():setFaction("Imperium Acadia"):setTemplate("Escorteur Cobra"):setCallSign("Celer Anguis"):setPosition(18407556, 2267721):orderDefendTarget(Nigra,500,5000):setCustomWeaponStorage("Torpille", 6):setCustomWeaponStorageMax("Torpille", 6)
-    CpuShip():setFaction("Imperium Acadia"):setTemplate("Escorteur Hazeroth"):setCallSign("Cruentum Vulture"):setPosition(18406712, 2266629):orderDefendTarget(Nigra,500,5000)
-    CpuShip():setFaction("Imperium Acadia"):setTemplate("Escorteur Hazeroth"):setCallSign("Ferox Tigris"):setPosition(18405124, 2266976):orderDefendTarget(Nigra,500,5000)
-    CpuShip():setFaction("Imperium Acadia"):setTemplate("Escorteur Hazeroth"):setCallSign("Feram Cattus"):setPosition(18406116, 2269607):orderDefendTarget(Nigra,500,5000)
-    CpuShip():setFaction("Imperium Acadia"):setTemplate("Escorteur Hazeroth"):setCallSign("Pertinax Taurus"):setPosition(18404180, 2268696):orderDefendTarget(Nigra,500,5000)
+    local Nigra = CpuShip():setFaction("Imperium Acadia"):setTemplate("Fregate Lourde Turbulent"):setCallSign("Nigra Stella"):setRadarSignatureInfo(0.1, 0.7, 0.3):setScanningParameters(2, 1):setPosition(18406414, 2268267):orderDefendLocation(18406414, 2268267)
+    CpuShip():setFaction("Imperium Acadia"):setTemplate("Escorteur Cobra"):setCallSign("Rabiosus Canis"):setRadarSignatureInfo(0.1, 0.7, 0.3):setScanningParameters(1, 1):setPosition(18407356, 2268862):orderDefendTarget(Nigra,500,5000):setCustomWeaponStorage("Torpille", 6):setCustomWeaponStorageMax("Torpille", 6)
+    CpuShip():setFaction("Imperium Acadia"):setTemplate("Escorteur Cobra"):setCallSign("Celer Anguis"):setRadarSignatureInfo(0.1, 0.7, 0.3):setScanningParameters(1, 1):setPosition(18407556, 2267721):orderDefendTarget(Nigra,500,5000):setCustomWeaponStorage("Torpille", 6):setCustomWeaponStorageMax("Torpille", 6)
+    CpuShip():setFaction("Imperium Acadia"):setTemplate("Escorteur Hazeroth"):setCallSign("Cruentum Vulture"):setRadarSignatureInfo(0.1, 0.7, 0.3):setScanningParameters(1, 1):setPosition(18406712, 2266629):orderDefendTarget(Nigra,500,5000)
+    CpuShip():setFaction("Imperium Acadia"):setTemplate("Escorteur Hazeroth"):setCallSign("Ferox Tigris"):setRadarSignatureInfo(0.1, 0.7, 0.3):setScanningParameters(1, 1):setPosition(18405124, 2266976):orderDefendTarget(Nigra,500,5000)
+    CpuShip():setFaction("Imperium Acadia"):setTemplate("Escorteur Hazeroth"):setCallSign("Feram Cattus"):setRadarSignatureInfo(0.1, 0.7, 0.3):setScanningParameters(1, 1):setPosition(18406116, 2269607):orderDefendTarget(Nigra,500,5000)
+    CpuShip():setFaction("Imperium Acadia"):setTemplate("Escorteur Hazeroth"):setCallSign("Pertinax Taurus"):setRadarSignatureInfo(0.1, 0.7, 0.3):setScanningParameters(1, 1):setPosition(18404180, 2268696):orderDefendTarget(Nigra,500,5000)
 
 --Flotille Sud
-    local Nox = CpuShip():setFaction("Imperium Acadia"):setTemplate("Fregate Lourde Turbulent"):setCallSign("Nox Aeterna"):setPosition(18454410, 2405918):orderDefendLocation(18454410, 2405918)
-    CpuShip():setFaction("Imperium Acadia"):setTemplate("Escorteur Cobra"):setCallSign("Occasus Solis"):setPosition(18455948, 2405024):orderDefendTarget(Nox,500,5000):setCustomWeaponStorage("Torpille", 6):setCustomWeaponStorageMax("Torpille", 6)
-	CpuShip():setFaction("Imperium Acadia"):setTemplate("Escorteur Cobra"):setCallSign("Altum Tenebris"):setPosition(18456742, 2406066):orderDefendTarget(Nox,500,5000):setCustomWeaponStorage("Torpille", 6):setCustomWeaponStorageMax("Torpille", 6)
-    CpuShip():setFaction("Imperium Acadia"):setTemplate("Escorteur Hazeroth"):setCallSign("Frigus Mordere"):setPosition(18456048, 2407109):orderDefendTarget(Nox,500,5000)
-    CpuShip():setFaction("Imperium Acadia"):setTemplate("Escorteur Hazeroth"):setCallSign("Insatiabilis Vanitas"):setPosition(18452474, 2405421):orderDefendTarget(Nox,500,5000)
-    CpuShip():setFaction("Imperium Acadia"):setTemplate("Escorteur Hazeroth"):setCallSign("Sanguinarius"):setPosition(18453120, 2404478):orderDefendTarget(Nox,500,5000)
-    CpuShip():setFaction("Imperium Acadia"):setTemplate("Escorteur Hazeroth"):setCallSign("Sine Misericordia"):setPosition(18454508, 2404130):orderDefendTarget(Nox,500,5000)
+    local Nox = CpuShip():setFaction("Imperium Acadia"):setTemplate("Fregate Lourde Turbulent"):setCallSign("Nox Aeterna"):setRadarSignatureInfo(0.1, 0.7, 0.3):setScanningParameters(2, 1):setPosition(18454410, 2405918):orderDefendLocation(18454410, 2405918)
+    CpuShip():setFaction("Imperium Acadia"):setTemplate("Escorteur Cobra"):setCallSign("Occasus Solis"):setRadarSignatureInfo(0.1, 0.7, 0.3):setScanningParameters(1, 1):setPosition(18455948, 2405024):orderDefendTarget(Nox,500,5000):setCustomWeaponStorage("Torpille", 6):setCustomWeaponStorageMax("Torpille", 6)
+	CpuShip():setFaction("Imperium Acadia"):setTemplate("Escorteur Cobra"):setCallSign("Altum Tenebris"):setRadarSignatureInfo(0.1, 0.7, 0.3):setScanningParameters(1, 1):setPosition(18456742, 2406066):orderDefendTarget(Nox,500,5000):setCustomWeaponStorage("Torpille", 6):setCustomWeaponStorageMax("Torpille", 6)
+    CpuShip():setFaction("Imperium Acadia"):setTemplate("Escorteur Hazeroth"):setCallSign("Frigus Mordere"):setRadarSignatureInfo(0.1, 0.7, 0.3):setScanningParameters(1, 1):setPosition(18456048, 2407109):orderDefendTarget(Nox,500,5000)
+    CpuShip():setFaction("Imperium Acadia"):setTemplate("Escorteur Hazeroth"):setCallSign("Insatiabilis Vanitas"):setRadarSignatureInfo(0.1, 0.7, 0.3):setScanningParameters(1, 1):setPosition(18452474, 2405421):orderDefendTarget(Nox,500,5000)
+    CpuShip():setFaction("Imperium Acadia"):setTemplate("Escorteur Hazeroth"):setCallSign("Sanguinarius"):setRadarSignatureInfo(0.1, 0.7, 0.3):setScanningParameters(1, 1):setPosition(18453120, 2404478):orderDefendTarget(Nox,500,5000)
+    CpuShip():setFaction("Imperium Acadia"):setTemplate("Escorteur Hazeroth"):setCallSign("Sine Misericordia"):setRadarSignatureInfo(0.1, 0.7, 0.3):setScanningParameters(1, 1):setPosition(18454508, 2404130):orderDefendTarget(Nox,500,5000)
     
 --Acadia(DK916A)-->Nexus11(KK929A)
     WormHole():setPosition(18336498, 2295338):setFaction("Neutre"):setTargetPosition(18598600, 5925346)
@@ -7145,16 +7426,19 @@ function AgmenosMap()
 
 --Soleil
 
-	local SoleilAgmenos = Planet():setPosition(18801184, -5028224):setFaction("Neutre"):setPlanetRadius(7900):setPlanetCloudRadius(8000.00):setCallSign("Soleil d'Agmenos"):setPlanetSurfaceTexture("planets/Soleil_Bleu.jpg"):setPlanetAtmosphereColor(0.8,1,1):setRadarSignatureInfo(0.80, 0.75, -0.95):setScanningParameters(1,1):setPlanetIcon("planets/icons/white-dwarf-star.png"):setDescriptions("Soleil D'Agmenos","Le système d'Agmenos est constitué d’une planète tellurique et de deux planètes gazeuses.","Situé en bordure du sous-secteur, le système Agmenos est l’un des rares points d’accès du secteur vers le reste de la bordure orientale de la galaxie. Constitué d’une planète tellurique et de deux planètes gazeuses, il abrite une forteresse destinée à contrer toute attaque venant de la bordure. Malheureusement, il semblerait que les ennemis de l’Imperium parviennent régulièrement à contourner le système, ce qui fait que sa pertinence est régulièrement mise en cause.")
+	local SoleilAgmenos = Planet():setPosition(18801184, -5028224):setFaction("Neutre"):setPlanetRadius(7900):setPlanetCloudRadius(8000.00):setCallSign("Soleil d'Agmenos"):setPlanetSurfaceTexture("planets/Soleil_Bleu.jpg"):setPlanetAtmosphereColor(0.8,1,1):setRadarSignatureInfo(0.79, 0.9, 0.0):setScanningParameters(1,1):setPlanetIcon("planets/icons/white-dwarf-star.png"):setDescriptions("Soleil D'Agmenos","Le système d'Agmenos est constitué d’une planète tellurique et de deux planètes gazeuses.",[[Situé en bordure du sous-secteur, le système Agmenos est l’un des rares points d’accès du secteur vers le reste de la bordure orientale de la galaxie. Constitué d’une planète tellurique et de deux planètes gazeuses, il abrite une forteresse destinée à contrer toute attaque venant de la bordure. Malheureusement, il semblerait que les ennemis de l’Imperium parviennent régulièrement à contourner le système, ce qui fait que sa pertinence est régulièrement mise en cause.
+	
+	
+	]])
     WarpJammer():setFaction("Neutre"):setPosition(18801184, -5028224):setRange(70000.00)
 	
 --Planètes
 --Agmenos I	
-	local AgmenosI = Planet():setPosition(18814812, -5013623):setFaction("Neutre"):setPlanetRadius(1000):setAxialRotationTime(3600):setCallSign("Agmenos I"):setPlanetSurfaceTexture("planets/2k_neptune.jpg"):setScanningParameters(3, 2):setPlanetIcon("planets/icons/blue-planet.png"):setDescriptions("Agmenos I","Agmenos I est une planète gazeuse.","Agmenos I est une planète gazeuse sans grand intérêt dans un système comme Agmenos.")
+	local AgmenosI = Planet():setPosition(18814812, -5013623):setFaction("Neutre"):setPlanetRadius(1000):setAxialRotationTime(3600):setCallSign("Agmenos I"):setPlanetSurfaceTexture("planets/2k_neptune.jpg"):setRadarSignatureInfo(0.05, 0.1, 0.0):setScanningParameters(1, 1):setPlanetIcon("planets/icons/blue-planet.png"):setDescriptions("Agmenos I","Agmenos I est une planète gazeuse.","Agmenos I est une planète gazeuse sans grand intérêt dans un système comme Agmenos.")
     AgmenosI:setOrbit(SoleilAgmenos, 1000)
 	
 --Agmenos II	
-	local AgmenosII = Planet():setPosition(18760930, -5032396):setFaction("Imperium Agmenos"):setPlanetRadius(2000):setAxialRotationTime(3600):setCallSign("Agmenos II"):setPlanetSurfaceTexture("planets/2k_venus_atmosphere.jpg"):setScanningParameters(3, 2):setPlanetIcon("planets/icons/14.png"):setDescriptions("Agmenos II","Agmenos II est un Monde-Forteresse fondé par l'Imperium pour protéger la frontière avec la Bordure Orientale.",[["Agmenos II
+	local AgmenosII = Planet():setPosition(18760930, -5032396):setFaction("Imperium Agmenos"):setPlanetRadius(2000):setAxialRotationTime(3600):setCallSign("Agmenos II"):setPlanetSurfaceTexture("planets/2k_venus_atmosphere.jpg"):setRadarSignatureInfo(0.2, 0.7, 0.7):setScanningParameters(3, 3):setPlanetIcon("planets/icons/14.png"):setDescriptions("Agmenos II","Agmenos II est un Monde-Forteresse fondé par l'Imperium pour protéger la frontière avec la Bordure Orientale.",[[Agmenos II
 Monde-Forteresse
 Gouverneur : Général-Gouverneur Alexio D’Anlado
 Gouvernement : Hégémonie militaire
@@ -7162,27 +7446,33 @@ Population :  526 Millions
 Production notable : Soldats
 Loi particulière : Objets de luxe et drogues interdites
 
-Agmenos II est un monde-Forteresse fondé par l’Imperium à la fin de la Croisade Sternbergienne, quand il devint évident que cette dernière n’irait pas plus avant dans cette direction. Destinée autant à servir de jalon dans les différentes avancées de l’Imperium que de bastion pour empêcher les ennemis de l’Imperium de reprendre ce qui avait été conquis, Agmenos prouva son utilité dans les premières centaines d’années de son existence, en repoussant de nombreuses attaques Xenos et pirates. Il semblerait pourtant que, durant ce dernier siècle, les ennemis de l’Imperium aient trouvé d’autres accès au sous secteur, entraînant une perte notable de l’utilité de la planète, au point que son surnom de “Bouclier Tarkusien” n’est plus désormais utilisé qu'à titre ironique."]])
+Agmenos II est un monde-Forteresse fondé par l’Imperium à la fin de la Croisade Sternbergienne, quand il devint évident que cette dernière n’irait pas plus avant dans cette direction. Destinée autant à servir de jalon dans les différentes avancées de l’Imperium que de bastion pour empêcher les ennemis de l’Imperium de reprendre ce qui avait été conquis, Agmenos prouva son utilité dans les premières centaines d’années de son existence, en repoussant de nombreuses attaques Xenos et pirates. Il semblerait pourtant que, durant ce dernier siècle, les ennemis de l’Imperium aient trouvé d’autres accès au sous secteur, entraînant une perte notable de l’utilité de la planète, au point que son surnom de “Bouclier Tarkusien” n’est plus désormais utilisé qu'à titre ironique.
+
+
+]])
     AgmenosII:setOrbit(SoleilAgmenos, 3000)
 	
 --Agmenos III	
-	local AgmenosIII = Planet():setPosition(18828196, -5083496):setFaction("Neutre"):setPlanetRadius(5000):setAxialRotationTime(3600):setCallSign("Agmenos III"):setPlanetSurfaceTexture("planets/gas-1.png"):setScanningParameters(3, 2):setPlanetIcon("planets/icons/Orange-Planet.png"):setDescriptions("Agmenos III","Agmenos III  est une géante gazeuse.","Agmenos III  est une géante gazeuse souvent utilisée par les flottes locales pour tendre des embuscades aux forces ennemies lors des siècles passés.")
+	local AgmenosIII = Planet():setPosition(18828196, -5083496):setFaction("Neutre"):setPlanetRadius(5000):setAxialRotationTime(3600):setCallSign("Agmenos III"):setPlanetSurfaceTexture("planets/gas-1.png"):setRadarSignatureInfo(0.25, 0.1, 0.0):setScanningParameters(1, 1):setPlanetIcon("planets/icons/Orange-Planet.png"):setDescriptions("Agmenos III","Agmenos III  est une géante gazeuse.",[[Agmenos III  est une géante gazeuse souvent utilisée par les flottes locales pour tendre des embuscades aux forces ennemies lors des siècles passés.
+	
+	
+	]])
     AgmenosIII:setOrbit(SoleilAgmenos, 10000)
 
 --Stations de Surveillance
 function SurveillanceAgmenos()
-	CpuShip():setFaction("Imperium Agmenos"):setTemplate("Station Relais"):setCallSign("AGM01"):setPosition(18800622, -5100104):orderDefendLocation(18800622, -5100104)
-    CpuShip():setFaction("Imperium Agmenos"):setTemplate("Station Relais"):setCallSign("AGM02"):setPosition(18840346, -5089252):orderDefendLocation(18840346, -5089252)
-	CpuShip():setFaction("Imperium Agmenos"):setTemplate("Station Relais"):setCallSign("AGM03"):setPosition(18865738, -5061403):orderDefendLocation(18865738, -5061403)
-    CpuShip():setFaction("Imperium Agmenos"):setTemplate("Station Relais"):setCallSign("AGM04"):setPosition(18873314, -5029254):orderDefendLocation(18873314, -5029254)
-    CpuShip():setFaction("Imperium Agmenos"):setTemplate("Station Relais"):setCallSign("AGM05"):setPosition(18865534, -4992396):orderDefendLocation(18865534, -4992396)
-    CpuShip():setFaction("Imperium Agmenos"):setTemplate("Station Relais"):setCallSign("AGM06"):setPosition(18840142, -4966185):orderDefendLocation(18840142, -4966185)
-    CpuShip():setFaction("Imperium Agmenos"):setTemplate("Station Relais"):setCallSign("AGM07"):setPosition(18801440, -4955332):orderDefendLocation(18801440, -4955332)
-	CpuShip():setFaction("Imperium Agmenos"):setTemplate("Station Relais"):setCallSign("AGM08"):setPosition(18765810, -4964137):orderDefendLocation(18765810, -4964137)
-	CpuShip():setFaction("Imperium Agmenos"):setTemplate("Station Relais"):setCallSign("AGM09"):setPosition(18738986, -4988914):orderDefendLocation(18738986, -4988914)
-    CpuShip():setFaction("Imperium Agmenos"):setTemplate("Station Relais"):setCallSign("AGM10"):setPosition(18729566, -5018401):orderDefendLocation(18729566, -5018401)
-    CpuShip():setFaction("Imperium Agmenos"):setTemplate("Station Relais"):setCallSign("AGM11"):setPosition(18733866, -5057307):orderDefendLocation(18733866, -5057307)
-    CpuShip():setFaction("Imperium Agmenos"):setTemplate("Station Relais"):setCallSign("AGM12"):setPosition(18757618, -5088227):orderDefendLocation(18757618, -5088227)
+	CpuShip():setFaction("Imperium Agmenos"):setTemplate("Station Relais"):setCallSign("AGM01"):setRadarSignatureInfo(0.3, 0.3, 0.3):setScanningParameters(1, 2):setPosition(18800622, -5100104):orderDefendLocation(18800622, -5100104)
+    CpuShip():setFaction("Imperium Agmenos"):setTemplate("Station Relais"):setCallSign("AGM02"):setRadarSignatureInfo(0.3, 0.3, 0.3):setScanningParameters(1, 2):setPosition(18840346, -5089252):orderDefendLocation(18840346, -5089252)
+	CpuShip():setFaction("Imperium Agmenos"):setTemplate("Station Relais"):setCallSign("AGM03"):setRadarSignatureInfo(0.3, 0.3, 0.3):setScanningParameters(1, 2):setPosition(18865738, -5061403):orderDefendLocation(18865738, -5061403)
+    CpuShip():setFaction("Imperium Agmenos"):setTemplate("Station Relais"):setCallSign("AGM04"):setRadarSignatureInfo(0.3, 0.3, 0.3):setScanningParameters(1, 2):setPosition(18873314, -5029254):orderDefendLocation(18873314, -5029254)
+    CpuShip():setFaction("Imperium Agmenos"):setTemplate("Station Relais"):setCallSign("AGM05"):setRadarSignatureInfo(0.3, 0.3, 0.3):setScanningParameters(1, 2):setPosition(18865534, -4992396):orderDefendLocation(18865534, -4992396)
+    CpuShip():setFaction("Imperium Agmenos"):setTemplate("Station Relais"):setCallSign("AGM06"):setRadarSignatureInfo(0.3, 0.3, 0.3):setScanningParameters(1, 2):setPosition(18840142, -4966185):orderDefendLocation(18840142, -4966185)
+    CpuShip():setFaction("Imperium Agmenos"):setTemplate("Station Relais"):setCallSign("AGM07"):setRadarSignatureInfo(0.3, 0.3, 0.3):setScanningParameters(1, 2):setPosition(18801440, -4955332):orderDefendLocation(18801440, -4955332)
+	CpuShip():setFaction("Imperium Agmenos"):setTemplate("Station Relais"):setCallSign("AGM08"):setRadarSignatureInfo(0.3, 0.3, 0.3):setScanningParameters(1, 2):setPosition(18765810, -4964137):orderDefendLocation(18765810, -4964137)
+	CpuShip():setFaction("Imperium Agmenos"):setTemplate("Station Relais"):setCallSign("AGM09"):setRadarSignatureInfo(0.3, 0.3, 0.3):setScanningParameters(1, 2):setPosition(18738986, -4988914):orderDefendLocation(18738986, -4988914)
+    CpuShip():setFaction("Imperium Agmenos"):setTemplate("Station Relais"):setCallSign("AGM10"):setRadarSignatureInfo(0.3, 0.3, 0.3):setScanningParameters(1, 2):setPosition(18729566, -5018401):orderDefendLocation(18729566, -5018401)
+    CpuShip():setFaction("Imperium Agmenos"):setTemplate("Station Relais"):setCallSign("AGM11"):setRadarSignatureInfo(0.3, 0.3, 0.3):setScanningParameters(1, 2):setPosition(18733866, -5057307):orderDefendLocation(18733866, -5057307)
+    CpuShip():setFaction("Imperium Agmenos"):setTemplate("Station Relais"):setCallSign("AGM12"):setRadarSignatureInfo(0.3, 0.3, 0.3):setScanningParameters(1, 2):setPosition(18757618, -5088227):orderDefendLocation(18757618, -5088227)
     
 end
 
@@ -7190,13 +7480,13 @@ SurveillanceAgmenos()
 
 --Stations de Défense
 function DefenseAgmenos()
-	CpuShip():setFaction("Imperium Agmenos"):setTemplate("Station de Defense a Lance Siderale"):setCallSign("LS11"):setPosition(18732376, -5030664):orderDefendLocation(18732376, -5030664)
-    CpuShip():setFaction("Imperium Agmenos"):setTemplate("Station de Defense a Lance Siderale"):setCallSign("LS12"):setPosition(18732376, -5028248):orderDefendLocation(18732376, -5028248)
-	CpuShip():setFaction("Imperium Agmenos"):setTemplate("Station de Defense a Lance Siderale"):setCallSign("LS13"):setPosition(18732290, -5025486):orderDefendLocation(18732290, -5025486)
-    CpuShip():setFaction("Imperium Agmenos"):setTemplate("Station de Defense a Macrocanon"):setCallSign("LM11"):setPosition(18731686, -5031959):orderDefendLocation(18731686, -5031959):setCustomWeaponStorage("MCANMK0", 200):setCustomWeaponStorageMax("MCANMK0", 200)
-    CpuShip():setFaction("Imperium Agmenos"):setTemplate("Station de Defense a Macrocanon"):setCallSign("LM12"):setPosition(18731686, -5029197):orderDefendLocation(18731686, -5029197):setCustomWeaponStorage("MCANMK0", 200):setCustomWeaponStorageMax("MCANMK0", 200)
-    CpuShip():setFaction("Imperium Agmenos"):setTemplate("Station de Defense a Macrocanon"):setCallSign("LM13"):setPosition(18731686, -5026866):orderDefendLocation(18731686, -5026866):setCustomWeaponStorage("MCANMK0", 200):setCustomWeaponStorageMax("MCANMK0", 200)
-    CpuShip():setFaction("Imperium Agmenos"):setTemplate("Station de Defense a Macrocanon"):setCallSign("LM14"):setPosition(18731686, -5024363):orderDefendLocation(18731686, -5024363):setCustomWeaponStorage("MCANMK0", 200):setCustomWeaponStorageMax("MCANMK0", 200)
+	CpuShip():setFaction("Imperium Agmenos"):setTemplate("Station de Defense a Lance Siderale"):setCallSign("LS11"):setRadarSignatureInfo(0.15, 0.3, 0.2):setScanningParameters(1, 2):setPosition(18732376, -5030664):orderDefendLocation(18732376, -5030664)
+    CpuShip():setFaction("Imperium Agmenos"):setTemplate("Station de Defense a Lance Siderale"):setCallSign("LS12"):setRadarSignatureInfo(0.15, 0.3, 0.2):setScanningParameters(1, 2):setPosition(18732376, -5028248):orderDefendLocation(18732376, -5028248)
+	CpuShip():setFaction("Imperium Agmenos"):setTemplate("Station de Defense a Lance Siderale"):setCallSign("LS13"):setRadarSignatureInfo(0.15, 0.3, 0.2):setScanningParameters(1, 2):setPosition(18732290, -5025486):orderDefendLocation(18732290, -5025486)
+    CpuShip():setFaction("Imperium Agmenos"):setTemplate("Station de Defense a Macrocanon"):setCallSign("LM11"):setRadarSignatureInfo(0.15, 0.1, 0.2):setScanningParameters(1, 2):setPosition(18731686, -5031959):orderDefendLocation(18731686, -5031959):setCustomWeaponStorage("MCANMK0", 200):setCustomWeaponStorageMax("MCANMK0", 200)
+    CpuShip():setFaction("Imperium Agmenos"):setTemplate("Station de Defense a Macrocanon"):setCallSign("LM12"):setRadarSignatureInfo(0.15, 0.1, 0.2):setScanningParameters(1, 2):setPosition(18731686, -5029197):orderDefendLocation(18731686, -5029197):setCustomWeaponStorage("MCANMK0", 200):setCustomWeaponStorageMax("MCANMK0", 200)
+    CpuShip():setFaction("Imperium Agmenos"):setTemplate("Station de Defense a Macrocanon"):setCallSign("LM13"):setRadarSignatureInfo(0.15, 0.1, 0.2):setScanningParameters(1, 2):setPosition(18731686, -5026866):orderDefendLocation(18731686, -5026866):setCustomWeaponStorage("MCANMK0", 200):setCustomWeaponStorageMax("MCANMK0", 200)
+    CpuShip():setFaction("Imperium Agmenos"):setTemplate("Station de Defense a Macrocanon"):setCallSign("LM14"):setRadarSignatureInfo(0.15, 0.1, 0.2):setScanningParameters(1, 2):setPosition(18731686, -5024363):orderDefendLocation(18731686, -5024363):setCustomWeaponStorage("MCANMK0", 200):setCustomWeaponStorageMax("MCANMK0", 200)
 
 end
 
@@ -7204,13 +7494,13 @@ DefenseAgmenos()
 
 --Vaisseaux
 
-    local Poing = CpuShip():setFaction("Imperium Agmenos"):setTemplate("Croiseur Lunar"):setCallSign("Poing de Sternberg"):setPosition(18762994, -5024474):orderDefendTarget(AgmenosII,500,5000):setCustomWeaponStorage("MCANMK2", 200):setCustomWeaponStorageMax("MCANMK2", 200):setCustomWeaponStorage("Torpille", 12):setCustomWeaponStorageMax("Torpille", 12)
-    local Fureur = CpuShip():setFaction("Imperium Agmenos"):setTemplate("Fregate Sword"):setCallSign("Juste Fureur"):setPosition(18761206, -5021346):orderDefendTarget(Poing,500,5000)
-    local Destin = CpuShip():setFaction("Imperium Agmenos"):setTemplate("Fregate Sword"):setCallSign("Destin Implacable"):setPosition(18768580, -5022240):orderDefendTarget(Poing,500,5000)
-    CpuShip():setFaction("Imperium Agmenos"):setTemplate("Escorteur Cobra"):setCallSign("Feu Vengeur"):setPosition(18765676, -5018218):orderDefendTarget(Fureur,500,5000):setCustomWeaponStorage("Torpille", 6):setCustomWeaponStorageMax("Torpille", 6)
-    CpuShip():setFaction("Imperium Agmenos"):setTemplate("Escorteur Cobra"):setCallSign("Pourfendeur des Hérétiques"):setPosition(18759420, -5018218):orderDefendTarget(Fureur,500,5000):setCustomWeaponStorage("Torpille", 6):setCustomWeaponStorageMax("Torpille", 6)
-    CpuShip():setFaction("Imperium Agmenos"):setTemplate("Escorteur Cobra"):setCallSign("Destinée Manifeste"):setPosition(18756292, -5018442):orderDefendTarget(Destin,500,5000):setCustomWeaponStorage("Torpille", 6):setCustomWeaponStorageMax("Torpille", 6)
-    CpuShip():setFaction("Imperium Agmenos"):setTemplate("Escorteur Cobra"):setCallSign("Libérateur"):setPosition(18772602, -5019782):orderDefendTarget(Destin,500,5000):setCustomWeaponStorage("Torpille", 6):setCustomWeaponStorageMax("Torpille", 6)
+    local Poing = CpuShip():setFaction("Imperium Agmenos"):setTemplate("Croiseur Lunar"):setCallSign("Poing de Sternberg"):setRadarSignatureInfo(0.25, 0.8, 0.4):setScanningParameters(2, 1):setPosition(18762994, -5024474):orderDefendTarget(AgmenosII,500,5000):setCustomWeaponStorage("MCANMK2", 200):setCustomWeaponStorageMax("MCANMK2", 200):setCustomWeaponStorage("Torpille", 12):setCustomWeaponStorageMax("Torpille", 12)
+    local Fureur = CpuShip():setFaction("Imperium Agmenos"):setTemplate("Fregate Sword"):setCallSign("Juste Fureur"):setRadarSignatureInfo(0.1, 0.7, 0.3):setScanningParameters(2, 1):setPosition(18761206, -5021346):orderDefendTarget(Poing,500,5000)
+    local Destin = CpuShip():setFaction("Imperium Agmenos"):setTemplate("Fregate Sword"):setCallSign("Destin Implacable"):setRadarSignatureInfo(0.1, 0.7, 0.3):setScanningParameters(2, 1):setPosition(18768580, -5022240):orderDefendTarget(Poing,500,5000)
+    CpuShip():setFaction("Imperium Agmenos"):setTemplate("Escorteur Cobra"):setCallSign("Feu Vengeur"):setRadarSignatureInfo(0.1, 0.7, 0.3):setScanningParameters(1, 1):setPosition(18765676, -5018218):orderDefendTarget(Fureur,500,5000):setCustomWeaponStorage("Torpille", 6):setCustomWeaponStorageMax("Torpille", 6)
+    CpuShip():setFaction("Imperium Agmenos"):setTemplate("Escorteur Cobra"):setCallSign("Pourfendeur des Hérétiques"):setRadarSignatureInfo(0.1, 0.7, 0.3):setScanningParameters(1, 1):setPosition(18759420, -5018218):orderDefendTarget(Fureur,500,5000):setCustomWeaponStorage("Torpille", 6):setCustomWeaponStorageMax("Torpille", 6)
+    CpuShip():setFaction("Imperium Agmenos"):setTemplate("Escorteur Cobra"):setCallSign("Destinée Manifeste"):setRadarSignatureInfo(0.1, 0.7, 0.3):setScanningParameters(1, 1):setPosition(18756292, -5018442):orderDefendTarget(Destin,500,5000):setCustomWeaponStorage("Torpille", 6):setCustomWeaponStorageMax("Torpille", 6)
+    CpuShip():setFaction("Imperium Agmenos"):setTemplate("Escorteur Cobra"):setCallSign("Libérateur"):setRadarSignatureInfo(0.1, 0.7, 0.3):setScanningParameters(1, 1):setPosition(18772602, -5019782):orderDefendTarget(Destin,500,5000):setCustomWeaponStorage("Torpille", 6):setCustomWeaponStorageMax("Torpille", 6)
 
 
 --Agmenos(IT943C)-->Nexus12(EB805C)
@@ -7249,10 +7539,19 @@ function MisthosMap()
 
 --Soleil
 
-	local Misthos = Planet():setPosition(8253810, -9718514):setFaction("Neutre"):setPlanetRadius(16000):setPlanetCloudRadius(16100.00):setCallSign("Misthos"):setPlanetSurfaceTexture("planets/gas-3.png"):setPlanetAtmosphereColor(0.1,0.1,0.1):setRadarSignatureInfo(0.80, 0.75, -0.95):setScanningParameters(1,1):setPlanetIcon("planets/icons/Storm-Planet.png"):setDescriptions("Misthos I","Misthos I est une planète gazeuse d’une taille exceptionnelle, évoluant seule dans l'univers.","Le système Misthos est en réalité composé d’une unique planète géante, sans étoile d’aucune sorte. On soupçonne que l’étoile autour de laquelle orbitait la planète à été soufflée par un quelconque cataclysme, conduisant la planète orpheline à errer seule dans le cosmos. Cependant, sa taille et la lenteur de son déplacement font qu’elle génère un champ de gravité suffisamment important pour que des routes warp stables y menant aient pu être enregistrées. De plus, sa position, entre l’Amas Tarkusien et le reste du sous-secteur, en fait un point de passage privilégié pour tous les vaisseaux commerçants qui rejoignent ou viennent de Tarkus, au point qu’une station y ait été construite pour surveiller le trafic et pour permettre l’étude de la planète. Cependant, la station est régulièrement prise d’assaut par des Xenos et des pirates, qui ont plusieurs fois réussi à s’en faire une base pour harceler les convois marchands. En dehors de cette station, le système est inhabité, car bien que la planète représente une manne de ressources non négligeables, les difficultés d’exploitation, en l’absence d’autre corps local où amarrer une installation, et en l’absence d’une étoile, ont découragé toutes les tentatives d’exploitation.")
+	local Misthos = Planet():setPosition(8253810, -9718514):setFaction("Neutre"):setPlanetRadius(16000):setPlanetCloudRadius(16100.00):setCallSign("Misthos"):setPlanetSurfaceTexture("planets/gas-3.png"):setPlanetAtmosphereColor(0.1,0.1,0.1):setRadarSignatureInfo(0.80, 0.1, 0.0):setScanningParameters(1,1):setPlanetIcon("planets/icons/Storm-Planet.png"):setDescriptions("Misthos I",[[Misthos I est une planète gazeuse d’une taille exceptionnelle, évoluant seule dans l'univers.
+	
+	
+	]],[[Le système Misthos est en réalité composé d’une unique planète géante, sans étoile d’aucune sorte. On soupçonne que l’étoile autour de laquelle orbitait la planète à été soufflée par un quelconque cataclysme, conduisant la planète orpheline à errer seule dans le cosmos. Cependant, sa taille et la lenteur de son déplacement font qu’elle génère un champ de gravité suffisamment important pour que des routes warp stables y menant aient pu être enregistrées. De plus, sa position, entre l’Amas Tarkusien et le reste du sous-secteur, en fait un point de passage privilégié pour tous les vaisseaux commerçants qui rejoignent ou viennent de Tarkus, au point qu’une station y ait été construite pour surveiller le trafic et pour permettre l’étude de la planète. Cependant, la station est régulièrement prise d’assaut par des Xenos et des pirates, qui ont plusieurs fois réussi à s’en faire une base pour harceler les convois marchands. En dehors de cette station, le système est inhabité, car bien que la planète représente une manne de ressources non négligeables, les difficultés d’exploitation, en l’absence d’autre corps local où amarrer une installation, et en l’absence d’une étoile, ont découragé toutes les tentatives d’exploitation.
+	
+	
+	]])
     WarpJammer():setFaction("Neutre"):setPosition(8253810, -9718514):setRange(150000.00)
 	
-    CpuShip():setFaction("Imperium Misthos"):setTemplate("Station Wayfarer"):setCallSign("MIS01"):setPosition(8342764, -9805215):setDescriptions("","","")
+    CpuShip():setFaction("Imperium Misthos"):setTemplate("Station Wayfarer"):setCallSign("MIS01"):setRadarSignatureInfo(0.1, 0.7, 0.3):setScanningParameters(2, 2):setPosition(8342764, -9805215):setDescriptions("Station Impériale Wayfarer MIS01","La Station Impériale Wayfarer MIS01 a été installée par l'Imperium pour surveiller le trafic du système Misthos.",[[La Station Impériale Wayfarer MIS01 a été installée par l'Imperium pour surveiller le trafic du système Misthos. Elle devait à l'origine servir de simple point de ravitaillement et exploiter la nébuleuse proche pour sa propre alimentation en énergie, mais son isolement en ont rapidement fait une cible facile pour les pirates et Xenos de la région qui ont pris l'habitude de la prendre d'assaut pour s'en servir comme base arrière pour leurs raids sur les vaisseaux commerciaux traversant le système. Lorsque celà arrive, l'Impérium envoie des troupes et des colons pour reprendre et réhabiliter la station, ce qui fait que la station a changé de nombreuses fois de main au cours des derniers siècles, et les Capitaines Chartistes préfèrent généralement traverser le système le plus rapidement possible en évitant tout contact avec la station.
+	
+	
+	]])
 	
 --Misthos(SB410C)-->Nexus 1(AI162D)	
     WormHole():setPosition(8202226, -9912773):setFaction("Neutre"):setTargetPosition(-3244898, -698659)
@@ -12816,7 +13115,7 @@ function Nexus12()
 --Nexus12(DZ806C)-->Agemnos(IR936C)
 --(137°,49U)
     WormHole():setPosition(16137350, -2599456):setTargetPosition(18725608, -5029300):setFaction("Neutre")
-	
+		
 --Nexus12(EB802C)-->Misthos(RM406C)
 --(273°,65U)
     WormHole():setPosition(16045242, -2632278):setTargetPosition(8138402, -9616082):setFaction("Neutre")
@@ -12833,8 +13132,8 @@ function Nexus12()
 --Nexus12(DX801C)-->Nexus11(KK929A)
 --(224°,105U)
     WormHole():setPosition(16038882, -2552130):setTargetPosition(18598600, 5925346):setFaction("Neutre")
-
 	
+
 --Nexus12(EB807C)-->Nexus du Diable(BK376C)
 --(77°,42U)
     WormHole():setPosition(16151345, -2637367):setTargetPosition(7532474, -1252471):setFaction("Neutre")
@@ -15355,16 +15654,16 @@ function SortiesNexusDiable()
 --Démons du Nexus du Diable
 	function DemonNexusduDiable()
 	
-    CpuShip():setFaction("Chaos"):setTemplate("Entitee Psychique"):setCallSign("ERREUR"):setPosition(7462461, -1226347):orderDefendLocation(7462461, -1226347):setCanBeDestroyed(false)
-    CpuShip():setFaction("Chaos"):setTemplate("Entitee Psychique"):setCallSign("ERREUR"):setPosition(7491424, -1240578):orderDefendLocation(7491424, -1240578):setCanBeDestroyed(false)
-    CpuShip():setFaction("Chaos"):setTemplate("Entitee Psychique"):setCallSign("ERREUR"):setPosition(7519387, -1224599):orderDefendLocation(7519387, -1224599):setCanBeDestroyed(false)
-    CpuShip():setFaction("Chaos"):setTemplate("Entitee Psychique"):setCallSign("ERREUR"):setPosition(7555090, -1240828):orderDefendLocation(7555090, -1240828):setCanBeDestroyed(false)
-    CpuShip():setFaction("Chaos"):setTemplate("Entitee Psychique"):setCallSign("ERREUR"):setPosition(7501161, -1266294):orderDefendLocation(7501161, -1266294):setCanBeDestroyed(false)
-    CpuShip():setFaction("Chaos"):setTemplate("Entitee Psychique"):setCallSign("ERREUR"):setPosition(7521634, -1294757):orderDefendLocation(7521634, -1294757):setCanBeDestroyed(false)
-    CpuShip():setFaction("Chaos"):setTemplate("Entitee Psychique"):setCallSign("ERREUR"):setPosition(7559084, -1271537):orderDefendLocation(7559084, -1271537):setCanBeDestroyed(false)
-    CpuShip():setFaction("Chaos"):setTemplate("Entitee Psychique"):setCallSign("ERREUR"):setPosition(7613264, -1309987):orderDefendLocation(7613264, -1309987):setCanBeDestroyed(false)
-    CpuShip():setFaction("Chaos"):setTemplate("Entitee Psychique"):setCallSign("ERREUR"):setPosition(7570320, -1308239):orderDefendLocation(7570320, -1308239):setCanBeDestroyed(false)
-    CpuShip():setFaction("Chaos"):setTemplate("Entitee Psychique"):setCallSign("ERREUR"):setPosition(7588546, -1278029):orderDefendLocation(7588546, -1278029):setCanBeDestroyed(false)
+    CpuShip():setFaction("Chaos"):setTemplate("Entitee Psychique"):setCallSign("ERREUR"):setRadarSignatureInfo(0.0, 0.0, 0.0):setScanningParameters(1, 1):setPosition(7462461, -1226347):orderDefendLocation(7462461, -1226347):setCanBeDestroyed(false)
+    CpuShip():setFaction("Chaos"):setTemplate("Entitee Psychique"):setCallSign("ERREUR"):setRadarSignatureInfo(0.0, 0.0, 0.0):setScanningParameters(1, 1):setPosition(7491424, -1240578):orderDefendLocation(7491424, -1240578):setCanBeDestroyed(false)
+    CpuShip():setFaction("Chaos"):setTemplate("Entitee Psychique"):setCallSign("ERREUR"):setRadarSignatureInfo(0.0, 0.0, 0.0):setScanningParameters(1, 1):setPosition(7519387, -1224599):orderDefendLocation(7519387, -1224599):setCanBeDestroyed(false)
+    CpuShip():setFaction("Chaos"):setTemplate("Entitee Psychique"):setCallSign("ERREUR"):setRadarSignatureInfo(0.0, 0.0, 0.0):setScanningParameters(1, 1):setPosition(7555090, -1240828):orderDefendLocation(7555090, -1240828):setCanBeDestroyed(false)
+    CpuShip():setFaction("Chaos"):setTemplate("Entitee Psychique"):setCallSign("ERREUR"):setRadarSignatureInfo(0.0, 0.0, 0.0):setScanningParameters(1, 1):setPosition(7501161, -1266294):orderDefendLocation(7501161, -1266294):setCanBeDestroyed(false)
+    CpuShip():setFaction("Chaos"):setTemplate("Entitee Psychique"):setCallSign("ERREUR"):setRadarSignatureInfo(0.0, 0.0, 0.0):setScanningParameters(1, 1):setPosition(7521634, -1294757):orderDefendLocation(7521634, -1294757):setCanBeDestroyed(false)
+    CpuShip():setFaction("Chaos"):setTemplate("Entitee Psychique"):setCallSign("ERREUR"):setRadarSignatureInfo(0.0, 0.0, 0.0):setScanningParameters(1, 1):setPosition(7559084, -1271537):orderDefendLocation(7559084, -1271537):setCanBeDestroyed(false)
+    CpuShip():setFaction("Chaos"):setTemplate("Entitee Psychique"):setCallSign("ERREUR"):setRadarSignatureInfo(0.0, 0.0, 0.0):setScanningParameters(1, 1):setPosition(7613264, -1309987):orderDefendLocation(7613264, -1309987):setCanBeDestroyed(false)
+    CpuShip():setFaction("Chaos"):setTemplate("Entitee Psychique"):setCallSign("ERREUR"):setRadarSignatureInfo(0.0, 0.0, 0.0):setScanningParameters(1, 1):setPosition(7570320, -1308239):orderDefendLocation(7570320, -1308239):setCanBeDestroyed(false)
+    CpuShip():setFaction("Chaos"):setTemplate("Entitee Psychique"):setCallSign("ERREUR"):setRadarSignatureInfo(0.0, 0.0, 0.0):setScanningParameters(1, 1):setPosition(7588546, -1278029):orderDefendLocation(7588546, -1278029):setCanBeDestroyed(false)
 
 	end
 
@@ -15395,7 +15694,6 @@ end
 	
 end
 
-
 --Appel de toutes les fonctions
 function init()
 
@@ -15405,3 +15703,4 @@ function init()
 end
 
 --Fin de la Carte de l'Amas Tarkusien
+

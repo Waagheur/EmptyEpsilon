@@ -36,7 +36,8 @@ template:setCanLaunchProbe(false)
 --Définition du comportement IA
 template:setDefaultAI("fighter")
 template:setCloaking (true)
-
+template:setCanDock(true)
+template:setExternalDockClasses(_("class","Escorteur"))
 end
 
 EscorteurTESTCoque()
@@ -112,6 +113,8 @@ variation:setJumpDriveRange(5000.0, 50000.0)
 variation:setJumpDriveChargeTime(60)
 --Définition des portées Radar
 variation:setLongRangeRadarRange(30000):setShortRangeRadarRange(12000)
+variation:setCanDock(true)
+variation:setExternalDockClasses(_("class","Escorteur"))
 
 function EscorteurTESTTourellesPJ()
 

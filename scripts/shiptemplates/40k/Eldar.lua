@@ -35,6 +35,9 @@ template:setCanHack(false)
 template:setCanLaunchProbe(false)
 --Définition du comportement IA
 template:setDefaultAI("fighter")
+--Dockage autorisé
+template:setCanDock(true)
+--Camouflage
 template:setCloaking (true)
 
 end
@@ -138,6 +141,10 @@ template:setCanHack(false)
 template:setCanLaunchProbe(false)
 --Définition du comportement IA
 template:setDefaultAI("fighter")
+--Dockage autorisé
+template:setCanDock(true)
+template:setExternalDockClasses(_("class","Transport"),_("class","Escorteur"))
+--Camouflage
 template:setCloaking (true)
 
 end
@@ -299,6 +306,10 @@ template:setCanHack(false)
 template:setCanLaunchProbe(false)
 --Définition du comportement IA
 template:setDefaultAI("fighter")
+--Dockage autorisé
+template:setCanDock(true)
+template:setExternalDockClasses(_("class","Transport"),_("class","Escorteur"))
+--Camouflage
 template:setCloaking (true)
 
 end
@@ -402,6 +413,10 @@ template:setCanHack(false)
 template:setCanLaunchProbe(false)
 --Définition du comportement IA
 template:setDefaultAI("fighter")
+--Dockage autorisé
+template:setCanDock(true)
+template:setExternalDockClasses(_("class","Transport"),_("class","Escorteur"))
+--Camouflage
 template:setCloaking (true)
 
 end
@@ -537,6 +552,10 @@ template:setCanHack(false)
 template:setCanLaunchProbe(false)
 --Définition du comportement IA
 template:setDefaultAI("fighter")
+--Dockage autorisé
+template:setCanDock(true)
+template:setExternalDockClasses(_("class","Transport"),_("class","Escorteur"))
+--Camouflage
 template:setCloaking (true)
 
 end
@@ -678,6 +697,10 @@ template:setCanHack(false)
 template:setCanLaunchProbe(false)
 --Définition du comportement IA
 template:setDefaultAI("fighter")
+--Dockage autorisé
+template:setCanDock(true)
+template:setExternalDockClasses(_("class","Transport"),_("class","Escorteur"),_("class","Fregate"))
+--Camouflage
 template:setCloaking (true)
 
 end
@@ -688,7 +711,7 @@ function CroiseurLegerAuroraTourelles()
 
 --Tourelles de défense
 --Axe de tir (N° d'arme, arc de tir, Orientation, portée, délais de tir, dégâts)
-template:setBeamWeapon(0, 360, 180, 1000, 1, 1)
+template:setBeamWeapon(0, 360, 180, 2000, 1, 1)
 --Ajustement de la consommation d'énergie des tirs
 template:setBeamWeaponEnergyPerFire(0, 1)
 --Ajustement de la surchauffe engendrée par les tirs
@@ -768,7 +791,7 @@ function CroiseurLegerAuroraTourellesPJ()
 
 --Tourelles de défense
 --Axe de tir (N° d'arme, arc de tir, Orientation, portée, délais de tir, dégâts)
-variation:setBeamWeapon(0, 360, 180, 1000, 1, 1)
+variation:setBeamWeapon(0, 360, 180, 2000, 1, 1)
 --Ajustement de la consommation d'énergie des tirs
 variation:setBeamWeaponEnergyPerFire(0, 1)
 --Ajustement de la surchauffe engendrée par les tirs
@@ -839,6 +862,10 @@ template:setCanHack(false)
 template:setCanLaunchProbe(false)
 --Définition du comportement IA
 template:setDefaultAI("fighter")
+--Dockage autorisé
+template:setCanDock(true)
+template:setExternalDockClasses(_("class","Transport"),_("class","Escorteur"),_("class","Fregate"))
+--Camouflage
 template:setCloaking (true)
 
 end
@@ -1007,6 +1034,10 @@ template:setCanHack(false)
 template:setCanLaunchProbe(false)
 --Définition du comportement IA
 template:setDefaultAI("fighter")
+--Dockage autorisé
+template:setCanDock(true)
+template:setExternalDockClasses(_("class","Transport"),_("class","Escorteur"),_("class","Fregate"),_("class","Croiseur Leger"))
+--Camouflage
 template:setCloaking (true)
 
 end
@@ -1179,6 +1210,10 @@ template:setCanHack(false)
 template:setCanLaunchProbe(false)
 --Définition du comportement IA
 template:setDefaultAI("fighter")
+--Dockage autorisé
+template:setCanDock(true)
+template:setExternalDockClasses(_("class","Transport"),_("class","Escorteur"),_("class","Fregate"),_("class","Croiseur Leger"))
+--Camouflage
 template:setCloaking (true)
 
 end
@@ -1370,6 +1405,10 @@ template:setCanHack(false)
 template:setCanLaunchProbe(false)
 --Définition du comportement IA
 template:setDefaultAI("fighter")
+--Dockage autorisé
+template:setCanDock(true)
+template:setExternalDockClasses(_("class","Transport"),_("class","Escorteur"),_("class","Fregate"),_("class","Croiseur Leger"))
+--Camouflage
 template:setCloaking (true)
 
 end
@@ -1570,6 +1609,10 @@ template:setCanHack(false)
 template:setCanLaunchProbe(false)
 --Définition du comportement IA
 template:setDefaultAI("fighter")
+--Dockage autorisé
+template:setCanDock(true)
+template:setExternalDockClasses(_("class","Transport"),_("class","Escorteur"),_("class","Fregate"),_("class","Croiseur Leger"))
+--Camouflage
 template:setCloaking (true)
 
 end
@@ -1772,6 +1815,10 @@ template:setCanHack(false)
 template:setCanLaunchProbe(false)
 --Définition du comportement IA
 template:setDefaultAI("fighter")
+--Dockage autorisé
+template:setCanDock(true)
+template:setExternalDockClasses(_("class","Transport"),_("class","Escorteur"),_("class","Fregate"),_("class","Croiseur Leger"))
+--Camouflage
 template:setCloaking (true)
 
 end
@@ -1988,6 +2035,10 @@ template:setCanHack(false)
 template:setCanLaunchProbe(false)
 --Définition du comportement IA
 template:setDefaultAI("fighter")
+--Dockage autorisé
+template:setCanDock(true)
+template:setExternalDockClasses(_("class","Transport"),_("class","Escorteur"),_("class","Fregate"),_("class","Croiseur Leger"))
+--Camouflage
 template:setCloaking (true)
 
 end

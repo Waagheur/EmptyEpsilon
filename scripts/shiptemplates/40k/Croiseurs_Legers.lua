@@ -48,6 +48,9 @@ template:setCanHack(false)
 template:setCanLaunchProbe(false)
 --Définition du comportement IA
 template:setDefaultAI("missilevolley")
+--Dockage
+template:setCanDock(true)
+template:setExternalDockClasses(_("class","Transport"),_("class","Escorteur"),_("class","Fregate"))
 
 end
 
@@ -223,6 +226,9 @@ template:setCanHack(false)
 template:setCanLaunchProbe(false)
 --Définition du comportement IA
 template:setDefaultAI("missilevolley")
+--Dockage
+template:setCanDock(true)
+template:setExternalDockClasses(_("class","Transport"),_("class","Escorteur"),_("class","Fregate"))
 
 end
 
@@ -419,6 +425,9 @@ template:setCanHack(false)
 template:setCanLaunchProbe(false)
 --Définition du comportement IA
 template:setDefaultAI("missilevolley")
+--Dockage
+template:setCanDock(true)
+template:setExternalDockClasses(_("class","Transport"),_("class","Escorteur"),_("class","Fregate"))
 
 end
 
@@ -577,6 +586,9 @@ template:setCanHack(false)
 template:setCanLaunchProbe(false)
 --Définition du comportement IA
 template:setDefaultAI("missilevolley")
+--Dockage
+template:setCanDock(true)
+template:setExternalDockClasses(_("class","Transport"),_("class","Escorteur"),_("class","Fregate"))
 
 end
 
@@ -774,6 +786,9 @@ template:setCanHack(false)
 template:setCanLaunchProbe(false)
 --Définition du comportement IA
 template:setDefaultAI("missilevolley")
+--Dockage
+template:setCanDock(true)
+template:setExternalDockClasses(_("class","Transport"),_("class","Escorteur"),_("class","Fregate"))
 
 end
 
@@ -969,6 +984,9 @@ template:setCanHack(false)
 template:setCanLaunchProbe(false)
 --Définition du comportement IA
 template:setDefaultAI("missilevolley")
+--Dockage
+template:setCanDock(true)
+template:setExternalDockClasses(_("class","Transport"),_("class","Escorteur"),_("class","Fregate"))
 
 end
 

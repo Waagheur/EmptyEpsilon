@@ -1,0 +1,216 @@
+Version 0.7 par Numérus (Numérus#7186 sur Discord, Numérus Technoprêtre sur Facebook)
+Octobre 2024
+
+Général :
+
+-Ajout des fonctions de dockage pour tous les vaisseaux.
+
+-Ajout d'une nouvelle carte du système avec les coordonées warp dans les fichiers de jeu.
+
+-Ajustement de la complexité de scan selon chaque objet.
+
+-Ajustement des signatures radar (gravitationnelles, biologiques, électrique) de chaque planète, station et vaisseau de la carte.
+
+-Mise à jour de l'écran d'accueil.
+
+-Ajustement de la taille des modèles avec la hitbox des objets et réajustement de la position des propulseurs.
+
+
+
+A venir :
+
+A moyen terme :
+
+-Ajout de vaisseaux Orks et autres espèces mineures.
+
+-Ajout d'une fonction de boost pour les vaisseaux Orks.
+
+-Ajout d'un système d'éperonnage.
+
+-Ajout de cartes pour les autres régions du sous-secteur d'Argos et de la Fédération.
+
+-Ajout de nouvelles textures pour les planètes.
+
+-Ajout de nouvelles icones radar pour les vaisseaux et objets spatiaux.
+
+-Mise en place d'un système de versions plus formel.
+
+
+A long terme : 
+
+-Mise à jour des textures des vaisseaux.
+
+-Traduction, mise à jour et épuration du code et des fichiers .lua.
+
+
+Version 0.6 par Numérus (Numérus#7186 sur Discord, Numérus Technoprêtre sur Facebook)
+Mars 2024
+
+Général :
+
+-Passage sur une version plus récente d'Empty Epsilon (20240114).
+
+A venir :
+
+A court terme :
+
+-Ajustement des signatures radar (gravitationnelles, biologiques, électrique) de chaque planète, station et vaisseau.
+
+-Ajustement de la complexité de scan selon chaque objet.
+
+-Ajustement de la taille des modèles avec la hitbox des objets.
+
+
+A moyen terme :
+
+-Ajout de vaisseaux Orks et autres espèces mineures.
+
+-Ajout d'une fonction de boost pour les vaisseaux Orks.
+
+-Ajout d'un système d'éperonnage.
+
+-Ajout de cartes pour les autres régions du sous-secteur d'Argos et de la Fédération.
+
+-Ajout de nouvelles textures pour les planètes.
+
+-Ajout de nouvelles icones radar pour les vaisseaux et objets spatiaux.
+
+-Mise à jour de l'écran d'accueil (en cours).
+
+-Mise en place d'un système de versions plus formel.
+
+
+A long terme : 
+
+-Mise à jour des textures des vaisseaux.
+
+-Traduction, mise à jour et épuration du code et des fichiers .lua.
+
+
+
+Version 0.5 par Numérus (Numérus#7186 sur Discord, Numérus Technoprêtre sur Facebook)
+Janvier 2024
+
+Général :
+
+-Mise à jour des hitbox de vaisseaux.
+
+-Ajout de l'Arche Mechanicus pour servir de dépanneuse aux vaisseaux désemparés.
+
+-Ajout de 13 vaisseaux Eldars.
+
+-Ajout d'une fonction de camouflage pour les vaisseaux Eldars.
+
+-Peuplement de l'Amas Tarkusien avec stations de surveillance et de défense, flottes intrasystèmes et de patrouille.
+
+Equilibrage : 
+
+-Equilibrage des stations.
+
+-Ajustement de la difficulté des trajets warp.
+
+
+A venir :
+
+A court terme :
+
+-Ajustement des signatures radar (gravitationnelles, biologiques, électrique) de chaque planète, station et vaisseau.
+
+-Ajustement de la complexité de scan selon chaque objet.
+
+-Ajustement de la taille des modèles avec la hitbox des objets.
+
+
+A moyen terme :
+
+-Ajout de vaisseaux Orks et autres espèces mineures.
+
+-Ajout d'une fonction de boost pour les vaisseaux Orks.
+
+-Ajout d'un système d'éperonnage.
+
+-Ajout de cartes pour les autres régions du sous-secteur d'Argos et de la Fédération.
+
+-Ajout de nouvelles textures pour les planètes.
+
+-Ajout de nouvelles icones radar pour les vaisseaux et objets spatiaux.
+
+-Mise à jour de l'écran d'accueil (en cours).
+
+-Mise en place d'un système de versions plus formel.
+
+
+A long terme : 
+
+-Passage sur une version plus récente d'Empty Epsilon.
+
+-Mise à jour des textures des vaisseaux.
+
+-Traduction, mise à jour et épuration du code et des fichiers .lua.
+
+
+
+
+
+Version 0.4 par Numérus (Numérus#7186 sur Discord, Numérus Technoprêtre sur Facebook)
+Septembre 2023
+
+Général :
+
+-Création et équilibrage d'une soixantaine de modèles de stations et vaisseaux humains, répartis en 11 scripts entièrement commentés en français, sur base des profils de vaisseaux du jeu de rôle Rogue Trader.
+
+-Conception de la carte de l'Amas Tarkusien comprennant 12 systèmes solaires entièrement commentés en français, mise à jour des icones et textures.
+
+-Conception d'un système de déplacement Warp par Nexus, avec 13 Nexus entièrement commentés en français.
+
+-Mise à jour de la base de données avec des descriptions en français pour les vaisseaux, armes et objets spatiaux.
+
+-Mise à jour des factions du jeu.
+
+-Mise à jour du fichier option avec des présets standards applicables à tous les vaisseaux.
+
+-Description complète de toutes les planètes du jeu selon 3 niveaux de scan.
+
+
+A venir :
+
+A court terme :
+
+-Equilibrage des stations.
+
+-Ajustement des signatures radar (gravitationnelles, biologiques, électrique) de chaque planète, station et vaisseau.
+
+-Ajustement de la complexité de scan selon chaque objet.
+
+-Peuplement de l'Amas Tarkusien.
+
+A moyen terme :
+
+-Ajout de vaisseaux Xenos (Eldars et Orks).
+
+-Ajout d'une fonction de camouflage pour les vaisseaux Eldars.
+
+-Ajout d'une fonction de boost pour les vaisseaux Orks.
+
+-Mise à jour des tailles et hitbox des vaisseaux.
+
+-Ajout d'un système d'éperonnage.
+
+-Ajout de cartes pour les autres régions du sous-secteur d'Argos et de la Fédération.
+
+-Ajout de nouvelles textures pour les planètes.
+
+-Ajout de nouvelles icones radar pour les vaisseaux et objets spatiaux.
+
+-Mise à jour de l'écran d'accueil.
+
+-Mise en place d'un système de versions plus formel.
+
+A long terme : 
+
+-Passage sur une version plus récente d'Empty Epsilon.
+
+-Mise à jour des textures des vaisseaux.
+
+-Traduction, mise à jour et épuration du code et des fichiers .lua.
+
