@@ -7,6 +7,9 @@
 
 class SpaceShip;
 
+class ShipTemplateBasedObject;
+extern PVector<ShipTemplateBasedObject> space_ship_list;
+
 /**
     An object which is based on a ship template. Contains generic behaviour for:
     * Hull damage

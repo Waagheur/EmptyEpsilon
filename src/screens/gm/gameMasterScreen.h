@@ -7,6 +7,7 @@
 #include "gui/gui2_canvas.h"
 #include "gui/gui2_overlay.h"
 #include "screenComponents/targetsContainer.h"
+#include <chrono>
 
 class GuiGlobalMessageEntry;
 class GuiObjectCreationScreen;
@@ -91,7 +92,6 @@ public:
     virtual ~GameMasterScreen();
 
     virtual void update(float delta) override;
-    virtual void safeUpdate(float delta) override;
 
     void onMouseDown(sp::io::Pointer::Button button, glm::vec2 position);
     void onMouseDrag(glm::vec2 position);
@@ -100,6 +100,13 @@ public:
     PVector<SpaceObject> getSelection();
 
     string getScriptExport(bool selected_only);
+	
+	
+	
+	
+	
+	std::size_t nb_objs_memory = 0;
+	std::chrono::time_point<std::chrono::system_clock> last_selector_tick;
 };
 
 

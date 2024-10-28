@@ -202,9 +202,13 @@ REGISTER_SCRIPT_SUBCLASS_NO_CREATE(ShipTemplateBasedObject, SpaceObject)
     REGISTER_SCRIPT_CLASS_FUNCTION(ShipTemplateBasedObject, setSystemDamageHullThreshold);//if the hull has a higher percentage than this, no damage to systems occur.
 }
 
+PVector<ShipTemplateBasedObject> space_ship_list;
+
 ShipTemplateBasedObject::ShipTemplateBasedObject(float collision_range, string multiplayer_name, float multiplayer_significant_range)
 : SpaceObject(collision_range, multiplayer_name, multiplayer_significant_range)
 {
+	space_ship_list.push_back(this);
+	
     setCollisionPhysics(true, true);
 
     shield_count = 0;
