@@ -19,7 +19,7 @@ function DockSpatialPNJ()
 
 function DockSpatialCoque()
 --Description, définition du modèle et de l'icone radar
-template = ShipTemplate():setName("Dock Spatial"):setLocaleName(_("ship", "Dock Spatial")):setClass(_("class", "Station"), _("subclass", "Dock")):setModel("Navy_Station")
+template = ShipTemplate():setName("ZZ9 Dock Spatial"):setLocaleName(_("ship", "Dock Spatial")):setClass(_("class", "Station"), _("subclass", "Dock")):setModel("Navy_Station")
 template:setDescription(_([[Dock Spatial de grande taille.]]))
 --template:setScale(3000)
 template:setRadarTrace("hugestation.png")
@@ -128,7 +128,7 @@ function StationWayfarerPNJ()
 
 function StationWayfarerCoque()
 --Description, définition du modèle et de l'icone radar
-template = ShipTemplate():setName("Station Wayfarer"):setLocaleName(_("ship", "Station Wayfarer")):setClass(_("class", "Station"), _("subclass", "Wayfarer")):setModel("space_station_3")
+template = ShipTemplate():setName("ZZ8 Station Wayfarer"):setLocaleName(_("ship", "Station Wayfarer")):setClass(_("class", "Station"), _("subclass", "Wayfarer")):setModel("space_station_3")
 template:setDescription(_([[Un modèle de petites stations spatiales conçues pour pouvoir fonctionner en autarcie quasi-complète à la frontière. Privées de contacts réguliers avec l'Imperium, beaucoup d'entre elles ont évolué en communautés commerciales indépendantes ou en dépôts de ravitaillement en carburant.]]))
 --template:setScale(250)
 template:setRadarTrace("mediumstation.png")
@@ -227,7 +227,7 @@ function StationRelaisPNJ()
 
 function StationRelaisCoque()
 --Description, définition du modèle et de l'icone radar
-template = ShipTemplate():setName("Station Relais"):setLocaleName(_("ship", "Station Relais")):setClass(_("class", "Station"), _("subclass", "Relais")):setModel("space_station_4")
+template = ShipTemplate():setName("ZZ7 Station Relais"):setLocaleName(_("ship", "Station Relais")):setClass(_("class", "Station"), _("subclass", "Relais")):setModel("space_station_4")
 template:setDescription(_([[Les station Relai sont de petites stations spatiales à la fonction très importante, car elles aident à la navigation en émettant un signal local, reconnaissable par les vaisseaux de la zone. Elles enregistrent également le passage des vaisseaux, en recevant et en relayant toutes les informations relatives à leur taille, leur trajectoire et leur signal d’immatriculation. En cas d’urgence, elles peuvent servir de radeau de sauvetage spatial et permettre à l’équipage d’un vaisseau en perdition de survivre jusqu’à ce qu’il soit possible de le secourir. Ces stations-balises possèdent ordinairement un petit équipage, mais certaines sont entièrement automatisées.]]))
 --template:setScale(300)
 template:setRadarTrace("smallstation.png")
@@ -282,11 +282,11 @@ function StationDefenseArcheotechPNJ()
 
 function StationDefenseArcheotechCoque()
 --Description, définition du modèle et de l'icone radar
-template = ShipTemplate():setName("Station de Defense Archeotech"):setLocaleName(_("ship", "Station de Defense Archeotech")):setClass(_("class", "Station"), _("subclass", "Defense")):setModel("small_frigate_3")
+template = ShipTemplate():setName("ZZ6 Station de Defense Archeotech"):setLocaleName(_("ship", "Station de Defense Archeotech")):setClass(_("class", "Station"), _("subclass", "Defense")):setModel("small_frigate_3")
 template:setDescription(_([[Certaines stations de défenses de la région sont incroyablement anciennes, mais elles demeurent redoutables.]]))
 template:setSecret(true)
 --template:setScale(200)
-template:setRadarTrace("")
+template:setRadarTrace("astero-1")
 --Endommagement des systèmes
 template:setSystemDamageHullThreshold(0.01)
 template:setSystemDamageRatio(0.7)
@@ -347,7 +347,7 @@ function StationDefenseMacrocanonPNJ()
 
 function StationDefenseMacrocanonCoque()
 --Description, définition du modèle et de l'icone radar
-template = ShipTemplate():setName("Station de Defense a Macrocanon"):setLocaleName(_("ship", "Station de Defense a Macrocanon")):setClass(_("class", "Station"), _("subclass", "Defense")):setModel("small_frigate_3")
+template = ShipTemplate():setName("ZZ5 Station de Defense a Macrocanon"):setLocaleName(_("ship", "Station de Defense a Macrocanon")):setClass(_("class", "Station"), _("subclass", "Defense")):setModel("small_frigate_3")
 template:setDescription(_([[Les station de défense à Macrocanon sont un classique de la défense orbitale. Bien que relativement faibles, elles peuvent maintenir, avec un équipage minimum, un feu suffisamment nourri pour décourager tout vaisseau d'une classe inférieure aux croiseurs. Elles demandent cependant a être correctement approvisionnées en munitions.]]))
 --template:setScale(200)
 template:setRadarTrace("exuari_5.png")
@@ -429,7 +429,7 @@ function StationDefenseLancePNJ()
 
 function StationDefenseLanceCoque()
 --Description, définition du modèle et de l'icone radar
-template = ShipTemplate():setName("Station de Defense a Lance Siderale"):setLocaleName(_("ship", "Station de Defense a Lance Siderale")):setClass(_("class", "Station"), _("subclass", "Defense")):setModel("small_frigate_3")
+template = ShipTemplate():setName("ZZ4 Station de Defense a Lance Siderale"):setLocaleName(_("ship", "Station de Defense a Lance Siderale")):setClass(_("class", "Station"), _("subclass", "Defense")):setModel("small_frigate_3")
 template:setDescription(_([[Les station de défense à Lance Sidérale est une version supérieure, bien que plus fragile et coûteuse, de son homologue à Macrocanon. La station à Lance peut déployer un feu plus concentré suffisant pour endommager les boucliers et attaquer le blindage des Croiseurs, et ce sans ravitailler grâce au réacteur alimentant leurs armes. Cependant, elles nécessitent un entretien constant et ont besoin d'un soutien pour déployer toute leur efficacité, ce qui fait qu'on ne les retrouve généralement qu'au milieu des stations à Macrocanon, les deux modèles combinant feu nourri et puissance d'impact forte.]]))
 --template:setScale(200)
 template:setRadarTrace("exuari_5.png")

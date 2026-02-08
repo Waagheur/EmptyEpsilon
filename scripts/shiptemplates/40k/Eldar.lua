@@ -10,7 +10,7 @@ function RaiderShadowhunterPNJ()
 
 function RaiderShadowhunterCoque()
 --Description, définition du modèle et de l'icone radar
-template = ShipTemplate():setName("Raider Shadowhunter"):setLocaleName(_("ship", "Raider Shadowhunter")):setClass(_("class", "Escorteur"), _("subclass", "Shadowhunter")):setModel("Eldar_Corsair_Fighter")
+template = ShipTemplate():setName("ZX1 Raider Shadowhunter"):setLocaleName(_("ship", "Raider Eldar Shadowhunter")):setClass(_("class", "Escorteur"), _("subclass", "Shadowhunter")):setModel("Eldar_Corsair_Fighter")
 template:setDescription(_([[Le Shadowhunter est le plus petit type de navire employé par les Eldars. Ils peuvent opèrent généralement en meute, protégeant l’approche des navires amis qui s'approchent des plus gros vaisseaux ou tournoyant autour d'eux a une vitesse effroyable pour repousser les éventuels attaquants potentiels. En raison de ce rôle défensif, les Shadowhunters ont une portée très limitée. Les armes et les systèmes d’alimentation des Shadowhunters sont compacts, ce qui en fait l’un des vaisseaux Eldar les plus agiles, même selon leurs propres normes. Les Shadowhunters sont si agiles, en fait, qu’ils sont capables de poursuivre leur cible si finement que même les engins d’attaque ennemis trouvent difficile de les échapper.]]))
 --template:setScale(40)
 template:setRadarTrace("adv_striker.png")
@@ -72,7 +72,7 @@ RaiderShadowhunterPNJ()
 --Création du vaisseau PJ
 function RaiderShadowhunterPJ()
 --Copie du vaisseau PNJ et transformation en vaisseau PJ
-variation = template:copy("Shadowhunter"):setLocaleName(_("playerShip", "Raider Shadowhunter")):setType("playership")
+variation = template:copy("ZX1 Shadowhunter"):setLocaleName(_("playerShip", "Raider Eldar Shadowhunter")):setType("playership")
 --Valeur de recharge des boucliers
 --variation:setShieldRechargeRate(1.2)
 --Module de saut
@@ -116,7 +116,7 @@ function FregateHelleborePNJ()
 
 function FregateHelleboreCoque()
 --Description, définition du modèle et de l'icone radar
-template = ShipTemplate():setName("Fregate Hellebore"):setLocaleName(_("ship", "Fregate Hellebore")):setClass(_("class", "Fregate"), _("subclass", "Hellebore")):setModel("Eldar_Corsair_Bomber")
+template = ShipTemplate():setName("ZX2 Fregate Hellebore"):setLocaleName(_("ship", "Fregate Eldar Hellebore")):setClass(_("class", "Fregate"), _("subclass", "Hellebore")):setModel("Eldar_Corsair_Bomber")
 template:setDescription(_([[Peut-être l’Escorteur le plus lourdement armé qui soit, l’Hellebore est l’incarnation de la philosophie militaire des Asuryanis et de leur supériorité technologique. Bien qu’incapable de résister à de gros dommages, elle est dotée d’un système d’armement équivalent à celui d’un Croiseur Léger Impérial et peut infliger des dommages conséquents à des vaisseaux bien plus grands. Lorsqu’elle est déployée en escadrons, l’Hellebore est un mélange fatal de vitesse, de maniabilité et de puissance de frappe, combinant les capacités longue portée des torpilles à la solide puissance de feu d’une pièce d’artillerie Pulsar et de batteries laser. Les Hellebores excellent lors des embuscades, et peuvent disperser une formation ennemie avec leurs salves de torpilles, avant d’attaquer en nombre les traînards.]]))
 --template:setScale(70)
 template:setRadarTrace("adv_striker.png")
@@ -219,7 +219,7 @@ FregateHelleborePNJ()
 --Création du vaisseau PJ
 function FregateHelleborePJ()
 --Copie du vaisseau PNJ et transformation en vaisseau PJ
-variation = template:copy("Hellebore"):setLocaleName(_("playerShip", "Fregate Hellebore")):setType("playership")
+variation = template:copy("ZX2 Hellebore"):setLocaleName(_("playerShip", "Fregate Eldar Hellebore")):setType("playership")
 --Valeur de recharge des boucliers
 --variation:setShieldRechargeRate(1.2)
 --Module de saut
@@ -281,7 +281,7 @@ function FregateHemlockPNJ()
 
 function FregateHemlockCoque()
 --Description, définition du modèle et de l'icone radar
-template = ShipTemplate():setName("Fregate Hemlock"):setLocaleName(_("ship", "Fregate Hemlock")):setClass(_("class", "Fregate"), _("subclass", "Hemlock")):setModel("Eldar_Corsair_Bomber")
+template = ShipTemplate():setName("ZX3 Fregate Hemlock"):setLocaleName(_("ship", "Fregate Eldar Hemlock")):setClass(_("class", "Fregate"), _("subclass", "Hemlock")):setModel("Eldar_Corsair_Bomber")
 template:setDescription(_([[Le Hemlock est notable en raison de la simplicité de sa conception. Ce vaisseau consiste en fait en une pièce d’artillerie Pulsar propulsée par des moteurs très puissants, et pratiquement rien d’autre, ce qui lui a déjà vallu d'être qualifié de "canon mobile et non un véritable vaisseau". En raison de l’énergie utilisée par les moteurs stellaires et la lance Pulsar, et malgré la technologie avancée des Asuryanis, l’Hemlock ne peut probablement pas assurer un environnement stable pour d’autres personnes que l’équipage nécessaire au mouvement et au tir du vaisseau. Ceci le rend très vulnérable aux actions d’abordage des Escorteurs ennemis, si tant est qu’ils puissent s’approcher suffisamment.]]))
 --template:setScale(70)
 template:setRadarTrace("adv_striker.png")
@@ -344,7 +344,7 @@ FregateHemlockPNJ()
 --Création du vaisseau PJ
 function FregateHemlockPJ()
 --Copie du vaisseau PNJ et transformation en vaisseau PJ
-variation = template:copy("Hemlock"):setLocaleName(_("playerShip", "Fregate Hemlock")):setType("playership")
+variation = template:copy("ZX3 Hemlock"):setLocaleName(_("playerShip", "Fregate Eldar Hemlock")):setType("playership")
 --Valeur de recharge des boucliers
 --variation:setShieldRechargeRate(1.2)
 --Module de saut
@@ -388,7 +388,7 @@ function FregateAconitPNJ()
 
 function FregateAconitCoque()
 --Description, définition du modèle et de l'icone radar
-template = ShipTemplate():setName("Fregate Aconit"):setLocaleName(_("ship", "Fregate Aconit")):setClass(_("class", "Fregate"), _("subclass", "Aconit")):setModel("Eldar_Corsair_Bomber")
+template = ShipTemplate():setName("ZX4 Fregate Aconit"):setLocaleName(_("ship", "Fregate Eldar Aconit")):setClass(_("class", "Fregate"), _("subclass", "Aconit")):setModel("Eldar_Corsair_Bomber")
 template:setDescription(_([[Les Frégates de classe Aconite utilisent la meilleure technologie laser qui soit, ce qui leur permet de bénéficier d’une force de frappe dépassant de loin celle de vaisseaux de leur taille. Opérant habituellement en escadron de trois ou quatre vaisseaux, elles peuvent libérer un ouragan de tir équivalent aux batteries de bordée d’un Cuirassé, puis s’échapper avant que l’ennemi n’ait le temps de riposter. En particulier, les Aconites utilisent leur grande vitesse pour se positionner derrière un vaisseau de grande taille et le criblent de tirs sans que celui-ci ne puisse répliquer. Si des Escorteurs ennemis les prennent en chasse, elles peuvent les semer rapidement et attaquer sur un autre front.]]))
 --template:setScale(75)
 template:setRadarTrace("adv_striker.png")
@@ -467,7 +467,7 @@ FregateAconitPNJ()
 --Création du vaisseau PJ
 function FregateAconitPJ()
 --Copie du vaisseau PNJ et transformation en vaisseau PJ
-variation = template:copy("Aconit"):setLocaleName(_("playerShip", "Fregate Aconit")):setType("playership")
+variation = template:copy("ZX4 Aconit"):setLocaleName(_("playerShip", "Fregate Eldar Aconit")):setType("playership")
 --Valeur de recharge des boucliers
 --variation:setShieldRechargeRate(1.2)
 --Module de saut
@@ -527,7 +527,7 @@ function FregateNightshadePNJ()
 
 function FregateNightshadeCoque()
 --Description, définition du modèle et de l'icone radar
-template = ShipTemplate():setName("Fregate Nightshade"):setLocaleName(_("ship", "Fregate Nightshade")):setClass(_("class", "Fregate"), _("subclass", "Nightshade")):setModel("Eldar_Corsair_Bomber")
+template = ShipTemplate():setName("ZX5 Fregate Nightshade"):setLocaleName(_("ship", "Fregate Eldar Nightshade")):setClass(_("class", "Fregate"), _("subclass", "Nightshade")):setModel("Eldar_Corsair_Bomber")
 template:setDescription(_([[La plus grande force du Nightshade réside dans sa capacité à délivrer des torpilles à courte portée puis à s’échapper rapidement. Les torpilles Asuryanis sont dotées de systèmes de détection et de contrôle d’approche perfectionnés, ainsi que d’ogives vortex ou à neutrons très volatiles. L’Adeptus Mechanicus estime qu’elles ont ainsi deux fois plus de chances d’infliger des dommages que leurs homologues à plasma impériales. Un vaisseau rapide doté d’un tel armement est capable de s’attaquer à n’importe quelle cible, n’importe où.]]))
 --template:setScale(65)
 template:setRadarTrace("adv_striker.png")
@@ -620,7 +620,7 @@ FregateNightshadePNJ()
 --Création du vaisseau PJ
 function FregateNightshadePJ()
 --Copie du vaisseau PNJ et transformation en vaisseau PJ
-variation = template:copy("Nightshade"):setLocaleName(_("playerShip", "Fregate Nightshade")):setType("playership")
+variation = template:copy("ZX5 Nightshade"):setLocaleName(_("playerShip", "Fregate Eldar Nightshade")):setType("playership")
 --Valeur de recharge des boucliers
 --variation:setShieldRechargeRate(1.2)
 --Module de saut
@@ -672,7 +672,7 @@ function CroiseurLegerAuroraPNJ()
 
 function CroiseurLegerAuroraCoque()
 --Description, définition du modèle et de l'icone radar
-template = ShipTemplate():setName("Croiseur Leger Aurora"):setLocaleName(_("ship", "Croiseur Leger Aurora")):setClass(_("class", "Croiseur Leger"), _("subclass", "Aurora")):setModel("Eldar_Corsair_Light_Cruiser")
+template = ShipTemplate():setName("ZX6 Croiseur Leger Aurora"):setLocaleName(_("ship", "Croiseur Leger Eldar Aurora")):setClass(_("class", "Croiseur Leger"), _("subclass", "Aurora")):setModel("Eldar_Corsair_Light_Cruiser")
 template:setDescription(_([[Comme le reste des navires Eldars répertoriés par la marine impériale, on connaît très peu de choses de la classe Aurora. Ce navire imite la conception des plus grands croiseurs avec la même configuration de voile et de coque. En tant que croiseur léger, la logique voudrait que l’Aurora remplisse les mêmes fonctions que le Dauntless dans la flotte impériale. Même si les croiseurs Eldar sont rapides, l’Aurora possède l’avantage supplémentaire d'avoir la vitesse et la manoeuvrabilité d’un escorteur, tout en possédant la puissance de feu nécessaire pour concurrencer un croiseur.]]))
 --template:setScale(170)
 template:setRadarTrace("exuari_4.png")
@@ -775,7 +775,7 @@ CroiseurLegerAuroraPNJ()
 --Création du vaisseau PJ
 function CroiseurLegerAuroraPJ()
 --Copie du vaisseau PNJ et transformation en vaisseau PJ
-variation = template:copy("Aurora"):setLocaleName(_("playerShip", "Croiseur Leger Aurora")):setType("playership")
+variation = template:copy("ZX6 Aurora"):setLocaleName(_("playerShip", "Croiseur Leger Eldar Aurora")):setType("playership")
 --Valeur de recharge des boucliers
 --variation:setShieldRechargeRate(1.2)
 --Module de saut
@@ -837,7 +837,7 @@ function CroiseurEclipsePNJ()
 
 function CroiseurEclipseCoque()
 --Description, définition du modèle et de l'icone radar
-template = ShipTemplate():setName("Croiseur Eclipse"):setLocaleName(_("ship", "Croiseur Eclipse")):setClass(_("class", "Croiseur"), _("subclass", "Eclipse")):setModel("Eldar_Corsair_Cruiser")
+template = ShipTemplate():setName("ZX7 Croiseur Eclipse"):setLocaleName(_("ship", "Croiseur Eldar Eclipse")):setClass(_("class", "Croiseur"), _("subclass", "Eclipse")):setModel("Eldar_Corsair_Cruiser")
 template:setDescription(_([[L’Eclipse est peut-être l’un des transporteurs d’appareils d’attaque les plus efficaces de tout le secteur. Tandis que la plupart des vaisseaux de ce type doivent rester éloignés de l’ennemi, ce qui augmente d’autant la distance que doivent parcourir les bombardiers et les chasseurs, l’Eclipse peut déployer ses Chasseurs Darkstar et ses Bombardiers Eagle à distance de frappe puis utiliser sa grande vitesse et son agilité pour quitter la zone de combat. Si l’on ajoute à cela l’incroyable adresse des appareils Asuryanis, il est facile de comprendre pourquoi les Croiseurs de classe Eclipse étaient la terreur des convois impériaux du Secteur Gothique.]]))
 --template:setScale(235)
 template:setRadarTrace("cruiser.png")
@@ -949,7 +949,7 @@ CroiseurEclipsePNJ()
 --Création du vaisseau PJ
 function CroiseurEclipsePJ()
 --Copie du vaisseau PNJ et transformation en vaisseau PJ
-variation = template:copy("Eclipse"):setLocaleName(_("playerShip", "Croiseur Eclipse")):setType("playership")
+variation = template:copy("ZX7 Eclipse"):setLocaleName(_("playerShip", "Croiseur Eldar Eclipse")):setType("playership")
 --Valeur de recharge des boucliers
 --variation:setShieldRechargeRate(1.2)
 --Module de saut
@@ -1009,7 +1009,7 @@ function CroiseurShadowPNJ()
 
 function CroiseurShadowCoque()
 --Description, définition du modèle et de l'icone radar
-template = ShipTemplate():setName("Croiseur Shadow"):setLocaleName(_("ship", "Croiseur Shadow")):setClass(_("class", "Croiseur"), _("subclass", "Shadow")):setModel("Eldar_Corsair_Cruiser")
+template = ShipTemplate():setName("ZX8 Croiseur Shadow"):setLocaleName(_("ship", "Croiseur Eldar Shadow")):setClass(_("class", "Croiseur"), _("subclass", "Shadow")):setModel("Eldar_Corsair_Cruiser")
 template:setDescription(_([[Le Croiseur de classe Shadow est typique des vaisseaux de ligne Asuryanis : ses nombreuses voiles solaires le font bénéficier d’une grande vitesse et d’une manœuvrabilité impressionnante, le rendant capable de semer facilement les escorteurs des autres races.]]))
 --template:setScale(235)
 template:setRadarTrace("cruiser.png")
@@ -1121,7 +1121,7 @@ CroiseurShadowPNJ()
 --Création du vaisseau PJ
 function CroiseurShadowPJ()
 --Copie du vaisseau PNJ et transformation en vaisseau PJ
-variation = template:copy("Shadow"):setLocaleName(_("playerShip", "Croiseur Shadow")):setType("playership")
+variation = template:copy("ZX8 Shadow"):setLocaleName(_("playerShip", "Croiseur Eldar Shadow")):setType("playership")
 --Valeur de recharge des boucliers
 --variation:setShieldRechargeRate(1.2)
 --Module de saut
@@ -1185,7 +1185,7 @@ function CroiseurWraithshipPNJ()
 
 function CroiseurWraithshipCoque()
 --Description, définition du modèle et de l'icone radar
-template = ShipTemplate():setName("Croiseur Wraithship"):setLocaleName(_("ship", "Croiseur Wraithship")):setClass(_("class", "Croiseur"), _("subclass", "Wraithship")):setModel("Eldar_Corsair_Cruiser")
+template = ShipTemplate():setName("ZX9 Croiseur Wraithship"):setLocaleName(_("ship", "Croiseur Eldar Wraithship")):setClass(_("class", "Croiseur"), _("subclass", "Wraithship")):setModel("Eldar_Corsair_Cruiser")
 template:setDescription(_([[Les Wraithships sont fabriqués à partir de moelle spectrale, une matière issue du warp et façonnée par les Eldars. Les Eldar utiliseraient leurs talents psychomorphiques pour façonner des cloisons, des murs, des planchers et des conduits en une coque qui enveloppe complètement le noyau de moelle spectrale du vaisseau et forme les cloisons internes majeures du vaisseau spatial. Le noyau fournirait un canal psychique par lequel un pilote Eldar peut contrôler le vaisseau, lui permettant de le guider et d'effectuer d’innombrables ajustements infimes pour tirer le maximum de son bâtiment. Tel un faucon qui s’élance pour s’agripper à sa proie, un Wraithship peut tourner dans les vents solaires, tourner en rond et s’élancer pour chasser sa propre proie – les vaisseaux spatiaux de son ennemi.]]))
 --template:setScale(150)
 template:setRadarTrace("cruiser.png")
@@ -1257,7 +1257,7 @@ CroiseurWraithshipTourelles()
 function CroiseurWraithshipMissiles()
 
 --Nombre de tubes et temps de chargement
-template:setTubes(2, 6)
+template:setTubes(3, 6)
 
 --Définition du macrocanon avant 1
 --Direction (Index,Direction)
@@ -1316,7 +1316,7 @@ CroiseurWraithshipPNJ()
 --Création du vaisseau PJ
 function CroiseurWraithshipPJ()
 --Copie du vaisseau PNJ et transformation en vaisseau PJ
-variation = template:copy("Wraithship"):setLocaleName(_("playerShip", "Croiseur Wraithship")):setType("playership")
+variation = template:copy("ZX9 Wraithship"):setLocaleName(_("playerShip", "Croiseur Eldar Wraithship")):setType("playership")
 --Valeur de recharge des boucliers
 --variation:setShieldRechargeRate(1.2)
 --Module de saut
@@ -1380,7 +1380,7 @@ function CroiseurVoidDragonPNJ()
 
 function CroiseurVoidDragonCoque()
 --Description, définition du modèle et de l'icone radar
-template = ShipTemplate():setName("Croiseur Void Dragon"):setLocaleName(_("ship", "Croiseur Void Dragon")):setClass(_("class", "Croiseur"), _("subclass", "Void Dragon")):setModel("Eldar_Corsair_Cruiser")
+template = ShipTemplate():setName("ZX91 Croiseur Void Dragon"):setLocaleName(_("ship", "Croiseur Eldar Void Dragon")):setClass(_("class", "Croiseur"), _("subclass", "Void Dragon")):setModel("Eldar_Corsair_Cruiser")
 template:setDescription(_([["Dragons" est le nom collectif donné aux grandes classes de navires Eldar. Le terme "Dragon" ne fait pas référence à une configuration particulière, mais plutôt à une variété de vaisseaux adhérant aux mêmes principes de base, conçus pour les mêmes rôles de base. Dans ce groupe plus vaste, les configurations individuelles ou les combinaisons d’armes donnent aux classes individuelles leur nom propre – toujours une variation de l'appelation "Dragon", représentant différents aspects de la créature du même nom du mythe Eldar. Par exemple, les "Dragons" conçus pour opérer loin de leur base pour de grandes périodes de temps sont souvent appelés "Void Dragons".]]))
 --template:setScale(250)
 template:setRadarTrace("cruiser.png")
@@ -1522,7 +1522,7 @@ CroiseurVoidDragonPNJ()
 --Création du vaisseau PJ
 function CroiseurVoidDragonPJ()
 --Copie du vaisseau PNJ et transformation en vaisseau PJ
-variation = template:copy("Void Dragon"):setLocaleName(_("playerShip", "Croiseur Void Dragon")):setType("playership")
+variation = template:copy("ZX91 Void Dragon"):setLocaleName(_("playerShip", "Croiseur Eldar Void Dragon")):setType("playership")
 --Valeur de recharge des boucliers
 --variation:setShieldRechargeRate(1.2)
 --Module de saut
@@ -1584,7 +1584,7 @@ function CroiseurNightDragonPNJ()
 
 function CroiseurNightDragonCoque()
 --Description, définition du modèle et de l'icone radar
-template = ShipTemplate():setName("Croiseur Night Dragon"):setLocaleName(_("ship", "Croiseur Night Dragon")):setClass(_("class", "Croiseur"), _("subclass", "Night Dragon")):setModel("Eldar_Corsair_Cruiser")
+template = ShipTemplate():setName("ZX92 Croiseur Night Dragon"):setLocaleName(_("ship", "Croiseur Eldar Night Dragon")):setClass(_("class", "Croiseur"), _("subclass", "Night Dragon")):setModel("Eldar_Corsair_Cruiser")
 template:setDescription(_([["Dragons" est le nom collectif donné aux grandes classes de navires Eldar. Le terme "Dragon" ne fait pas référence à une configuration particulière, mais plutôt à une variété de vaisseaux adhérant aux mêmes principes de base, conçus pour les mêmes rôles de base. Dans ce groupe plus vaste, les configurations individuelles ou les combinaisons d’armes donnent aux classes individuelles leur nom propre – toujours une variation de l'appellation "Dragon", représentant différents aspects de la créature du même nom du mythe Eldar. Par exemple, les "Night Dragons" semblent disposer de capacités de détection supérieures, n'étant jamais pris par surprise.]]))
 --template:setScale(250)
 template:setRadarTrace("cruiser.png")
@@ -1736,7 +1736,7 @@ CroiseurNightDragonPNJ()
 --Création du vaisseau PJ
 function CroiseurNightDragonPJ()
 --Copie du vaisseau PNJ et transformation en vaisseau PJ
-variation = template:copy("Night Dragon"):setLocaleName(_("playerShip", "Croiseur Night Dragon")):setType("playership")
+variation = template:copy("ZX92 Night Dragon"):setLocaleName(_("playerShip", "Croiseur Eldar Night Dragon")):setType("playership")
 --Valeur de recharge des boucliers
 --variation:setShieldRechargeRate(1.2)
 --Module de saut
@@ -1790,7 +1790,7 @@ function CroiseurNovaDragonPNJ()
 
 function CroiseurNovaDragonCoque()
 --Description, définition du modèle et de l'icone radar
-template = ShipTemplate():setName("Croiseur Nova Dragon"):setLocaleName(_("ship", "Croiseur Nova Dragon")):setClass(_("class", "Croiseur"), _("subclass", "Nova Dragon")):setModel("Eldar_Corsair_Cruiser")
+template = ShipTemplate():setName("ZX93 Croiseur Nova Dragon"):setLocaleName(_("ship", "Croiseur Eldar Nova Dragon")):setClass(_("class", "Croiseur"), _("subclass", "Nova Dragon")):setModel("Eldar_Corsair_Cruiser")
 template:setDescription(_([["Dragons" est le nom collectif donné aux grandes classes de navires Eldar. Le terme "Dragon" ne fait pas référence à une configuration particulière, mais plutôt à une variété de vaisseaux adhérant aux mêmes principes de base, conçus pour les mêmes rôles de base. Dans ce groupe plus vaste, les configurations individuelles ou les combinaisons d’armes donnent aux classes individuelles leur nom propre – toujours une variation de l'appellation "Dragon", représentant différents aspects de la créature du même nom du mythe Eldar. Par exemple, les "Nova Dragons" semblent dédiés à un seul but, la destruction de leur ennemis. Leurs canons leur permettent de vaporiser les vaisseau ennemis, alors qu'ils tirent des nuées de torpilles dans toutes les directions.]]))
 --template:setScale(250)
 template:setRadarTrace("cruiser.png")
@@ -1956,7 +1956,7 @@ CroiseurNovaDragonPNJ()
 --Création du vaisseau PJ
 function CroiseurNovaDragonPJ()
 --Copie du vaisseau PNJ et transformation en vaisseau PJ
-variation = template:copy("Nova Dragon"):setLocaleName(_("playerShip", "Croiseur Nova Dragon")):setType("playership")
+variation = template:copy("ZX93 Nova Dragon"):setLocaleName(_("playerShip", "Croiseur Eldar Nova Dragon")):setType("playership")
 --Valeur de recharge des boucliers
 --variation:setShieldRechargeRate(1.2)
 --Module de saut
@@ -2010,7 +2010,7 @@ function CroiseurStarDragonPNJ()
 
 function CroiseurStarDragonCoque()
 --Description, définition du modèle et de l'icone radar
-template = ShipTemplate():setName("Croiseur Star Dragon"):setLocaleName(_("ship", "Croiseur Star Dragon")):setClass(_("class", "Croiseur"), _("subclass", "Star Dragon")):setModel("Eldar_Corsair_Cruiser")
+template = ShipTemplate():setName("ZX94 Croiseur Star Dragon"):setLocaleName(_("ship", "Croiseur Eldar Star Dragon")):setClass(_("class", "Croiseur"), _("subclass", "Star Dragon")):setModel("Eldar_Corsair_Cruiser")
 template:setDescription(_([["Dragons" est le nom collectif donné aux grandes classes de navires Eldar. Le terme "Dragon" ne fait pas référence à une configuration particulière, mais plutôt à une variété de vaisseaux adhérant aux mêmes principes de base, conçus pour les mêmes rôles de base. Dans ce groupe plus vaste, les configurations individuelles ou les combinaisons d’armes donnent aux classes individuelles leur nom propre – toujours une variation de l'appellation "Dragon", représentant différents aspects de la créature du même nom du mythe Eldar. Par exemple, les "Star Dragons" sont une menace pour les grands navires, car ils sont capables d’ignorer le blindage le plus épais avec leurs multiples batteries de lances Pulsar.]]))
 --template:setScale(250)
 template:setRadarTrace("cruiser.png")
@@ -2119,7 +2119,7 @@ CroiseurStarDragonPNJ()
 --Création du vaisseau PJ
 function CroiseurStarDragonPJ()
 --Copie du vaisseau PNJ et transformation en vaisseau PJ
-variation = template:copy("Star Dragon"):setLocaleName(_("playerShip", "Croiseur Star Dragon")):setType("playership")
+variation = template:copy("ZX94 Star Dragon"):setLocaleName(_("playerShip", "Croiseur Eldar Star Dragon")):setType("playership")
 --Valeur de recharge des boucliers
 --variation:setShieldRechargeRate(1.2)
 --Module de saut

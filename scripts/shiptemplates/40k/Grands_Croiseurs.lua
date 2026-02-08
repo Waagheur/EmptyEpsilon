@@ -21,7 +21,7 @@ function GrandCroiseurVengeancePNJ()
 
 function GrandCroiseurVengeanceCoque()
 --Description, définition du modèle et de l'icone radar
-template = ShipTemplate():setName("Grand Croiseur Vengeance"):setLocaleName(_("ship", "Grand Croiseur Vengeance")):setClass(_("class", "Grand Croiseur"), _("subclass", "Vengeance")):setModel("Rogue_Trader_Cruiser")
+template = ShipTemplate():setName("ZU1 Grand Croiseur Vengeance"):setLocaleName(_("ship", "Grand Croiseur Vengeance")):setClass(_("class", "Grand Croiseur"), _("subclass", "Vengeance")):setModel("Rogue_Trader_Cruiser")
 template:setDescription(_([[Le Croiseur de Classe Vengeance incarne la transition entre les bâtiments des premiers temps de l’Imperium et le style développé au fil des millénaires, le vaisseau possédant une proue blindée rudimentaire, mais pas de blindage renforcé. De nos jours, les Croiseurs de Classe Vengeance sont gardés en réserve et sont considérés par de nombreux amiraux comme des antiquités dont les jours de gloire sont depuis longtemps révolus.]]))
 --template:setScale(355)
 template:setRadarTrace("tug.png")
@@ -202,7 +202,7 @@ GrandCroiseurVengeancePNJ()
 --Création du vaisseau PJ
 function GrandCroiseurVengeancePJ()
 --Copie du vaisseau PNJ et transformation en vaisseau PJ
-variation = template:copy("Vengeance"):setLocaleName(_("playerShip", "Grand Croiseur Vengeance")):setType("playership")
+variation = template:copy("ZU1 Vengeance"):setLocaleName(_("playerShip", "Grand Croiseur Vengeance")):setType("playership")
 --Valeur de recharge des boucliers
 variation:setShieldRechargeRate(2.4)
 --Module de saut
@@ -266,7 +266,7 @@ function GrandCroiseurAvengerPNJ()
 
 function GrandCroiseurAvengerCoque()
 --Description, définition du modèle et de l'icone radar
-template = ShipTemplate():setName("Grand Croiseur Avenger"):setLocaleName(_("ship", "Grand Croiseur Avenger")):setClass(_("class", "Grand Croiseur"), _("subclass", "Avenger")):setModel("Rogue_Trader_Cruiser")
+template = ShipTemplate():setName("ZU2 Grand Croiseur Avenger"):setLocaleName(_("ship", "Grand Croiseur Avenger")):setClass(_("class", "Grand Croiseur"), _("subclass", "Avenger")):setModel("Rogue_Trader_Cruiser")
 template:setDescription(_([[L’Avenger est le vestige d’une époque et de tactiques révolues. Des escadrons de ce briseur de blocus se déployaient habituellement derrière un écran d’escorteurs et de Croiseurs légers, puis accéléraient pour atteindre leur vitesse maximale et frapper au cœur des lignes ennemies. Les Croiseurs ouvraient ensuite le feu pour abattre les vaisseaux adverses avec leurs tirs de barrage à courte portée. Cette tactique impliquait généralement que deux ou trois escadrons de Croiseurs Avenger infligent (et subissent) de lourds dommages, mais leur puissance de feu leur permettait de surclasser la plupart des navires ennemis à courte portée. La confusion et les dégâts causés par cette tactique brutale rendaient l’adversaire vulnérable à l’attaque des vagues suivantes. À mesure que les tactiques impériales évoluaient, le Croiseur de Classe Avenger perdit de son importance pour finalement devenir obsolète et être retiré des actions de première ligne.]]))
 --template:setScale(375)
 template:setRadarTrace("tug.png")
@@ -398,7 +398,7 @@ GrandCroiseurAvengerPNJ()
 --Création du vaisseau PJ
 function GrandCroiseurAvengerPJ()
 --Copie du vaisseau PNJ et transformation en vaisseau PJ
-variation = template:copy("Avenger"):setLocaleName(_("playerShip", "Grand Croiseur Avenger")):setType("playership")
+variation = template:copy("ZU2 Avenger"):setLocaleName(_("playerShip", "Grand Croiseur Avenger")):setType("playership")
 --Valeur de recharge des boucliers
 variation:setShieldRechargeRate(2.4)
 --Module de saut
@@ -443,7 +443,7 @@ function GrandCroiseurRepulsivePNJ()
 
 function GrandCroiseurRepulsiveCoque()
 --Description, définition du modèle et de l'icone radar
-template = ShipTemplate():setName("Grand Croiseur Repulsive"):setLocaleName(_("ship", "Grand Croiseur Repulsive")):setClass(_("class", "Grand Croiseur"), _("subclass", "Repulsive")):setModel("Rogue_Trader_Cruiser")
+template = ShipTemplate():setName("ZU3 Grand Croiseur Repulsive"):setLocaleName(_("ship", "Grand Croiseur Repulsive")):setClass(_("class", "Grand Croiseur"), _("subclass", "Repulsive")):setModel("Rogue_Trader_Cruiser")
 template:setDescription(_([[Dans le domaine sacré et obscur de la construction de Vaisseaux Impériaux, des classes entières de navires peuvent être considérées comme maudites dès le stade de la conception. Les hommes du vide murmurent que ces vaisseaux ont traversé les étoiles, tentant d'entraîner des équipages entiers avec eux dans le Warp à un moment donné, pour les laisser succomber à la fin ou à la corruption, jusqu’à ce que le vaisseau réapparaisse dans l’OEil de la Terreur, prêt pour servir les seigneurs corrompus du Chaos.
 
 Cette sombre réputation a suivi le Grand Croiseur de classe Repulsive depuis sa création, à l’époque où tous servaient l’Imperium. Un nombre inquiétant de Repulsive (leurs noms d’origine disparus depuis longtemps dans les ténèbres de l'histoire) ont trahi ou ont été capturés au profit du Grand Ennemi depuis leur mise en service, tant que certains ont oublié que les navires ont été construits à l’origine au service de l’Empereur. C'est en effet une tragédie pour l'Impérium, car ce sont de gracieux et puissants vaisseaux de combat, équipés d'armes radicalement différentes de celles des autres Grands Croiseur, illustration parfaite de l’ancienne doctrine promouvant des vaisseaux de guerre lourds, rapides et maniables.
@@ -628,7 +628,7 @@ GrandCroiseurRepulsivePNJ()
 --Création du vaisseau PJ
 function GrandCroiseurRepulsivePJ()
 --Copie du vaisseau PNJ et transformation en vaisseau PJ
-variation = template:copy("Repulsive"):setLocaleName(_("playerShip", "Grand Croiseur Repulsive")):setType("playership")
+variation = template:copy("ZU3 Repulsive"):setLocaleName(_("playerShip", "Grand Croiseur Repulsive")):setType("playership")
 --Valeur de recharge des boucliers
 variation:setShieldRechargeRate(2.4)
 --Module de saut
@@ -702,7 +702,7 @@ function GrandCroiseurExorcistPNJ()
 
 function GrandCroiseurExorcistCoque()
 --Description, définition du modèle et de l'icone radar
-template = ShipTemplate():setName("Grand Croiseur Exorcist"):setLocaleName(_("ship", "Grand Croiseur Exorcist")):setClass(_("class", "Grand Croiseur"), _("subclass", "Exorcist")):setModel("Rogue_Trader_Cruiser")
+template = ShipTemplate():setName("ZU4 Grand Croiseur Exorcist"):setLocaleName(_("ship", "Grand Croiseur Exorcist")):setClass(_("class", "Grand Croiseur"), _("subclass", "Exorcist")):setModel("Rogue_Trader_Cruiser")
 template:setDescription(_([[Le Croiseur Lourd de Classe Exorcist a été conçu pour servir de patrouilleur au long cours, capable d’opérer sur de longues périodes sans ravitaillement. Habituellement entourés de deux ou trois escadrons d’escorteurs, les Exorcist étaient affectés aux secteurs les plus éloignés de l’Imperium, tels que la Bordure Orientale ou le Halo. L’Exorcist a été peu à peu remplacé par des vaisseaux plus sophistiqués, notamment par les Croiseurs de Combat de Classe Mars. Quelques Exorcist sont maintenus en état par les flottes situées en bordure de l’Imperium pour continuer à patrouiller dans le Halo, tandis que d’autres servent de transports.]]))
 --template:setScale(365)
 template:setRadarTrace("tug.png")
@@ -882,7 +882,7 @@ GrandCroiseurExorcistPNJ()
 --Création du vaisseau PJ
 function GrandCroiseurExorcistPJ()
 --Copie du vaisseau PNJ et transformation en vaisseau PJ
-variation = template:copy("Exorcist"):setLocaleName(_("playerShip", "Grand Croiseur Exorcist")):setType("playership")
+variation = template:copy("ZU4 Exorcist"):setLocaleName(_("playerShip", "Grand Croiseur Exorcist")):setType("playership")
 --Valeur de recharge des boucliers
 variation:setShieldRechargeRate(2.4)
 --Module de saut

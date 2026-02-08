@@ -23,7 +23,7 @@ function CroiseurLegerDauntlessPNJ()
 
 function CroiseurLegerDauntlessCoque()
 --Description, définition du modèle et de l'icone radar
-template = ShipTemplate():setName("Croiseur Leger Dauntless"):setLocaleName(_("ship", "Croiseur Leger Dauntless")):setClass(_("class", "Croiseur Leger"), _("subclass", "Dauntless")):setModel("Navy_Light_Cruiser")
+template = ShipTemplate():setName("ZR1 Croiseur Leger Dauntless"):setLocaleName(_("ship", "Croiseur Leger Dauntless")):setClass(_("class", "Croiseur Leger"), _("subclass", "Dauntless")):setModel("Navy_Light_Cruiser")
 template:setDescription(_([[Le Dauntless est populaire parce qu’il associe la manœuvrabilité d’une Frégate à une impressionnante lance sidérale de proue, aussi ces Croiseurs Légers ont toujours été la marque de fabrique de la Flotte Impériale à travers la galaxie. Le Croiseur Leger idéal doit être suffisamment armé pour tenir en échec les escorteurs adverses et disposer d’assez de réserves et d’énergie pour opérer loin de sa base pendant plusieurs mois. Le Dauntless est une classe appréciée, aussi rapide et manœuvrable qu’une frégate mais doté d’un armement avant redoutable.]]))
 --template:setScale(225)
 template:setRadarTrace("exuari_4.png")
@@ -147,7 +147,7 @@ CroiseurLegerDauntlessPNJ()
 --Création du vaisseau PJ
 function CroiseurLegerDauntlessPJ()
 --Copie du vaisseau PNJ et transformation en vaisseau PJ
-variation = template:copy("Dauntless"):setLocaleName(_("playerShip", "Croiseur Leger Dauntless")):setType("playership")
+variation = template:copy("ZR1 Dauntless"):setLocaleName(_("playerShip", "Croiseur Leger Dauntless")):setType("playership")
 --Valeur de recharge des boucliers
 variation:setShieldRechargeRate(2.4)
 --Module de saut
@@ -201,7 +201,7 @@ function CroiseurLegerEndeavourPNJ()
 
 function CroiseurLegerEndeavourCoque()
 --Description, définition du modèle et de l'icone radar
-template = ShipTemplate():setName("Croiseur Leger Endeavour"):setLocaleName(_("ship", "Croiseur Leger Endeavour")):setClass(_("class", "Croiseur Leger"), _("subclass", "Endeavour")):setModel("Navy_Light_Cruiser")
+template = ShipTemplate():setName("ZR2 Croiseur Leger Endeavour"):setLocaleName(_("ship", "Croiseur Leger Endeavour")):setClass(_("class", "Croiseur Leger"), _("subclass", "Endeavour")):setModel("Navy_Light_Cruiser")
 template:setDescription(_([[Le Croiseur Leger de classe Endeavour, ne possédant pas la vitesse adéquate pour combattre les vaisseaux pirates, est généralement employé comme vaisseau amiral pour des convois ou en tant qu’escorteur lourd pour les vaisseaux de ligne plus gros. Ses batteries d’armes lourdes peuvent rivaliser avec celles de croiseurs plus imposants, lui permettant de soutenir une bataille rangée.]]))
 --template:setScale(190)
 template:setRadarTrace("exuari_4.png")
@@ -345,7 +345,7 @@ CroiseurLegerEndeavourPNJ()
 --Création du vaisseau PJ
 function CroiseurLegerEndeavourPJ()
 --Copie du vaisseau PNJ et transformation en vaisseau PJ
-variation = template:copy("Endeavour"):setLocaleName(_("playerShip", "Croiseur Leger Endeavour")):setType("playership")
+variation = template:copy("ZR2 Endeavour"):setLocaleName(_("playerShip", "Croiseur Leger Endeavour")):setType("playership")
 --Valeur de recharge des boucliers
 variation:setShieldRechargeRate(2.4)
 --Module de saut
@@ -400,7 +400,7 @@ function CroiseurLegerDefiantPNJ()
 
 function CroiseurLegerDefiantCoque()
 --Description, définition du modèle et de l'icone radar
-template = ShipTemplate():setName("Croiseur Leger v"):setLocaleName(_("ship", "Croiseur Leger Defiant")):setClass(_("class", "Croiseur Leger"), _("subclass", "Defiant")):setModel("Navy_Light_Cruiser")
+template = ShipTemplate():setName("ZR3 Croiseur Leger v"):setLocaleName(_("ship", "Croiseur Leger Defiant")):setClass(_("class", "Croiseur Leger"), _("subclass", "Defiant")):setModel("Navy_Light_Cruiser")
 template:setDescription(_([[Le croiseur de classe Defiant est l’élément le moins courant du triumvirat de Voss, mais il s’agit de la dernière pièce du puzzle. Transporteur de vaisseaux d’attaque fiable, il est cependant considéré comme trop vulnérable pour opérer sans soutien, car il manque de canon pour assurer sa propre défense. C’est la raison pour laquelle il se retrouve en général en arrière de la ligne de bataille, hors de portée de l’ennemi.]]))
 --template:setScale(190)
 template:setRadarTrace("exuari_4.png")
@@ -516,7 +516,7 @@ CroiseurLegerDefiantPNJ()
 --Création du vaisseau PJ
 function CroiseurLegerDefiantPJ()
 --Copie du vaisseau PNJ et transformation en vaisseau PJ
-variation = template:copy("Defiant"):setLocaleName(_("playerShip", "Croiseur Leger Defiant")):setType("playership")
+variation = template:copy("ZR3 Defiant"):setLocaleName(_("playerShip", "Croiseur Leger Defiant")):setType("playership")
 --Valeur de recharge des boucliers
 variation:setShieldRechargeRate(2.4)
 --Module de saut
@@ -561,7 +561,7 @@ function CroiseurLegerEndurancePNJ()
 
 function CroiseurLegerEnduranceCoque()
 --Description, définition du modèle et de l'icone radar
-template = ShipTemplate():setName("Croiseur Leger Endurance"):setLocaleName(_("ship", "Croiseur Leger Endurance")):setClass(_("class", "Croiseur Leger"), _("subclass", "Endurance")):setModel("Navy_Light_Cruiser")
+template = ShipTemplate():setName("ZR4 Croiseur Leger Endurance"):setLocaleName(_("ship", "Croiseur Leger Endurance")):setClass(_("class", "Croiseur Leger"), _("subclass", "Endurance")):setModel("Navy_Light_Cruiser")
 template:setDescription(_([[Le Croiseur Leger de classe Endurance est un Endeavour dont les batteries ont été remplacées par des pièces d’artillerie navale. Une tactique répandue consiste à faire opérer ensemble un croiseur de classe Endeavour et un Endurance pour qu’ils se protègent mutuellement et combinent leur puissance de feu. Comme l’Endurance est produit en quantités inférieures, le faible nombre de croiseurs de ce type empêche parfois cette tactique d’être mise en œuvre. Il est par contre courant qu’un escadron regroupe deux ou trois Endeavour et un Endurance en soutien.]]))
 --template:setScale(190)
 template:setRadarTrace("exuari_4.png")
@@ -696,7 +696,7 @@ CroiseurLegerEndurancePNJ()
 --Création du vaisseau PJ
 function CroiseurLegerEndurancePJ()
 --Copie du vaisseau PNJ et transformation en vaisseau PJ
-variation = template:copy("Endurance"):setLocaleName(_("playerShip", "Croiseur Leger Endurance")):setType("playership")
+variation = template:copy("ZR4 Endurance"):setLocaleName(_("playerShip", "Croiseur Leger Endurance")):setType("playership")
 --Valeur de recharge des boucliers
 variation:setShieldRechargeRate(2.4)
 --Module de saut
@@ -761,7 +761,7 @@ function CroiseurMonitorSecutorPNJ()
 
 function CroiseurMonitorSecutorCoque()
 --Description, définition du modèle et de l'icone radar
-template = ShipTemplate():setName("Croiseur Monitor Secutor"):setLocaleName(_("ship", "Croiseur Monitor Secutor")):setClass(_("class", "Croiseur Leger"), _("subclass", "Secutor")):setModel("Navy_Light_Cruiser")
+template = ShipTemplate():setName("ZR5 Croiseur Monitor Secutor"):setLocaleName(_("ship", "Croiseur Monitor Secutor")):setClass(_("class", "Croiseur Leger"), _("subclass", "Secutor")):setModel("Navy_Light_Cruiser")
 template:setDescription(_([[Le croiseur Monitor de classe Secutor a été adapté des modèles existants lorsque certains mondes-forge se sont rendus compte que les croiseurs légers existant était insuffisamment armés pour le combat contre des vaisseaux lourds. Plutôt que de dépenser des ressources considérables pour construire de véritables croiseurs, ils ont développé le Secutor. Les Secutor sont beaucoup mieux armés que leurs cousins, et ont également des capacités défensives plus élevées. En échange, ils sont moins maniables, et avec une telle quantité de personnel consacrée aux armes et aux défenses, ils ne sont utiles que pour la guerre. Bien sûr, dans ce domaine, ils excellent.]]))
 --template:setScale(215)
 template:setRadarTrace("exuari_4.png")
@@ -904,7 +904,7 @@ CroiseurMonitorSecutorPNJ()
 --Création du vaisseau PJ
 function CroiseurMonitorSecutorPJ()
 --Copie du vaisseau PNJ et transformation en vaisseau PJ
-variation = template:copy("Secutor"):setLocaleName(_("playerShip", "Croiseur Monitor Secutor")):setType("playership")
+variation = template:copy("ZR5 Secutor"):setLocaleName(_("playerShip", "Croiseur Monitor Secutor")):setType("playership")
 --Valeur de recharge des boucliers
 variation:setShieldRechargeRate(2.4)
 --Module de saut
@@ -959,7 +959,7 @@ function CroiseurMonitorLathePNJ()
 
 function CroiseurMonitorLatheCoque()
 --Description, définition du modèle et de l'icone radar
-template = ShipTemplate():setName("Croiseur Monitor Lathe"):setLocaleName(_("ship", "Croiseur Monitor Lathe")):setClass(_("class", "Croiseur Leger"), _("subclass", "Lathe")):setModel("Navy_Light_Cruiser")
+template = ShipTemplate():setName("ZR6 Croiseur Monitor Lathe"):setLocaleName(_("ship", "Croiseur Monitor Lathe")):setClass(_("class", "Croiseur Leger"), _("subclass", "Lathe")):setModel("Navy_Light_Cruiser")
 template:setDescription(_([[Bien qu'ils participent aux guerres aux côtés de la Marine Impériale et de l'Astra Militarum, le rôle principal des flottes Mechanicus est l’exploration, et non le combat. Les flottes Explorator traversent la galaxie, à la recherche d’archéotechnologies perdus et d’anciennes reliques du Moyen-Âge Technologique. Le croiseur Monitor de classe Lathe est un parfait exemple des navires que les Explorators utilisent dans leurs flottes. La conception diffère de celle de nombreux croiseurs légers, l’accent étant mis sur la détection à longue distance et l’endurance plutôt que sur la vitesse et la maniabilité. Équipé correctement, un croiseur Lathe peut fonctionner sans radoub ni réapprovisionnement pendant des décennies.]]))
 --template:setScale(210)
 template:setRadarTrace("exuari_4.png")
@@ -1076,7 +1076,7 @@ CroiseurMonitorLathePNJ()
 --Création du vaisseau PJ
 function CroiseurMonitorLathePJ()
 --Copie du vaisseau PNJ et transformation en vaisseau PJ
-variation = template:copy("Lathe"):setLocaleName(_("playerShip", "Croiseur Monitor Lathe")):setType("playership")
+variation = template:copy("ZR6 Lathe"):setLocaleName(_("playerShip", "Croiseur Monitor Lathe")):setType("playership")
 --Valeur de recharge des boucliers
 variation:setShieldRechargeRate(2.4)
 --Module de saut

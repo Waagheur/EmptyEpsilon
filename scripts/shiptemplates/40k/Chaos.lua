@@ -34,7 +34,7 @@ function EsclavagisteSoulcagePNJ()
 
 function EsclavagisteSoulcageCoque()
 --Description, définition du modèle et de l'icone radar
-template = ShipTemplate():setName("Vaisseau Esclavagiste Soulcage"):setLocaleName(_("ship", "Vaisseau Esclavagiste Soulcage")):setClass(_("class", "Transport"), _("subclass", "Soulcage")):setModel("Civilian_Transport_Ship")
+template = ShipTemplate():setName("AA1 Vaisseau Esclavagiste Soulcage"):setLocaleName(_("ship", "Vaisseau Esclavagiste Soulcage")):setClass(_("class", "Transport"), _("subclass", "Soulcage")):setModel("Civilian_Transport_Ship")
 template:setDescription(_([[Contrairement à de nombreux vaisseaux du Chaos, les transports de classe Soulcage voient rarement le combat. Au lieu de cela, ils errent dans l’espace, suivant le sillage des corsaires et des pirates pour acheter, troquer ou escroquer ceux qui ont le malheur d’être pris en vie. La plupart font généralement partie de la flotte d’un seigneur de guerre, bien que certains opèrent indépendamment, risquant leur sécurité pour des gains plus conséquents. Presque tous les Soulcages sont des transports impériaux capturés et reconvertis. Après avoir profané des icônes impériales et souillé le navire avec les sigles et les icônes de leurs nouveaux maîtres, les soutes intérieures sont remplacées pont après pont par des enclos à esclaves. Par milliers, leur chair et leur esprit sont brisés pour créer de nouveaux serviteurs du Chaos. Incapables d’échapper à la corruption qui les entourent, à l’air vicié, aux chants blasphématoires constants et aux tortures insensées détruisant leurs âmes, forcés de s'agenouiller dans des sanctuaires profanes et marqués d’icônes impies, ils sont transformés en esclaves sans cervelle, prêts à combattre ou mourir pour la volonté de leur maître. Bien préparés, ils génèrent de beaux profits sur les mondes contrôlés par le Chaos ou même les Xenos. Cependant, certains sont laissés saints, conservés dans des champ de stase pour préserver leur pureté en vue de sacrifices rituels, de monstrueux repas, ou d’autres destins horribles. ]]))
 --template:setScale(100)
 template:setRadarTrace("blockade.png")
@@ -125,7 +125,7 @@ EsclavagisteSoulcagePNJ()
 --Création du vaisseau PJ
 function EsclavagisteSoulcagePJ()
 --Copie du vaisseau PNJ et transformation en vaisseau PJ
-variation = template:copy("Soulcage"):setLocaleName(_("playerShip", "Vaisseau Esclavagiste Soulcage")):setType("playership")
+variation = template:copy("AA1 Soulcage"):setLocaleName(_("playerShip", "Vaisseau Esclavagiste Soulcage")):setType("playership")
 --Valeur de recharge des boucliers
 variation:setShieldRechargeRate(1.2)
 --Module de saut
@@ -171,14 +171,14 @@ end
 EsclavagisteSoulcage()
 
 --Création du vaisseau
-function RaiderInfidel()
+function EscorteurInfidel()
 
 --Définition du vaisseau PNJ
-function RaiderInfidelPNJ()
+function EscorteurInfidelPNJ()
 
-function RaiderInfidelCoque()
+function EscorteurInfidelCoque()
 --Description, définition du modèle et de l'icone radar
-template = ShipTemplate():setName("Escorteur Infidel"):setLocaleName(_("ship", "Escorteur Infidel")):setClass(_("class", "Escorteur"), _("subclass", "Infidel")):setModel("Chaos_Destroyer")
+template = ShipTemplate():setName("AA2 Escorteur Infidel"):setLocaleName(_("ship", "Escorteur Infidel")):setClass(_("class", "Escorteur"), _("subclass", "Infidel")):setModel("Chaos_Destroyer")
 template:setDescription(_([[À la fin du quarantième millénaire, les plans d’un Escorteur de grande taille, destiné à remplacer le Destroyer Cobra, disparurent des ports orbitaux de Monsk. Des années plus tard, des vaisseaux d’une conception proche commencèrent à lancer des raids sur les avant-postes et les convois impériaux. Les premières attaques eurent lieu dans le secteur de Damocles, à seulement sept cent quatre-vingt années-lumière de Monsk, mais leur secteur d’opération s’est étendu au cours des deux derniers siècles. On pense généralement que des escadrons de cette classe de vaisseau sont responsables de nombreuses attaques sur des bases isolées du Segmentum Obscurus, et nombre d’entre eux ont été aperçus aussi loin qu’Alphon dans le Segmentum Solar et Xanthus près de la bordure nord. Appelés Infidel dans la hiérarchie navale, ces vaisseaux participèrent en grand nombre à la Guerre Gothique, s’illustrant lors de plusieurs attaques surprises contre des vaisseaux en orbite attendant d’être ravitaillés.]]))
 --template:setScale(75)
 template:setRadarTrace("adv_striker.png")
@@ -208,9 +208,9 @@ template:setCanDock(true)
 
 end
 
-RaiderInfidelCoque()
+EscorteurInfidelCoque()
 
-function RaiderInfidelTourelles()
+function EscorteurInfidelTourelles()
 --Tourelles de défense
 --Axe de tir (N° d'arme, arc de tir, Orientation, portée, délais de tir, dégâts)
 template:setBeamWeapon(0, 360, 180, 1000, 1, 1)
@@ -231,9 +231,9 @@ template:setBeamWeaponHeatPerFire(1, 0.05)
 
 end
 
-RaiderInfidelTourelles()
+EscorteurInfidelTourelles()
 
-function RaiderInfidelMissiles()
+function EscorteurInfidelMissiles()
 --Nombre de tubes et temps de chargement
 template:setTubes(1, 30)
 
@@ -258,17 +258,17 @@ template:setWeaponTubeExclusiveForCustom(0,"Torpille")
 
 end
 
-RaiderInfidelMissiles()
+EscorteurInfidelMissiles()
 
 end
 
 --Appel de la fonction créant le vaisseau PNJ
-RaiderInfidelPNJ()
+EscorteurInfidelPNJ()
 
 --Création du vaisseau PJ
-function RaiderInfidelPJ()
+function EscorteurInfidelPJ()
 --Copie du vaisseau PNJ et transformation en vaisseau PJ
-variation = template:copy("Infidel"):setLocaleName(_("playerShip", "Escorteur Infidel")):setType("playership")
+variation = template:copy("AA2 Infidel"):setLocaleName(_("playerShip", "Escorteur Infidel")):setType("playership")
 --Valeur de recharge des boucliers
 variation:setShieldRechargeRate(1.2)
 --Module de saut
@@ -280,7 +280,7 @@ variation:setJumpDriveChargeTime(60)
 --Définition des portées Radar
 variation:setLongRangeRadarRange(30000):setShortRangeRadarRange(12000)
 
-function RaiderInfidelTourellesPJ()
+function EscorteurInfidelTourellesPJ()
 --Tourelles de défense
 --Axe de tir (N° d'arme, arc de tir, Orientation, portée, délais de tir, dégâts)
 variation:setBeamWeapon(0, 360, 180, 1000, 1, 1)
@@ -301,17 +301,17 @@ variation:setBeamWeaponHeatPerFire(1, 0.05)
 
 end
 
-RaiderInfidelTourellesPJ()
+EscorteurInfidelTourellesPJ()
 
 end
 
 --Appel de la fonction créant le vaisseau PJ
-RaiderInfidelPJ()
+EscorteurInfidelPJ()
 
 end
 
 --Appel de la fonction créant les vaisseaux PJ et PNJ
-RaiderInfidel()
+EscorteurInfidel()
 
 --Création du vaisseau
 function DestroyerIconoclast()
@@ -321,7 +321,7 @@ function DestroyerIconoclastPNJ()
 
 function DestroyerIconoclastCoque()
 --Description, définition du modèle et de l'icone radar
-template = ShipTemplate():setName("Destroyer Iconoclast"):setLocaleName(_("ship", "Destroyer Iconoclast")):setClass(_("class", "Destroyer"), _("subclass", "Iconoclast")):setModel("Chaos_Destroyer")
+template = ShipTemplate():setName("AA3 Destroyer Iconoclast"):setLocaleName(_("ship", "Destroyer Iconoclast")):setClass(_("class", "Destroyer"), _("subclass", "Iconoclast")):setModel("Chaos_Destroyer")
 template:setDescription(_([[Les bandes de Destroyers de classe Iconoclast en maraude sont un danger constant pour qui voyage dans l’espace. Utilisés essentiellement par des pirates et autres bandits, les Iconoclasts sont d’une conception similaire à toutes sortes d’Escorteurs construits par n’importe quel astroport. Bien que de taille réduite, ils bénéficient d’une puissance de feu conséquente et une attaque combinée peut même inquiéter un vaisseau de ligne. Dans le cadre d’une flotte, ils peuvent engager les escorteurs ennemis, abattre les appareils d’attaque ou détruire les torpilles en approche.]]))
 --template:setScale(65)
 template:setRadarTrace("adv_striker.png")
@@ -400,7 +400,7 @@ DestroyerIconoclastPNJ()
 --Création du vaisseau PJ
 function DestroyerIconoclastPJ()
 --Copie du vaisseau PNJ et transformation en vaisseau PJ
-variation = template:copy("Iconoclast"):setLocaleName(_("playerShip", "Destroyer Iconoclast")):setType("playership")
+variation = template:copy("AA3 Iconoclast"):setLocaleName(_("playerShip", "Destroyer Iconoclast")):setType("playership")
 --Valeur de recharge des boucliers
 variation:setShieldRechargeRate(1.2)
 --Module de saut
@@ -463,7 +463,7 @@ function CroiseurLegerPestilaanPNJ()
 
 function CroiseurLegerPestilaanCoque()
 --Description, définition du modèle et de l'icone radar
-template = ShipTemplate():setName("Croiseur Léger Pestilaan"):setLocaleName(_("ship", "Croiseur Léger Pestilaan")):setClass(_("class", "Croiseur Leger"), _("subclass", "Pestilaan")):setModel("Chaos_Light_Cruiser")
+template = ShipTemplate():setName("AA4 Croiseur Léger Pestilaan"):setLocaleName(_("ship", "Croiseur Léger Pestilaan")):setClass(_("class", "Croiseur Leger"), _("subclass", "Pestilaan")):setModel("Chaos_Light_Cruiser")
 template:setDescription(_([[Prédateurs des plus dérangeants, les navires de classe Pestilaan semblent lourds et lents, faits de métal rouillé, de plaies ouvertes dispersées à travers la coque et de saillies organiques immondes. De telles apparences démentent la puissance d’un tel vaisseau, car sa nature pestifère charrie des énergies qui le soutiennent et soutiennent son équipage. On pense que la classe Pestilaan est un ancien croiseur léger oublié depuis longtemps, sur-armé et blindé au prix de la vitesse. La plupart des Pestilaans sont considérés comme des navires autrefois fiers, maintenant dévastés en servitude impure après une mutinerie ou la capture par l’Archiennemi.]]))
 --template:setScale(250)
 template:setRadarTrace("exuari_4.png")
@@ -606,7 +606,7 @@ CroiseurLegerPestilaanPNJ()
 --Création du vaisseau PJ
 function CroiseurLegerPestilaanPJ()
 --Copie du vaisseau PNJ et transformation en vaisseau PJ
-variation = template:copy("Pestilaan"):setLocaleName(_("playerShip", "Croiseur Léger Pestilaan")):setType("playership")
+variation = template:copy("AA4 Pestilaan"):setLocaleName(_("playerShip", "Croiseur Léger Pestilaan")):setType("playership")
 --Valeur de recharge des boucliers
 variation:setShieldRechargeRate(2.4)
 --Module de saut
@@ -660,7 +660,7 @@ function VaisseauAssautHellbringerPNJ()
 
 function VaisseauAssautHellbringerCoque()
 --Description, définition du modèle et de l'icone radar
-template = ShipTemplate():setName("Vaisseau d'Assaut Planétaire Hellbringer"):setLocaleName(_("ship", "Vaisseau d'Assaut Planétaire Hellbringer")):setClass(_("class", "Croiseur Leger"), _("subclass", "Hellbringer")):setModel("Chaos_Light_Cruiser")
+template = ShipTemplate():setName("AA5 Vaisseau d'Assaut Planétaire Hellbringer"):setLocaleName(_("ship", "Vaisseau d'Assaut Planétaire Hellbringer")):setClass(_("class", "Croiseur Leger"), _("subclass", "Hellbringer")):setModel("Chaos_Light_Cruiser")
 template:setDescription(_([[Les experts ne savent pas si le Hellbringer est une adaptation d’un navire de guerre existant, ou un nouveau design basé sur d’autres conceptions infâmes utilisées par les hordes du Chaos. Quoi qu’il en soit, les équipages des Hellbringers vivent dans un seul but : piller les civilisations planétaires, qu’il s’agisse d'Impériaux, de Xenos, ou même d’autres adeptes des Dieux Noirs. Arrivant à des systèmes sans méfiance, ces navires peuvent lancer des attaques dévastatrices à l'aide de leurs bordées d'armes ainsi que par l’intermédiaire d’une multitude d’embarcations d’assaut. Une fois que la surface est bombardée et la soumission proche, le ciel est rempli de navettes de débarquement, écrasant rapidement toute opposition alors qu'ils rassemblent les captifs pour les réduire en esclavage, pillant tous les objets de valeur, puis repartant avant que l’aide ne puisse arriver. Il est plus rare, mais pas impossible pour eux d’attaquer des stations spatiales sans défense, apportant une telle destruction qu'il n'en reste généralement plus qu'une coquille vide.]]))
 --template:setScale(200)
 template:setRadarTrace("exuari_4.png")
@@ -789,7 +789,7 @@ VaisseauAssautHellbringerPNJ()
 --Création du vaisseau PJ
 function VaisseauAssautHellbringerPJ()
 --Copie du vaisseau PNJ et transformation en vaisseau PJ
-variation = template:copy("Hellbringer"):setLocaleName(_("playerShip", "Vaisseau d'Assaut Planétaire Hellbringer")):setType("playership")
+variation = template:copy("AA5 Hellbringer"):setLocaleName(_("playerShip", "Vaisseau d'Assaut Planétaire Hellbringer")):setType("playership")
 --Valeur de recharge des boucliers
 variation:setShieldRechargeRate(1.2)
 --Module de saut
@@ -844,7 +844,7 @@ function CroiseurDevastatorPNJ()
 
 function CroiseurDevastatorCoque()
 --Description, définition du modèle et de l'icone radar
-template = ShipTemplate():setName("Croiseur Devastator"):setLocaleName(_("ship", "Croiseur Devastator")):setClass(_("class", "Croiseur"), _("subclass", "Devastator")):setModel("Chaos_Cruiser")
+template = ShipTemplate():setName("AA6 Croiseur Devastator"):setLocaleName(_("ship", "Croiseur Devastator")):setClass(_("class", "Croiseur"), _("subclass", "Devastator")):setModel("Chaos_Cruiser")
 template:setDescription(_([[Transporteur robuste et fiable, le Croiseur de classe Devastator est un navire très apprécié des bandes de pirates et des chefs de guerre renégats. Il possède de puissantes lances à longue portée placées de chaque côté, des batteries de turbo-lasers destructeurs sur sa proue, et peut lancer un nombre considérable de vaisseaux d’attaque depuis ses ponts d’envol. Les Devastators disposent de solides installations de réparation et de réarmement pour ses bombardiers et ses chasseurs, et sous les ponts, des cales entières sont consacrées à des quartiers rudimentaires où logent les troupes d'assaut avant d'mbarquer à bord des Modules d'Assaut Dreadclaws.]]))
 --template:setScale(250)
 template:setRadarTrace("cruiser.png")
@@ -997,7 +997,7 @@ CroiseurDevastatorPNJ()
 --Création du vaisseau PJ
 function CroiseurDevastatorPJ()
 --Copie du vaisseau PNJ et transformation en vaisseau PJ
-variation = template:copy("Devastator"):setLocaleName(_("playerShip", "Croiseur Devastator")):setType("playership")
+variation = template:copy("AA6 Devastator"):setLocaleName(_("playerShip", "Croiseur Devastator")):setType("playership")
 --Valeur de recharge des boucliers
 variation:setShieldRechargeRate(2.4)
 --Module de saut
@@ -1061,7 +1061,7 @@ function CroiseurSlaughterPNJ()
 
 function CroiseurSlaughterCoque()
 --Description, définition du modèle et de l'icone radar
-template = ShipTemplate():setName("Croiseur Slaughter"):setLocaleName(_("ship", "Croiseur Slaughter")):setClass(_("class", "Croiseur"), _("subclass", "Slaughter")):setModel("Chaos_Cruiser")
+template = ShipTemplate():setName("AA7 Croiseur Slaughter"):setLocaleName(_("ship", "Croiseur Slaughter")):setClass(_("class", "Croiseur"), _("subclass", "Slaughter")):setModel("Chaos_Cruiser")
 template:setDescription(_([[Le Croiseur de classe Slaughter utilisait des bobines de moteurs Scartix, ce qui lui permettait de bénéficier d’une vitesse bien plus grande que celle de n’importe quel autre vaisseau. Les plans de ces bobines furent perdus lorsqu'un des croiseurs achevé en 126.M34 se rebella et bombarda le Monde-Forge de Sethelan. Certains pensent que le seul but de cette attaque était précisément d’empêcher la construction de nouveaux vaisseaux de cette classe.]]))
 --template:setScale(250)
 template:setRadarTrace("cruiser.png")
@@ -1213,7 +1213,7 @@ CroiseurSlaughterPNJ()
 --Création du vaisseau PJ
 function CroiseurSlaughterPJ()
 --Copie du vaisseau PNJ et transformation en vaisseau PJ
-variation = template:copy("Slaughter"):setLocaleName(_("playerShip", "Croiseur Slaughter")):setType("playership")
+variation = template:copy("AA7 Slaughter"):setLocaleName(_("playerShip", "Croiseur Slaughter")):setType("playership")
 --Valeur de recharge des boucliers
 variation:setShieldRechargeRate(2.4)
 --Module de saut
@@ -1277,7 +1277,7 @@ function CroiseurCarnagePNJ()
 
 function CroiseurCarnageCoque()
 --Description, définition du modèle et de l'icone radar
-template = ShipTemplate():setName("Croiseur Carnage"):setLocaleName(_("ship", "Croiseur Carnage")):setClass(_("class", "Croiseur"), _("subclass", "Carnage")):setModel("Chaos_Cruiser")
+template = ShipTemplate():setName("AA8 Croiseur Carnage"):setLocaleName(_("ship", "Croiseur Carnage")):setClass(_("class", "Croiseur"), _("subclass", "Carnage")):setModel("Chaos_Cruiser")
 template:setDescription(_([[Les Croiseurs de classe Carnage furent mis au point pour servir de bâtiments de soutien, utilisant la longue portée de leurs armes pour rester en arrière et appuyer de leurs tirs les autres vaisseaux. L’idée devait se révéler malheureuse, entravée par les difficultés d’approvisionnement en énergie de telles armes, et causa un schisme au sein de la Flotte de Guerre Obscura.]]))
 --template:setScale(250)
 template:setRadarTrace("cruiser.png")
@@ -1428,7 +1428,7 @@ CroiseurCarnagePNJ()
 --Création du vaisseau PJ
 function CroiseurCarnagePJ()
 --Copie du vaisseau PNJ et transformation en vaisseau PJ
-variation = template:copy("Carnage"):setLocaleName(_("playerShip", "Croiseur Carnage")):setType("playership")
+variation = template:copy("AA8 Carnage"):setLocaleName(_("playerShip", "Croiseur Carnage")):setType("playership")
 --Valeur de recharge des boucliers
 variation:setShieldRechargeRate(2.4)
 --Module de saut
@@ -1473,7 +1473,7 @@ function GrandCroiseurRetaliatorPNJ()
 
 function GrandCroiseurRetaliatorCoque()
 --Description, définition du modèle et de l'icone radar
-template = ShipTemplate():setName("Grand Croiseur Retaliator"):setLocaleName(_("ship", "Grand Croiseur Retaliator")):setClass(_("class", "Grand Croiseur"), _("subclass", "Retaliator")):setModel("Chaos_Heavy_Carrier")
+template = ShipTemplate():setName("AA9 Grand Croiseur Retaliator"):setLocaleName(_("ship", "Grand Croiseur Retaliator")):setClass(_("class", "Grand Croiseur"), _("subclass", "Retaliator")):setModel("Chaos_Heavy_Carrier")
 template:setDescription(_([[Le Retaliator est un Grand Croiseur polyvalent, équipé d'un large éventail d'armes différents afin de pouvoir combattre l'ennemi à toutes distances. En plus des macrocanons, des lances sidérales et des escadrons d'attaque, l'équipage est généralement rompu aux actions d'abordage, ce qui en fait un adversaire à ne sous estimer à aucun moment.]]))
 --template:setScale(310)
 template:setRadarTrace("tug.png")
@@ -1653,7 +1653,7 @@ GrandCroiseurRetaliatorPNJ()
 --Création du vaisseau PJ
 function GrandCroiseurRetaliatorPJ()
 --Copie du vaisseau PNJ et transformation en vaisseau PJ
-variation = template:copy("Retaliator"):setLocaleName(_("playerShip", "Grand Croiseur Retaliator")):setType("playership")
+variation = template:copy("AA9 Retaliator"):setLocaleName(_("playerShip", "Grand Croiseur Retaliator")):setType("playership")
 --Valeur de recharge des boucliers
 variation:setShieldRechargeRate(2.4)
 --Module de saut
@@ -1717,7 +1717,7 @@ function CroiseurLourdHadesPNJ()
 
 function CroiseurLourdHadesCoque()
 --Description, définition du modèle et de l'icone radar
-template = ShipTemplate():setName("Croiseur Lourd Hades"):setLocaleName(_("ship", "Croiseur Lourd Hades")):setClass(_("class", "Grand Croiseur"), _("subclass", "Hades")):setModel("Chaos_Heavy_Carrier")
+template = ShipTemplate():setName("AA91 Croiseur Lourd Hades"):setLocaleName(_("ship", "Croiseur Lourd Hades")):setClass(_("class", "Grand Croiseur"), _("subclass", "Hades")):setModel("Chaos_Heavy_Carrier")
 template:setDescription(_([[Autrefois considéré comme l’épine dorsale d’une flotte de combat, le Croiseur Lourd de la classe Hades est un navire exceptionnellement dangereux et bien armé, une menace sérieuse pour tout navire de ligne. Les Croiseurs Lourds Hades peuvent déployer une puissance de feu dévastatrice à longue distance, notamment grâce à leurs deux rangées de lances et à leurs batteries d’armes lourdes regroupées sur chaque flanc.]]))
 --template:setScale(260)
 template:setRadarTrace("tug.png")
@@ -1851,7 +1851,7 @@ CroiseurLourdHadesPNJ()
 --Création du vaisseau PJ
 function CroiseurLourdHadesPJ()
 --Copie du vaisseau PNJ et transformation en vaisseau PJ
-variation = template:copy("Hades"):setLocaleName(_("playerShip", "Croiseur Lourd Hades")):setType("playership")
+variation = template:copy("AA91 Hades"):setLocaleName(_("playerShip", "Croiseur Lourd Hades")):setType("playership")
 --Valeur de recharge des boucliers
 variation:setShieldRechargeRate(2.4)
 --Module de saut
@@ -1916,7 +1916,7 @@ function DemonPNJ()
 
 function DemonCoque()
 --Description, définition du modèle et de l'icone radar
-template = ShipTemplate():setName("Entitee Psychique"):setLocaleName(_("ship", "Entitee Psychique")):setClass(_("class", "Chasseur"), _("subclass", "Erreur")):setModel("sci_fi_alien_ship_6")
+template = ShipTemplate():setName("000 Entitee Psychique"):setLocaleName(_("ship", "Entitee Psychique")):setClass(_("class", "Chasseur"), _("subclass", "Erreur")):setModel("sci_fi_alien_ship_6")
 template:setDescription(_([[Envoyer quelqu'un dans le Warp sans protection revient à envoyer un nageur dans une mer infestée de requins et lui dire qu'il n'a qu'a nager pour rentrer chez lui. ]]))
 template:setSecret(true)
 --template:setScale(100)

@@ -17,7 +17,7 @@ function PelerinJerichoPNJ()
 
 function PelerinJerichoCoque()
 --Description, définition du modèle et de l'icone radar
-template = ShipTemplate():setName("Vaisseau Pélerin Jericho"):setLocaleName(_("ship", "Vaisseau Pélerin Jericho")):setClass(_("class", "Transport"), _("subclass", "Jéricho")):setModel("Civilian_Transport_Ship")
+template = ShipTemplate():setName("ZW1 Vaisseau Pélerin Jericho"):setLocaleName(_("ship", "Vaisseau Pélerin Jericho")):setClass(_("class", "Transport"), _("subclass", "Jéricho")):setModel("Civilian_Transport_Ship")
 template:setDescription(_([[Les gigantesques vaisseaux pèlerins Jericho sont des vaisseaux raffineurs reconvertis. Leurs immenses réservoirs sont transformés en centaines de compartiments pour passagers et un seul vaisseau peut accueillir à son bord plusieurs milliers de fidèles. La qualité de l’hébergement varie. Pour ceux qui ont des trônes, le voyage peut être relativement plaisant, mais la plupart doivent se contenter d’une couchette à fond de cale et de rations recyclées. Un Jericho peut également être réaménagé pour faire du transport de marchandises. Ces vaisseaux sont massifs, lents et peu maniables. La plupart sont équipés de quelques canons pour décourager les pirates, encore que ceux-ci préfèrent généralement s’attaquer à des cibles plus alléchantes.]]))
 --template:setScale(112.5)
 template:setRadarTrace("blockade.png")
@@ -112,7 +112,7 @@ PelerinJerichoPNJ()
 --Création du vaisseau PJ
 function PelerinJerichoPJ()
 --Copie du vaisseau PNJ et transformation en vaisseau PJ
-variation = template:copy("Pelerin"):setLocaleName(_("playerShip", "Vaisseau Pélerin Jericho")):setType("playership")
+variation = template:copy("ZW1 Pelerin"):setLocaleName(_("playerShip", "Vaisseau Pélerin Jericho")):setType("playership")
 --Valeur de recharge des boucliers
 variation:setShieldRechargeRate(1.2)
 --Module de saut
@@ -155,7 +155,7 @@ function MarchandVagabondPNJ()
 
 function MarchandVagabondCoque()
 --Description, définition du modèle et de l'icone radar
-template = ShipTemplate():setName("Vaisseau Marchand Vagabond"):setLocaleName(_("ship", "Vaisseau Marchand Vagabond")):setClass(_("class", "Transport"), _("subclass", "Vagabond")):setModel("Civilian_Transport_Ship")
+template = ShipTemplate():setName("ZW2 Vaisseau Marchand Vagabond"):setLocaleName(_("ship", "Vaisseau Marchand Vagabond")):setClass(_("class", "Transport"), _("subclass", "Vagabond")):setModel("Civilian_Transport_Ship")
 template:setDescription(_([[Les Vagabond sont des petits vaisseaux marchands polyvalents, capables de transporter des cargaisons variées aussi bien que des passagers. Populaires auprès des Capitaines Chartistes les moins riches, ces bâtiments sobres et fiables sont capables d’accueillir quelques batteries pour assurer leur défense.]]))
 --template:setScale(100)
 template:setRadarTrace("adv_gunship.png")
@@ -246,7 +246,7 @@ MarchandVagabondPNJ()
 --Création du vaisseau PJ
 function MarchandVagabondPJ()
 --Copie du vaisseau PNJ et transformation en vaisseau PJ
-variation = template:copy("Vagabond"):setLocaleName(_("playerShip", "Vaisseau Marchand Vagabond")):setType("playership")
+variation = template:copy("ZW2 Vagabond"):setLocaleName(_("playerShip", "Vaisseau Marchand Vagabond")):setType("playership")
 --Module de saut
 variation:setJumpDrive(true)
 --Portée de saut(Minimum,Maximum)
@@ -297,7 +297,7 @@ function NavireLokiPNJ()
 
 function NavireLokiCoque()
 --Description, définition du modèle et de l'icone radar
-template = ShipTemplate():setName("Navire Loki"):setLocaleName(_("ship", "Navire Loki")):setClass(_("class", "Transport"), _("subclass", "Loki")):setModel("Civilian_Transport_Ship")
+template = ShipTemplate():setName("ZW3 Navire Loki"):setLocaleName(_("ship", "Navire Loki")):setClass(_("class", "Transport"), _("subclass", "Loki")):setModel("Civilian_Transport_Ship")
 template:setDescription(_([[La classe Loki est en fait une classe « fourre-tout » de plusieurs types de transports différents qui ont été modifiés en tant que "Q-ships". Bien que la Marine ait le devoir sacré de protéger le commerce impérial, il y a trop de voies commerciales à défendre et trop peu de navires de guerre pour le faire. En outre, de nombreux maraudeurs pirates resteront loin des convois lourdement défendus, attendant des proies plus faibles. Les "Q-ships" offrent à l’Imperium un moyen de transformer les prédateurs en proie. Déguisés en marchands impuissants, ils embarquent en fait de puissantes macrobatteries et même des lances sidérales. Leur tactique préférée est de capituler à la première vue d’un pirate, feignant de se rendre sans se battre. Quand le Raider est assez proche, ils sortent leurs armes et leur tirent dessus à bout portant. Bien que cela permette souvent de vaincre leurs adversaires en une seule fois, la plupart des navires de la classe Loki restent aussi lents et lourds que les autres marchands, et peinent à tenir un combat soutenu.]]))
 --template:setScale(100)
 template:setRadarTrace("adv_gunship.png")
@@ -388,7 +388,7 @@ NavireLokiPNJ()
 --Création du vaisseau PJ
 function NavireLokiPJ()
 --Copie du vaisseau PNJ et transformation en vaisseau PJ
-variation = template:copy("Loki"):setLocaleName(_("playerShip", "Navire Loki")):setType("playership")
+variation = template:copy("ZW3 Loki"):setLocaleName(_("playerShip", "Navire Loki")):setType("playership")
 --Module de saut
 variation:setJumpDrive(true)
 --Portée de saut(Minimum,Maximum)
@@ -439,7 +439,7 @@ function CoursierOrionPNJ()
 
 function CoursierOrionCoque()
 --Description, définition du modèle et de l'icone radar
-template = ShipTemplate():setName("Coursier Stellaire Orion"):setLocaleName(_("ship", "Coursier Stellaire Orion")):setClass(_("class", "Transport"), _("subclass", "Orion")):setModel("Civilian_Transport_Ship")
+template = ShipTemplate():setName("ZW4 Coursier Stellaire Orion"):setLocaleName(_("ship", "Coursier Stellaire Orion")):setClass(_("class", "Transport"), _("subclass", "Orion")):setModel("Civilian_Transport_Ship")
 template:setDescription(_([[Les Orions sont quelque peu rares parmi les vaisseaux de l’Imperium, car il s'agit de vaisseaux de transport rapide (ou coursiers stellaires). Bien qu’ils soient conçus pour le fret, leurs forme allongée, leurs lignes épurées et leurs moteurs puissants sont moins optimisés pour le transport de fret que pour la vitesse. Les vaisseaux de la classe Orion sont construits pour transporter de petites cargaisons de grande valeur qui doivent atteindre leur destination rapidement ou en territoire hostile. Plutôt que de compter sur des escortes armées, les Orions voyagent seuls. Ils font confiance à leur rapidité pour leur permettre de distancer plupart des prédateurs, et comptent sur leurs armes pour repousser ceux assez rapide pour les suivre. Bien qu'ils engrangent de nombreux succès, les Orions ont un inconvénient majeur. Les cloisons internes redondantes et le blindage extérieur qui seraient normalement ajoutés aux navires plus classiques ont été abandonnés afin d’augmenter la vitesse et la capacité de fret. En conséquence, quelques coups bien placés peuvent facilement paralyser un Orion.]]))
 --template:setScale(150)
 template:setRadarTrace("adv_gunship.png")
@@ -519,7 +519,7 @@ CoursierOrionPNJ()
 --Création du vaisseau PJ
 function CoursierOrionPJ()
 --Copie du vaisseau PNJ et transformation en vaisseau PJ
-variation = template:copy("Orion"):setLocaleName(_("playerShip", "Coursier Stellaire Orion")):setType("playership")
+variation = template:copy("ZW4 Orion"):setLocaleName(_("playerShip", "Coursier Stellaire Orion")):setType("playership")
 --Module de saut
 variation:setJumpDrive(true)
 --Portée de saut(Minimum,Maximum)
@@ -572,7 +572,7 @@ function TransportCarrackPNJ()
 
 function TransportCarrackCoque()
 --Description, définition du modèle et de l'icone radar
-template = ShipTemplate():setName("Vaisseau Carrack"):setLocaleName(_("ship", "Vaisseau Carrack")):setClass(_("class", "Transport"), _("subclass", "Carrack")):setModel("Civilian_Transport_Ship")
+template = ShipTemplate():setName("ZW5 Vaisseau Carrack"):setLocaleName(_("ship", "Vaisseau Carrack")):setClass(_("class", "Transport"), _("subclass", "Carrack")):setModel("Civilian_Transport_Ship")
 template:setDescription(_([[Parmi les millions de mondes de l’Imperium de l’Humanité, il y a beaucoup plus de navires marchands et de transports lourds qu’il n’y aura jamais de navires de guerre de la Marine Impériale. Les transports lourds en particulier peuvent être de toutes tailles et formes, et sont généralement construits de sorte que la forme suive la fonction. Par exemple, les Carrack conçus pour le transport de minerais ou de denrées alimentaires en vrac seront sensiblement différents de ceuxs conçus pour le transport de cargaisons compartimentées, conteneurisées, de munitions ou d’engins d’attaque de rechange pour les flottes opérant près des zones de guerre. Même les pétroliers n’ont pas besoin de transporter des cargaisons dangereuses ou inflammables; dans les mondes désertiques, l’eau est aussi rare et précieuse qu’une perle de prix. Chaque flotte de Libre-Marchand est soutenue par des dizaines de ces navires marchands, qu’ils utilisent pour transporter des fournitures et des marchandises commerciales à travers le vide interstellaire. Dans les zones de guerre, il est également courant de les « consulter » pour convertir leurs cargo en transports de troupes. Bien qu’ils ne soient pas normalement utilisés de cette manière, chaque Carrack peut transporter des dizaines de milliers d’hommes ainsi que des milliers de chars ou de véhicules de soutien. Ils peuvent même transporter des Titans de l'Adeptus Mechanicus ou assez de munitions pour fournir une armée entière. En dans de tels cas, la plupart des commandants de flotte assignent des navires d’escorte à un escadron de Carrack, car la perte d’un de ces navires pendant un assaut planétaire peut avoir d’énormes répercussions à long terme sur une campagne. Au-delà de cela, il y a une myriade d’autres rôles pour les navires marchands lourds, y compris les opérations de réparation et de sauvetage de l’espace lointain, ou même simplement une soute mobile pour les marchandises et les trésors « libérés » des convois commerciaux ennemis.]]))
 --template:setScale(105)
 template:setRadarTrace("adv_gunship.png")
@@ -652,7 +652,7 @@ TransportCarrackPNJ()
 --Création du vaisseau PJ
 function TransportCarrackPJ()
 --Copie du vaisseau PNJ et transformation en vaisseau PJ
-variation = template:copy("Carrack"):setLocaleName(_("playerShip", "Vaisseau Carrack")):setType("playership")
+variation = template:copy("ZW5 Carrack"):setLocaleName(_("playerShip", "Vaisseau Carrack")):setType("playership")
 --Module de saut
 variation:setJumpDrive(true)
 --Portée de saut(Minimum,Maximum)
@@ -713,7 +713,7 @@ function UsineGoliathPNJ()
 
 function UsineGoliathCoque()
 --Description, définition du modèle et de l'icone radar
-template = ShipTemplate():setName("Vaisseau-Usine Goliath"):setLocaleName(_("ship", "Vaisseau-Usine Goliath")):setClass(_("class", "Croiseur Leger"), _("subclass", "Goliath")):setModel("Adeptus_Mechanicus_cruiser")
+template = ShipTemplate():setName("ZW6 Vaisseau-Usine Goliath"):setLocaleName(_("ship", "Vaisseau-Usine Goliath")):setClass(_("class", "Croiseur Leger"), _("subclass", "Goliath")):setModel("Adeptus_Mechanicus_cruiser")
 template:setDescription(_([[Les navires-usines de classe Goliath sont des navires de l'Adeptus Mechanicus, des vaisseaux gigantesques de traitement de l’énergie qui récoltent l’essence même des étoiles. Ils dévorent le plasma solaire pour alimenter leurs propres dispositifs techno-arcaniques de production de combustible, afin d’assouvir la faim sans fin des mondes-ruches de l’Imperium. Plus grands encore que les Jericho, ils sont fragiles et potentiellement explosifs, traités avec beaucoup de respect et de prudence par les équipages qui en croisent, étant donné leur propension à détonner dans des explosions catastrophiques qui sont capables de souffler l’atmosphère de mondes entiers.]]))
 --template:setScale(225)
 template:setRadarTrace("adv_gunship.png")
@@ -811,7 +811,7 @@ UsineGoliathPNJ()
 --Création du vaisseau PJ
 function UsineGoliathPJ()
 --Copie du vaisseau PNJ et transformation en vaisseau PJ
-variation = template:copy("Goliath"):setLocaleName(_("playerShip", "Vaisseau-Usine Goliath")):setType("playership")
+variation = template:copy("ZW6 Goliath"):setLocaleName(_("playerShip", "Vaisseau-Usine Goliath")):setType("playership")
 --Module de saut
 variation:setJumpDrive(true)
 --Portée de saut(Minimum,Maximum)
@@ -862,7 +862,7 @@ function TransportUniversePNJ()
 
 function TransportUniverseCoque()
 --Description, définition du modèle et de l'icone radar
-template = ShipTemplate():setName("Transporteur Lourd Universe"):setLocaleName(_("ship", "Transporteur Lourd Universe")):setClass(_("class", "Cuirasse"), _("subclass", "Universe")):setModel("Civilian_Transport_Cruiser")
+template = ShipTemplate():setName("ZW7 Transporteur Lourd Universe"):setLocaleName(_("ship", "Transporteur Lourd Universe")):setClass(_("class", "Cuirasse"), _("subclass", "Universe")):setModel("Civilian_Transport_Cruiser")
 template:setDescription(_([[Parmi les myriades de vaisseaux qui desservent les voies commerciales, certains des plus grands sont les Transporteurs Lourds. S’étendant sur une douzaine de kilomètres de la proue à la poupe, un Transport Lourd pourrait apparaitre mince et élégant vu de loin. Cependant, à mesure qu’on s’en approche lentement, cette impression trompeuse est remplacée par une crainte horrifiée, car ce qui semble être des mâts radio se transforme en gigantesques tours de la taille de cités-ruches. L’échelle réelle du navire se manifeste quand l'observateur réalise que des villes entières scintillent le long de ses flancs. Construire un Transporteur Lourd de classe Universe est une entreprise colossale. Pour construire un, il faut des ressources si immenses qu’ils ne sont bâtis qu’au-dessus des mondes et des station impériales les plus riches. Ce sont de purs transporteurs de marchandises, de conception relativement simple, mais a une échelle gargantuesque. Ce sont des mondes presque autonomes, où des communautés spatiales entières vivent leur vie, insensibles aux motivations ou à l’identité des propriétaires actuels du navire. Le simple déchargement du navire est une entreprise colossale qui exige des mois de labeur.]]))
 --template:setScale(600)
 template:setRadarTrace("transport.png")
@@ -984,7 +984,7 @@ TransportUniversePNJ()
 --Création du vaisseau PJ
 function TransportUniversePJ()
 --Copie du vaisseau PNJ et transformation en vaisseau PJ
-variation = template:copy("Universe"):setLocaleName(_("playerShip", "Transporteur Lourd Universe")):setType("playership")
+variation = template:copy("ZW7 Universe"):setLocaleName(_("playerShip", "Transporteur Lourd Universe")):setType("playership")
 --Module de saut
 variation:setJumpDrive(true)
 --Portée de saut(Minimum,Maximum)

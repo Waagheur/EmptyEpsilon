@@ -1,3 +1,46 @@
+Version 0.8 par Numérus (Numérus#7186 sur Discord, Numérus Technoprêtre sur Facebook)
+Janvier 2026
+
+Général :
+
+-Changement des noms de tous les templates de vaisseaux pour qu'ils apparaissent triés dans l'écran du MJ et que leur description soit claire.
+
+-Résolution d'un défaut de programmation qui faisait que les Destroyers ne laissaient pas d'épave.
+
+-Ajout d'une fonction faisant apparaitre sur l'écran du MJ des boutons permettant de faire apparaitre des flottes pré-programmées.
+
+-Clarification du fichier utils_mars21
+
+-Ajout de descriptions sur tous les vaisseaux, stations et planètes de la carte
+
+
+A venir :
+
+A moyen terme :
+
+-Ajout de vaisseaux Orks et autres espèces mineures.
+
+-Ajout d'une fonction de boost pour les vaisseaux Orks.
+
+-Ajout d'un système d'éperonnage.
+
+-Ajout de cartes pour les autres régions du sous-secteur d'Argos et de la Fédération.
+
+-Ajout de nouvelles textures pour les planètes.
+
+-Ajout de nouvelles icones radar pour les vaisseaux et objets spatiaux.
+
+-Mise en place d'un système de versions plus formel.
+
+
+A long terme : 
+
+-Mise à jour des textures des vaisseaux.
+
+-Traduction, mise à jour et épuration du code et des fichiers .lua.
+
+
+
 Version 0.7 par Numérus (Numérus#7186 sur Discord, Numérus Technoprêtre sur Facebook)
 Octobre 2024
 

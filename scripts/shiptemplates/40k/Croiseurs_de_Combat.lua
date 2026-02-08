@@ -27,7 +27,7 @@ function CroiseurdeCombatOverlordPNJ()
 
 function CroiseurdeCombatOverlordCoque()
 --Description, définition du modèle et de l'icone radar
-template = ShipTemplate():setName("Croiseur de Combat Overlord"):setLocaleName(_("ship", "Croiseur de Combat Overlord")):setClass(_("class", "Croiseur de Combat"), _("subclass", "Overlord")):setModel("Navy_Battleship")
+template = ShipTemplate():setName("ZT1 Croiseur de Combat Overlord"):setLocaleName(_("ship", "Croiseur de Combat Overlord")):setClass(_("class", "Croiseur de Combat"), _("subclass", "Overlord")):setModel("Navy_Battleship")
 template:setDescription(_([[Basé sur la conception du Croiseur Lourd de Classe Acheron, le Croiseur de Combat de Classe Overlord fut conçu pour fournir à la flotte impériale un vaisseau de catégorie croiseur possédant la puissance de feu à longue portée d’un cuirassé. En raison de difficultés dues à la transmission d’énergie, les batteries d’armes de proue de l’Acheron furent remplacées par la proue blindée et les tubes lance-torpilles habituels des Croiseurs. Ces modifications permirent d’améliorer les pièces d’artillerie dorsales en leur conférant une portée accrue, comparable à celle des autres batteries laser du vaisseau. Cependant, les difficultés de construction inhérentes à ces modifications font que seul un nombre limité d’Overlords à été incorporé aux différentes flottes.]]))
 --template:setScale(265)
 template:setRadarTrace("battleship.png")
@@ -164,7 +164,7 @@ CroiseurdeCombatOverlordPNJ()
 --Création du vaisseau PJ
 function CroiseurdeCombatOverlordPJ()
 --Copie du vaisseau PNJ et transformation en vaisseau PJ
-variation = template:copy("Overlord"):setLocaleName(_("playerShip", "Croiseur de Combat Overlord")):setType("playership")
+variation = template:copy("ZT1 Overlord"):setLocaleName(_("playerShip", "Croiseur de Combat Overlord")):setType("playership")
 --Valeur de recharge des boucliers
 variation:setShieldRechargeRate(2.4)
 --Module de saut
@@ -260,7 +260,7 @@ function CroiseurdeCombatMarsPNJ()
 
 function CroiseurdeCombatMarsCoque()
 --Description, définition du modèle et de l'icone radar
-template = ShipTemplate():setName("Croiseur de Combat Mars"):setLocaleName(_("ship", "Croiseur de Combat Mars")):setClass(_("class", "Croiseur de Combat"), _("subclass", "Mars")):setModel("Navy_Battleship")
+template = ShipTemplate():setName("ZT2 Croiseur de Combat Mars"):setLocaleName(_("ship", "Croiseur de Combat Mars")):setClass(_("class", "Croiseur de Combat"), _("subclass", "Mars")):setModel("Navy_Battleship")
 template:setDescription(_([[La production des Croiseurs de Combat de classe Mars dura pendant dix-huit siècles jusqu’à ce que la Guerre Gothique éclate, après quoi leur nombre ne cessa de décroître. Bien que considéré comme insuffisamment armé par de nombreux capitaines, un tir bien placé de leur canon Nova leur permet de porter des coups dévastateurs à l'ennemi avant de l'achever à la lance sidérale.]]))
 --template:setScale(270)
 template:setRadarTrace("battleship.png")
@@ -431,7 +431,7 @@ CroiseurdeCombatMarsPNJ()
 --Création du vaisseau PJ
 function CroiseurdeCombatMarsPJ()
 --Copie du vaisseau PNJ et transformation en vaisseau PJ
-variation = template:copy("Mars"):setLocaleName(_("playerShip", "Croiseur de Combat Mars")):setType("playership")
+variation = template:copy("ZT2 Mars"):setLocaleName(_("playerShip", "Croiseur de Combat Mars")):setType("playership")
 --Valeur de recharge des boucliers
 variation:setShieldRechargeRate(2.4)
 --Module de saut
@@ -487,7 +487,7 @@ function CroiseurdeCombatChalicePNJ()
 
 function CroiseurdeCombatChaliceCoque()
 --Description, définition du modèle et de l'icone radar
-template = ShipTemplate():setName("Croiseur de Combat Chalice"):setLocaleName(_("ship", "Croiseur de Combat Chalice")):setClass(_("class", "Croiseur de Combat"), _("subclass", "Chalice")):setModel("Navy_Battleship")
+template = ShipTemplate():setName("ZT3 Croiseur de Combat Chalice"):setLocaleName(_("ship", "Croiseur de Combat Chalice")):setClass(_("class", "Croiseur de Combat"), _("subclass", "Chalice")):setModel("Navy_Battleship")
 template:setDescription(_([[La classe Chalice était une tentative audacieuse, mais pas entièrement réussie, de développer davantage le concept du croiseur de combat dans le secteur Calixis. La théorie semblait bonne : un croiseur lourd rapide, avec une armure légère et des armes puissantes qui pouvaient distancer et déjouer tout ce qu’il ne pouvait pas détruire immédiatement. Pendant les sombres années de la croisade angevine, les propagandistes impériaux ont fait grand cas des nouveaux « super-croiseurs » fabriqués localement, qui avaient pour mission de repousser les nombreux xénos et hérétiques s'opposant aux forces Impériales. Même s’ils ne sont entrés en service qu’à la fin de la croisade, les espoirs pour ces navires étaient immenses. Les premiers capitaines de la classe Calice ont été salués comme des aventuriers glamour et flamboyants dans les bobines de vox sans fin et les jeux de données. Malheureusement, ces navires n’ont pas répondu aux attentes. Deux des premiers cuirassés de classe Chalice ont été détruits lors d’un engagement avec des forces xénos inconnues dans l’abîme de Hazeroth, et d’autres ont été perdus au cours d'accidents ou d'engagements au cours des prochains millénaires. Cependant, ces navires restent admirés parmi le grand public impérial, qui croit que ces navires sont le noyau de fer de la Flotte de Guerre Calixis. Cependant, ces navires élégants et beaux, bien que rapides et bien armés, ont une mâchoire de verre, et une tendance déconcertante à subir des ruptures de leurs conduites de plasma lors d’assauts soutenus.]]))
 --template:setScale(255)
 template:setRadarTrace("battleship.png")
@@ -529,7 +529,7 @@ template:setBeamWeapon(0, 360, 180, 2000, 0.5, 1)
 --Ajustement de la consommation d'énergie des tirs
 template:setBeamWeaponEnergyPerFire(0, 1)
 --Ajustement de la surchauffe engendrée par les tirs
-template:setBeamWeaponHeatPerFire(0, 0.01)
+template:setBeamWeaponHeatPerFire(0, 0.0125)
 
 --Tourelle Dorsale
 --Axe de tir (N° d'arme, arc de tir, Orientation, portée, délais de tir, dégâts)
@@ -539,7 +539,7 @@ template:setBeamWeaponTurret(1, 270, 0, 0.5)
 --Ajustement de la consommation d'énergie des tirs
 template:setBeamWeaponEnergyPerFire(1, 20)
 --Ajustement de la surchauffe engendrée par les tirs
-template:setBeamWeaponHeatPerFire(1, 0.1)
+template:setBeamWeaponHeatPerFire(1, 0.125)
 
 --Tourelle Bâbord 1
 --Axe de tir (N° d'arme, arc de tir, Orientation, portée, délais de tir, dégâts)
@@ -549,7 +549,7 @@ template:setBeamWeaponTurret(2, 90, 270, 0.5)
 --Ajustement de la consommation d'énergie des tirs
 template:setBeamWeaponEnergyPerFire(2, 20)
 --Ajustement de la surchauffe engendrée par les tirs
-template:setBeamWeaponHeatPerFire(2, 0.1)
+template:setBeamWeaponHeatPerFire(2, 0.125)
 
 --Tourelle Tribord 1
 --Axe de tir (N° d'arme, arc de tir, Orientation, portée, délais de tir, dégâts)
@@ -559,7 +559,7 @@ template:setBeamWeaponTurret(3, 90, 90, 0.5)
 --Ajustement de la consommation d'énergie des tirs
 template:setBeamWeaponEnergyPerFire(3, 20)
 --Ajustement de la surchauffe engendrée par les tirs
-template:setBeamWeaponHeatPerFire(3, 0.1)
+template:setBeamWeaponHeatPerFire(3, 0.125)
 
 end
 
@@ -650,7 +650,7 @@ CroiseurdeCombatChalicePNJ()
 --Création du vaisseau PJ
 function CroiseurdeCombatChalicePJ()
 --Copie du vaisseau PNJ et transformation en vaisseau PJ
-variation = template:copy("Chalice"):setLocaleName(_("playerShip", "Croiseur de Combat Chalice")):setType("playership")
+variation = template:copy("ZT3 Chalice"):setLocaleName(_("playerShip", "Croiseur de Combat Chalice")):setType("playership")
 --Valeur de recharge des boucliers
 variation:setShieldRechargeRate(2.4)
 --Module de saut
@@ -672,7 +672,7 @@ variation:setBeamWeapon(0, 360, 180, 2000, 0.5, 1)
 --Ajustement de la consommation d'énergie des tirs
 variation:setBeamWeaponEnergyPerFire(0, 1)
 --Ajustement de la surchauffe engendrée par les tirs
-variation:setBeamWeaponHeatPerFire(0, 0.01)
+variation:setBeamWeaponHeatPerFire(0, 0.0125)
 
 --Tourelle Dorsale
 --Axe de tir (N° d'arme, arc de tir, Orientation, portée, délais de tir, dégâts)
@@ -682,7 +682,7 @@ variation:setBeamWeaponTurret(1, 270, 0, 0.5)
 --Ajustement de la consommation d'énergie des tirs
 variation:setBeamWeaponEnergyPerFire(1, 20)
 --Ajustement de la surchauffe engendrée par les tirs
-variation:setBeamWeaponHeatPerFire(1, 0.1)
+variation:setBeamWeaponHeatPerFire(1, 0.125)
 
 --Tourelle Bâbord 1
 --Axe de tir (N° d'arme, arc de tir, Orientation, portée, délais de tir, dégâts)
@@ -692,7 +692,7 @@ variation:setBeamWeaponTurret(2, 90, 270, 0.5)
 --Ajustement de la consommation d'énergie des tirs
 variation:setBeamWeaponEnergyPerFire(2, 20)
 --Ajustement de la surchauffe engendrée par les tirs
-variation:setBeamWeaponHeatPerFire(2, 0.1)
+variation:setBeamWeaponHeatPerFire(2, 0.125)
 
 --Tourelle Tribord 1
 --Axe de tir (N° d'arme, arc de tir, Orientation, portée, délais de tir, dégâts)
@@ -702,7 +702,7 @@ variation:setBeamWeaponTurret(3, 90, 90, 0.5)
 --Ajustement de la consommation d'énergie des tirs
 variation:setBeamWeaponEnergyPerFire(3, 20)
 --Ajustement de la surchauffe engendrée par les tirs
-variation:setBeamWeaponHeatPerFire(3, 0.1)
+variation:setBeamWeaponHeatPerFire(3, 0.125)
 
 end
 
@@ -726,7 +726,7 @@ function CroiseurdeCombatArmageddonPNJ()
 
 function CroiseurdeCombatArmageddonCoque()
 --Description, définition du modèle et de l'icone radar
-template = ShipTemplate():setName("Croiseur de Combat Armageddon"):setLocaleName(_("ship", "Croiseur de Combat Armageddon")):setClass(_("class", "Croiseur de Combat"), _("subclass", "Armageddon")):setModel("Navy_Battleship")
+template = ShipTemplate():setName("ZT4 Croiseur de Combat Armageddon"):setLocaleName(_("ship", "Croiseur de Combat Armageddon")):setClass(_("class", "Croiseur de Combat"), _("subclass", "Armageddon")):setModel("Navy_Battleship")
 template:setDescription(_([[Les croiseurs de combat de classe Armageddon ont été développés pour accroître rapidement les effectifs de la Flotte Impériale. La quasi intégralité des classe Armageddon sont en fait des Croiseurs Lunar recyclés après qu'ils aient été mis hors de combat. Même s'ils sont faciles à produire, de nombreux commandants voient en général d'un mauvais œil de perdre des Lunar au profit d'Armageddon. Les croiseurs de combat Armageddon possèdent des Batteries d'armes à la puissance augmentée par une dérivation d'énergie de leur réacteur à plasma et des Pièces d'artillerie navale modifiées. Ces caractéristiques en font un bon vaisseau à moyenne portée capable d'engager les ennemis à distance mais nécessite l'usage de presque trois mille cinq cents hommes d'équipage supplémentaires.]]))
 --template:setScale(250)
 template:setRadarTrace("battleship.png")
@@ -907,7 +907,7 @@ CroiseurdeCombatArmageddonPNJ()
 --Création du vaisseau PJ
 function CroiseurdeCombatArmageddonPJ()
 --Copie du vaisseau PNJ et transformation en vaisseau PJ
-variation = template:copy("Armageddon"):setLocaleName(_("playerShip", "Croiseur de Combat Armageddon")):setType("playership")
+variation = template:copy("ZT4 Armageddon"):setLocaleName(_("playerShip", "Croiseur de Combat Armageddon")):setType("playership")
 --Valeur de recharge des boucliers
 variation:setShieldRechargeRate(2.4)
 --Module de saut

@@ -19,7 +19,7 @@ function CuirasseEmperorPNJ()
 
 function CuirasseEmperorCoque()
 --Description, définition du modèle et de l'icone radar
-template = ShipTemplate():setName("Cuirasse Emperor"):setLocaleName(_("ship", "Cuirasse Emperor")):setClass(_("class", "Cuirasse"), _("subclass", "Emperor")):setModel("Eternal_Crusader_Battlebarge")
+template = ShipTemplate():setName("ZV1 Cuirasse Emperor"):setLocaleName(_("ship", "Cuirasse Emperor")):setClass(_("class", "Cuirasse"), _("subclass", "Emperor")):setModel("Eternal_Crusader_Battlebarge")
 template:setDescription(_([[Les Cuirassés de Classe Emperor comptent parmi les plus vieux vaisseaux de la Flotte. Embarquant un nombre considérable d'appareils d'attaque, ils se placent généralement en retrait des combats pour servir de porte-chasseur, laissant les autres vaisseaux engager directement l'ennemi.]]))
 --template:setScale(485)
 template:setRadarTrace("dread.png")
@@ -187,7 +187,7 @@ CuirasseEmperorPNJ()
 --Création du vaisseau PJ
 function CuirasseEmperorPJ()
 --Copie du vaisseau PNJ et transformation en vaisseau PJ
-variation = template:copy("Emperor"):setLocaleName(_("playerShip", "Cuirasse Emperor")):setType("playership")
+variation = template:copy("ZV1 Emperor"):setLocaleName(_("playerShip", "Cuirasse Emperor")):setType("playership")
 --Valeur de recharge des boucliers
 variation:setShieldRechargeRate(3.6)
 --Module de saut
@@ -242,7 +242,7 @@ function CuirasseRetributionPNJ()
 
 function CuirasseRetributionCoque()
 --Description, définition du modèle et de l'icone radar
-template = ShipTemplate():setName("Cuirasse Retribution"):setLocaleName(_("ship", "Cuirasse Retribution")):setClass(_("class", "Cuirasse"), _("subclass", "Retribution")):setModel("Eternal_Crusader_Battlebarge")
+template = ShipTemplate():setName("ZV2 Cuirasse Retribution"):setLocaleName(_("ship", "Cuirasse Retribution")):setClass(_("class", "Cuirasse"), _("subclass", "Retribution")):setModel("Eternal_Crusader_Battlebarge")
 template:setDescription(_([[La proue blindée traditionnelle et leurs moteurs à plasma multi-tubes désignent les plus anciens Cuirassés de classe Retribution comme étant issus des forges de Mars. Très lourdement armés, ils apportent au combat un feu particulièrement nourri redouté à juste titre par les ennemis de l'Imperium.]]))
 --template:setScale(485)
 template:setRadarTrace("dread.png")
@@ -404,7 +404,7 @@ CuirasseRetributionPNJ()
 --Création du vaisseau PJ
 function CuirasseRetributionPJ()
 --Copie du vaisseau PNJ et transformation en vaisseau PJ
-variation = template:copy("Retribution"):setLocaleName(_("playerShip", "Cuirasse Retribution")):setType("playership")
+variation = template:copy("ZV2 Retribution"):setLocaleName(_("playerShip", "Cuirasse Retribution")):setType("playership")
 --Valeur de recharge des boucliers
 variation:setShieldRechargeRate(3.6)
 --Module de saut
@@ -459,7 +459,7 @@ function CuirasseApocalypsePNJ()
 
 function CuirasseApocalypseCoque()
 --Description, définition du modèle et de l'icone radar
-template = ShipTemplate():setName("Cuirasse Apocalypse"):setLocaleName(_("ship", "Cuirasse Apocalypse")):setClass(_("class", "Cuirasse"), _("subclass", "Apocalypse")):setModel("Eternal_Crusader_Battlebarge")
+template = ShipTemplate():setName("ZV3 Cuirasse Apocalypse"):setLocaleName(_("ship", "Cuirasse Apocalypse")):setClass(_("class", "Cuirasse"), _("subclass", "Apocalypse")):setModel("Eternal_Crusader_Battlebarge")
 template:setDescription(_([[La classe Apocalypse est un ancien modèle, apparemment précurseur des Cuirassés de Classe Retribution en service depuis des millénaires. La technologie avancée requise pour la construction des nombreuses pièces d’artillerie navale que comprennent les Cuirassés Apocalypse a depuis longtemps été perdue, les rares exemplaires de ce type de vaisseau ne pourront donc jamais être remplacés et la perte d’un seul de ces cuirassés serait un rude coup porté à l’arsenal impérial. Les stratèges impériaux ont émis l’hypothèse qu’ils ont été conçus pour contrer le nombre croissant de raids en provenance de l’Œil de la Terreur. Dans cette optique, l’Apocalypse a fait plus d’une fois la démonstration de son efficacité. Le nombre effrayant de pièces d’artillerie navale qui ornent leurs flancs caractérise les cuirassés de Classe Apocalypse. Ces batteries sont capables d’atteindre des cibles à plus longue portée que des navires plus récents par un procédé augmentant la capacité de stockage des relais de puissance. Toutefois, ce système est notoirement peu fiable lorsque trop sollicité, et des relais défectueux peuvent drainer l’énergie des moteurs principaux du vaisseau, ralentissant le Cuirassé Apocalypse en pleine bataille. C’est la raison pour laquelle tous les Cuirassés Apocalypse existants se concentrent sur des cibles à portée moyenne. La plupart des flottes de Segmentum ont au moins quelques exemplaires de cuirassés Apocalypse opérationnels, bien que leur nombre diminue continuellement.]]))
 --template:setScale(485)
 template:setRadarTrace("dread.png")
@@ -616,7 +616,7 @@ CuirasseApocalypsePNJ()
 --Création du vaisseau PJ
 function CuirasseApocalypsePJ()
 --Copie du vaisseau PNJ et transformation en vaisseau PJ
-variation = template:copy("Apocalypse"):setLocaleName(_("playerShip", "Cuirasse Apocalypse")):setType("playership")
+variation = template:copy("ZV3 Apocalypse"):setLocaleName(_("playerShip", "Cuirasse Apocalypse")):setType("playership")
 --Valeur de recharge des boucliers
 variation:setShieldRechargeRate(3.6)
 --Module de saut
@@ -731,7 +731,7 @@ function CuirasseOberonPNJ()
 
 function CuirasseOberonCoque()
 --Description, définition du modèle et de l'icone radar
-template = ShipTemplate():setName("Cuirasse Oberon"):setLocaleName(_("ship", "Cuirasse Oberon")):setClass(_("class", "Cuirasse"), _("subclass", "Oberon")):setModel("Eternal_Crusader_Battlebarge")
+template = ShipTemplate():setName("ZV4 Cuirasse Oberon"):setLocaleName(_("ship", "Cuirasse Oberon")):setClass(_("class", "Cuirasse"), _("subclass", "Oberon")):setModel("Eternal_Crusader_Battlebarge")
 template:setDescription(_([[Les Cuirassés de Classe Oberon sont une variante ancienne et très rare de la classe Emperor et ont été peu à peu retirés du service actif en raison de l’efficacité jamais démentie de leur illustre prédécesseur. L’Oberon procède d’une tentative de concevoir un Cuirassé capable en théorie de traiter toute menace sans avoir recours à des escorteurs. Bien qu’il n’ait pas la même capacité à saturer l’espace d’appareils d’attaque qu’un Emperor, l’Oberon possède la puissance de feu à longue portée de son glorieux ancêtre, grâce à l’ajout notable de deux pièces d’artillerie navales de grande puissance de chaque côté de sa coque. Utilisé le plus souvent avec peu ou pas d’escorteurs pour les patrouilles en territoire dangereux, l’Oberon est taillé pour ce rôle. Grâce à des systèmes de détection à longue portée performants, son capitaine peut en effet évaluer la gravité d’une menace éventuelle et décider de la réponse appropriée avant même que l’ennemi ne décèle la présence du Cuirassé. Au combat, l’Oberon n’a ni la même capacité à porter des coups décisifs à l’adversaire que le Retribution ou l’Apocalypse, ni la possibilité de déployer autant d’appareils d’attaque qu’un Cuirassé de Classe Emperor, mais il a néanmoins prouvé qu’il était à même de vaincre n’importe quel type de vaisseau.]]))
 --template:setScale(510)
 template:setRadarTrace("dread.png")
@@ -932,7 +932,7 @@ CuirasseOberonPNJ()
 --Création du vaisseau PJ
 function CuirasseOberonPJ()
 --Copie du vaisseau PNJ et transformation en vaisseau PJ
-variation = template:copy("Oberon"):setLocaleName(_("playerShip", "Cuirasse Oberon")):setType("playership")
+variation = template:copy("ZV4 Oberon"):setLocaleName(_("playerShip", "Cuirasse Oberon")):setType("playership")
 --Valeur de recharge des boucliers
 variation:setShieldRechargeRate(3.6)
 --Module de saut
@@ -1028,8 +1028,8 @@ function ArcheMechanicusPNJ()
 
 function ArcheMechanicusCoque()
 --Description, définition du modèle et de l'icone radar
-template = ShipTemplate():setName("Arche Mechanicus"):setLocaleName(_("ship", "Arche Mechanicus")):setClass(_("class", "Cuirasse"), _("subclass", "Arche Mechanicus")):setModel("Adeptus_Mechanicus_Battleship")
-template:setDescription(_([[Une Arche Mechanicus est une relique sans prix de l'Adeptus Mechanicu, un vaisseau antique normalement destiné à évoluer de manière autonome sur le chemin de la Quête du Savoir. Ces vaisseaux, tous uniques en leur genre, sont généralement classés comme des cuirassés, bien que leur rôle soit bien différent et qu'ils ne voient que rarement le champ de bataille. En effet, même quand ils accompagnent une croisade, ils sont trop précieux pour participer aux combats et ne s'aventurent sur le champ de bataille que lorsque l'ennemi a été vaincu, pour récupérer les épaves et les débris spatiaux qui serviront de matière première pour combler les pertes Impériales.]]))
+template = ShipTemplate():setName("ZV5 Arche Mechanicus"):setLocaleName(_("ship", "Arche Mechanicus")):setClass(_("class", "Cuirasse"), _("subclass", "Arche Mechanicus")):setModel("Adeptus_Mechanicus_Battleship")
+template:setDescription(_([[Une Arche Mechanicus est une relique sans prix de l'Adeptus Mechanicus, un vaisseau antique normalement destiné à évoluer de manière autonome sur le chemin de la Quête du Savoir. Ces vaisseaux, tous uniques en leur genre, sont généralement classés comme des cuirassés, bien que leur rôle soit bien différent et qu'ils ne voient que rarement le champ de bataille. En effet, même quand ils accompagnent une croisade, ils sont trop précieux pour participer aux combats et ne s'aventurent sur le champ de bataille que lorsque l'ennemi a été vaincu, pour récupérer les épaves et les débris spatiaux qui serviront de matière première pour combler les pertes Impériales.]]))
 --template:setScale(850)
 template:setRadarTrace("dread.png")
 --Endommagement des systèmes
@@ -1186,7 +1186,7 @@ ArcheMechanicusPNJ()
 --Création du vaisseau PJ
 function ArcheMechanicusPJ()
 --Copie du vaisseau PNJ et transformation en vaisseau PJ
-variation = template:copy("Arche"):setLocaleName(_("playerShip", "Arche Mechanicus")):setType("playership")
+variation = template:copy("ZV5 Arche"):setLocaleName(_("playerShip", "Arche Mechanicus")):setType("playership")
 --Valeur de recharge des boucliers
 variation:setShieldRechargeRate(6)
 --Module de saut

@@ -20,7 +20,7 @@ function FregateSwordPNJ()
 
 function FregateSwordCoque()
 --Description, définition du modèle et de l'icone radar
-template = ShipTemplate():setName("Fregate Sword"):setLocaleName(_("ship", "Fregate Sword")):setClass(_("class", "Fregate"), _("subclass", "Sword")):setModel("Navy_Frigate")
+template = ShipTemplate():setName("ZQ1 Fregate Sword"):setLocaleName(_("ship", "Fregate Sword")):setClass(_("class", "Fregate"), _("subclass", "Sword")):setModel("Navy_Frigate")
 template:setDescription(_([[Les Frégates Sword sont les escorteurs de prédilection de la flotte depuis l’époque de sa fondation. Chaque système embarqué sur ces Frégates a été testé et mis à l’épreuve dans d’innombrables engagements. Ses batteries d’armes laser ainsi que ses tourelles bénéficient d’un exceptionnel niveau d’efficacité de 82%. De facture simple, ses moteurs à plasma ont inspiré la conception de nombreux autres vaisseaux et peuvent être entretenus par du personnel peu formé. La Frégate Sword constitue donc à tous les égards l’escorteur par excellence, et les corps expéditionnaires comprennent presque toujours une paire de Sword pour couvrir les flancs des plus gros bâtiments ou poursuivre les Corvettes plus petites et plus rapides. De nombreux Libres-Marchands ont été attirés par les performances spatiales de ces vaisseaux et ont réussi à en acquérir un. Avec quelques conversions mineures pour accroître sa capacité de chargement, un Sword répond parfaitement à leurs besoins.]]))
 --template:setScale(80)
 template:setRadarTrace("ktlitan_destroyer.png")
@@ -97,7 +97,7 @@ FregateSwordPNJ()
 --Création du vaisseau PJ
 function FregateSwordPJ()
 --Copie du vaisseau PNJ et transformation en vaisseau PJ
-variation = template:copy("Sword"):setLocaleName(_("playerShip", "Fregate Sword")):setType("playership")
+variation = template:copy("ZQ1 Sword"):setLocaleName(_("playerShip", "Fregate Sword")):setType("playership")
 --Valeur de recharge des boucliers
 variation:setShieldRechargeRate(1.2)
 --Module de saut
@@ -162,7 +162,7 @@ function FregateTempestPNJ()
 
 function FregateTempestCoque()
 --Description, définition du modèle et de l'icone radar
-template = ShipTemplate():setName("Fregate d'attaque Tempest"):setLocaleName(_("ship", "Fregate d'attaque Tempest")):setClass(_("class", "Fregate"), _("subclass", "Tempest")):setModel("Navy_Frigate")
+template = ShipTemplate():setName("ZQ2 Fregate d'attaque Tempest"):setLocaleName(_("ship", "Fregate d'attaque Tempest")):setClass(_("class", "Fregate"), _("subclass", "Tempest")):setModel("Navy_Frigate")
 template:setDescription(_([[La Tempest est une Frégate spécialisée qui sacrifie sa puissance de feu à longue portée pour des batteries lourdes de portée courte conçues pour déchiqueter les vaisseaux ennemis en combat rapproché. Pour arriver aussi près de sa cible, le Tempest dispose d’une proue à blindage triple et de propulseurs suralimentés, embarque souvent des appareils de débarquement et un surcroît de matelots pour les actions d’abordage. Ses quartiers d’équipages spacieux et ses ponts de lancement se révèlent également utiles pour d’autres activités plus mercantiles.]]))
 --template:setScale(75)
 template:setRadarTrace("ktlitan_destroyer.png")
@@ -239,7 +239,7 @@ FregateTempestPNJ()
 --Création du vaisseau PJ
 function FregateTempestPJ()
 --Copie du vaisseau PNJ et transformation en vaisseau PJ
-variation = template:copy("Tempest"):setLocaleName(_("playerShip", "Fregate d'attaque Tempest")):setType("playership")
+variation = template:copy("ZQ2 Tempest"):setLocaleName(_("playerShip", "Fregate d'attaque Tempest")):setType("playership")
 --Valeur de recharge des boucliers
 variation:setShieldRechargeRate(1.2)
 --Module de saut
@@ -304,7 +304,7 @@ function FregateTurbulentPNJ()
 
 function FregateTurbulentCoque()
 --Description, définition du modèle et de l'icone radar
-template = ShipTemplate():setName("Fregate Lourde Turbulent"):setLocaleName(_("ship", "Fregate Lourde Turbulent")):setClass(_("class", "Fregate"), _("subclass", "Turbulent")):setModel("Navy_Frigate")
+template = ShipTemplate():setName("ZQ3 Fregate Lourde Turbulent"):setLocaleName(_("ship", "Fregate Lourde Turbulent")):setClass(_("class", "Fregate"), _("subclass", "Turbulent")):setModel("Navy_Frigate")
 template:setDescription(_([[Importées du secteur Scarus pour servir d’escortes navales lourdes, la poignée de frégates lourdes de la classe Turbulent qui ont survécu dans le secteur n’est jamais repartie. Destinée à devancer la flotte principale et à engager les unités de reconnaissance rivales lorsqu’elles sont rencontrées, l’histoire de la classe Turbulent est caractérisée par des actions agressives et autres raids éclairs contre les ennemis de l’empereur.]]))
 --template:setScale(98)
 template:setRadarTrace("ktlitan_destroyer.png")
@@ -381,7 +381,7 @@ FregateTurbulentPNJ()
 --Création du vaisseau PJ
 function FregateTurbulentPJ()
 --Copie du vaisseau PNJ et transformation en vaisseau PJ
-variation = template:copy("Turbulent"):setLocaleName(_("playerShip", "Fregate Lourde Turbulent")):setType("playership")
+variation = template:copy("ZQ3 Turbulent"):setLocaleName(_("playerShip", "Fregate Lourde Turbulent")):setType("playership")
 --Valeur de recharge des boucliers
 variation:setShieldRechargeRate(1.2)
 --Module de saut
@@ -446,7 +446,7 @@ function FregateFirestormPNJ()
 
 function FregateFirestormCoque()
 --Description, définition du modèle et de l'icone radar
-template = ShipTemplate():setName("Fregate Firestorm"):setLocaleName(_("ship", "Fregate Firestorm")):setClass(_("class", "Fregate"), _("subclass", "Firestorm")):setModel("Navy_Frigate")
+template = ShipTemplate():setName("ZQ4 Fregate Firestorm"):setLocaleName(_("ship", "Fregate Firestorm")):setClass(_("class", "Fregate"), _("subclass", "Firestorm")):setModel("Navy_Frigate")
 template:setDescription(_([[Les frégates de classe Firestorm constituent une innovation relativement récente au sein de la Flotte de Guerre. Elles furent conçues dans le but de combiner la manœuvrabilité des escorteurs avec la force de frappe des pièces d’artillerie navale. La Firestorm est construite à partir de la coque d’une Frégate de classe Sword, mais les systèmes laser centraux ont été reconfigurés afin de pouvoir diriger vers le canon monté en proue l’énergie nécessaire à sa mise à feu. Seuls quatre escadrons de Firestorms prirent part à la Guerre Gothique et ils se trouvèrent surclassés dans la plupart des engagements, en raison du manque de renforts disponibles.]]))
 --template:setScale(80)
 template:setRadarTrace("ktlitan_destroyer.png")
@@ -523,7 +523,7 @@ FregateFirestormPNJ()
 --Création du vaisseau PJ
 function FregateFirestormPJ()
 --Copie du vaisseau PNJ et transformation en vaisseau PJ
-variation = template:copy("Firestorm"):setLocaleName(_("playerShip", "Fregate Firestorm")):setType("playership")
+variation = template:copy("ZQ4 Firestorm"):setLocaleName(_("playerShip", "Fregate Firestorm")):setType("playership")
 --Valeur de recharge des boucliers
 variation:setShieldRechargeRate(1.2)
 --Module de saut

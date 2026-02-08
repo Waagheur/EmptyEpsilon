@@ -22,7 +22,7 @@ function EscorteurMeritechShrikePNJ()
 
 function EscorteurMeritechShrikeCoque()
 --Description, définition du modèle et de l'icone radar
-template = ShipTemplate():setName("Escorteur Meritech Shrike"):setLocaleName(_("ship", "Escorteur Meritech Shrike")):setClass(_("class", "Escorteur"), _("subclass", "Meritech Shrike")):setModel("Navy_Destroyer")
+template = ShipTemplate():setName("ZP1 Escorteur Meritech Shrike"):setLocaleName(_("ship", "Escorteur Meritech Shrike")):setClass(_("class", "Escorteur"), _("subclass", "Meritech Shrike")):setModel("Navy_Destroyer")
 template:setDescription(_([[L'escorteur Meritech de classe Shrike est une classe infâme de vaisseaux pilleurs construits par les clans Meritech qui résident dans des mondes frontaliers.]]))
 --template:setScale(100)
 template:setRadarTrace("adv_striker.png")
@@ -101,7 +101,7 @@ EscorteurMeritechShrikePNJ()
 --Création du vaisseau PJ
 function EscorteurMeritechShrikePJ()
 --Copie du vaisseau PNJ et transformation en vaisseau PJ
-variation = template:copy("Meritech Shrike"):setLocaleName(_("playerShip", "Escorteur Meritech Shrike")):setType("playership")
+variation = template:copy("ZP1 Meritech Shrike"):setLocaleName(_("playerShip", "Escorteur Meritech Shrike")):setType("playership")
 --Valeur de recharge des boucliers
 variation:setShieldRechargeRate(1.2)
 --Module de saut
@@ -164,7 +164,7 @@ function EscorteurFalchionPNJ()
 
 function EscorteurFalchionCoque()
 --Description, définition du modèle et de l'icone radar
-template = ShipTemplate():setName("Escorteur Falchion"):setLocaleName(_("ship", "Escorteur Falchion")):setClass(_("class", "Escorteur"), _("subclass", "Falchion")):setModel("Navy_Destroyer")
+template = ShipTemplate():setName("ZP2 Escorteur Falchion"):setLocaleName(_("ship", "Escorteur Falchion")):setClass(_("class", "Escorteur"), _("subclass", "Falchion")):setModel("Navy_Destroyer")
 template:setDescription(_([[Directement dans la lignée de la frégate de classe Sword, le Falchion est un vaisseau polyvalent, utilisé pour les patrouilles, l’escorte de convois ou de croiseurs légers qui eux-mêmes appuient leurs cousins plus gros. Comme tous les vaisseaux conçus selon le modèle Voss, ils sont quasiment exclusifs à ce Monde-Forge, mais les rares flottes à être dotées de Falchion le considèrent comme une alternative intéressante à la frégate de classe Sword.]]))
 --template:setScale(110)
 template:setRadarTrace("adv_striker.png")
@@ -265,7 +265,7 @@ EscorteurFalchionPNJ()
 --Création du vaisseau PJ
 function EscorteurFalchionPJ()
 --Copie du vaisseau PNJ et transformation en vaisseau PJ
-variation = template:copy("Falchion"):setLocaleName(_("playerShip", "Escorteur Falchion")):setType("playership")
+variation = template:copy("ZP2 Falchion"):setLocaleName(_("playerShip", "Escorteur Falchion")):setType("playership")
 --Valeur de recharge des boucliers
 variation:setShieldRechargeRate(1.2)
 --Module de saut
@@ -328,7 +328,7 @@ function CorsaireHazerothPNJ()
 
 function CorsaireHazerothCoque()
 --Description, définition du modèle et de l'icone radar
-template = ShipTemplate():setName("Escorteur Hazeroth"):setLocaleName(_("ship", "Escorteur Hazeroth")):setClass(_("class", "Escorteur"), _("subclass", "Hazeroth")):setModel("Navy_Destroyer")
+template = ShipTemplate():setName("ZP3 Escorteur Hazeroth"):setLocaleName(_("ship", "Escorteur Hazeroth")):setClass(_("class", "Escorteur"), _("subclass", "Hazeroth")):setModel("Navy_Destroyer")
 template:setDescription(_([[La classe Hazeroth rassemble différentes Corvettes de taille et de puissance de feu similaires. Très utilisés dans la zone de l’abysse d’Hazeroth (d’où leur nom), ces bâtiments sont populaires chez corsaires. La plupart sacrifient l’espace cargo et le blindage au profit de moteurs puissants et de cloisons intérieures renforcées, ce qui leur permet de fuir ce qu’ils ne peuvent vaincre.]]))
 --template:setScale(75)
 template:setRadarTrace("adv_striker.png")
@@ -407,7 +407,7 @@ CorsaireHazerothPNJ()
 --Création du vaisseau PJ
 function CorsaireHazerothPJ()
 --Copie du vaisseau PNJ et transformation en vaisseau PJ
-variation = template:copy("Hazeroth"):setLocaleName(_("playerShip", "Escorteur Hazeroth")):setType("playership")
+variation = template:copy("ZP3 Hazeroth"):setLocaleName(_("playerShip", "Escorteur Hazeroth")):setType("playership")
 --Valeur de recharge des boucliers
 variation:setShieldRechargeRate(1.2)
 --Module de saut
@@ -470,7 +470,7 @@ function CorvetteHavocPNJ()
 
 function CorvetteHavocCoque()
 --Description, définition du modèle et de l'icone radar
-template = ShipTemplate():setName("Escorteur Havoc"):setLocaleName(_("ship", "Escorteur Havoc")):setClass(_("class", "Escorteur"), _("subclass", "Havoc")):setModel("Navy_Destroyer")
+template = ShipTemplate():setName("ZP4 Escorteur Havoc"):setLocaleName(_("ship", "Escorteur Havoc")):setClass(_("class", "Escorteur"), _("subclass", "Havoc")):setModel("Navy_Destroyer")
 template:setDescription(_([[Le Havoc est une Corvette Lourde disposant de propulseurs puissants, d’un espace cargo conséquent et d’une puissance de feu capable de rivaliser avec bien des Frégates. Par contre son blindage est relativement léger, ce qui fait que ce "canon de verre" aura des difficultés en cas d’affrontement avec un vaisseau militaire de même catégorie.]]))
 --template:setScale(80)
 template:setRadarTrace("adv_striker.png")
@@ -560,7 +560,7 @@ CorvetteHavocPNJ()
 --Création du vaisseau PJ
 function CorvetteHavocPJ()
 --Copie du vaisseau PNJ et transformation en vaisseau PJ
-variation = template:copy("Havoc"):setLocaleName(_("playerShip", "Escorteur Havoc")):setType("playership")
+variation = template:copy("ZP4 Havoc"):setLocaleName(_("playerShip", "Escorteur Havoc")):setType("playership")
 --Valeur de recharge des boucliers
 variation:setShieldRechargeRate(1.2)
 --Module de saut
@@ -613,7 +613,7 @@ function CorvetteClaymorePNJ()
 
 function CorvetteClaymoreCoque()
 --Description, définition du modèle et de l'icone radar
-template = ShipTemplate():setName("Corvette Claymore"):setLocaleName(_("ship", "Corvette Claymore")):setClass(_("class", "Escorteur"), _("subclass", "Claymore")):setModel("Navy_Destroyer")
+template = ShipTemplate():setName("ZP5 Corvette Claymore"):setLocaleName(_("ship", "Corvette Claymore")):setClass(_("class", "Escorteur"), _("subclass", "Claymore")):setModel("Navy_Destroyer")
 template:setDescription(_([[La Corvette de classe Claymore est un vaisseau d’escorte spécialisée de la Marine impériale. Les corvettes sont en général un peu plus petites et moins puissantes que les frégates, mais elles sont mieux équipées que d’autres navires, comme les escorteurs légers. La Claymore est considéré comme une Corvette standard : elle est robuste et utilise un design simple qui permet des réparations faciles, faisant de la Claymore un navire extrêmement pratique à fabriquer en temps de guerre. De grandes quantités de ces vaisseaux peuvent être fabriqués à la hâte par les chantiers navals mobiles de l'Adeptus Mechanicus et les petits chantiers navals civils.]]))
 --template:setScale(70)
 template:setRadarTrace("adv_striker.png")
@@ -692,7 +692,7 @@ CorvetteClaymorePNJ()
 --Création du vaisseau PJ
 function CorvetteClaymorePJ()
 --Copie du vaisseau PNJ et transformation en vaisseau PJ
-variation = template:copy("Claymore"):setLocaleName(_("playerShip", "Corvette Claymore")):setType("playership")
+variation = template:copy("ZP5 Claymore"):setLocaleName(_("playerShip", "Corvette Claymore")):setType("playership")
 --Valeur de recharge des boucliers
 variation:setShieldRechargeRate(1.2)
 --Module de saut
@@ -755,7 +755,7 @@ function CorvetteWolfpackPNJ()
 
 function CorvetteWolfpackCoque()
 --Description, définition du modèle et de l'icone radar
-template = ShipTemplate():setName("Corvette Wolfpack"):setLocaleName(_("ship", "Corvette Wolfpack")):setClass(_("class", "Corvette"), _("subclass", "Wolfpack")):setModel("Navy_Destroyer")
+template = ShipTemplate():setName("ZP6 Corvette Wolfpack"):setLocaleName(_("ship", "Corvette Wolfpack")):setClass(_("class", "Corvette"), _("subclass", "Wolfpack")):setModel("Navy_Destroyer")
 template:setDescription(_([[Les pirates sont réputés pour utiliser tous les vaisseaux qui leurs tombent sous la main. Ils préfèrent si possible les vaisseaux légers et rapides pour frapper vite et décrocher rapidement. La vitesse est déterminante, car peu de bâtiments pirates sont capables d'affronter un véritable vaisseau de guerre.]]))
 --template:setScale(85)
 template:setRadarTrace("adv_striker.png")
@@ -845,7 +845,7 @@ CorvetteWolfpackPNJ()
 --Création du vaisseau PJ
 function CorvetteWolfpackPJ()
 --Copie du vaisseau PNJ et transformation en vaisseau PJ
-variation = template:copy("Wolfpack"):setLocaleName(_("playerShip", "Corvette Wolfpack")):setType("playership")
+variation = template:copy("ZP6 Wolfpack"):setLocaleName(_("playerShip", "Corvette Wolfpack")):setType("playership")
 --Valeur de recharge des boucliers
 variation:setShieldRechargeRate(1.2)
 --Module de saut
@@ -898,7 +898,7 @@ function EscorteurCobraPNJ()
 
 function EscorteurCobraCoque()
 --Description, définition du modèle et de l'icone radar
-template = ShipTemplate():setName("Escorteur Cobra"):setLocaleName(_("ship", "Escorteur Cobra")):setClass(_("class", "Escorteur"), _("subclass", "Cobra")):setModel("Navy_Destroyer")
+template = ShipTemplate():setName("ZP7 Escorteur Cobra"):setLocaleName(_("ship", "Escorteur Cobra")):setClass(_("class", "Escorteur"), _("subclass", "Cobra")):setModel("Navy_Destroyer")
 template:setDescription(_([[Les escorteurs de classe Cobra représentent une partie importante de la Flotte de Guerre Obscurus, leur flexibilité en faisant le vaisseau parfait pour les opérations de reconnaissance, les patrouilles et les raids. L’atout principal du Cobra est sa vitesse élevée, le rendant capable de poursuivre les vaisseaux rapides qu’affectionnent les pirates.]]))
 --template:setScale(100)
 template:setRadarTrace("adv_striker.png")
@@ -988,7 +988,7 @@ EscorteurCobraPNJ()
 --Création du vaisseau PJ
 function EscorteurCobraPJ()
 --Copie du vaisseau PNJ et transformation en vaisseau PJ
-variation = template:copy("Cobra"):setLocaleName(_("playerShip", "Escorteur Cobra")):setType("playership")
+variation = template:copy("ZP7 Cobra"):setLocaleName(_("playerShip", "Escorteur Cobra")):setType("playership")
 --Valeur de recharge des boucliers
 variation:setShieldRechargeRate(1.2)
 --Module de saut
@@ -1041,7 +1041,7 @@ function EscorteurViperPNJ()
 
 function EscorteurViperCoque()
 --Description, définition du modèle et de l'icone radar
-template = ShipTemplate():setName("Escorteur Viper"):setLocaleName(_("ship", "Escorteur Viper")):setClass(_("class", "Escorteur"), _("subclass", "Viper")):setModel("Navy_Destroyer")
+template = ShipTemplate():setName("ZP8 Escorteur Viper"):setLocaleName(_("ship", "Escorteur Viper")):setClass(_("class", "Escorteur"), _("subclass", "Viper")):setModel("Navy_Destroyer")
 template:setDescription(_([[Pendant la prérogative Gareox, de nombreux destroyers Cobra ont été convertis pour transporter des torpilles d’abordage. Leur batterie d’arme principale a été retirée et des tubes de lancement de torpilles supplémentaires ajoutés. L’expérience n’a pas été un succès; les escorteurs n’ont pas pu transporter un équipage suffisant pour utiliser au mieux les torpilles et capturer les navires ennemis. Ils se sont de plus avérés de piètres escortes de convois, mais ils ont étonnamment bien réussi en tant que les flottilles de soutien pour la flotte. Ainsi, la plupart des Vipers ont été maintenus à ce titre et continuent d’être construits, bien qu’ils n’utilisent plus de torpilles d’embarquement.]]))
 --template:setScale(48)
 template:setRadarTrace("adv_striker.png")
@@ -1124,7 +1124,7 @@ EscorteurViperPNJ()
 --Création du vaisseau PJ
 function EscorteurViperPJ()
 --Copie du vaisseau PNJ et transformation en vaisseau PJ
-variation = template:copy("Viper"):setLocaleName(_("playerShip", "Escorteur Viper")):setType("playership")
+variation = template:copy("ZP8 Viper"):setLocaleName(_("playerShip", "Escorteur Viper")):setType("playership")
 --Valeur de recharge des boucliers
 variation:setShieldRechargeRate(1.2)
 --Module de saut

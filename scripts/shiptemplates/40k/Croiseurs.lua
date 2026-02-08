@@ -25,7 +25,7 @@ function CroiseurLunarPNJ()
 
 function CroiseurLunarCoque()
 --Description, définition du modèle et de l'icone radar
-template = ShipTemplate():setName("Croiseur Lunar"):setLocaleName(_("ship", "Croiseur Lunar")):setClass(_("class", "Croiseur"), _("subclass", "Lunar")):setModel("Navy_Cruiser")
+template = ShipTemplate():setName("ZS1 Croiseur Lunar"):setLocaleName(_("ship", "Croiseur Lunar")):setClass(_("class", "Croiseur"), _("subclass", "Lunar")):setModel("Navy_Cruiser")
 template:setDescription(_([[Les Croiseurs de Classe Lunar forment l’ossature des Flotte de Guerre, plus de six cents d’entre eux opérant à travers l’ensemble du Segmentum Obscurus, dont une vingtaine ayant pris part à la Guerre Gothique. Son armement varié de batteries, de lances sidérales et de torpilles en fait un combattant polyvalent et un adversaire dangereux. Les Libres-Marchands qui arrivent à s’en offrir un enlèvent généralement les tubes lance-torpilles pour gagner de l’espace cargo. La conception (relativement) simple du Croiseur de classe Lunar remontant à l’aube de l’Imperium assure leur durabilité et permet leur construction dans les Mondes-Ruches ou industriels normalement incapables de fabriquer un vaisseau de ligne.]]))
 --template:setScale(250)
 template:setRadarTrace("cruiser.png")
@@ -178,7 +178,7 @@ CroiseurLunarPNJ()
 --Création du vaisseau PJ
 function CroiseurLunarPJ()
 --Copie du vaisseau PNJ et transformation en vaisseau PJ
-variation = template:copy("Lunar"):setLocaleName(_("playerShip", "Croiseur Lunar")):setType("playership")
+variation = template:copy("ZS1 Lunar"):setLocaleName(_("playerShip", "Croiseur Lunar")):setType("playership")
 --Valeur de recharge des boucliers
 variation:setShieldRechargeRate(2.4)
 --Module de saut
@@ -242,7 +242,7 @@ function CroiseurGothicPNJ()
 
 function CroiseurGothicCoque()
 --Description, définition du modèle et de l'icone radar
-template = ShipTemplate():setName("Croiseur Gothic"):setLocaleName(_("ship", "Croiseur Gothic")):setClass(_("class", "Croiseur"), _("subclass", "Gothic")):setModel("Navy_Cruiser")
+template = ShipTemplate():setName("ZS2 Croiseur Gothic"):setLocaleName(_("ship", "Croiseur Gothic")):setClass(_("class", "Croiseur"), _("subclass", "Gothic")):setModel("Navy_Cruiser")
 template:setDescription(_([[Le Croiseur de Classe Gothic est commun à travers l’Imperium. Un seul d’entre eux est un adversaire redoutable, capable de venir à bout d’ennemis de n’importe quelle taille. Cependant, au cours de la Guerre Gothique, il devint évident que les Croiseurs de Classe Gothic ne pouvaient opérer avec succès qu’appuyés par d’autres vaisseaux.  Aussi puissantes que soient leurs pièces d’artillerie, elles ne représentent pas un réel danger pour un adversaire suffisamment mobile en duel. Une nouvelle tactique fut donc mise en place en associant aux vaisseaux de Classe Gothic un escadron d’escorteurs ou de Croiseurs. Cette configuration permet d’engager les vaisseaux ennemi par le travers, tandis que les autres membres de l’escadron les encerclent pour les attaquer de toutes parts. Il est alors possible de tirer le meilleur parti des pièces d’artillerie du vaisseau.]]))
 --template:setScale(250)
 template:setRadarTrace("cruiser.png")
@@ -369,7 +369,7 @@ CroiseurGothicPNJ()
 --Création du vaisseau PJ
 function CroiseurGothicPJ()
 --Copie du vaisseau PNJ et transformation en vaisseau PJ
-variation = template:copy("Gothic"):setLocaleName(_("playerShip", "Croiseur Gothic")):setType("playership")
+variation = template:copy("ZS2 Gothic"):setLocaleName(_("playerShip", "Croiseur Gothic")):setType("playership")
 --Valeur de recharge des boucliers
 variation:setShieldRechargeRate(2.4)
 --Module de saut
@@ -454,7 +454,7 @@ function CroiseurDominatorPNJ()
 
 function CroiseurDominatorCoque()
 --Description, définition du modèle et de l'icone radar
-template = ShipTemplate():setName("Croiseur Dominator"):setLocaleName(_("ship", "Croiseur Dominator")):setClass(_("class", "Croiseur"), _("subclass", "Dominator")):setModel("Navy_Cruiser")
+template = ShipTemplate():setName("ZS3 Croiseur Dominator"):setLocaleName(_("ship", "Croiseur Dominator")):setClass(_("class", "Croiseur"), _("subclass", "Dominator")):setModel("Navy_Cruiser")
 template:setDescription(_([[Le Croiseur de Classe Dominator est un vaisseau inhabituel, construit à l’origine pour servir de soutien dans les engagements majeurs et les assauts planétaires. Il fut conçu pour se tenir à l’écart et bombarder son ennemi de loin à l’aide de son imposant Canon Nova. Ce type de vaisseau est beaucoup plus courant dans la Flotte de Guerre Ultima que dans celle du Segmentum Obscurus, car ils sont en grande majorité construits dans la base navale de Kar Duniash.]]))
 --template:setScale(250)
 template:setRadarTrace("cruiser.png")
@@ -615,7 +615,7 @@ CroiseurDominatorPNJ()
 --Création du vaisseau PJ
 function CroiseurDominatorPJ()
 --Copie du vaisseau PNJ et transformation en vaisseau PJ
-variation = template:copy("Dominator"):setLocaleName(_("playerShip", "Croiseur Dominator")):setType("playership")
+variation = template:copy("ZS3 Dominator"):setLocaleName(_("playerShip", "Croiseur Dominator")):setType("playership")
 --Valeur de recharge des boucliers
 variation:setShieldRechargeRate(2.4)
 --Module de saut
@@ -660,7 +660,7 @@ function GalionConquestPNJ()
 
 function GalionConquestCoque()
 --Description, définition du modèle et de l'icone radar
-template = ShipTemplate():setName("Galion Stellaire Conquest"):setLocaleName(_("ship", "Galion Stellaire Conquest")):setClass(_("class", "Croiseur"), _("subclass", "Conquest")):setModel("Navy_Cruiser")
+template = ShipTemplate():setName("ZS4 Galion Stellaire Conquest"):setLocaleName(_("ship", "Galion Stellaire Conquest")):setClass(_("class", "Croiseur"), _("subclass", "Conquest")):setModel("Navy_Cruiser")
 template:setDescription(_([[Le « Galion Stellaire » de classe Conquest est un ancien modèle de croiseur encore utilisé dans les anciennes flottes impériales ainsi que par certains Libres-Marchands. Ils sont considérés comme des navires au trésor créés pour les tout premiers Libres-Marchands sur ordre de l’Empereur lui-même. Ceux encore en service disposent de merveilles technologiques depuis longtemps perdues et sont capables de mener à la fois des missions d’exploration à longue portée et de mener les leurs au combat. Au 41e millénaire, peu de ces navires sont encore en service et ils sont considérés comme de précieuses reliques des temps légendaires de la fondation de l’Imperium.]]))
 --template:setScale(255)
 template:setRadarTrace("cruiser.png")
@@ -829,7 +829,7 @@ GalionConquestPNJ()
 --Création du vaisseau PJ
 function GalionConquestPJ()
 --Copie du vaisseau PNJ et transformation en vaisseau PJ
-variation = template:copy("Conquest"):setLocaleName(_("playerShip", "Galion Stellaire Conquest")):setType("playership")
+variation = template:copy("ZS4 Conquest"):setLocaleName(_("playerShip", "Galion Stellaire Conquest")):setType("playership")
 --Valeur de recharge des boucliers
 variation:setShieldRechargeRate(2.4)
 --Module de saut
@@ -874,7 +874,7 @@ function CroiseurAmbitionPNJ()
 
 function CroiseurAmbitionCoque()
 --Description, définition du modèle et de l'icone radar
-template = ShipTemplate():setName("Croiseur Ambition"):setLocaleName(_("ship", "Croiseur Ambition")):setClass(_("class", "Croiseur"), _("subclass", "Ambition")):setModel("Navy_Cruiser")
+template = ShipTemplate():setName("ZS5 Croiseur Ambition"):setLocaleName(_("ship", "Croiseur Ambition")):setClass(_("class", "Croiseur"), _("subclass", "Ambition")):setModel("Navy_Cruiser")
 template:setDescription(_([[Le croiseur de classe Ambition est un type de vaisseau produit par les chantiers navals de l'Adeptus Mechanicus pour les individus extrêmement riches, les Libres Marchands et les forces de défense spatiales des nobles dynasties. Bien qu’ils soient exploités par divers clans, maisons et flottes, ce sont de véritables croiseurs, possédant autant de puissance de feu que les classes Lunar ou Tyrant. Ils intègrent également invariablement des quartiers luxueux et des équipements pour leurs riches propriétaires.]]))
 --template:setScale(245)
 template:setRadarTrace("cruiser.png")
@@ -1027,7 +1027,7 @@ CroiseurAmbitionPNJ()
 --Création du vaisseau PJ
 function CroiseurAmbitionPJ()
 --Copie du vaisseau PNJ et transformation en vaisseau PJ
-variation = template:copy("Ambition"):setLocaleName(_("playerShip", "Croiseur Ambition")):setType("playership")
+variation = template:copy("ZS5 Ambition"):setLocaleName(_("playerShip", "Croiseur Ambition")):setType("playership")
 --Valeur de recharge des boucliers
 variation:setShieldRechargeRate(2.4)
 --Module de saut
@@ -1091,7 +1091,7 @@ function CroiseurDictatorPNJ()
 
 function CroiseurDictatorCoque()
 --Description, définition du modèle et de l'icone radar
-template = ShipTemplate():setName("Croiseur Dictator"):setLocaleName(_("ship", "Croiseur Dictator")):setClass(_("class", "Croiseur"), _("subclass", "Dictator")):setModel("Navy_Cruiser")
+template = ShipTemplate():setName("ZS6 Croiseur Dictator"):setLocaleName(_("ship", "Croiseur Dictator")):setClass(_("class", "Croiseur"), _("subclass", "Dictator")):setModel("Navy_Cruiser")
 template:setDescription(_([[Les Croiseurs de Classe Dictator sont construits à partir de la coque de ceux de Classe Lunar, mais les pièces d’artillerie navale sont remplacées par des ponts de lancement d’appareils d’attaque. Ces modifications furent conçues afin de pouvoir envoyer facilement en orbite basse un grand nombre d’appareils, comme les chasseurs Thunderbolts et les Bombardiers Marauder, pour effectuer des opérations de soutien au sol. Cependant, des améliorations successives sur les systèmes de communication et de détection augmentèrent la capacité des Dictators à lancer des attaques à longue portée. C’est pourquoi ces derniers furent de plus en plus souvent équipés de chasseurs Fury capables d’opérer dans l’espace ainsi que de Bombardiers Starhawk, leur permettant d’opérer soit comme vaisseau de soutien au sein d’une flotte, soit indépendamment afin de patrouiller dans le secteur. Un seul Dictator épaulé par une poignée d’escorteurs constitue donc une force extrêmement souple capable de pourchasser des pirates ou d’inquiéter une planète.]]))
 --template:setScale(255)
 template:setRadarTrace("cruiser.png")
@@ -1252,7 +1252,7 @@ CroiseurDictatorPNJ()
 --Création du vaisseau PJ
 function CroiseurDictatorPJ()
 --Copie du vaisseau PNJ et transformation en vaisseau PJ
-variation = template:copy("Dictator"):setLocaleName(_("playerShip", "Croiseur Dictator")):setType("playership")
+variation = template:copy("ZS6 Dictator"):setLocaleName(_("playerShip", "Croiseur Dictator")):setType("playership")
 --Valeur de recharge des boucliers
 variation:setShieldRechargeRate(2.4)
 --Module de saut
@@ -1297,7 +1297,7 @@ function CroiseurTyrantPNJ()
 
 function CroiseurTyrantCoque()
 --Description, définition du modèle et de l'icone radar
-template = ShipTemplate():setName("Croiseur Tyrant"):setLocaleName(_("ship", "Croiseur Tyrant")):setClass(_("class", "Croiseur"), _("subclass", "Tyrant")):setModel("Navy_Cruiser")
+template = ShipTemplate():setName("ZS7 Croiseur Tyrant"):setLocaleName(_("ship", "Croiseur Tyrant")):setClass(_("class", "Croiseur"), _("subclass", "Tyrant")):setModel("Navy_Cruiser")
 template:setDescription(_([[Vers la fin du trente-huitième millénaire, le célèbre Artisan-Magos Hyus N’dai travailla sur la technologie des Armes à Plasma à haute cadence. Le Croiseur de Classe Tyrant devint bientôt populaire dans les chantiers navals grâce à ses batteries d’armes à plasma à haute cadence capables de délivrer des salves à une portée bien supérieure à celles des batteries classiques. Cela constitua une petite révolution, dans la mesure où le secret de la fabrication d’armes à longue portée avait été perdu depuis le Moyen-Âge Technologique. En pratique, toutefois, ces armes à longue portée n’ont pas la puissance nécessaire pour constituer une menace sérieuse contre autre chose que des escorteurs.]]))
 --template:setScale(250)
 template:setRadarTrace("cruiser.png")
@@ -1466,7 +1466,7 @@ CroiseurTyrantPNJ()
 --Création du vaisseau PJ
 function CroiseurTyrantPJ()
 --Copie du vaisseau PNJ et transformation en vaisseau PJ
-variation = template:copy("Tyrant"):setLocaleName(_("playerShip", "Croiseur Tyrant")):setType("playership")
+variation = template:copy("ZS7 Tyrant"):setLocaleName(_("playerShip", "Croiseur Tyrant")):setType("playership")
 --Valeur de recharge des boucliers
 variation:setShieldRechargeRate(2.4)
 --Module de saut
